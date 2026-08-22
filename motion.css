@@ -82,12 +82,20 @@
   height: 26px;
   margin-left: -13px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: top center;
   background: #2a2118;
   border: 1.5px solid var(--accent);
+  overflow: hidden;
   transform: translateY(-50%);
   will-change: left;
+}
+/* Same crop as the nav avatar, so the character reads as one clean circle. */
+.sp-loader-dot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The baked ring sits 8px above the canvas centre, so the zoom is
+     nudged down by the same amount to keep the face centred. */
+  transform: scale(1.72) translateY(6.25%);
 }
 .sp-loader-pct {
   font-family: var(--font-mono);

@@ -160,12 +160,25 @@ h1, h2, h3, p { margin: 0; }
 }
 
 .identity { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+/* The export has its own gold ring and a ring of transparent padding baked
+   in, so the photo is zoomed past both and the CSS ring is the only ring. */
 .identity-avatar {
+  display: block;
+  flex-shrink: 0;
   width: 44px; height: 44px;
   border-radius: 50%;
-  object-fit: cover;
   border: 1.5px solid var(--accent);
   background: #2a2118;
+  overflow: hidden;
+}
+.identity-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The baked ring sits 8px above the canvas centre, so the zoom is
+     nudged down by the same amount to keep the face centred. */
+  transform: scale(1.72) translateY(6.25%);
+  transform-origin: center center;
 }
 .identity-name {
   font-family: var(--font-display);
