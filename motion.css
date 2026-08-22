@@ -1,0 +1,838 @@
+/* motion.css — Swati Priya portfolio
+   Motion + micro-interaction layer. This file never changes the design:
+   no new colours, no new type, no layout rewrites. It only adds movement.
+   Everything here is gated behind .sp-js on <html>, so a browser without
+   JavaScript still gets the plain, fully readable page.
+
+   Yellow is always var(--accent) / #ffc53d. Nothing else. */
+
+:root {
+  --ep: cubic-bezier(0.22, 1, 0.36, 1);   /* the premium easing */
+  --ep-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Animatable custom properties. Registering them lets hover states ease
+   instead of snapping, while JS can still write them every frame. */
+@property --hy { syntax: "<length>";  inherits: false; initial-value: 0px; }
+@property --hs { syntax: "<number>";  inherits: false; initial-value: 1; }
+@property --hr { syntax: "<angle>";   inherits: false; initial-value: 0deg; }
+
+/* ============================================================
+   1. LOADER  —  "SWATI PRIYA PRESENTS…"
+   Shown once per browsing session, ~1.2s, then opens like a panel.
+   ============================================================ */
+.sp-loader { display: none; }
+
+.sp-loading .sp-loader {
+  display: grid;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 0 24px;
+  background: var(--void);
+  text-align: center;
+}
+.sp-loading { overflow: hidden; }
+
+.sp-loader-presents {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 4.4vw, 34px);
+  letter-spacing: 0.5px;
+  color: var(--cream);
+  opacity: 0;
+  animation: sp-loader-in 420ms var(--ep) 60ms forwards;
+}
+.sp-loader-presents .accent { color: var(--accent); }
+
+.sp-loader-sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  color: var(--accent);
+  opacity: 0;
+  animation: sp-loader-in 420ms var(--ep) 220ms forwards;
+}
+
+/* Thin progress line — behaves like a comic panel divider at 100%. */
+.sp-loader-line {
+  position: relative;
+  width: min(420px, 74vw);
+  height: 2px;
+  margin-top: 10px;
+  background: rgba(255, 197, 61, 0.18);
+  border-radius: 2px;
+}
+.sp-loader-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  background: var(--accent);
+  transform-origin: left center;
+}
+/* Tiny character walking the line */
+.sp-loader-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  background: #2a2118;
+  border: 1.5px solid var(--accent);
+  transform: translateY(-50%);
+  will-change: left;
+}
+.sp-loader-pct {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--dim);
+}
+
+@keyframes sp-loader-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The panel opens: line stretches, everything lifts away. */
+.sp-loader.is-done {
+  animation: sp-loader-out 420ms var(--ep) forwards;
+  pointer-events: none;
+}
+@keyframes sp-loader-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.03); }
+}
+.sp-loader.is-done .sp-loader-presents,
+.sp-loader.is-done .sp-loader-sub,
+.sp-loader.is-done .sp-loader-pct { opacity: 0; transition: opacity 180ms linear; }
+.sp-loader.is-done .sp-loader-line { transform: scaleX(1.25); transition: transform 400ms var(--ep); }
+
+/* Hero waits for the loader instead of playing behind it. */
+.sp-loading .reveal { animation-play-state: paused; }
+
+/* ============================================================
+   2. CUSTOM CURSOR  —  comic annotation
+   ============================================================ */
+.sp-cursor { display: none; }
+
+@media (pointer: fine) {
+  .sp-js.sp-cursor-on .sp-cursor {
+    display: block;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 9998;
+    pointer-events: none;
+    will-change: transform;
+  }
+  /* Only hide the system cursor once ours is actually running. */
+  .sp-js.sp-cursor-on,
+  .sp-js.sp-cursor-on a,
+  .sp-js.sp-cursor-on button,
+  .sp-js.sp-cursor-on .case-card,
+  .sp-js.sp-cursor-on .book { cursor: none; }
+}
+
+.sp-cursor-ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 30px; height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 1.4px solid rgba(255, 197, 61, 0.55);
+  border-radius: 50%;
+  transition: width 260ms var(--ep), height 260ms var(--ep),
+              margin 260ms var(--ep), opacity 200ms linear,
+              border-color 260ms var(--ep);
+}
+.sp-cursor-dot {
+  position: absolute;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 200ms var(--ep), opacity 200ms linear;
+}
+/* Speech-bubble label */
+.sp-cursor-bubble {
+  position: absolute;
+  top: 14px; left: 16px;
+  padding: 5px 10px;
+  border-radius: 10px 10px 10px 2px;
+  background: var(--accent);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.9) translateY(4px);
+  transform-origin: top left;
+  transition: opacity 200ms var(--ep), transform 220ms var(--ep);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+.sp-cursor.has-label .sp-cursor-bubble { opacity: 1; transform: scale(1) translateY(0); }
+.sp-cursor.has-label .sp-cursor-ring {
+  width: 62px; height: 62px; margin: -31px 0 0 -31px;
+  border-color: rgba(255, 197, 61, 0.35);
+}
+.sp-cursor.has-label .sp-cursor-dot { transform: scale(0.7); }
+.sp-cursor.is-down .sp-cursor-ring { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+.sp-cursor.is-off  { opacity: 0; }
+
+/* ============================================================
+   3. HERO — hidden comic thinking layer, revealed by the cursor
+   ============================================================ */
+.sp-js .hero { position: relative; overflow: hidden; }
+.sp-js .hero-inner,
+.sp-js .proof-strip { position: relative; z-index: 1; }
+
+.hero-sketch {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 420ms var(--ep);
+  -webkit-mask-image: radial-gradient(circle var(--sk-r, 210px) at var(--sk-x, -999px) var(--sk-y, -999px),
+                       #000 0%, rgba(0,0,0,0.72) 42%, rgba(0,0,0,0) 72%);
+          mask-image: radial-gradient(circle var(--sk-r, 210px) at var(--sk-x, -999px) var(--sk-y, -999px),
+                       #000 0%, rgba(0,0,0,0.72) 42%, rgba(0,0,0,0) 72%);
+}
+.sp-js .hero.is-exploring .hero-sketch { opacity: 1; }
+.hero-sketch svg { width: 100%; height: 100%; display: block; }
+.hero-sketch .sk-line   { fill: none; stroke: rgba(245, 239, 227, 0.42); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.hero-sketch .sk-faint  { fill: none; stroke: rgba(245, 239, 227, 0.24); stroke-width: 1.2; stroke-linecap: round; }
+.hero-sketch .sk-accent { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-linecap: round; opacity: 0.75; }
+.hero-sketch .sk-note   { fill: rgba(245, 239, 227, 0.07); stroke: rgba(245, 239, 227, 0.3); stroke-width: 1.1; }
+.hero-sketch .sk-text   { font-family: var(--font-hand); font-size: 21px; fill: rgba(245, 239, 227, 0.5); }
+.hero-sketch .sk-text-accent { font-family: var(--font-hand); font-size: 23px; fill: var(--accent); opacity: 0.8; }
+.hero-sketch .sk-mono   { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; fill: rgba(245, 239, 227, 0.36); }
+
+/* ============================================================
+   4. HERO ENTRANCE — masked, line by line
+   ============================================================ */
+/* The two headline lines, block-level with or without JS. */
+.hero-title .line { display: block; }
+.sp-js .hero-title.is-masked .line { overflow: hidden; }
+.sp-js .hero-title.is-masked .line-in {
+  display: block;
+  transform: translateY(105%);
+  opacity: 0;
+}
+.sp-js .hero-title.is-in .line-in {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 720ms var(--ep), opacity 520ms linear;
+}
+.sp-js .hero-title.is-in .line:nth-child(2) .line-in { transition-delay: 90ms; }
+
+/* Portrait settles in rather than fading */
+.sp-js .hero-character { opacity: 0; }
+.sp-js .hero-character.is-in {
+  animation: sp-portrait-in 760ms var(--ep) forwards;
+}
+@keyframes sp-portrait-in {
+  from { opacity: 0; transform: scale(0.96) rotate(-1deg); }
+  to   { opacity: 1; transform: none; }
+}
+/* Speech bubbles are the decoration — they land last */
+.sp-js .hero-character .speech { opacity: 0; }
+.sp-js .hero-character.is-in .speech {
+  animation: sp-speech-in 520ms var(--ep) 380ms forwards;
+}
+.sp-js .hero-character.is-in .speech-right { animation-delay: 500ms; }
+@keyframes sp-speech-in {
+  from { opacity: 0; transform: translateY(8px) rotate(0deg); }
+}
+.sp-js .hero-character.is-in .speech-left  { animation-name: sp-speech-in-l; }
+.sp-js .hero-character.is-in .speech-right { animation-name: sp-speech-in-r; }
+@keyframes sp-speech-in-l {
+  from { opacity: 0; transform: translateY(10px) rotate(0deg); }
+  to   { opacity: 1; transform: rotate(3deg); }
+}
+@keyframes sp-speech-in-r {
+  from { opacity: 0; transform: translateY(10px) rotate(0deg); }
+  to   { opacity: 1; transform: rotate(-3deg); }
+}
+
+/* Parallax layers — JS writes the offsets, max 5px */
+.sp-js .hero-art       { will-change: transform; transform: translate3d(var(--px, 0px), var(--py, 0px), 0); }
+.sp-js .hero-character .speech { will-change: transform; }
+.sp-js .hero-sketch    { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0); }
+
+/* ============================================================
+   5. MAGNETIC DISPLAY WORDS
+   Only large editorial words. Never body copy.
+   ============================================================ */
+.sp-word {
+  display: inline-block;
+  position: relative;
+  transform: scale(var(--w-s, 1));
+  transition: transform 420ms var(--ep);
+  transform-origin: center bottom;
+}
+.sp-js .sp-word { will-change: transform; }
+
+/* Marker stroke that draws under the reactive word */
+.sp-word::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: 0.02em;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0.9;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 320ms var(--ep);
+  z-index: -1;
+}
+.sp-word:hover::after { transform: scaleX(1); }
+/* Already-yellow words get an ink stroke instead of yellow-on-yellow */
+.sp-word.accent::after { background: rgba(255, 197, 61, 0.28); }
+
+/* Tiny annotation next to a reactive word */
+.sp-note {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px);
+  font-family: var(--font-hand);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms var(--ep), transform 320ms var(--ep);
+}
+.sp-word:hover .sp-note { opacity: 1; transform: translateY(-50%) translateX(0); }
+@media (max-width: 899px) { .sp-note { display: none; } }
+
+/* Faint wireframe texture behind one word (DESIGN / PRODUCT) */
+.sp-word.has-grid::before {
+  content: "";
+  position: absolute;
+  inset: -6px -10px;
+  z-index: -2;
+  opacity: 0;
+  border-radius: 4px;
+  background-image:
+    linear-gradient(rgba(245, 239, 227, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 239, 227, 0.16) 1px, transparent 1px);
+  background-size: 12px 12px;
+  transition: opacity 320ms var(--ep);
+}
+.sp-word.has-grid:hover::before { opacity: 1; }
+
+/* ============================================================
+   6. NAVIGATION — shrinks into a profile chip
+   ============================================================ */
+.sp-js .site-header { transition: padding 380ms var(--ep); }
+.sp-js .nav-pill {
+  transition: padding 380ms var(--ep), background-color 380ms var(--ep),
+              box-shadow 380ms var(--ep), border-color 380ms var(--ep);
+}
+.sp-js .identity-avatar {
+  transition: width 380ms var(--ep), height 380ms var(--ep);
+}
+.sp-js .identity-name { transition: font-size 380ms var(--ep); }
+
+.sp-js .site-header.is-compact { padding-top: 6px; padding-bottom: 6px; }
+.sp-js .site-header.is-compact .nav-pill { padding: 5px 10px 5px 8px; }
+.sp-js .site-header.is-compact .identity-avatar { width: 32px; height: 32px; }
+.sp-js .site-header.is-compact .identity-name { font-size: 13px; }
+.sp-js .site-header.is-compact .nav-link { padding-top: 8px; padding-bottom: 8px; }
+.sp-js .site-header.is-compact .nav-cta { padding: 9px 12px 9px 18px; font-size: 14px; }
+.sp-js .site-header.is-compact .nav-cta .btn-arrow { width: 22px; height: 22px; }
+
+/* Available-for-work chip, revealed with the compact bar */
+.nav-available {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 197, 61, 0.4);
+  border-radius: 100px;
+  background: #100e0b;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  color: var(--accent);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 320ms var(--ep), transform 320ms var(--ep);
+}
+@media (min-width: 1080px) {
+  .sp-js .site-header.is-compact .nav-available { display: inline-flex; opacity: 1; transform: none; }
+}
+.nav-available .nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 7px #4ade80;
+  animation: sp-breathe 2.3s ease-in-out infinite;
+}
+@keyframes sp-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* Nav hover: editorial marker stroke, not a colour flash */
+.sp-js .nav-link { transition: color 260ms var(--ep), transform 280ms var(--ep); }
+.sp-js .nav-link:hover { transform: translateY(-2px); }
+.sp-js .nav-link::after { transition: transform 290ms var(--ep); height: 2.5px; }
+
+/* ============================================================
+   7. BUTTONS — subtle, no bounce
+   ============================================================ */
+.sp-js .btn {
+  transition: transform 260ms var(--ep), box-shadow 260ms var(--ep),
+              background-color 260ms var(--ep), color 260ms var(--ep);
+}
+.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-2px) scale(1.02); }
+.sp-js .btn:active { transform: translateY(-1px) scale(0.98); }
+.sp-js .btn .btn-arrow { transition: transform 260ms var(--ep); }
+.sp-js .btn:hover .btn-arrow { transform: translateX(4px); }
+.sp-js .btn:hover .btn-arrow-down { transform: translateY(3px); }
+
+/* ============================================================
+   8. PICK AN EPISODE — one cover becomes three
+   ============================================================ */
+.sp-js .case-grid { perspective: 1400px; }
+
+.sp-js .case-card {
+  --sx: 0px; --sy: 0px; --ss: 1; --sr: 0deg; --so: 1;
+  --hy: 0px; --hs: 1; --hr: 0deg; --rx: 0deg; --ry: 0deg;
+  opacity: var(--so);
+  transform-style: preserve-3d;
+  transform:
+    translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
+    rotateX(var(--rx)) rotateY(var(--ry))
+    rotate(calc(var(--sr) + var(--hr)))
+    scale(calc(var(--ss) * var(--hs)));
+  transition: --hy 420ms var(--ep), --hs 420ms var(--ep), --hr 420ms var(--ep),
+              box-shadow 420ms var(--ep), opacity 320ms linear;
+  will-change: transform;
+}
+/* The staged spread is driven frame by frame, so no transition there */
+.sp-js .case-grid.is-staging .case-card { transition: box-shadow 420ms var(--ep); }
+
+.sp-js .case-card:hover,
+.sp-js .case-card:focus-visible {
+  --hy: -10px; --hs: 1.015;
+  transform:
+    translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
+    rotateX(var(--rx)) rotateY(var(--ry))
+    rotate(calc(var(--sr) + var(--hr)))
+    scale(calc(var(--ss) * var(--hs)));
+  box-shadow: 0 28px 52px rgba(0, 0, 0, 0.5);
+}
+.sp-js .case-card:nth-child(odd):hover  { --hr: -0.8deg; }
+.sp-js .case-card:nth-child(even):hover { --hr: 0.8deg; }
+
+/* Cover image lives in its own clip so it can scale inside the card */
+.sp-js .case-card .case-cover { transition: transform 520ms var(--ep); }
+.sp-js .case-card { overflow: hidden; }
+.sp-js .case-card:hover .case-cover { transform: scale(1.035); }
+
+/* CTA chip: arrow slides on hover */
+.sp-js .case-chip { transition: transform 300ms var(--ep), background-color 300ms var(--ep); }
+.sp-js .case-chip .chip-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  transform: translateX(0);
+  transition: transform 300ms var(--ep);
+}
+.sp-js .case-card:hover .case-chip .chip-arrow { transform: translateX(5px); }
+
+/* Comic annotation that slides in on hover */
+.case-flag {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  z-index: 2;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: var(--void);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px) rotate(-2deg);
+  transition: opacity 300ms var(--ep), transform 380ms var(--ep);
+  pointer-events: none;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+.sp-js .case-card:hover .case-flag,
+.sp-js .case-card:focus-visible .case-flag { opacity: 1; transform: translateY(0) rotate(-1deg); }
+
+/* Coming Soon cards keep their yellow — they are alive, just not open yet */
+.case-card.is-soon .case-flag { border: 1px solid rgba(255, 197, 61, 0.5); }
+.case-card.is-soon { cursor: default; }
+
+/* Guardian One: one small product-flavoured move inside the preview */
+.case-scan {
+  position: absolute;
+  left: 7px; right: 7px;
+  top: 7px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.sp-js .case-card.is-live:hover .case-scan { animation: sp-scan 1.5s var(--ep) 120ms; }
+@keyframes sp-scan {
+  0%   { opacity: 0; transform: translateY(0); }
+  12%  { opacity: 0.85; }
+  85%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(var(--scan-d, 600px)); }
+}
+/* The meta block shifts a couple of pixels — the preview feels awake */
+.sp-js .case-card.is-live .case-meta { transition: transform 460ms var(--ep); }
+.sp-js .case-card.is-live:hover .case-meta { transform: translateY(-3px); }
+
+/* Staged reveal container. On desktop the stage pins briefly so the
+   three covers can spread; on smaller screens it is a plain block. */
+.case-track { position: relative; }
+.case-stage { position: relative; }
+
+@media (max-width: 1079px) {
+  .case-track { height: auto !important; }
+  .case-stage { position: static !important; }
+}
+
+/* Mobile / tablet: cards settle in one after another, no pinning */
+.sp-js .case-card.settle-in {
+  opacity: 0;
+  transform: translateY(40px) rotate(2deg) scale(0.96);
+  transition: opacity 560ms var(--ep), transform 620ms var(--ep);
+}
+.sp-js .case-card.settle-in.is-visible { opacity: 1; transform: none; }
+.sp-js .case-card.settle-in:nth-child(2).is-visible { transition-delay: 110ms; }
+.sp-js .case-card.settle-in:nth-child(3).is-visible { transition-delay: 220ms; }
+
+/* ============================================================
+   9. SECTION REVEALS — one consistent language
+   ============================================================ */
+.sp-js .sp-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 580ms var(--ep), transform 620ms var(--ep);
+}
+.sp-js .sp-reveal.is-visible { opacity: 1; transform: none; }
+.sp-js .sp-reveal[data-step="1"].is-visible { transition-delay: 90ms; }
+.sp-js .sp-reveal[data-step="2"].is-visible { transition-delay: 180ms; }
+
+/* Personal areas settle like objects placed on a desk */
+.sp-js .sp-settle {
+  opacity: 0;
+  transform: translateY(28px) rotate(1.4deg);
+  transition: opacity 600ms var(--ep), transform 660ms var(--ep);
+}
+.sp-js .sp-settle.is-visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   10. BEHIND THE SCREENS — boards, books, music
+   ============================================================ */
+.sp-js .board {
+  transition: transform 420ms var(--ep), border-color 420ms var(--ep),
+              box-shadow 420ms var(--ep);
+}
+@media (pointer: fine) {
+  .sp-js .board:hover {
+    transform: translateY(-6px) rotate(var(--board-r, 1deg)) scale(1.012);
+    border-color: rgba(255, 197, 61, 0.34);
+    box-shadow: inset 0 0 10px 1px rgba(255, 217, 140, 0.06),
+                0 20px 34px rgba(0, 0, 0, 0.42);
+  }
+}
+.sp-js .board:nth-child(even) { --board-r: -1deg; }
+.sp-js .board:active { transform: scale(0.99); }
+
+/* Books behave like objects you can pick up */
+.sp-js .board-books { --pick: 0; }
+.sp-js .book {
+  transition: transform 460ms var(--ep), box-shadow 460ms var(--ep);
+  transform-origin: bottom center;
+}
+.sp-js .book-1.is-picked { transform: translateY(-12px) rotate(0.4deg) scale(1.02); box-shadow: 0 18px 34px rgba(0,0,0,.6); }
+.sp-js .book-2.is-picked { transform: translateY(-12px) rotate(0.4deg) scale(1.02); box-shadow: 0 18px 34px rgba(0,0,0,.6); }
+.sp-js .book-3.is-picked { transform: translateY(-12px) rotate(0.6deg) scale(1.02); box-shadow: 0 18px 34px rgba(0,0,0,.6); }
+/* Neighbours ease apart by a few pixels */
+.sp-js .book.is-nudge-l { transform: translateX(-7px) rotate(8deg); }
+.sp-js .book.is-nudge-r { transform: translateX(7px) rotate(3deg); }
+
+.book-hint {
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 300ms var(--ep), transform 340ms var(--ep);
+  pointer-events: none;
+}
+.sp-js .board-books.is-active .book-hint { opacity: 1; transform: none; }
+
+/* Music control — replaces the decorative play button, same look */
+.sp-js .ctrl-main {
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 260ms var(--ep), background-color 260ms var(--ep);
+}
+.sp-js .ctrl-main:hover { transform: scale(1.08); }
+.sp-js .ctrl-main:active { transform: scale(0.96); }
+
+.music-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  grid-column: 1 / -1;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--accent);
+}
+/* Tiny equaliser */
+.eq { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.eq i {
+  display: block;
+  width: 2.5px;
+  height: 3px;
+  border-radius: 1px;
+  background: var(--accent);
+  transform-origin: bottom center;
+}
+.is-playing .eq i { animation: sp-eq 900ms ease-in-out infinite; }
+.is-playing .eq i:nth-child(2) { animation-delay: 140ms; animation-duration: 760ms; }
+.is-playing .eq i:nth-child(3) { animation-delay: 300ms; animation-duration: 1040ms; }
+.is-playing .eq i:nth-child(4) { animation-delay: 90ms;  animation-duration: 840ms; }
+@keyframes sp-eq {
+  0%, 100% { height: 3px; }
+  50%      { height: 12px; }
+}
+/* Waveform only moves while the track is on */
+.sp-js .player .waveform { transition: opacity 400ms var(--ep); opacity: 0.4; }
+.sp-js .player.is-playing .waveform { opacity: 0.85; }
+.sp-js .player-progress span { transition: width 600ms linear; }
+
+/* ============================================================
+   11. ABOUT — calmer, tiny movements only
+   ============================================================ */
+.sp-js .polaroid { transition: transform 520ms var(--ep), box-shadow 520ms var(--ep); }
+@media (pointer: fine) {
+  .sp-js .polaroid:hover { transform: rotate(-0.6deg) translateY(-6px) scale(1.012); box-shadow: 0 20px 40px rgba(0,0,0,.58); }
+}
+.sp-js .tools-grid img { transition: transform 340ms var(--ep); }
+.sp-js .tools-grid li:hover img { transform: translateY(-4px) scale(1.05); }
+.sp-js .sticky-note { transition: transform 460ms var(--ep); }
+.sp-js .sticky-note:hover { transform: rotate(2.4deg) translateY(-4px); }
+.sp-js .timeline-item { transition: transform 380ms var(--ep); }
+.sp-js .timeline-item:hover { transform: translateX(5px); }
+.sp-js .tl-logo { transition: transform 380ms var(--ep); }
+.sp-js .timeline-item:hover .tl-logo { transform: scale(1.06) rotate(-2deg); }
+
+/* Hand-drawn squiggles draw themselves in when the section arrives */
+.sp-js .squiggle path { stroke-dasharray: 220; stroke-dashoffset: 220; }
+.sp-js .squiggle.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--ep); }
+
+/* ============================================================
+   12. SOCIAL + EXTERNAL LINKS
+   ============================================================ */
+.sp-js .footer-social a,
+.sp-js .tl-role a {
+  position: relative;
+  transition: color 260ms var(--ep), transform 260ms var(--ep),
+              text-underline-offset 260ms var(--ep);
+}
+.sp-js .footer-social a:hover,
+.sp-js .tl-role a:hover { text-underline-offset: 2px; }
+.sp-js .footer-social a::after,
+.sp-js .tl-role a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 280ms var(--ep);
+}
+.sp-js .footer-social a:hover,
+.sp-js .tl-role a:hover { transform: translateY(-1px); }
+.sp-js .footer-social a:hover::after,
+.sp-js .tl-role a:hover::after { transform: scaleX(1); }
+.sp-js .link-arrow { display: inline-block; transition: transform 280ms var(--ep); }
+.sp-js a:hover > .link-arrow { transform: translate(3px, -3px); }
+
+/* ============================================================
+   13. FOOTER — the last surprise
+   ============================================================ */
+.sp-js .site-footer { position: relative; overflow: hidden; }
+.sp-js .footer-body { position: relative; z-index: 2; }
+
+.footer-giant {
+  position: absolute;
+  left: 50%;
+  bottom: -0.14em;
+  z-index: 0;
+  transform: translateX(-50%) translateY(18px);
+  font-family: var(--font-display);
+  font-size: clamp(120px, 19vw, 250px);
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.4px rgba(245, 239, 227, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 460ms var(--ep), transform 620ms var(--ep);
+}
+.sp-js .site-footer.is-shouting .footer-giant { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (max-width: 899px) { .footer-giant { display: none; } }
+
+/* Comic speech bubble. It grows behind the final cover card, so the
+   character ends up peeking over its edge — and no copy is covered. */
+.sp-js .footer-cover { position: relative; }
+.sp-js .footer-cover .cover-card,
+.sp-js .footer-cover .cover-caption { position: relative; z-index: 1; }
+
+.footer-bubble {
+  position: absolute;
+  left: 50%;
+  top: -64px;
+  z-index: 0;
+  width: min(500px, 112%);
+  height: calc(100% + 94px);
+  padding: 15px 24px 0;
+  border: 2px solid rgba(255, 197, 61, 0.5);
+  border-radius: 38px;
+  background: rgba(23, 18, 11, 0.94);
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.15;
+  color: var(--accent);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 20px) scale(0.85);
+  transform-origin: center top;
+  transition: opacity 320ms var(--ep), transform 460ms var(--ep);
+}
+.footer-bubble::after {
+  content: "";
+  position: absolute;
+  left: 58px; bottom: -16px;
+  width: 32px; height: 32px;
+  background: rgba(23, 18, 11, 0.94);
+  border-right: 2px solid rgba(255, 197, 61, 0.5);
+  border-bottom: 2px solid rgba(255, 197, 61, 0.5);
+  transform: rotate(45deg);
+  border-radius: 0 0 6px 0;
+}
+.sp-js .site-footer.is-talking .footer-bubble {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+@media (max-width: 1079px) { .footer-bubble { display: none; } }
+
+/* The cover card peeks over the bubble */
+.sp-js .site-footer.is-talking .cover-card { transform: translateY(-8px) rotate(-1deg); }
+.sp-js .cover-card { transition: transform 520ms var(--ep), box-shadow 520ms var(--ep); }
+@media (pointer: fine) {
+  .sp-js .cover-card:hover { transform: translateY(-8px) rotate(0.8deg); box-shadow: 0 26px 34px rgba(0,0,0,.62); }
+}
+.sp-js .availability .dot { animation: sp-breathe 2.3s ease-in-out infinite; }
+
+/* Sections that host marginalia need a positioning context. */
+.sp-js .cases, .sp-js .behind { position: relative; }
+
+/* ============================================================
+   14. HIDDEN EASTER EGGS
+   Tiny marginalia. They only exist if you go looking.
+   ============================================================ */
+.sp-egg {
+  position: absolute;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.9px;
+  color: rgba(245, 239, 227, 0.42);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px) rotate(-1.5deg);
+  transition: opacity 420ms var(--ep), transform 480ms var(--ep);
+  pointer-events: none;
+}
+.sp-egg.is-near { opacity: 1; transform: translateY(0) rotate(-1.5deg); }
+@media (max-width: 1079px), (pointer: coarse) { .sp-egg { display: none; } }
+
+/* ============================================================
+   15. TOUCH BEHAVIOUR
+   Hover choreography is desktop-only; touch gets press states.
+   ============================================================ */
+@media (pointer: coarse) {
+  .sp-js .case-card:active { --hs: 0.98; --hy: 0px; }
+  .sp-js .board:active     { transform: scale(0.985); }
+  .sp-js .btn:active       { transform: scale(0.98); }
+  .sp-js .ctrl-main        { min-width: 44px; min-height: 44px; border-radius: 50%; }
+  .sp-js .case-flag        { display: none; }
+  .hero-sketch             { display: none; }
+}
+
+/* ============================================================
+   16. REDUCED MOTION
+   Everything expressive switches off. Nothing becomes unusable.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .sp-loader { display: none !important; }
+  .hero-sketch, .sp-cursor, .footer-giant, .footer-bubble, .sp-egg { display: none !important; }
+
+  .sp-js .sp-reveal,
+  .sp-js .sp-settle,
+  .sp-js .case-card.settle-in { opacity: 1 !important; transform: none !important; transition: opacity 200ms linear; }
+
+  .sp-js .hero-title.is-masked .line-in { transform: none !important; opacity: 1 !important; }
+  .sp-js .hero-character { opacity: 1 !important; animation: none !important; }
+  .sp-js .hero-character .speech { opacity: 1 !important; animation: none !important; }
+
+  .sp-js .case-card {
+    transform: none !important;
+    transition: box-shadow 200ms linear, opacity 200ms linear;
+  }
+  .sp-js .case-card:hover { box-shadow: 0 18px 34px rgba(0, 0, 0, 0.45); }
+  .sp-js .board:hover, .sp-js .polaroid:hover { transform: none !important; }
+  .sp-js .book { transition: none !important; }
+  .sp-word { transform: none !important; }
+  .nav-available .nav-dot, .sp-js .availability .dot, .is-playing .eq i { animation: none !important; }
+  .sp-js .case-track { height: auto !important; }
+  .sp-js .case-stage { position: static !important; }
+}

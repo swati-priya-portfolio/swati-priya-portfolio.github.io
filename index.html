@@ -17,10 +17,52 @@
     rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+  <!-- Motion layer. Purely additive: it never changes the design. -->
+  <link rel="stylesheet" href="motion.css" />
+
+  <script>
+    /* Runs before paint so the page never flashes an un-styled state. */
+    (function () {
+      var d = document.documentElement;
+      d.classList.add("sp-js");
+      try {
+        if (!sessionStorage.getItem("sp-seen") &&
+            !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          d.classList.add("sp-loading");
+        }
+      } catch (e) {}
+      /* Failsafe: if motion.js never runs, nothing stays hidden. */
+      setTimeout(function () {
+        d.classList.remove("sp-loading");
+        var t = document.querySelector(".hero-title");
+        var c = document.querySelector(".hero-character");
+        if (t) { t.classList.add("is-in"); }
+        if (c) { c.classList.add("is-in"); }
+      }, 3500);
+    })();
+  </script>
 </head>
 
 <body>
   <a class="skip-link" href="#home">Skip to content</a>
+
+  <!-- ================= FIRST-VISIT LOADER (once per session) ================= -->
+  <div class="sp-loader" aria-hidden="true">
+    <p class="sp-loader-presents">SWATI PRIYA <span class="accent">PRESENTS&hellip;</span></p>
+    <p class="sp-loader-sub">LOADING THE NEXT EPISODE</p>
+    <div class="sp-loader-line">
+      <span class="sp-loader-fill"></span>
+      <img class="sp-loader-dot" src="images/avatar-nav.png" alt="" width="26" height="26" />
+    </div>
+    <p class="sp-loader-pct">0%</p>
+  </div>
+
+  <!-- Custom cursor. Desktop only; hidden on touch and reduced motion. -->
+  <div class="sp-cursor" aria-hidden="true">
+    <span class="sp-cursor-ring"></span>
+    <span class="sp-cursor-dot"></span>
+    <span class="sp-cursor-bubble"></span>
+  </div>
 
   <!-- ================= HEADER / FLOATING NAV ================= -->
   <header class="site-header">
@@ -29,6 +71,7 @@
         <!-- Replace with your own portrait export -->
         <img class="identity-avatar" src="images/avatar-nav.png" alt="" width="44" height="44" />
         <span class="identity-name">SWATI PRIYA</span>
+        <span class="nav-available"><span class="nav-dot"></span>AVAILABLE FOR WORK</span>
       </a>
 
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
@@ -43,7 +86,7 @@
       </ul>
 
       <!-- Change your contact link here -->
-      <a class="btn btn-primary nav-cta" href="#contact">
+      <a class="btn btn-primary nav-cta" href="#contact" data-cursor="LET'S TALK">
         Let's talk
         <span class="btn-arrow" aria-hidden="true">&#8594;</span>
       </a>
@@ -52,7 +95,60 @@
 
   <main>
     <!-- ================= HERO ================= -->
-    <section class="hero" id="home">
+    <section class="hero" id="home" data-cursor="CURIOUS?">
+      <!-- The thinking underneath the polished page. Revealed only
+           around the cursor, so the default state stays clean. -->
+      <div class="hero-sketch" aria-hidden="true">
+        <svg viewBox="0 0 1440 780" preserveAspectRatio="xMidYMid slice" role="presentation">
+          <!-- wireframe boxes -->
+          <rect class="sk-line" x="76" y="96" width="132" height="86" rx="6" />
+          <path class="sk-faint" d="M88 118h64M88 134h96M88 150h48" />
+          <rect class="sk-line" x="248" y="120" width="74" height="52" rx="5" />
+          <path class="sk-faint" d="M258 138h44M258 152h30" />
+          <rect class="sk-line" x="1088" y="470" width="150" height="98" rx="8" />
+          <path class="sk-faint" d="M1104 496h92M1104 514h118M1104 532h70" />
+          <rect class="sk-accent" x="1104" y="546" width="52" height="16" rx="8" />
+          <!-- tiny calculator -->
+          <rect class="sk-line" x="132" y="470" width="86" height="118" rx="8" />
+          <rect class="sk-faint" x="142" y="480" width="66" height="22" rx="3" />
+          <path class="sk-faint" d="M146 516h14M170 516h14M194 516h14M146 536h14M170 536h14M194 536h14M146 556h14M170 556h14" />
+          <rect class="sk-accent" x="192" y="550" width="16" height="26" rx="3" />
+          <!-- flow arrows -->
+          <path class="sk-line" d="M236 210c58 34 118 30 168-8" />
+          <path class="sk-line" d="M392 196l12 6-14 10" />
+          <path class="sk-accent" d="M980 232c48 12 78 44 88 88" />
+          <path class="sk-accent" d="M1060 300l10-14 12 10" />
+          <path class="sk-faint" d="M300 604c62-26 124-22 186 12" />
+          <path class="sk-faint" d="M478 604l10 12-16 4" />
+          <!-- stars -->
+          <path class="sk-accent" d="M336 322l7 16 17 2-13 12 4 17-15-9-15 9 4-17-13-12 17-2z" />
+          <path class="sk-line" d="M1268 168l5 11 12 2-9 8 3 12-11-6-11 6 3-12-9-8 12-2z" />
+          <path class="sk-faint" d="M652 668l4 9 10 1-7 7 2 10-9-5-9 5 2-10-7-7 10-1z" />
+          <!-- sticky notes -->
+          <rect class="sk-note" x="884" y="86" width="86" height="80" rx="2" transform="rotate(-5 884 86)" />
+          <path class="sk-faint" d="M888 112h58M888 128h44M888 144h50" transform="rotate(-5 884 86)" />
+          <rect class="sk-note" x="536" y="486" width="72" height="70" rx="2" transform="rotate(4 536 486)" />
+          <path class="sk-faint" d="M548 508h46M548 524h32" transform="rotate(4 536 486)" />
+          <!-- speech bubbles -->
+          <path class="sk-line" d="M1160 96h132a10 10 0 0 1 10 10v52a10 10 0 0 1-10 10h-92l-22 20 4-20h-22a10 10 0 0 1-10-10v-52a10 10 0 0 1 10-10z" />
+          <path class="sk-line" d="M60 640h112a10 10 0 0 1 10 10v40a10 10 0 0 1-10 10h-74l-20 18 3-18h-21a10 10 0 0 1-10-10v-40a10 10 0 0 1 10-10z" />
+          <!-- scribbles + annotations -->
+          <path class="sk-faint" d="M700 120c22-14 44-12 62 4s38 16 58-2" />
+          <path class="sk-faint" d="M356 690c26-10 52-8 78 6" />
+          <path class="sk-accent" d="M818 596c30-16 62-14 92 6" />
+          <text class="sk-text" x="1176" y="140">WHY?</text>
+          <text class="sk-text-accent" x="76" y="676">WHAT IF?</text>
+          <text class="sk-text" x="892" y="374">IDEA!</text>
+          <text class="sk-text" x="410" y="424">what does the parent</text>
+          <text class="sk-text" x="410" y="452">actually worry about?</text>
+          <text class="sk-mono" x="1092" y="618">FLOW &#8594; TRUST &#8594; DONE</text>
+          <text class="sk-mono" x="248" y="330">DISCOVERY</text>
+          <text class="sk-mono" x="640" y="228">EDGE CASE?</text>
+          <text class="sk-mono" x="960" y="690">ONE DECISION PER SCREEN</text>
+        </svg>
+      </div>
+
+      <p class="sp-egg" style="left: var(--gutter); bottom: 26px;">YES, I OVERTHINK BUTTON LABELS.</p>
       <div class="hero-inner">
         <div class="hero-copy">
           <p class="role-strip reveal" data-delay="0">
@@ -60,8 +156,10 @@
           </p>
 
           <!-- Change your headline here -->
-          <h1 class="hero-title reveal" data-delay="1">
-            I TURN <span class="accent">COMPLEXITY</span><br />INTO CLARITY.
+          <!-- Two clipping lines so the headline can rise into place. -->
+          <h1 class="hero-title reveal is-masked" data-delay="1">
+            <span class="line"><span class="line-in">I TURN <span class="sp-word accent">COMPLEXITY<span class="sp-note">&larr; STILL DOES</span></span></span></span>
+            <span class="line"><span class="line-in">INTO <span class="sp-word has-grid">CLARITY.</span></span></span>
           </h1>
 
           <p class="hero-sub reveal" data-delay="2">
@@ -70,23 +168,23 @@
           </p>
 
           <div class="hero-actions reveal" data-delay="3">
-            <a class="btn btn-primary" href="#case-studies">
+            <a class="btn btn-primary" href="#case-studies" data-cursor="THE WORK &#8595;">
               View case studies
               <span class="btn-arrow" aria-hidden="true">&#8594;</span>
             </a>
             <!-- Point this at your resume PDF -->
-            <a class="btn btn-ghost" href="images/swati-priya-resume.pdf" download>
+            <a class="btn btn-ghost" href="images/swati-priya-resume.pdf" download data-cursor="THE SERIOUS STUFF &#8599;">
               Download Resume
               <span class="btn-arrow btn-arrow-down" aria-hidden="true">&#8595;</span>
             </a>
           </div>
         </div>
 
-        <div class="hero-character reveal" data-delay="2">
-          <p class="speech speech-left">Designs the experience</p>
-          <p class="speech speech-right">Tells the story behind it</p>
+        <div class="hero-character">
+          <p class="speech speech-left" data-rot="3">Designs the experience</p>
+          <p class="speech speech-right" data-rot="-3">Tells the story behind it</p>
           <!-- Replace with your hero illustration export -->
-          <img class="hero-art" src="images/hero-character.png"
+          <img class="hero-art" src="images/hero-character.png" data-cursor="THAT&#8217;S ME &#8593;"
             alt="Illustration of Swati waving from a laptop screen" />
         </div>
       </div>
@@ -102,7 +200,7 @@
 
     <!-- ================= CASE STUDIES ================= -->
     <section class="cases" id="case-studies">
-      <div class="section-head">
+      <div class="section-head sp-reveal">
         <div class="eyebrow-row">
           <p class="eyebrow">CASE STUDIES</p>
           <p class="eyebrow-note">START HERE &middot; 0&#8594;1 STORY &middot; ~7 MIN &#8595;</p>
@@ -110,40 +208,52 @@
         <h2 class="section-title">Pick an episode.</h2>
       </div>
 
-      <div class="case-grid">
+      <p class="sp-egg" style="left: var(--gutter); top: 46px;">KEEP GOING &#8595;</p>
+
+      <!-- The stage pins for one short beat while the covers spread. -->
+      <div class="case-track">
+        <div class="case-stage">
+          <div class="case-grid">
         <!-- Case card 1 — change link, image and copy -->
-        <a class="case-card reveal-on-scroll" href="#">
-          <img class="case-cover" src="images/case-guardian-one.png" alt="Guardian One comic cover" />
-          <span class="case-chip">READ ISSUE #01</span>
-          <div class="case-meta">
-            <h3>Guardian One</h3>
-            <p>0&#8594;1 insurance &middot; Strategy to shipped product</p>
-          </div>
-        </a>
+            <!-- Lead cover. The one case study that is open to read. -->
+            <a class="case-card is-live" href="#" data-cursor="READ THIS &#8594;">
+              <img class="case-cover" src="images/case-guardian-one.png" alt="Guardian One comic cover" />
+              <span class="case-scan" aria-hidden="true"></span>
+              <span class="case-flag" aria-hidden="true">OPEN CASE STUDY &#8594;</span>
+              <span class="case-chip">READ ISSUE #01<span class="chip-arrow" aria-hidden="true">&#8594;</span></span>
+              <div class="case-meta">
+                <h3>Guardian One</h3>
+                <p>0&#8594;1 insurance &middot; Strategy to shipped product</p>
+              </div>
+            </a>
 
-        <a class="case-card reveal-on-scroll" href="#">
-          <img class="case-cover" src="images/case-grayquest.png" alt="GrayQuest comic cover" />
-          <span class="case-chip">READ ISSUE #02</span>
-          <div class="case-meta">
-            <h3>GrayQuest</h3>
-            <p>Education finance &middot; Simplifying complex decisions</p>
-          </div>
-        </a>
+            <a class="case-card is-soon" href="#" aria-disabled="true" data-cursor="NOT YET &#128064;">
+              <img class="case-cover" src="images/case-grayquest.png" alt="GrayQuest comic cover" loading="lazy" />
+              <span class="case-flag" aria-hidden="true">NEXT EPISODE &#8226; COMING SOON</span>
+              <span class="case-chip">ISSUE #02<span class="chip-arrow" aria-hidden="true">&#8594;</span></span>
+              <div class="case-meta">
+                <h3>GrayQuest</h3>
+                <p>Education finance &middot; Simplifying complex decisions</p>
+              </div>
+            </a>
 
-        <a class="case-card reveal-on-scroll" href="#">
-          <img class="case-cover" src="images/case-embibe.png" alt="Embibe comic cover" />
-          <span class="case-chip">READ ISSUE #03</span>
-          <div class="case-meta">
-            <h3>Embibe</h3>
-            <p>Edtech system &middot; Scalable product foundations</p>
+            <a class="case-card is-soon" href="#" aria-disabled="true" data-cursor="NOT YET &#128064;">
+              <img class="case-cover" src="images/case-embibe.png" alt="Embibe comic cover" loading="lazy" />
+              <span class="case-flag" aria-hidden="true">NEXT EPISODE &#8226; COMING SOON</span>
+              <span class="case-chip">ISSUE #03<span class="chip-arrow" aria-hidden="true">&#8594;</span></span>
+              <div class="case-meta">
+                <h3>Embibe</h3>
+                <p>Edtech system &middot; Scalable product foundations</p>
+              </div>
+            </a>
           </div>
-        </a>
+        </div>
       </div>
     </section>
 
     <!-- ================= BEHIND THE SCREENS ================= -->
     <section class="behind" id="behind">
-      <div class="behind-head">
+      <div class="behind-head sp-reveal">
         <div>
           <p class="eyebrow eyebrow-mono">BEHIND THE SCREENS</p>
           <h2 class="section-title">A little life<br /><span class="accent">behind</span> the work.</h2>
@@ -153,14 +263,17 @@
         </p>
       </div>
 
+      <p class="sp-egg" style="right: var(--gutter); top: 60px;">CURRENT RABBIT HOLE &#8594;</p>
+
       <div class="board-grid">
         <!-- Board 1 — Currently reading -->
-        <article class="board reveal-on-scroll">
+        <article class="board sp-settle" data-cursor="GOOD ONE">
           <h3 class="board-title">CURRENTLY READING</h3>
           <div class="board-books">
             <img class="book book-3" src="images/book-back-2.png" alt="" />
             <img class="book book-2" src="images/book-back-1.png" alt="" />
             <img class="book book-1" src="images/book-inspired.png" alt="Book cover: Inspired" />
+            <span class="book-hint" aria-hidden="true">WHAT I TOOK FROM THIS &#8594;</span>
           </div>
           <p class="board-note board-note-side">
             Great products start with discovery and deep empathy.
@@ -171,7 +284,7 @@
         </article>
 
         <!-- Board 2 — Music -->
-        <article class="board reveal-on-scroll">
+        <article class="board sp-settle" data-cursor="PLAY &#9834;">
           <h3 class="board-title">MUSIC WHILE DESIGNING</h3>
           <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true">
             <path d="M7 26v-6a14 14 0 0 1 28 0v6" />
@@ -187,11 +300,18 @@
               <div class="waveform" aria-hidden="true"></div>
             </div>
             <div class="player-progress" aria-hidden="true"><span></span></div>
-            <div class="player-controls" aria-hidden="true">
-              <span class="ctrl">&#9198;</span>
-              <span class="ctrl ctrl-main">&#10074;&#10074;</span>
-              <span class="ctrl">&#9197;</span>
+            <div class="player-controls">
+              <span class="ctrl" aria-hidden="true">&#9198;</span>
+              <!-- Real control. Never autoplays; remembers the session choice. -->
+              <button type="button" class="ctrl ctrl-main" aria-pressed="false"
+                aria-label="Play the focus track" data-cursor="PLAY &#9834;">&#9654;</button>
+              <span class="ctrl" aria-hidden="true">&#9197;</span>
             </div>
+            <p class="music-state">
+              <span aria-hidden="true">&#9834;</span>
+              <span class="music-label">MUSIC OFF</span>
+              <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </p>
           </div>
 
           <p class="board-note">Cuts the noise. Keeps me in flow.</p>
@@ -199,7 +319,7 @@
         </article>
 
         <!-- Board 3 — Current obsession -->
-        <article class="board reveal-on-scroll">
+        <article class="board sp-settle" data-cursor="CURRENT OBSESSION">
           <h3 class="board-title">CURRENT OBSESSION</h3>
           <div class="sticky-wrap">
             <span class="pin" aria-hidden="true"></span>
@@ -219,7 +339,7 @@
         </article>
 
         <!-- Board 4 — Little reminders -->
-        <article class="board reveal-on-scroll">
+        <article class="board sp-settle" data-cursor="NOTE TO SELF">
           <h3 class="board-title">LITTLE REMINDERS</h3>
           <div class="reminders">
             <div class="reminder">
@@ -251,13 +371,14 @@
       <div class="about-grid">
         <!-- Left: polaroid + tools -->
         <div class="polaroid-col">
+          <p class="sp-egg" style="right: 0; top: 8px;">MY AMAZON CART IS NOT OKAY.</p>
           <p class="thats-me">That&rsquo;s me!</p>
           <svg class="thats-me-arrow" viewBox="0 0 40 40" aria-hidden="true">
             <path d="M6 4c14 2 24 12 26 28" />
             <path d="M24 30l8 4-2-9" />
           </svg>
 
-          <div class="polaroid reveal-on-scroll">
+          <div class="polaroid sp-settle" data-cursor="HELLO &#128075;">
             <!-- Replace with your portrait export -->
             <img src="images/polaroid-portrait.png" alt="Portrait of Swati Priya" />
             <p class="polaroid-signature">Swati Priya</p>
@@ -286,7 +407,7 @@
             <div>
               <p class="eyebrow">THE ORIGIN STORY</p>
               <h2 class="story-title">
-                CURIOSITY FIRST.<br /><span class="accent underlined">DESIGN</span> FOLLOWED.
+                <span class="sp-word">CURIOSITY</span> FIRST.<br /><span class="sp-word has-grid accent underlined">DESIGN</span> FOLLOWED.
               </h2>
             </div>
             <div class="thought-bubble">
@@ -302,11 +423,11 @@
 
           <!-- Career timeline — edit your roles here -->
           <ol class="timeline">
-            <li class="timeline-item reveal-on-scroll">
+            <li class="timeline-item sp-reveal">
               <span class="tl-logo" style="--logo-bg:#6c4cf1"><img src="images/logo-grayquest.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
-                  <a href="https://grayquest.com/" target="_blank" rel="noopener">GrayQuest</a>
+                  <a href="https://grayquest.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">GrayQuest</a>
                   <span class="tl-title">SENIOR PRODUCT DESIGNER</span>
                 </p>
                 <p class="tl-detail">Guardian One 0&#8594;1 &middot; Fintech &middot; Insurtech</p>
@@ -314,11 +435,11 @@
               <p class="tl-date">Feb 2025 &ndash; Jun 2026</p>
             </li>
 
-            <li class="timeline-item reveal-on-scroll">
+            <li class="timeline-item sp-reveal">
               <span class="tl-logo" style="--logo-bg:#ea1b25"><img src="images/logo-tring.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
-                  <a href="https://www.tring.co.in/" target="_blank" rel="noopener">Tring</a>
+                  <a href="https://www.tring.co.in/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Tring</a>
                   <span class="tl-title">UI/UX DESIGNER</span>
                 </p>
                 <p class="tl-detail">100K+ downloads &middot; Lifestyle &amp; Social</p>
@@ -326,11 +447,11 @@
               <p class="tl-date">May 2023 &ndash; Jan 2025</p>
             </li>
 
-            <li class="timeline-item reveal-on-scroll">
+            <li class="timeline-item sp-reveal">
               <span class="tl-logo" style="--logo-bg:#12b5b0"><img src="images/logo-houzeo.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
-                  <a href="https://www.houzeo.com/" target="_blank" rel="noopener">Houzeo</a>
+                  <a href="https://www.houzeo.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Houzeo</a>
                   <span class="tl-title">UI/UX DESIGNER</span>
                 </p>
                 <p class="tl-detail">Listings revamp &middot; 40% fallout reduction</p>
@@ -338,11 +459,11 @@
               <p class="tl-date">Jul 2022 &ndash; Apr 2023</p>
             </li>
 
-            <li class="timeline-item reveal-on-scroll">
+            <li class="timeline-item sp-reveal">
               <span class="tl-logo" style="--logo-bg:#1673ff"><img src="images/logo-embibe.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
-                  <a href="https://www.embibe.com/" target="_blank" rel="noopener">Embibe &middot; Reliance Jio</a>
+                  <a href="https://www.embibe.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Embibe &middot; Reliance Jio</a>
                   <span class="tl-title">UI/UX DESIGN INTERN</span>
                 </p>
                 <p class="tl-detail">Design system &middot; Scalable components</p>
@@ -354,7 +475,7 @@
       </div>
 
       <!-- What drives me strip -->
-      <div class="drives">
+      <div class="drives sp-reveal">
         <div class="drives-title">
           <h3>WHAT DRIVES ME</h3>
           <svg class="squiggle squiggle-wide" viewBox="0 0 176 18" aria-hidden="true">
@@ -393,11 +514,15 @@
   </main>
 
   <!-- ================= FOOTER / CONTACT ================= -->
-  <footer class="site-footer" id="contact">
+  <footer class="site-footer" id="contact" data-cursor="YOU MADE IT.">
     <div class="torn-edge" aria-hidden="true"></div>
 
+    <!-- Oversized background word + comic bubble. Desktop hover only. -->
+    <p class="footer-giant" aria-hidden="true"></p>
+    <p class="sp-egg" style="left: var(--gutter); top: 20px;">YOU REALLY MADE IT THIS FAR?</p>
+
     <div class="footer-body">
-      <div class="footer-story">
+      <div class="footer-story sp-reveal">
         <p class="footer-kicker">
           Let&rsquo;s build something meaningful.
           <svg class="footer-arrow" viewBox="0 0 53 34" aria-hidden="true">
@@ -407,7 +532,7 @@
         </p>
 
         <h2 class="footer-title">
-          THE NEXT STORY<br />COULD BE <span class="accent underlined">YOURS.</span>
+          THE NEXT STORY<br />COULD BE <span class="sp-word accent underlined">YOURS.</span>
         </h2>
 
         <p class="footer-lede">
@@ -417,7 +542,8 @@
 
         <div class="footer-actions">
           <!-- Change your email address here -->
-          <a class="btn btn-primary btn-square" href="mailto:hello@example.com">
+          <a class="btn btn-primary btn-square" href="mailto:hello@example.com"
+            data-cursor="WRITE TO ME &#8599;" data-giant="LET&#8217;S GO." data-bubble>
             Email me
             <span class="btn-arrow" aria-hidden="true">&#8594;</span>
           </a>
@@ -425,27 +551,31 @@
         </div>
 
         <div class="footer-social">
-          <a href="https://www.linkedin.com/in/swati-priya-nov22/" target="_blank" rel="noopener">
+          <a href="https://www.linkedin.com/in/swati-priya-nov22/" target="_blank" rel="noopener"
+            data-cursor="CONNECT &#8599;" data-giant="HELLO.">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05a4.2 4.2 0 0 1 3.77-2c4 0 4.75 2.6 4.75 6V21h-4v-5.3c0-1.3 0-3-1.8-3s-2.07 1.4-2.07 2.9V21H9z"/></svg>
             LINKEDIN
           </a>
           <span class="social-divider" aria-hidden="true"></span>
-          <a href="https://www.behance.net/swatipriya4" target="_blank" rel="noopener">
+          <a href="https://www.behance.net/swatipriya4" target="_blank" rel="noopener"
+            data-cursor="OPEN &#8599;" data-giant="WORK.">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 5.5h6.4c2.6 0 4.3 1 4.3 3.1 0 1.4-.7 2.3-1.9 2.8 1.6.4 2.5 1.6 2.5 3.2 0 2.6-2 3.9-4.8 3.9H2zm3 5h2.9c1.1 0 1.8-.5 1.8-1.4S9 7.8 7.9 7.8H5zm0 5.6h3.2c1.2 0 2-.6 2-1.6s-.8-1.6-2-1.6H5zM15 6.6h5.6V8H15zM18 10c2.6 0 4.2 1.8 4.2 4.6v.6h-6c.2 1.3 1 2 2.1 2 .8 0 1.4-.3 1.7-1h2.1c-.4 1.8-1.9 2.9-3.9 2.9-2.6 0-4.3-1.8-4.3-4.5S15.5 10 18 10zm-1.8 3.7h3.6c-.2-1.2-.8-1.9-1.8-1.9s-1.6.7-1.8 1.9z"/></svg>
             BEHANCE
           </a>
           <span class="social-divider" aria-hidden="true"></span>
           <!-- Point this at your resume PDF -->
-          <a href="images/swati-priya-resume.pdf" target="_blank" rel="noopener">
+          <a href="images/swati-priya-resume.pdf" target="_blank" rel="noopener"
+            data-cursor="THE SERIOUS STUFF &#8599;" data-giant="HIRE?">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm0 2.5L17.5 8H14zM8 13h8v1.6H8zm0 3.4h6V18H8z"/></svg>
-            RESUME PDF &#8599;
+            RESUME PDF <span class="link-arrow" aria-hidden="true">&#8599;</span>
           </a>
         </div>
 
         <p class="footer-legal">&copy; 2026 Swati Priya &middot; Drawn, written &amp; designed in Figma.</p>
       </div>
 
-      <div class="footer-cover">
+      <div class="footer-cover sp-settle">
+        <div class="footer-bubble" aria-hidden="true">SO&hellip; WHAT ARE WE BUILDING?</div>
         <div class="cover-card">
           <span class="cover-tape" aria-hidden="true"></span>
           <div class="cover-inner">
@@ -459,5 +589,6 @@
   </footer>
 
   <script src="script.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

@@ -4,7 +4,8 @@ Built from the Figma file `Final-Design`, frame **Swati Priya — Home Page / Cl
 
 ## Deploy to GitHub Pages
 
-1. Create a repo and push `index.html`, `styles.css`, `script.js` and the `images/` folder.
+1. Create a repo and push `index.html`, `styles.css`, `motion.css`, `script.js`, `motion.js`
+   and the `images/` folder.
 2. Repo → **Settings → Pages** → Source: *Deploy from a branch* → `main` / `/ (root)`.
 3. The site is live at `https://<username>.github.io/<repo>/` in about a minute.
 
@@ -53,10 +54,33 @@ so there's nothing to replace for those.
 | Roles and dates | `index.html` → `.timeline` |
 | Email address | `index.html` → `.footer-actions` (`mailto:`) |
 | Colours and fonts | `styles.css` → `:root` |
+| Motion timing and intensity | `motion.css` → `:root { --ep }` and each numbered section |
+| Cursor labels | `index.html` → `data-cursor="…"` on any element |
+| Footer giant words | `index.html` → `data-giant="…"` on the footer links |
+
+## The motion layer
+
+`motion.css` + `motion.js` sit on top of the design. They add movement only — no colour, type
+or layout of the original file is changed, and the page is fully readable with both removed.
+
+- **Loader** — "SWATI PRIYA PRESENTS…" runs once per browsing session, about 1.2s, then opens.
+- **Hero** — headline rises line by line behind a clip, the portrait settles in, and a hidden
+  comic sketch layer is revealed in a ~210px circle around the cursor. Parallax is 2–5px.
+- **Custom cursor** — a dot that grows a speech-bubble label. Labels come from `data-cursor`.
+- **Nav** — expands over the hero, compresses into avatar + name + AVAILABLE FOR WORK below it.
+- **Pick an episode** — the strongest moment. The stage pins for one screen of scroll while
+  Guardian One starts alone and centred, then the three covers spread across the desk.
+  Below 1080px, or when the stage would not fit on screen, it falls back to a staggered reveal.
+- **Everything else** — books lift, boards tilt a degree, the music button toggles a real
+  equaliser (no autoplay, session-remembered), the footer grows a giant outline word and a
+  comic speech bubble behind the final cover.
+
+Switched off automatically: all of the above under `prefers-reduced-motion`, and the cursor,
+sketch reveal, parallax, tilt and magnetic words on touch devices, which get press states
+instead.
 
 ## Notes
 
 - Fonts load from Google Fonts: Archivo Black, Luckiest Guy, Inter, Caveat, IBM Plex Mono.
-- Animations: hero rises on load, cards and timeline rows fade up on scroll, buttons scale on
-  hover, nav links draw an underline. All of it is switched off under `prefers-reduced-motion`.
-- Tested at 390px, 820px and 1440px.
+- Only `transform` and `opacity` are animated; all pointer-driven work shares one rAF loop.
+- Tested at 393px, 1100px, 1280px and 1440px, plus reduced-motion and JavaScript-disabled.
