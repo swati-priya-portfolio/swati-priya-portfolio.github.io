@@ -303,7 +303,7 @@ h1, h2, h3, p { margin: 0; }
   color: var(--muted);
 }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 18px; }
 
 /* Character + speech bubbles.
    Below 700px the bubbles sit in normal flow so they can't collide;
@@ -379,8 +379,8 @@ h1, h2, h3, p { margin: 0; }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  padding: 16px 12px;
-  border: 1px solid rgba(255, 197, 61, 0.28);
+  padding: 8px 24px;
+  border: 0;
   border-radius: var(--radius);
   background: rgba(28, 23, 16, 0.72);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
@@ -389,7 +389,9 @@ h1, h2, h3, p { margin: 0; }
   display: grid;
   gap: 3px;
   place-items: center;
-  padding: 10px 8px;
+  min-height: 44px;
+  padding: 0 8px;
+  line-height: normal;
   text-align: center;
 }
 .proof-item strong { font-size: 20px; font-weight: 700; color: var(--accent-hot); }
@@ -401,12 +403,61 @@ h1, h2, h3, p { margin: 0; }
 }
 
 @media (min-width: 1080px) {
-  .hero { padding-top: 60px; padding-bottom: 106px; }
-  .hero-inner { grid-template-columns: minmax(0, 630px) minmax(0, 560px); align-items: start; gap: 24px; }
-  .hero-character { padding-top: 0; }
-  .hero-art { max-width: none; }
+  .hero {
+    position: relative;
+    min-height: 636px;
+    padding: 60px 60px 106px 80px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    left: calc(50% - 129px);
+    top: 12px;
+    width: 980px;
+    height: 560px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center,
+      rgba(255, 197, 61, 0.42) 0%,
+      rgba(255, 178, 50, 0.23) 28%,
+      rgba(255, 150, 40, 0.09) 50%,
+      rgba(255, 150, 40, 0) 70%);
+  }
+  .hero-inner {
+    width: 100%;
+    max-width: none;
+    height: 470px;
+    margin: 0;
+    grid-template-columns: 630px 560px;
+    align-items: start;
+    justify-content: space-between;
+    gap: 0;
+  }
+  .hero-copy { height: 445px; overflow: hidden; }
+  .role-strip { font-size: 13px; }
+  .hero-title { font-size: 70px; line-height: 92px; }
+  .hero-character { height: 470px; padding-top: 0; }
+  .hero-character::before { display: none; }
+  .hero-art {
+    position: absolute;
+    left: 35px;
+    top: 18px;
+    width: 452px;
+    max-width: 452px;
+    margin: 0;
+  }
   .speech-left  { left: 8px;   top: 8px; }
   .speech-right { right: 20px; top: 30px; }
+  .proof-strip {
+    position: absolute;
+    left: 80px;
+    top: 544px;
+    width: calc(100% - 160px);
+    max-width: 1280px;
+    margin: 0;
+  }
+  .proof-item { width: auto; }
 }
 
 /* ============================================================
@@ -468,14 +519,26 @@ h1, h2, h3, p { margin: 0; }
   grid-template-columns: 1fr;
 }
 @media (min-width: 700px)  { .case-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1080px) { .case-grid { grid-template-columns: repeat(3, 1fr); gap: 31px; } }
+@media (min-width: 1080px) {
+  .cases { padding-top: 88px; padding-bottom: 96px; overflow: clip; }
+  .case-grid {
+    min-height: 664px;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    gap: 31px;
+  }
+}
 
 .case-card {
   position: relative;
   display: block;
-  padding: 7px 7px 96px;
+  width: 100%;
+  max-width: 406px;
+  aspect-ratio: 406 / 542;
+  padding: 0;
   border-radius: 20px;
   background: var(--accent);
+  overflow: hidden;
   transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
 }
 .case-card:hover, .case-card:focus-visible {
@@ -484,26 +547,28 @@ h1, h2, h3, p { margin: 0; }
 }
 
 .case-cover {
-  width: 100%;
-  aspect-ratio: 392 / 522;
+  position: absolute;
+  left: 7px;
+  top: 7px;
+  width: calc(100% - 14px);
+  height: calc(100% - 20px);
   object-fit: cover;
   border-radius: 10px;
+  border: 1px solid var(--accent);
   background: #2a2118;
 }
 
-/* The cover is dog-eared at the bottom right, so the card colour cuts into
-   the artwork the way it does in the Figma frame. */
+/* Yellow information panel positioned exactly as in the Figma cover cards. */
 .case-card::after {
   content: "";
   position: absolute;
+  left: 0;
   right: 7px;
-  bottom: 96px;
+  top: 78.23%;
+  bottom: 13px;
   z-index: 1;
-  width: 27%;
-  aspect-ratio: 1;
   background: var(--accent);
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  border-bottom-right-radius: 10px;
+  border-radius: 24px 24px 0 0;
   pointer-events: none;
 }
 
@@ -511,7 +576,8 @@ h1, h2, h3, p { margin: 0; }
   position: absolute;
   z-index: 2;
   left: 12px;
-  bottom: 108px;
+  top: 71.59%;
+  bottom: auto;
   padding: 10px 16px;
   border-radius: 10px;
   background: var(--void);
@@ -524,7 +590,7 @@ h1, h2, h3, p { margin: 0; }
   box-shadow: 0 0 0 7px var(--accent);
 }
 
-.case-meta { position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 18px; }
+.case-meta { position: absolute; z-index: 2; left: 12px; right: 12px; top: 81.55%; bottom: auto; }
 .case-meta h3 { font-size: 22px; font-weight: 700; color: var(--ink); }
 .case-meta p  { margin-top: 4px; font-size: 15px; font-weight: 500; line-height: 1.33; color: rgba(0, 0, 0, 0.6); }
 
@@ -556,6 +622,7 @@ h1, h2, h3, p { margin: 0; }
 }
 
 @media (min-width: 1080px) {
+  .behind { padding-top: 96px; padding-bottom: 96px; }
   .behind-head { grid-template-columns: 1fr auto; align-items: center; }
 }
 
@@ -745,7 +812,13 @@ h1, h2, h3, p { margin: 0; }
   gap: 56px;
 }
 @media (min-width: 1080px) {
-  .about-grid { grid-template-columns: 398px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .about { padding-top: 96px; padding-bottom: 104px; }
+  .about-grid {
+    height: 735px;
+    grid-template-columns: 398px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
 }
 
 /* --- Polaroid column --- */
@@ -965,7 +1038,7 @@ h1, h2, h3, p { margin: 0; }
 }
 @media (min-width: 640px)  { .drives-list { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1080px) {
-  .drives { grid-template-columns: auto 1fr; align-items: center; gap: 24px; }
+  .drives { height: 96px; margin-top: 32px; padding: 12px 24px; grid-template-columns: 196px 1fr; align-items: center; gap: 24px; }
   .drives-list { grid-template-columns: repeat(4, 1fr); }
   .drives-list li + li { border-left: 1px solid rgba(255, 197, 61, 0.22); padding-left: 18px; }
 }
@@ -1001,7 +1074,7 @@ h1, h2, h3, p { margin: 0; }
   gap: 56px;
 }
 @media (min-width: 1080px) {
-  .footer-body { grid-template-columns: minmax(0, 700px) 440px; align-items: center; gap: 40px; }
+  .footer-body { padding-bottom: 96px; grid-template-columns: minmax(0, 700px) 440px; align-items: center; gap: 40px; }
 }
 
 .footer-story { display: grid; gap: 19px; justify-items: start; }
