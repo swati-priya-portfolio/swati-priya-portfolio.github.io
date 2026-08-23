@@ -477,14 +477,8 @@
       var leftP = ease(span(p, 0.18, 0.64));
       var rightP = ease(span(p, 0.44, 0.92));
 
-      // The anchor sits proud of the other two while they are still arriving,
-      // then everything levels off together.
-      var raised = 1 - Math.min(leftP, rightP);
       setCard(cards[1], 0, lerp(geo.lead, 1, anchorP), 0, 1);
-      cards[1].style.boxShadow = raised > 0.01
-        ? "0 " + (26 * raised).toFixed(0) + "px " + (52 * raised).toFixed(0) +
-          "px rgba(0,0,0," + (0.45 * raised).toFixed(2) + ")"
-        : "";
+      cards[1].style.boxShadow = "";
 
       // Fading in early and travelling further keeps the slide readable.
       setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.86, 1, leftP),
@@ -520,40 +514,6 @@
     // Images decide the stage height, so measure once they have landed.
     measure();
     window.addEventListener("load", measure);
-
-    /* --- Card tilt: felt more than seen (max 1.5deg) --- */
-    if (!reduced && finePointer) {
-      cards.forEach(function (card) {
-        var t = { x: 0, y: 0 };
-        var c = { x: 0, y: 0 };
-        var active = false;
-        var box = null;
-
-        card.addEventListener("pointerenter", function () {
-          box = card.getBoundingClientRect();
-          active = true;
-        });
-        card.addEventListener("pointermove", function (e) {
-          if (!box) { return; }
-          t.y = clamp(((e.clientX - box.left) / box.width - 0.5) * 3, -1.5, 1.5);
-          t.x = clamp((0.5 - (e.clientY - box.top) / box.height) * 3, -1.5, 1.5);
-        }, { passive: true });
-        card.addEventListener("pointerleave", function () {
-          t.x = 0; t.y = 0;
-        });
-
-        addJob(function () {
-          if (!active) { return; }
-          c.x = lerp(c.x, t.x, 0.12);
-          c.y = lerp(c.y, t.y, 0.12);
-          if (Math.abs(c.x - t.x) < 0.01 && Math.abs(c.y - t.y) < 0.01 && t.x === 0 && t.y === 0) {
-            c.x = 0; c.y = 0; active = false;
-          }
-          card.style.setProperty("--rx", c.x.toFixed(3) + "deg");
-          card.style.setProperty("--ry", c.y.toFixed(3) + "deg");
-        });
-      });
-    }
 
     /* --- Coming Soon covers must never open an empty page --- */
     cards.forEach(function (card) {

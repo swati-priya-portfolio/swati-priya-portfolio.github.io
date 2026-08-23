@@ -90,7 +90,7 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* ============================================================
-   3. BUTTONS  (hover: scale up + stronger shadow)
+   3. BUTTONS
    ============================================================ */
 .btn {
   display: inline-flex;
@@ -109,13 +109,13 @@ h1, h2, h3, p { margin: 0; }
               background-color 0.25s var(--ease), color 0.25s var(--ease);
 }
 
-.btn-primary { background: var(--accent); color: var(--ink); box-shadow: 0 6px 10px rgba(255, 197, 61, 0.35); }
+.btn-primary { background: var(--accent); color: var(--ink); box-shadow: none; }
 .btn-ghost   { background: rgba(28, 23, 16, 0.2); color: var(--accent); }
 .btn-square  { border-radius: var(--radius); padding: 15px 16px 15px 24px; }
 
 .btn:hover, .btn:focus-visible {
-  transform: scale(1.05);
-  box-shadow: 0 12px 26px rgba(255, 197, 61, 0.45);
+  transform: translateY(-4px);
+  box-shadow: none;
 }
 .btn-ghost:hover, .btn-ghost:focus-visible { background: rgba(255, 197, 61, 0.12); }
 
@@ -379,17 +379,18 @@ h1, h2, h3, p { margin: 0; }
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  padding: 16px 12px;
-  border: 1px solid rgba(255, 197, 61, 0.28);
-  border-radius: var(--radius);
-  background: rgba(28, 23, 16, 0.72);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  padding: 8px 24px;
+  border: 0;
+  border-radius: 16px;
+  background: #1c1710;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
 }
 .proof-item {
   display: grid;
   gap: 3px;
   place-items: center;
-  padding: 10px 8px;
+  min-height: 52px;
+  padding: 0 8px;
   text-align: center;
 }
 .proof-item strong { font-size: 20px; font-weight: 700; color: var(--accent-hot); }
@@ -404,7 +405,8 @@ h1, h2, h3, p { margin: 0; }
   .hero { padding-top: 60px; padding-bottom: 106px; }
   .hero-inner { grid-template-columns: minmax(0, 630px) minmax(0, 560px); align-items: start; gap: 24px; }
   .hero-character { padding-top: 0; }
-  .hero-art { max-width: none; }
+  .hero-art { width: 106%; max-width: none; margin-left: -3%; }
+  .proof-strip { min-height: 84px; }
   .speech-left  { left: 8px;   top: 8px; }
   .speech-right { right: 20px; top: 30px; }
 }
@@ -485,14 +487,16 @@ h1, h2, h3, p { margin: 0; }
   max-width: 406px;
   aspect-ratio: 406 / 542;
   padding: 0;
-  border-radius: 20px;
+  border-radius: 22px;
   background: var(--accent);
   overflow: hidden;
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  isolation: isolate;
+  backface-visibility: hidden;
+  transition: transform 0.42s var(--ease);
 }
 .case-card:hover, .case-card:focus-visible {
-  transform: translateY(-8px);
-  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.45);
+  transform: translateY(-56px);
+  box-shadow: none;
 }
 
 .case-cover {
@@ -502,7 +506,7 @@ h1, h2, h3, p { margin: 0; }
   width: calc(100% - 14px);
   height: calc(100% - 20px);
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--accent);
   background: #2a2118;
 }
@@ -517,7 +521,7 @@ h1, h2, h3, p { margin: 0; }
   bottom: 13px;
   z-index: 1;
   background: var(--accent);
-  border-radius: 24px 24px 0 0;
+  border-radius: 22px 22px 0 0;
   pointer-events: none;
 }
 
@@ -550,8 +554,7 @@ h1, h2, h3, p { margin: 0; }
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.48px;
-  /* the card colour wraps the chip, notching it into the cover */
-  box-shadow: 0 0 0 7px var(--accent);
+  box-shadow: none;
 }
 
 .case-meta { position: absolute; z-index: 2; left: 12px; right: 12px; top: 81.55%; bottom: auto; }

@@ -520,17 +520,14 @@
 .sp-js .nav-link::after { transition: transform 290ms var(--ep); height: 2.5px; }
 
 /* ============================================================
-   7. BUTTONS — subtle, no bounce
+   7. BUTTONS — clean upward jump, no glow
    ============================================================ */
 .sp-js .btn {
-  transition: transform 260ms var(--ep), box-shadow 260ms var(--ep),
+  transition: transform 260ms var(--ep),
               background-color 260ms var(--ep), color 260ms var(--ep);
 }
-.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-2px) scale(1.02); }
-.sp-js .btn:active { transform: translateY(-1px) scale(0.98); }
-.sp-js .btn .btn-arrow { transition: transform 260ms var(--ep); }
-.sp-js .btn:hover .btn-arrow { transform: translateX(4px); }
-.sp-js .btn:hover .btn-arrow-down { transform: translateY(3px); }
+.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-4px); box-shadow: none; }
+.sp-js .btn:active { transform: translateY(-1px); }
 
 /* ============================================================
    8. PICK AN EPISODE — one cover becomes three
@@ -539,51 +536,33 @@
 
 .sp-js .case-card {
   --sx: 0px; --sy: 0px; --ss: 1; --sr: 0deg; --so: 1;
-  --hy: 0px; --hs: 1; --hr: 0deg; --rx: 0deg; --ry: 0deg;
+  --hy: 0px;
   opacity: var(--so);
-  transform-style: preserve-3d;
   transform:
     translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
-    rotateX(var(--rx)) rotateY(var(--ry))
-    rotate(calc(var(--sr) + var(--hr)))
-    scale(calc(var(--ss) * var(--hs)));
-  transition: --hy 420ms var(--ep), --hs 420ms var(--ep), --hr 420ms var(--ep),
-              box-shadow 420ms var(--ep), opacity 320ms linear;
+    rotate(var(--sr))
+    scale(var(--ss));
+  transition: --hy 420ms var(--ep), opacity 320ms linear;
   will-change: transform;
 }
 /* The staged spread is driven frame by frame, so no transition there */
-.sp-js .case-grid.is-staging .case-card { transition: box-shadow 420ms var(--ep); }
+.sp-js .case-grid.is-staging .case-card { transition: none; }
 
 .sp-js .case-card:hover,
 .sp-js .case-card:focus-visible {
-  --hy: -14px; --hs: 1.022;
+  --hy: -56px;
   transform:
     translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
-    rotateX(var(--rx)) rotateY(var(--ry))
-    rotate(calc(var(--sr) + var(--hr)))
-    scale(calc(var(--ss) * var(--hs)));
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.58), 0 6px 16px rgba(0, 0, 0, 0.4);
+    rotate(var(--sr))
+    scale(var(--ss));
+  box-shadow: none;
 }
-.sp-js .case-card:nth-child(odd):hover  { --hr: -1.2deg; }
-.sp-js .case-card:nth-child(even):hover { --hr: 1.2deg; }
 
-/* Cover image lives in its own clip so it can scale inside the card */
-.sp-js .case-card .case-cover { transition: transform 520ms var(--ep); }
 .sp-js .case-card { overflow: hidden; }
-.sp-js .case-card:hover .case-cover { transform: scale(1.035); }
-
-/* CTA chip: arrow slides on hover */
-.sp-js .case-chip { transition: transform 300ms var(--ep), background-color 300ms var(--ep); }
-.sp-js .case-chip .chip-arrow {
-  display: inline-block;
-  margin-left: 4px;
-  transform: translateX(0);
-  transition: transform 300ms var(--ep);
-}
-.sp-js .case-card:hover .case-chip .chip-arrow { transform: translateX(5px); }
 
 /* Comic annotation that slides in on hover */
 .case-flag {
+  display: none;
   position: absolute;
   left: 12px;
   top: 14px;
@@ -612,6 +591,7 @@
 
 /* Guardian One: one small product-flavoured move inside the preview */
 .case-scan {
+  display: none;
   position: absolute;
   left: 7px; right: 7px;
   top: 7px;
@@ -630,8 +610,6 @@
   100% { opacity: 0; transform: translateY(var(--scan-d, 600px)); }
 }
 /* The meta block shifts a couple of pixels — the preview feels awake */
-.sp-js .case-card.is-live .case-meta { transition: transform 460ms var(--ep); }
-.sp-js .case-card.is-live:hover .case-meta { transform: translateY(-3px); }
 
 /* Staged reveal container. On desktop the stage pins briefly so the
    three covers can spread; on smaller screens it is a plain block. */
@@ -1005,7 +983,7 @@
    Hover choreography is desktop-only; touch gets press states.
    ============================================================ */
 @media (pointer: coarse) {
-  .sp-js .case-card:active { --hs: 0.98; --hy: 0px; }
+  .sp-js .case-card:active { --hy: 0px; }
   .sp-js .board:active     { transform: scale(0.985); }
   .sp-js .btn:active       { transform: scale(0.98); }
   .sp-js .ctrl-main        { min-width: 44px; min-height: 44px; border-radius: 50%; }
@@ -1032,9 +1010,9 @@
 
   .sp-js .case-card {
     transform: none !important;
-    transition: box-shadow 200ms linear, opacity 200ms linear;
+    transition: opacity 200ms linear;
   }
-  .sp-js .case-card:hover { box-shadow: 0 18px 34px rgba(0, 0, 0, 0.45); }
+  .sp-js .case-card:hover { box-shadow: none; }
   .sp-js .board:hover, .sp-js .polaroid:hover { transform: none !important; }
   .sp-js .book { transition: none !important; }
   .sp-word { transform: none !important; }
