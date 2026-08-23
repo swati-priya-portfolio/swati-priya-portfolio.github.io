@@ -430,8 +430,8 @@
    ============================================================ */
 .sp-js .site-header { transition: padding 520ms var(--ep); }
 .sp-js .nav-pill {
-  transition: padding 520ms var(--ep), max-width 520ms var(--ep),
-              gap 520ms var(--ep), background-color 520ms var(--ep),
+  transition: padding 420ms var(--ep), max-width 420ms var(--ep),
+              gap 420ms var(--ep), background-color 520ms var(--ep),
               box-shadow 520ms var(--ep), border-color 520ms var(--ep);
 }
 .sp-js .identity-avatar {
@@ -456,12 +456,12 @@
 .sp-js .nav-links,
 .sp-js .nav-cta,
 .sp-js .identity-name {
-  transition: opacity 260ms var(--ep), max-width 520ms var(--ep),
-              height 520ms var(--ep), transform 520ms var(--ep),
-              margin 520ms var(--ep), padding 520ms var(--ep),
-              border-width 520ms var(--ep);
+  transition: opacity 240ms var(--ep), max-width 420ms var(--ep),
+              height 420ms var(--ep), transform 420ms var(--ep),
+              margin 420ms var(--ep), padding 420ms var(--ep),
+              border-width 420ms var(--ep);
 }
-.sp-js .nav-pill { max-width: var(--max); will-change: max-width, padding; }
+.sp-js .nav-pill { max-width: var(--max); }
 
 @media (min-width: 1080px) {
   .sp-js .site-header.is-mini .nav-pill {
@@ -554,6 +554,10 @@
   }
 }
 .nav-available .nav-dot {
+  /* Inset from the chip's edge so its halo clears the clip. Padding would do
+     it too, but padding sets a floor on the box and the chip could then never
+     collapse to nothing; a margin is inside the content box and clips away. */
+  margin-left: 5px;
   width: 7px; height: 7px;
   border-radius: 50%;
   background: #4ade80;

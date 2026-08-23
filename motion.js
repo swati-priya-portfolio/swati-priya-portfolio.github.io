@@ -335,13 +335,35 @@
         header.classList.toggle("is-compact", compact);
       }
 
-      if ((delta > 0) !== (travelled > 0)) { travelled = 0; }
-      travelled += delta;
+      // Distance travelled in one direction decides the state, not the last
+      // frame's delta — a trackpad wobbles a pixel either way constantly.
+      //
+      // A jump of hundreds of pixels is an anchor link or a scrollbar drag,
+      // not a reading gesture. Letting it into the tally lets one jump
+      // outweigh the scroll back, which leaves the bar stuck folded.
+      // Only a genuine change of direction clears the tally. Testing
+      // `(delta > 0) !== (travelled > 0)` also fires on a delta of zero, and
+      // a scroll gesture ends with several such frames — which wiped the
+      // tally just as it was about to fold the bar.
+      //
+      // Nothing here may discard a large delta: one wheel notch is already
+      // over 200px, so treating big deltas as jumps zeroes the tally on every
+      // single scroll and the bar can never fold at all.
+      if (delta !== 0) {
+        if ((delta > 0 && travelled < 0) || (delta < 0 && travelled > 0)) {
+          travelled = 0;
+        }
+        travelled += delta;
+      }
 
+      // Deliberately lopsided: folding asks for a real downward read, while
+      // the smallest look back up opens it again. Even thresholds feel stuck,
+      // because a wobble resets the tally before a gentle scroll up can ever
+      // reach the limit.
       var nextMini = mini;
       if (y < 220) { nextMini = false; travelled = 0; }
-      else if (travelled > 70) { nextMini = true; }
-      else if (travelled < -50) { nextMini = false; }
+      else if (travelled > 80) { nextMini = true; }
+      else if (travelled < -24) { nextMini = false; }
 
       if (nextMini !== mini) {
         mini = nextMini;

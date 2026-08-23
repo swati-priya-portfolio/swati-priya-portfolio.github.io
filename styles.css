@@ -159,9 +159,15 @@ h1, h2, h3, p { margin: 0; }
      comic cover, light enough to see the page moving underneath. */
   background:
     linear-gradient(90deg, rgba(255,197,61,0.06) 0%, rgba(255,197,61,0) 50%, rgba(255,197,61,0.04) 100%),
-    rgba(26, 21, 13, 0.55);
-  -webkit-backdrop-filter: blur(10px) saturate(135%);
-          backdrop-filter: blur(10px) saturate(135%);
+    rgba(26, 21, 13, 0.58);
+  /* Pinned to a fixed width. Sized to the element, this gradient rescales on
+     every frame while the bar folds, and the sheen sweeping across reads as
+     a shimmer. */
+  background-size: 1280px 100%, auto;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-backdrop-filter: blur(5px) saturate(125%);
+          backdrop-filter: blur(5px) saturate(125%);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 197, 61, 0.08);
 }
 
