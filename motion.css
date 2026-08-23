@@ -356,15 +356,16 @@
 /* ============================================================
    6. NAVIGATION — shrinks into a profile chip
    ============================================================ */
-.sp-js .site-header { transition: padding 380ms var(--ep); }
+.sp-js .site-header { transition: padding 520ms var(--ep); }
 .sp-js .nav-pill {
-  transition: padding 380ms var(--ep), background-color 380ms var(--ep),
-              box-shadow 380ms var(--ep), border-color 380ms var(--ep);
+  transition: padding 520ms var(--ep), max-width 520ms var(--ep),
+              gap 520ms var(--ep), background-color 520ms var(--ep),
+              box-shadow 520ms var(--ep), border-color 520ms var(--ep);
 }
 .sp-js .identity-avatar {
-  transition: width 380ms var(--ep), height 380ms var(--ep), margin 380ms var(--ep);
+  transition: width 520ms var(--ep), height 520ms var(--ep), margin 520ms var(--ep);
 }
-.sp-js .identity-name { transition: font-size 380ms var(--ep); }
+.sp-js .identity-name { transition: font-size 520ms var(--ep), opacity 300ms var(--ep), max-width 520ms var(--ep); }
 
 .sp-js .site-header.is-compact { padding-top: 6px; padding-bottom: 6px; }
 .sp-js .site-header.is-compact .nav-pill { padding: 5px 10px 5px 8px; }
@@ -383,11 +384,12 @@
 .sp-js .nav-links,
 .sp-js .nav-cta,
 .sp-js .identity-name {
-  transition: opacity 300ms var(--ep), max-width 420ms var(--ep),
-              height 380ms var(--ep), transform 380ms var(--ep),
-              margin 380ms var(--ep), padding 380ms var(--ep);
+  transition: opacity 260ms var(--ep), max-width 520ms var(--ep),
+              height 520ms var(--ep), transform 520ms var(--ep),
+              margin 520ms var(--ep), padding 520ms var(--ep),
+              border-width 520ms var(--ep);
 }
-.sp-js .nav-pill { max-width: var(--max); }
+.sp-js .nav-pill { max-width: var(--max); will-change: max-width, padding; }
 
 @media (min-width: 1080px) {
   .sp-js .site-header.is-mini .nav-pill {
@@ -425,19 +427,16 @@
     max-width: 0;
     overflow: hidden;
   }
-  /* Peek: the full bar comes back when the pill itself is hovered or tabbed
-     into, so the links are never out of reach while reading. Scoped to the
-     pill, not the header, which spans the whole width. */
-  .sp-js .site-header.is-mini .nav-pill:hover,
+  /* Only keyboard focus reopens the bar. Hover used to, but expanding moved
+     the pill out from under the cursor, which collapsed it again — a flicker
+     loop. Scrolling up is the way back, and focus never oscillates. */
   .sp-js .site-header.is-mini .nav-pill:focus-within {
     max-width: var(--max);
     gap: 16px;
     padding: 5px 10px 5px 8px;
     justify-content: space-between;
   }
-  .sp-js .site-header.is-mini .nav-pill:hover .nav-links,
   .sp-js .site-header.is-mini .nav-pill:focus-within .nav-links,
-  .sp-js .site-header.is-mini .nav-pill:hover .nav-cta,
   .sp-js .site-header.is-mini .nav-pill:focus-within .nav-cta {
     opacity: 1;
     max-width: 640px;
@@ -447,12 +446,15 @@
     transform: none;
     pointer-events: auto;
   }
-  .sp-js .site-header.is-mini .nav-pill:hover .identity-name,
   .sp-js .site-header.is-mini .nav-pill:focus-within .identity-name {
     opacity: 1;
     max-width: 200px;
   }
 }
+
+.identity-group { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.sp-js .identity-group { transition: gap 420ms var(--ep); }
+.sp-js .site-header.is-mini .identity-group { gap: 8px; }
 
 /* Available-for-work chip, revealed with the compact bar */
 .nav-available {
@@ -484,6 +486,17 @@
   box-shadow: 0 0 0 3.5px rgba(74, 222, 128, 0.20), 0 0 8px rgba(74, 222, 128, 0.9);
   animation: sp-breathe 2.3s ease-in-out infinite;
 }
+/* Hover feedback that costs no layout, so it cannot start a flicker loop. */
+.sp-js .nav-available:hover,
+.sp-js .nav-available:focus-visible {
+  color: var(--cream);
+  box-shadow: 0 0 0 1px rgba(255, 197, 61, 0.55), 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+.sp-js .site-header.is-mini .nav-available:hover {
+  box-shadow: none;
+  color: var(--cream);
+}
+
 @keyframes sp-breathe {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.45; }

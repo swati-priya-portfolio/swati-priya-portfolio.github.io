@@ -328,6 +328,7 @@
 
     var compact = false;
     var mini = false;
+    var travelled = 0;
     var lastY = window.scrollY;
     var queued = false;
 
@@ -342,19 +343,23 @@
         header.classList.toggle("is-compact", compact);
       }
 
-      // Reading downwards folds the bar away; the smallest move back up,
-      // or reaching the top again, brings it straight back.
+      // Distance travelled in one direction decides the state, not the last
+      // frame's delta. A trackpad wobbles a pixel either way constantly, and
+      // reacting to that toggles the bar open and shut.
+      if ((delta > 0) !== (travelled > 0)) { travelled = 0; }
+      travelled += delta;
+
       var nextMini = mini;
-      if (y < 220) { nextMini = false; }
-      else if (delta > 5) { nextMini = true; }
-      else if (delta < -5) { nextMini = false; }
+      if (y < 220) { nextMini = false; travelled = 0; }
+      else if (travelled > 70) { nextMini = true; }
+      else if (travelled < -50) { nextMini = false; }
 
       if (nextMini !== mini) {
         mini = nextMini;
         header.classList.toggle("is-mini", mini);
       }
 
-      if (Math.abs(delta) > 2) { lastY = y; }
+      lastY = y;
     }
 
     window.addEventListener("scroll", function () {

@@ -16,9 +16,9 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=4" />
+  <link rel="stylesheet" href="motion.css?v=5" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -67,12 +67,19 @@
   <!-- ================= HEADER / FLOATING NAV ================= -->
   <header class="site-header">
     <nav class="nav-pill" aria-label="Main">
-      <a class="identity" href="#home">
-        <!-- Replace with your own portrait export -->
-        <img class="identity-avatar" src="images/avatar-nav.png" alt="" width="44" height="44" />
-        <span class="identity-name">SWATI PRIYA</span>
-        <span class="nav-available"><span class="nav-dot"></span>AVAILABLE FOR WORK</span>
-      </a>
+      <!-- Identity and the availability pill are separate links, grouped so the
+           bar's layout is unchanged. They cannot nest: an anchor inside an
+           anchor is invalid. -->
+      <div class="identity-group">
+        <a class="identity" href="#home">
+          <!-- Replace with your own portrait export -->
+          <img class="identity-avatar" src="images/avatar-nav.png" alt="" width="44" height="44" />
+          <span class="identity-name">SWATI PRIYA</span>
+        </a>
+        <a class="nav-available" href="#contact" data-cursor="LET'S TALK">
+          <span class="nav-dot" aria-hidden="true"></span>AVAILABLE FOR WORK
+        </a>
+      </div>
 
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
         <span></span><span></span><span></span>
@@ -593,7 +600,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=4"></script>
-  <script src="motion.js?v=4"></script>
+  <script src="script.js?v=5"></script>
+  <script src="motion.js?v=5"></script>
 </body>
 </html>
