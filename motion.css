@@ -781,6 +781,29 @@
 .sp-js .tl-logo { transition: transform 380ms var(--ep); }
 .sp-js .timeline-item:hover .tl-logo { transform: scale(1.06) rotate(-2deg); }
 
+/* Exact portrait-slot motion exported from the Figma About frame. */
+.sp-js .polaroid img {
+  animation: about-photo-opacity 2s linear infinite,
+             about-photo-translate 2s linear infinite,
+             about-photo-scale 2s linear infinite;
+}
+@keyframes about-photo-opacity {
+  0% { opacity: 1; }
+  15% { animation-timing-function: step-end; opacity: 1; }
+  17.5% { animation-timing-function: step-end; opacity: 0; }
+  35%, 100% { opacity: 1; }
+}
+@keyframes about-photo-translate {
+  0% { translate: 0 0; animation-timing-function: ease-out; }
+  17.5% { translate: 0 -12px; animation-timing-function: ease-in-out; }
+  35%, 100% { translate: 0 0; }
+}
+@keyframes about-photo-scale {
+  0% { scale: 1 1; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  17.5% { scale: 0 1; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+  35%, 100% { scale: 1 1; }
+}
+
 /* Hand-drawn squiggles draw themselves in when the section arrives */
 .sp-js .squiggle path { stroke-dasharray: 220; stroke-dashoffset: 220; }
 .sp-js .squiggle.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--ep); }
