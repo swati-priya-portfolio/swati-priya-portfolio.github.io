@@ -378,6 +378,70 @@
 .sp-js .site-header.is-compact .nav-cta { padding: 9px 12px 9px 18px; font-size: 14px; }
 .sp-js .site-header.is-compact .nav-cta .btn-arrow { width: 22px; height: 22px; }
 
+/* --- Scrolling down folds the bar into an availability pill; scrolling
+   back up, hovering it, or tabbing into it opens it again. --- */
+.sp-js .nav-links,
+.sp-js .nav-cta,
+.sp-js .identity-name {
+  transition: opacity 300ms var(--ep), max-width 420ms var(--ep),
+              transform 380ms var(--ep), margin 380ms var(--ep),
+              padding 380ms var(--ep);
+}
+.sp-js .nav-pill { max-width: var(--max); }
+
+@media (min-width: 1080px) {
+  .sp-js .site-header.is-mini .nav-pill {
+    max-width: 296px;
+    gap: 10px;
+    padding: 5px 14px 5px 6px;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .sp-js .site-header.is-mini .nav-links,
+  .sp-js .site-header.is-mini .nav-cta {
+    opacity: 0;
+    max-width: 0;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .sp-js .site-header.is-mini .identity-name {
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+  }
+  /* Peek: the full bar comes back when the pill itself is hovered or tabbed
+     into, so the links are never out of reach while reading. Scoped to the
+     pill, not the header, which spans the whole width. */
+  .sp-js .site-header.is-mini .nav-pill:hover,
+  .sp-js .site-header.is-mini .nav-pill:focus-within {
+    max-width: var(--max);
+    gap: 16px;
+    padding: 5px 10px 5px 8px;
+    justify-content: space-between;
+  }
+  .sp-js .site-header.is-mini .nav-pill:hover .nav-links,
+  .sp-js .site-header.is-mini .nav-pill:focus-within .nav-links,
+  .sp-js .site-header.is-mini .nav-pill:hover .nav-cta,
+  .sp-js .site-header.is-mini .nav-pill:focus-within .nav-cta {
+    opacity: 1;
+    max-width: 640px;
+    margin: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    transform: none;
+    pointer-events: auto;
+  }
+  .sp-js .site-header.is-mini .nav-pill:hover .identity-name,
+  .sp-js .site-header.is-mini .nav-pill:focus-within .identity-name {
+    opacity: 1;
+    max-width: 200px;
+  }
+}
+
 /* Available-for-work chip, revealed with the compact bar */
 .nav-available {
   display: none;
@@ -398,7 +462,8 @@
   transition: opacity 320ms var(--ep), transform 320ms var(--ep);
 }
 @media (min-width: 1080px) {
-  .sp-js .site-header.is-compact .nav-available { display: inline-flex; opacity: 1; transform: none; }
+  .sp-js .site-header.is-compact .nav-available,
+  .sp-js .site-header.is-mini .nav-available { display: inline-flex; opacity: 1; transform: none; }
 }
 .nav-available .nav-dot {
   width: 7px; height: 7px;
@@ -808,11 +873,11 @@
   left: 0;
   right: 0;
   z-index: 3;
-  height: 34px;
+  height: 44px;
   transform-origin: top center;
   pointer-events: none;
-  background: var(--tear-bg, rgba(245, 239, 227, 0.075));
-  filter: drop-shadow(0 2px 0 rgba(245, 239, 227, 0.13));
+  background: var(--tear-bg, rgba(245, 239, 227, 0.14));
+  filter: drop-shadow(0 2px 0 rgba(245, 239, 227, 0.30)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.45));
   -webkit-mask-size: 100% 100%;
           mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;

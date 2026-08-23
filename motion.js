@@ -327,14 +327,34 @@
     window.addEventListener("resize", measure, { passive: true });
 
     var compact = false;
+    var mini = false;
+    var lastY = window.scrollY;
     var queued = false;
 
     function update() {
       queued = false;
-      var next = window.scrollY > Math.max(160, threshold * 0.42);
-      if (next === compact) { return; }
-      compact = next;
-      header.classList.toggle("is-compact", compact);
+      var y = window.scrollY;
+      var delta = y - lastY;
+
+      var nextCompact = y > Math.max(160, threshold * 0.42);
+      if (nextCompact !== compact) {
+        compact = nextCompact;
+        header.classList.toggle("is-compact", compact);
+      }
+
+      // Reading downwards folds the bar away; the smallest move back up,
+      // or reaching the top again, brings it straight back.
+      var nextMini = mini;
+      if (y < 220) { nextMini = false; }
+      else if (delta > 5) { nextMini = true; }
+      else if (delta < -5) { nextMini = false; }
+
+      if (nextMini !== mini) {
+        mini = nextMini;
+        header.classList.toggle("is-mini", mini);
+      }
+
+      if (Math.abs(delta) > 2) { lastY = y; }
     }
 
     window.addEventListener("scroll", function () {
@@ -372,6 +392,7 @@
         c.style.removeProperty("--sr");
         c.style.removeProperty("--so");
         c.style.zIndex = "";
+        c.style.boxShadow = "";
       });
       grid.classList.remove("is-staging");
       grid.style.pointerEvents = "";
@@ -447,15 +468,24 @@
       // The middle cover is the anchor: it opens the section alone and never
       // moves sideways. The other two slide out from behind it, left first,
       // then right, each as its own beat so nothing overlaps.
-      var anchorP = ease(span(p, 0.26, 0.70));   // its scale easing back to 1
-      var leftP = ease(span(p, 0.24, 0.66));
-      var rightP = ease(span(p, 0.52, 0.94));
+      var anchorP = ease(span(p, 0.22, 0.74));   // its scale easing back to 1
+      var leftP = ease(span(p, 0.18, 0.64));
+      var rightP = ease(span(p, 0.44, 0.92));
 
+      // The anchor sits proud of the other two while they are still arriving,
+      // then everything levels off together.
+      var raised = 1 - Math.min(leftP, rightP);
       setCard(cards[1], 0, lerp(geo.lead, 1, anchorP), 0, 1);
-      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.9, 1, leftP),
-        lerp(-2, 0, leftP), leftP);
-      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.9, 1, rightP),
-        lerp(2, 0, rightP), rightP);
+      cards[1].style.boxShadow = raised > 0.01
+        ? "0 " + (26 * raised).toFixed(0) + "px " + (52 * raised).toFixed(0) +
+          "px rgba(0,0,0," + (0.45 * raised).toFixed(2) + ")"
+        : "";
+
+      // Fading in early and travelling further keeps the slide readable.
+      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.86, 1, leftP),
+        lerp(-2.4, 0, leftP), clamp(leftP * 1.7, 0, 1));
+      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.86, 1, rightP),
+        lerp(2.4, 0, rightP), clamp(rightP * 1.7, 0, 1));
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
