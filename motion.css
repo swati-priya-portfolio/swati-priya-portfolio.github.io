@@ -267,6 +267,26 @@
 .sp-js .hero-sketch    { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0); }
 
 /* ============================================================
+   4b. HEADLINE, CHARACTER BY CHARACTER
+   Each letter lifts as the cursor passes it, its neighbours easing
+   along behind it. Words stay unbreakable so lines never reflow.
+   ============================================================ */
+.hero-title .wd { display: inline-block; white-space: nowrap; }
+.hero-title .ch {
+  display: inline-block;
+  transform: translateY(var(--c-y, 0px)) scale(var(--c-s, 1));
+  transform-origin: center 70%;
+}
+.sp-js .hero-title .ch { will-change: transform; }
+
+/* The whole word no longer scales — the letters do the reacting. */
+.hero-title .sp-word { transform: none; }
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .hero-title .ch { transform: none !important; }
+}
+
+/* ============================================================
    5. MAGNETIC DISPLAY WORDS
    Only large editorial words. Never body copy.
    ============================================================ */
@@ -434,16 +454,16 @@
 
 .sp-js .case-card:hover,
 .sp-js .case-card:focus-visible {
-  --hy: -10px; --hs: 1.015;
+  --hy: -14px; --hs: 1.022;
   transform:
     translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
     rotateX(var(--rx)) rotateY(var(--ry))
     rotate(calc(var(--sr) + var(--hr)))
     scale(calc(var(--ss) * var(--hs)));
-  box-shadow: 0 28px 52px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.58), 0 6px 16px rgba(0, 0, 0, 0.4);
 }
-.sp-js .case-card:nth-child(odd):hover  { --hr: -0.8deg; }
-.sp-js .case-card:nth-child(even):hover { --hr: 0.8deg; }
+.sp-js .case-card:nth-child(odd):hover  { --hr: -1.2deg; }
+.sp-js .case-card:nth-child(even):hover { --hr: 1.2deg; }
 
 /* Cover image lives in its own clip so it can scale inside the card */
 .sp-js .case-card .case-cover { transition: transform 520ms var(--ep); }
@@ -777,6 +797,55 @@
 .sp-js .cases, .sp-js .behind { position: relative; }
 
 /* ============================================================
+   13b. PAPER TEAR BETWEEN SECTIONS
+   Each band arrives on a torn edge, the same language as the footer.
+   ============================================================ */
+.cases, .behind, .about { position: relative; }
+
+.tear {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: 34px;
+  transform-origin: top center;
+  pointer-events: none;
+  background: var(--tear-bg, rgba(245, 239, 227, 0.075));
+  filter: drop-shadow(0 2px 0 rgba(245, 239, 227, 0.13));
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+.tear-a {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V15.943L1440 15.943L1417.06 6.7L1384.24 28.6L1366.51 4.5L1330.99 5.1L1286.12 4L1225.22 31.7L1195.89 25.1L1165.7 6.9L1120.31 4L1101.57 4L1071.12 4L1018.58 5L978.422 4L917.334 27.8L866.505 28.4L848.702 29.4L792.43 30.7L749.755 33L711.946 7.5L666.178 4.5L632.432 6.3L608.701 24.5L557.363 26.2L523.379 6.2L482.105 11.3L453.297 16.7L393.242 25.6L366.572 26.8L338.485 27.8L305.5 30.4L265.787 24.2L208.409 28.4L174.359 7.2L155.496 25.9L132.03 4L109.072 27.3L91.8987 22.4L64.2948 17.1L9.24372 16.8L0 27.1Z' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V15.943L1440 15.943L1417.06 6.7L1384.24 28.6L1366.51 4.5L1330.99 5.1L1286.12 4L1225.22 31.7L1195.89 25.1L1165.7 6.9L1120.31 4L1101.57 4L1071.12 4L1018.58 5L978.422 4L917.334 27.8L866.505 28.4L848.702 29.4L792.43 30.7L749.755 33L711.946 7.5L666.178 4.5L632.432 6.3L608.701 24.5L557.363 26.2L523.379 6.2L482.105 11.3L453.297 16.7L393.242 25.6L366.572 26.8L338.485 27.8L305.5 30.4L265.787 24.2L208.409 28.4L174.359 7.2L155.496 25.9L132.03 4L109.072 27.3L91.8987 22.4L64.2948 17.1L9.24372 16.8L0 27.1Z' fill='black'/></svg>");
+}
+.tear-b {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V19.5492L1440 19.5492L1380.36 7L1344.87 5L1308.42 4L1288.48 4.2L1238.7 7.9L1195.6 14.5L1162.91 15.5L1116.53 6.4L1067.51 8.4L1043.13 26.9L989.602 4.5L971.811 9L940.594 6.2L888.825 4L836.77 4L795.678 10.2L771.984 6.1L754.909 12.7L701.881 19.5L651.426 17.8L626.534 28.2L601.488 24.2L580.727 6.7L527.336 12.3L490.88 16.7L433.702 19.4L379.53 16.6L344.688 17.3L290.667 29.7L259.372 26.2L199.602 29.1L158.679 28.6L121.997 5.9L69.8597 31.8L44.4946 6.2L9.05724 30.3L0 31.1Z' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V19.5492L1440 19.5492L1380.36 7L1344.87 5L1308.42 4L1288.48 4.2L1238.7 7.9L1195.6 14.5L1162.91 15.5L1116.53 6.4L1067.51 8.4L1043.13 26.9L989.602 4.5L971.811 9L940.594 6.2L888.825 4L836.77 4L795.678 10.2L771.984 6.1L754.909 12.7L701.881 19.5L651.426 17.8L626.534 28.2L601.488 24.2L580.727 6.7L527.336 12.3L490.88 16.7L433.702 19.4L379.53 16.6L344.688 17.3L290.667 29.7L259.372 26.2L199.602 29.1L158.679 28.6L121.997 5.9L69.8597 31.8L44.4946 6.2L9.05724 30.3L0 31.1Z' fill='black'/></svg>");
+}
+.tear-c {
+  --tear-bg: var(--void-warm);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V16.2861L1440 16.2861L1413.39 32.2L1370.8 30.6L1321.15 32.9L1266.54 4.7L1217.27 29.9L1172.72 31.1L1155.2 27.1L1105.79 7.3L1084.1 14.1L1065.64 15.6L1041.26 12.8L1018.55 15.1L979.859 4.7L942.772 8.1L901.942 5.6L879.556 24.4L823.882 18.9L777.499 32L731.348 30.9L676.322 30L626.585 29.3L566.074 7.4L537.333 13.4L503.862 16.6L478.003 24.3L453.695 5.2L411.611 27L385.106 9L341.564 9L280.912 4L237.795 4.2L191.908 30.5L139.858 28.6L96.4773 33L38.7923 8.3L0 5.2Z' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V16.2861L1440 16.2861L1413.39 32.2L1370.8 30.6L1321.15 32.9L1266.54 4.7L1217.27 29.9L1172.72 31.1L1155.2 27.1L1105.79 7.3L1084.1 14.1L1065.64 15.6L1041.26 12.8L1018.55 15.1L979.859 4.7L942.772 8.1L901.942 5.6L879.556 24.4L823.882 18.9L777.499 32L731.348 30.9L676.322 30L626.585 29.3L566.074 7.4L537.333 13.4L503.862 16.6L478.003 24.3L453.695 5.2L411.611 27L385.106 9L341.564 9L280.912 4L237.795 4.2L191.908 30.5L139.858 28.6L96.4773 33L38.7923 8.3L0 5.2Z' fill='black'/></svg>");
+}
+
+/* The tear pulls away as the band arrives. */
+.sp-js .tear {
+  opacity: 0;
+  transform: translateY(-14px) scaleY(0.5);
+  transform-origin: top center;
+  transition: opacity 480ms var(--ep), transform 780ms var(--ep);
+}
+.sp-js .tear.is-visible { opacity: 1; transform: none; }
+
+/* The band itself settles a moment behind its torn edge. */
+.sp-js .tear-band > *:not(.tear) { position: relative; }
+
+
+/* ============================================================
    14. HIDDEN EASTER EGGS
    Tiny marginalia. They only exist if you go looking.
    ============================================================ */
@@ -834,6 +903,7 @@
   .sp-js .book { transition: none !important; }
   .sp-word { transform: none !important; }
   .nav-available .nav-dot, .sp-js .availability .dot, .is-playing .eq i { animation: none !important; }
+  .sp-js .tear { opacity: 1 !important; transform: none !important; }
   .sp-js .case-track { height: auto !important; }
   .sp-js .case-stage { position: static !important; }
 }

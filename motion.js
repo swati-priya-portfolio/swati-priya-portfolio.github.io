@@ -173,6 +173,68 @@
   }
 
   /* ==========================================================
+     3b. HEADLINE, CHARACTER BY CHARACTER
+     Letters lift as the cursor passes them, neighbours trailing behind.
+     Positions are measured once in page space and offset by the scroll
+     each frame, so scrolling never triggers a layout read.
+     ========================================================== */
+  function headlineChars() {
+    var title = document.querySelector(".hero-title");
+    if (!title || reduced || !finePointer) { return; }
+
+    var chars = [].slice.call(title.querySelectorAll(".ch"));
+    if (!chars.length) { return; }
+
+    var RADIUS = 96;          // how far the wave reaches
+    var LIFT = 8;             // px the closest letter rises
+    var POP = 0.22;           // how much it grows
+    var boxes = [];
+    var dirty = true;
+
+    function measure() {
+      var sx = window.scrollX, sy = window.scrollY;
+      boxes = chars.map(function (c) {
+        var r = c.getBoundingClientRect();
+        return { el: c, px: r.left + r.width / 2 + sx, py: r.top + r.height / 2 + sy, v: 0 };
+      });
+      dirty = false;
+    }
+
+    window.addEventListener("resize", function () { dirty = true; }, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { dirty = true; });
+    }
+    // The entrance moves the lines, so re-measure once it has settled.
+    setTimeout(function () { dirty = true; }, 1400);
+
+    addJob(function () {
+      if (!ptr.has) { return; }
+      if (dirty) { measure(); }
+
+      var sx = window.scrollX, sy = window.scrollY;
+      for (var i = 0; i < boxes.length; i++) {
+        var b = boxes[i];
+        var cy = b.py - sy;
+        if (cy < -160 || cy > window.innerHeight + 160) {
+          if (b.v !== 0) { b.v = 0; b.el.style.setProperty("--c-s", "1"); b.el.style.setProperty("--c-y", "0px"); }
+          continue;
+        }
+        var dx = ptr.x - (b.px - sx);
+        var dy = (ptr.y - cy) * 1.25;         // a little less reach vertically
+        var d = Math.sqrt(dx * dx + dy * dy);
+
+        var t = d < RADIUS ? 1 - d / RADIUS : 0;
+        t = t * t * (3 - 2 * t);              // smoothstep, so the wave has shoulders
+        b.v = lerp(b.v, t, 0.22);
+
+        if (b.v < 0.002) { b.v = 0; }
+        b.el.style.setProperty("--c-s", (1 + POP * b.v).toFixed(3));
+        b.el.style.setProperty("--c-y", (-LIFT * b.v).toFixed(2) + "px");
+      }
+    });
+  }
+
+  /* ==========================================================
      4. CUSTOM CURSOR — a dot that turns into a comic annotation
      ========================================================== */
   function customCursor() {
@@ -214,7 +276,7 @@
      5. MAGNETIC DISPLAY WORDS — headings only, never body copy
      ========================================================== */
   function magneticWords() {
-    var words = [].slice.call(document.querySelectorAll(".sp-word"));
+    var words = [].slice.call(document.querySelectorAll(".sp-word:not(.hero-title .sp-word)"));
     if (!words.length || reduced || !finePointer) { return; }
 
     var boxes = [];
@@ -365,13 +427,13 @@
         })
       };
 
-      travel = Math.round(Math.min(window.innerHeight * 0.85, 720));
+      travel = Math.round(Math.min(window.innerHeight * 1.15, 940));
       track.style.height = (stageH + travel) + "px";
       stage.style.position = "sticky";
       stage.style.top = PIN_TOP + "px";
       pinned = true;
-      cards[0].style.zIndex = "3";
-      cards[1].style.zIndex = "2";
+      cards[1].style.zIndex = "3";   // the anchor cover
+      cards[0].style.zIndex = "2";
       cards[2].style.zIndex = "1";
       draw();
     }
@@ -382,20 +444,18 @@
       var top = track.getBoundingClientRect().top;   // relative to viewport
       var p = clamp((PIN_TOP - top) / travel, 0, 1);
 
-      // Stage 1: Guardian One alone, centred and dominant.
-      // Stage 2: it eases back to its slot, GrayQuest arrives from the right.
-      // Stage 3: Embibe joins. Final: three covers spread on the desk.
-      var leadP = ease(span(p, 0.30, 0.78));
-      var twoP = ease(span(p, 0.32, 0.74));
-      var threeP = ease(span(p, 0.54, 0.96));
+      // The middle cover is the anchor: it opens the section alone and never
+      // moves sideways. The other two slide out from behind it, left first,
+      // then right, each as its own beat so nothing overlaps.
+      var anchorP = ease(span(p, 0.26, 0.70));   // its scale easing back to 1
+      var leftP = ease(span(p, 0.24, 0.66));
+      var rightP = ease(span(p, 0.52, 0.94));
 
-      // Every card starts at or near the centre and settles outward, so the
-      // sequence can never push the page wider than the viewport.
-      setCard(cards[0], geo.offsets[0] * (1 - leadP), lerp(geo.lead, 1, leadP), 0, 1);
-      setCard(cards[1], lerp(geo.offsets[1] * 0.55 + 34, 0, twoP), lerp(0.92, 1, twoP),
-        lerp(2, 0, twoP), twoP);
-      setCard(cards[2], lerp(geo.offsets[2] * 0.55, 0, threeP), lerp(0.92, 1, threeP),
-        lerp(2, 0, threeP), threeP);
+      setCard(cards[1], 0, lerp(geo.lead, 1, anchorP), 0, 1);
+      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.9, 1, leftP),
+        lerp(-2, 0, leftP), leftP);
+      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.9, 1, rightP),
+        lerp(2, 0, rightP), rightP);
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
@@ -471,7 +531,7 @@
      8. SCROLL REVEALS — heading, then copy, then visuals. Once.
      ========================================================== */
   function reveals() {
-    var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll"));
+    var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll, .tear"));
     var squiggles = [].slice.call(document.querySelectorAll(".squiggle"));
 
     if (!("IntersectionObserver" in window)) {
@@ -480,6 +540,15 @@
       return;
     }
 
+    // A torn edge is only 34px tall, so it needs its own, looser trigger.
+    var tearObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        entry.target.classList.add("is-visible");
+        tearObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -40px 0px" });
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) { return; }
@@ -487,7 +556,10 @@
         io.unobserve(entry.target);
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -70px 0px" });
-    targets.forEach(function (el) { io.observe(el); });
+    targets.forEach(function (el) {
+      if (el.classList.contains("tear")) { tearObserver.observe(el); }
+      else { io.observe(el); }
+    });
 
     var sq = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -630,6 +702,7 @@
     try { heroInteractions(); } catch (e) {}
     try { customCursor(); } catch (e) {}
     try { magneticWords(); } catch (e) {}
+    try { headlineChars(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
     try { footer(); } catch (e) {}

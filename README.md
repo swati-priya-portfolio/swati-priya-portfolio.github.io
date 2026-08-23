@@ -64,13 +64,21 @@ so there's nothing to replace for those.
 or layout of the original file is changed, and the page is fully readable with both removed.
 
 - **Loader** — "SWATI PRIYA PRESENTS…" runs once per browsing session, about 1.2s, then opens.
-- **Hero** — headline rises line by line behind a clip, the portrait settles in, and a hidden
-  comic sketch layer is revealed in a ~210px circle around the cursor. Parallax is 2–5px.
+- **Hero** — headline rises line by line behind a clip, the portrait settles in behind a warm
+  pool of light, and a hidden comic sketch layer is revealed in a ~210px circle around the
+  cursor. Parallax is 2–5px.
+- **Headline** — every letter is its own span. Letters lift and grow as the cursor passes,
+  neighbours trailing behind them; positions are measured once and offset by the scroll, so
+  scrolling never triggers a layout read.
 - **Custom cursor** — a dot that grows a speech-bubble label. Labels come from `data-cursor`.
 - **Nav** — expands over the hero, compresses into avatar + name + AVAILABLE FOR WORK below it.
-- **Pick an episode** — the strongest moment. The stage pins for one screen of scroll while
-  Guardian One starts alone and centred, then the three covers spread across the desk.
-  Below 1080px, or when the stage would not fit on screen, it falls back to a staggered reveal.
+- **Pick an episode** — the strongest moment. The stage pins for about one screen of scroll.
+  GrayQuest opens the section alone in the centre and never moves sideways; Guardian One
+  slides out to the left, then Embibe to the right, each as its own beat. Below 1080px, or
+  when the stage would not fit on screen, it falls back to a staggered reveal.
+- **Paper tears** — case studies, behind the screens and about each arrive on a torn edge
+  that pulls into place as the band enters the viewport. The silhouettes are generated,
+  irregular masks, in the same language as the footer's torn edge.
 - **Everything else** — books lift, boards tilt a degree, the music button toggles a real
   equaliser (no autoplay, session-remembered), the footer grows a giant outline word and a
   comic speech bubble behind the final cover.
