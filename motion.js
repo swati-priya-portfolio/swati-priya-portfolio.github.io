@@ -14,7 +14,7 @@
   var root = document.documentElement;
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(pointer: fine)").matches;
-  var EASE = 0.16;                                  // pointer follow smoothing
+  var EASE = 0.12;                                  // Figma pointer smoothing
   var desktop = function () { return window.innerWidth >= 1080; };
 
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
@@ -69,14 +69,24 @@
 
       if (p < 1) { requestAnimationFrame(step); return; }
 
-      // The final bite fades into the hero.
-      loader.classList.add("is-done");
+      // Let the final bite land, acknowledge it once, then dissolve cleanly.
       try { sessionStorage.setItem("sp-seen-v14", "1"); } catch (e) {}
       setTimeout(function () {
-        root.classList.remove("sp-loading");
-        loader.setAttribute("hidden", "");
-        done();
-      }, 380);
+        var status = loader.querySelector(".sp-loader-sub");
+        if (status) {
+          status.setAttribute("data-loader-copy", status.textContent);
+          status.textContent = "READY.";
+        }
+        loader.classList.add("is-ready");
+        setTimeout(function () {
+          loader.classList.add("is-done");
+          setTimeout(function () {
+            root.classList.remove("sp-loading");
+            loader.setAttribute("hidden", "");
+            done();
+          }, 410);
+        }, 140);
+      }, 110);
     });
   }
 
@@ -84,17 +94,37 @@
      2. HERO ENTRANCE — eyebrow, headline lines, copy, portrait
      ========================================================== */
   function heroEntrance() {
+    var hero = document.querySelector(".hero");
     var title = document.querySelector(".hero-title");
     var character = document.querySelector(".hero-character");
+    var header = document.querySelector(".site-header");
 
-    if (title) {
-      requestAnimationFrame(function () { title.classList.add("is-in"); });
-      // Once the lines have landed, drop the clip so hover strokes can breathe.
-      setTimeout(function () { title.classList.remove("is-masked"); }, 1200);
+    if (!hero) { return; }
+
+    if (reduced) {
+      hero.classList.add("is-role-in", "is-title-in", "is-character-in",
+        "is-copy-in", "is-actions-in", "is-proof-in");
+      if (title) { title.classList.add("is-in"); title.classList.remove("is-masked"); }
+      if (character) { character.classList.add("is-in"); }
+      if (header) { header.classList.add("is-hero-ready"); }
+      return;
     }
-    if (character) {
-      setTimeout(function () { character.classList.add("is-in"); }, reduced ? 0 : 420);
-    }
+
+    requestAnimationFrame(function () { hero.classList.add("is-role-in"); });
+    setTimeout(function () {
+      hero.classList.add("is-title-in");
+      if (title) { title.classList.add("is-in"); }
+    }, 110);
+    setTimeout(function () {
+      hero.classList.add("is-character-in");
+      if (character) { character.classList.add("is-in"); }
+    }, 360);
+    setTimeout(function () { hero.classList.add("is-copy-in"); }, 500);
+    setTimeout(function () { hero.classList.add("is-actions-in"); }, 650);
+    setTimeout(function () { hero.classList.add("is-proof-in"); }, 760);
+    setTimeout(function () { if (header) { header.classList.add("is-hero-ready"); } }, 840);
+    // Once the lines have landed, drop the clip so hover annotations can breathe.
+    setTimeout(function () { if (title) { title.classList.remove("is-masked"); } }, 1180);
   }
 
   /* ==========================================================
@@ -105,23 +135,27 @@
     var sketch = document.querySelector(".hero-sketch");
     var art = document.querySelector(".hero-art");
     var speeches = [].slice.call(document.querySelectorAll(".hero-character .speech"));
-    if (!hero || reduced || !finePointer) { return; }
+    if (!hero || reduced || !finePointer || window.innerWidth <= 768) { return; }
 
     var target = { x: 0, y: 0, on: 0 };
     var current = { x: 0, y: 0, on: 0 };
     var rect = null;
+    var leaveTimer = null;
 
     function measure() { rect = hero.getBoundingClientRect(); }
 
     hero.addEventListener("pointerenter", function () {
+      clearTimeout(leaveTimer);
       measure();
       hero.classList.add("is-exploring");
       target.on = 1;
     });
     hero.addEventListener("pointerleave", function () {
-      hero.classList.remove("is-exploring");
       target.on = 0;
       target.x = 0; target.y = 0;                 // layers glide home
+      leaveTimer = setTimeout(function () {
+        hero.classList.remove("is-exploring");
+      }, 110);
     });
     hero.addEventListener("pointermove", function (e) {
       if (!rect) { measure(); }
@@ -165,39 +199,51 @@
   }
 
   /* ==========================================================
-     3b. HEADLINE, CHARACTER BY CHARACTER
-     Letters lift as the cursor passes them, neighbours trailing behind.
-     Positions are measured once in page space and offset by the scroll
-     each frame, so scrolling never triggers a layout read.
+     3b. HEADLINE EMPHASIS
+     Only COMPLEXITY and CLARITY respond. The rest of each line makes a
+     few pixels of room, so emphasis never becomes a letter-by-letter party.
      ========================================================== */
-  function headlineChars() {
+  function headlineEmphasis() {
     var title = document.querySelector(".hero-title");
-    if (!title || reduced || !finePointer) { return; }
+    if (!title || reduced || !finePointer || window.innerWidth <= 768) { return; }
 
-    var chars = [].slice.call(title.querySelectorAll(".ch"));
-    if (!chars.length) { return; }
+    var focusWords = [].slice.call(title.querySelectorAll(".sp-word"));
+    if (!focusWords.length) { return; }
 
-    var RADIUS = 96;          // how far the wave reaches
-    var LIFT = 8;             // px the closest letter rises
-    var POP = 0.22;           // how much it grows
     var boxes = [];
     var dirty = true;
+    var RADIUS = 80;
 
     function measure() {
       var sx = window.scrollX, sy = window.scrollY;
-      boxes = chars.map(function (c) {
-        var r = c.getBoundingClientRect();
-        return { el: c, px: r.left + r.width / 2 + sx, py: r.top + r.height / 2 + sy, v: 0 };
+      boxes = focusWords.map(function (word, index) {
+        var r = word.getBoundingClientRect();
+        return {
+          el: word,
+          line: word.closest(".line"),
+          px: r.left + r.width / 2 + sx,
+          py: r.top + r.height / 2 + sy,
+          halfW: r.width / 2,
+          halfH: r.height / 2,
+          max: index === 0 ? 1.10 : 1.08,
+          v: 0
+        };
       });
       dirty = false;
+    }
+
+    function resetSiblings(line) {
+      if (!line) { return; }
+      [].slice.call(line.querySelectorAll(".wd")).forEach(function (word) {
+        if (!word.classList.contains("sp-word")) { word.style.setProperty("--wd-x", "0px"); }
+      });
     }
 
     window.addEventListener("resize", function () { dirty = true; }, { passive: true });
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { dirty = true; });
     }
-    // The entrance moves the lines, so re-measure once it has settled.
-    setTimeout(function () { dirty = true; }, 1400);
+    setTimeout(function () { dirty = true; }, 1250);
 
     addJob(function () {
       if (!ptr.has) { return; }
@@ -206,22 +252,24 @@
       var sx = window.scrollX, sy = window.scrollY;
       for (var i = 0; i < boxes.length; i++) {
         var b = boxes[i];
-        var cy = b.py - sy;
-        if (cy < -160 || cy > window.innerHeight + 160) {
-          if (b.v !== 0) { b.v = 0; b.el.style.setProperty("--c-s", "1"); b.el.style.setProperty("--c-y", "0px"); }
-          continue;
-        }
-        var dx = ptr.x - (b.px - sx);
-        var dy = (ptr.y - cy) * 1.25;         // a little less reach vertically
+        var cx = b.px - sx, cy = b.py - sy;
+        var dx = Math.max(0, Math.abs(ptr.x - cx) - b.halfW);
+        var dy = Math.max(0, Math.abs(ptr.y - cy) - b.halfH);
         var d = Math.sqrt(dx * dx + dy * dy);
-
         var t = d < RADIUS ? 1 - d / RADIUS : 0;
-        t = t * t * (3 - 2 * t);              // smoothstep, so the wave has shoulders
-        b.v = lerp(b.v, t, 0.22);
-
+        t = t * t * (3 - 2 * t);
+        b.v = lerp(b.v, t, t > b.v ? 0.24 : 0.16);
         if (b.v < 0.002) { b.v = 0; }
-        b.el.style.setProperty("--c-s", (1 + POP * b.v).toFixed(3));
-        b.el.style.setProperty("--c-y", (-LIFT * b.v).toFixed(2) + "px");
+
+        b.el.style.setProperty("--wd-s", (1 + (b.max - 1) * b.v).toFixed(3));
+        resetSiblings(b.line);
+        if (b.line && b.v > 0) {
+          [].slice.call(b.line.querySelectorAll(".wd:not(.sp-word)")).forEach(function (word) {
+            var r = word.getBoundingClientRect();
+            var direction = r.left < cx ? -1 : 1;
+            word.style.setProperty("--wd-x", (direction * 5 * b.v).toFixed(2) + "px");
+          });
+        }
       }
     });
   }
@@ -231,7 +279,7 @@
      ========================================================== */
   function customCursor() {
     var el = document.querySelector(".sp-cursor");
-    if (!el || !finePointer || reduced) { return; }
+    if (!el || !finePointer || reduced || window.innerWidth <= 768) { return; }
 
     var bubble = el.querySelector(".sp-cursor-bubble");
     root.classList.add("sp-cursor-on");
@@ -269,7 +317,7 @@
      ========================================================== */
   function magneticWords() {
     var words = [].slice.call(document.querySelectorAll(".sp-word:not(.hero-title .sp-word)"));
-    if (!words.length || reduced || !finePointer) { return; }
+    if (!words.length || reduced || !finePointer || window.innerWidth <= 768) { return; }
 
     var boxes = [];
     var dirty = true;
@@ -470,8 +518,8 @@
       stage.style.position = "sticky";
       stage.style.top = PIN_TOP + "px";
       pinned = true;
-      cards[1].style.zIndex = "3";   // the anchor cover
-      cards[0].style.zIndex = "2";
+      cards[0].style.zIndex = "3";   // Guardian One owns the opening beat
+      cards[1].style.zIndex = "2";
       cards[2].style.zIndex = "1";
       draw();
     }
@@ -482,21 +530,18 @@
       var top = track.getBoundingClientRect().top;   // relative to viewport
       var p = clamp((PIN_TOP - top) / travel, 0, 1);
 
-      // The middle cover is the anchor: it opens the section alone and never
-      // moves sideways. The other two slide out from behind it, left first,
-      // then right, each as its own beat so nothing overlaps.
-      var anchorP = ease(span(p, 0.22, 0.74));   // its scale easing back to 1
-      var leftP = ease(span(p, 0.18, 0.64));
-      var rightP = ease(span(p, 0.44, 0.92));
+      // Guardian One begins centred and dominant. It calmly returns to its
+      // final Figma position while GrayQuest and Embibe arrive behind it.
+      var leadP = ease(span(p, 0.12, 0.66));
+      var middleP = ease(span(p, 0.34, 0.76));
+      var rightP = ease(span(p, 0.56, 0.94));
 
-      setCard(cards[1], 0, lerp(geo.lead, 1, anchorP), 0, 1);
-      cards[1].style.boxShadow = "";
-
-      // Fading in early and travelling further keeps the slide readable.
-      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.86, 1, leftP),
-        0, clamp(leftP * 1.7, 0, 1));
-      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.86, 1, rightP),
-        0, clamp(rightP * 1.7, 0, 1));
+      setCard(cards[0], lerp(geo.offsets[0], 0, leadP), lerp(geo.lead, 1, leadP), 0, 1);
+      cards[0].style.boxShadow = "";
+      setCard(cards[1], lerp(geo.offsets[1], 0, middleP), lerp(0.90, 1, middleP),
+        0, clamp(middleP * 1.65, 0, 1));
+      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.90, 1, rightP),
+        0, clamp(rightP * 1.65, 0, 1));
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
@@ -507,8 +552,8 @@
       // decides which raised artwork wins on hover instead of the pointer.
       if (settled !== stacked) {
         stacked = settled;
-        cards[1].style.zIndex = settled ? "" : "3";   // the anchor cover
-        cards[0].style.zIndex = settled ? "" : "2";
+        cards[0].style.zIndex = settled ? "" : "3";   // the anchor cover
+        cards[1].style.zIndex = settled ? "" : "2";
         cards[2].style.zIndex = settled ? "" : "1";
       }
     }
@@ -560,6 +605,14 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) { return; }
+        if (entry.target.classList.contains("board")) {
+          var boards = [].slice.call(entry.target.parentNode.querySelectorAll(".board"));
+          var boardIndex = Math.max(0, boards.indexOf(entry.target));
+          entry.target.style.transitionDelay = (boardIndex * 110) + "ms";
+          setTimeout(function (board) {
+            board.style.removeProperty("transition-delay");
+          }.bind(null, entry.target), 760 + boardIndex * 110);
+        }
         entry.target.classList.add("is-visible");
         io.unobserve(entry.target);
       });
@@ -676,7 +729,9 @@
   }
 
   /* ==========================================================
-     10. MUSIC — never autoplays, remembers the session choice
+     10. MUSIC — official Spotify playback, explicit click only
+     The existing card remains the interface. The official controller is
+     mounted lazily and no copyrighted audio is stored in this repository.
      ========================================================== */
   function music() {
     var player = document.querySelector(".player");
@@ -684,44 +739,123 @@
     var state = document.querySelector(".music-state");
     if (!player || !button || !state) { return; }
 
+    var TRACK_ID = "62bOmKYxYg7dhrC6gH9vFn";
+    var START_MS = 36000;
     var stateText = state.querySelector(".music-label");
-    var bar = document.querySelector(".player-progress span");
+    var bar = player.querySelector(".player-progress span");
+    var host = document.createElement("div");
+    var controller = null;
     var playing = false;
-    var pos = 0.42;
-    var timer = null;
+    var requested = false;
+    var apiRequested = false;
+    var hasStarted = false;
+    var needsSeek = false;
 
-    function paint() {
+    host.className = "spotify-shell";
+    host.id = "spotify-embed";
+    host.setAttribute("aria-hidden", "true");
+    player.appendChild(host);
+
+    function paint(label) {
       player.classList.toggle("is-playing", playing);
       state.classList.toggle("is-playing", playing);
       button.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
       button.setAttribute("aria-pressed", String(playing));
-      button.setAttribute("aria-label", playing ? "Pause the focus track" : "Play the focus track");
+      button.setAttribute("aria-label", playing ? "Pause Bye Bye Bye" : "Play Bye Bye Bye");
       button.setAttribute("data-cursor", playing ? "PAUSE ♪" : "PLAY ♪");
-      if (stateText) { stateText.textContent = playing ? "MUSIC ON" : "MUSIC OFF"; }
+      if (stateText) { stateText.textContent = label || (playing ? "MUSIC ON" : "MUSIC OFF"); }
     }
 
-    function step() {
-      pos += 0.004;
-      if (pos > 1) { pos = 0; }
-      if (bar) { bar.style.transform = "scaleX(" + pos.toFixed(3) + ")"; }
+    function remember() {
+      try { sessionStorage.setItem("sp-music-started", hasStarted ? "1" : "0"); } catch (e) {}
+    }
+
+    function playbackUpdate(data) {
+      if (!data) { return; }
+      playing = !data.isPaused;
+      hasStarted = true;
+      if (needsSeek && controller && data.duration) {
+        if (data.duration > START_MS + 5000 && data.position < START_MS - 1500) {
+          needsSeek = false;
+          try { if (controller.seek) { controller.seek(START_MS); } } catch (e) {}
+        } else if (data.duration <= START_MS + 5000) {
+          // Logged-out Spotify embeds can expose only a short legal preview.
+          // In that case play the available preview instead of seeking past it.
+          needsSeek = false;
+        }
+      }
+      if (bar && data.duration) {
+        bar.style.width = (clamp(data.position / data.duration, 0, 1) * 100).toFixed(2) + "%";
+      }
+      paint();
+      remember();
+    }
+
+    function beginRequestedTrack() {
+      if (!controller || !requested) { return; }
+      requested = false;
+      hasStarted = true;
+      needsSeek = true;
+      try { if (controller.setVolume) { controller.setVolume(0.18); } } catch (e) {}
+      try { controller.play(); } catch (e) { paint("OPEN IN SPOTIFY"); return; }
+      paint("STARTING…");
+      remember();
+    }
+
+    function connectSpotify() {
+      if (apiRequested) { return; }
+      apiRequested = true;
+      window.onSpotifyIframeApiReady = function (IFrameAPI) {
+        IFrameAPI.createController(host, {
+          width: 80,
+          height: 80,
+          uri: "spotify:track:" + TRACK_ID
+        }, function (nextController) {
+          controller = nextController;
+          if (controller.addListener) {
+            controller.addListener("ready", beginRequestedTrack);
+            controller.addListener("playback_update", function (event) {
+              playbackUpdate(event && event.data);
+            });
+          }
+          beginRequestedTrack();
+        });
+      };
+      var script = document.createElement("script");
+      script.src = "https://open.spotify.com/embed/iframe-api/v1";
+      script.async = true;
+      script.onerror = function () { requested = false; paint("OPEN IN SPOTIFY"); };
+      document.head.appendChild(script);
     }
 
     function toggle() {
-      playing = !playing;
-      try { sessionStorage.setItem("sp-music", playing ? "on" : "off"); } catch (e) {}
-      paint();
-      clearInterval(timer);
-      if (playing && !reduced) { timer = setInterval(step, 600); }
+      hasStarted = true;
+      if (!controller) {
+        requested = true;
+        paint("CONNECTING…");
+        remember();
+        connectSpotify();
+        return;
+      }
+      try {
+        if (controller.togglePlay) { controller.togglePlay(); }
+        else if (playing) { controller.pause(); }
+        else { controller.play(); }
+      } catch (e) { paint("OPEN IN SPOTIFY"); }
     }
 
     button.addEventListener("click", function (e) { e.preventDefault(); toggle(); });
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden || !playing || !controller) { return; }
+      try { controller.pause(); } catch (e) {}
+      playing = false;
+      paint();
+    });
 
-    // Restore the choice made earlier in this session — never on first load.
-    try {
-      if (sessionStorage.getItem("sp-music") === "on") { toggle(); }
-    } catch (e) {}
-    if (!playing) { paint(); }
-    if (bar) { bar.style.transform = "scaleX(" + pos + ")"; }
+    // A previous interaction may be remembered for UI context, but audio never
+    // resumes after reload without another explicit click.
+    try { hasStarted = sessionStorage.getItem("sp-music-started") === "1"; } catch (e) {}
+    paint();
   }
 
   /* ==========================================================
@@ -781,7 +915,7 @@
     try { heroInteractions(); } catch (e) {}
     try { customCursor(); } catch (e) {}
     try { magneticWords(); } catch (e) {}
-    try { headlineChars(); } catch (e) {}
+    try { headlineEmphasis(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
     try { footer(); } catch (e) {}

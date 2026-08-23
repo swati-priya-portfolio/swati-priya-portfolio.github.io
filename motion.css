@@ -9,7 +9,16 @@
 :root {
   --ep: cubic-bezier(0.22, 1, 0.36, 1);   /* the premium easing */
   --ep-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ep-return: cubic-bezier(0.33, 1, 0.68, 1);
+  --d-instant: 120ms;
+  --d-quick: 180ms;
+  --d-base: 240ms;
+  --d-soft: 320ms;
+  --d-slow: 480ms;
+  --d-story: 640ms;
 }
+
+html, body { overflow-x: clip; }
 
 /* Animatable custom properties. Registering them lets hover states ease
    instead of snapping, while JS can still write them every frame. */
@@ -172,6 +181,16 @@
 .sp-loader.is-done .sp-loader-sub,
 .sp-loader.is-done .sp-loader-caption { opacity: 0; transition: opacity 160ms linear; }
 
+.sp-loader.is-ready .sp-loader-sub {
+  color: var(--accent);
+  animation: sp-ready-pulse 260ms var(--ep) both;
+}
+@keyframes sp-ready-pulse {
+  0%   { opacity: 0.68; transform: scale(0.985); text-shadow: 0 0 0 rgba(255,197,61,0); }
+  55%  { opacity: 1; transform: scale(1.025); text-shadow: 0 0 18px rgba(255,197,61,0.28); }
+  100% { opacity: 1; transform: scale(1); text-shadow: 0 0 0 rgba(255,197,61,0); }
+}
+
 /* Hero waits for the loader instead of playing behind it. */
 .sp-loading .reveal { animation-play-state: paused; }
 
@@ -288,25 +307,64 @@
 .sp-js .hero-title.is-in .line-in {
   transform: translateY(0);
   opacity: 1;
-  transition: transform 720ms var(--ep), opacity 520ms linear;
+  transition: transform 500ms var(--ep), opacity 360ms linear;
 }
-.sp-js .hero-title.is-in .line:nth-child(2) .line-in { transition-delay: 90ms; }
+.sp-js .hero-title.is-in .line:nth-child(2) .line-in { transition-delay: 100ms; }
+
+/* The Hero is assembled after the loader. These selectors replace the old
+   free-running .reveal animation without changing any final layout value. */
+.sp-js .hero .role-strip,
+.sp-js .hero .hero-title,
+.sp-js .hero .hero-sub,
+.sp-js .hero .hero-actions,
+.sp-js .hero .proof-strip {
+  animation: none;
+  opacity: 0;
+  transform: translateY(8px);
+}
+.sp-js .hero .hero-title { transform: none; }
+.sp-js .hero .role-strip {
+  transition: opacity 320ms var(--ep), transform 320ms var(--ep);
+}
+.sp-js .hero.is-role-in .role-strip,
+.sp-js .hero.is-title-in .hero-title,
+.sp-js .hero.is-copy-in .hero-sub,
+.sp-js .hero.is-actions-in .hero-actions,
+.sp-js .hero.is-proof-in .proof-strip {
+  opacity: 1;
+  transform: none;
+}
+.sp-js .hero .hero-sub {
+  transition: opacity 320ms var(--ep), transform 340ms var(--ep);
+}
+.sp-js .hero .hero-actions {
+  transition: opacity 320ms var(--ep), transform 360ms var(--ep);
+}
+.sp-js .hero .proof-strip {
+  transition: opacity 360ms var(--ep), transform 400ms var(--ep);
+}
+.sp-js .site-header {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: padding 520ms var(--ep), opacity 320ms var(--ep), transform 380ms var(--ep);
+}
+.sp-js .site-header.is-hero-ready { opacity: 1; transform: none; }
 
 /* Portrait settles in rather than fading */
 .sp-js .hero-character { opacity: 0; }
 .sp-js .hero-character.is-in {
-  animation: sp-portrait-in 760ms var(--ep) forwards;
+  animation: sp-portrait-in 500ms var(--ep) forwards;
 }
 @keyframes sp-portrait-in {
-  from { opacity: 0; transform: scale(0.96) rotate(-1deg); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: none; }
 }
 /* Speech bubbles are the decoration — they land last */
 .sp-js .hero-character .speech { opacity: 0; }
 .sp-js .hero-character.is-in .speech {
-  animation: sp-speech-in 520ms var(--ep) 380ms forwards;
+  animation: sp-speech-in 420ms var(--ep) 360ms forwards;
 }
-.sp-js .hero-character.is-in .speech-right { animation-delay: 500ms; }
+.sp-js .hero-character.is-in .speech-right { animation-delay: 440ms; }
 @keyframes sp-speech-in {
   from { opacity: 0; transform: translateY(8px) rotate(0deg); }
 }
@@ -331,7 +389,7 @@
   71%  { translate: -1.5px -3px; rotate: 0.15deg; }
   100% { translate: 0 0;      rotate: -0.7deg; }
 }
-.sp-js .hero-art { animation: sp-paper-float 6.5s ease-in-out infinite; }
+.sp-js .hero-art { animation: none; }
 
 /* Parallax layers — JS writes the offsets, max 5px */
 .sp-js .hero-art       { will-change: transform; transform: translate3d(var(--px, 0px), var(--py, 0px), 0); }
@@ -343,16 +401,23 @@
    Each letter lifts as the cursor passes it, its neighbours easing
    along behind it. Words stay unbreakable so lines never reflow.
    ============================================================ */
-.hero-title .wd { display: inline-block; white-space: nowrap; }
+.hero-title .wd {
+  display: inline-block;
+  white-space: nowrap;
+  transform: translateX(var(--wd-x, 0px)) scale(var(--wd-s, 1));
+  transform-origin: center 72%;
+  transition: transform 240ms var(--ep);
+}
 .hero-title .ch {
   display: inline-block;
-  transform: translateY(var(--c-y, 0px)) scale(var(--c-s, 1));
-  transform-origin: center 70%;
+  transform: none;
 }
-.sp-js .hero-title .ch { will-change: transform; }
+.sp-js .hero-title .wd { will-change: transform; }
 
-/* The whole word no longer scales — the letters do the reacting. */
-.hero-title .sp-word { transform: none; }
+/* Only the two authored emphasis words scale; individual letters stay calm. */
+.hero-title .sp-word {
+  transform: translateX(var(--wd-x, 0px)) scale(var(--wd-s, 1));
+}
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
   .hero-title .ch { transform: none !important; }
@@ -428,7 +493,9 @@
 /* ============================================================
    6. NAVIGATION — shrinks into a profile chip
    ============================================================ */
-.sp-js .site-header { transition: padding 520ms var(--ep); }
+.sp-js .site-header {
+  transition: padding 520ms var(--ep), opacity 320ms var(--ep), transform 380ms var(--ep);
+}
 .sp-js .nav-pill {
   transition: padding 420ms var(--ep), max-width 420ms var(--ep),
               gap 420ms var(--ep), background-color 520ms var(--ep),
@@ -614,30 +681,39 @@
 /* ============================================================
    8. PICK AN EPISODE — one cover becomes three
    ============================================================ */
-.sp-js .case-grid { perspective: 1400px; }
+.sp-js .case-grid { perspective: none; }
 
 .sp-js .case-card {
   --sx: 0px; --sy: 0px; --ss: 1; --sr: 0deg; --so: 1;
   --hy: 0px;
   opacity: var(--so);
+  --hs: 1;
   transform:
     translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
     rotate(var(--sr))
-    scale(var(--ss));
-  transition: --hy 420ms var(--ep), opacity 320ms linear;
+    scale(var(--ss)) scale(var(--hs));
+  transition: --hy 320ms var(--ep-return), --hs 320ms var(--ep-return),
+              opacity 320ms linear, box-shadow 320ms var(--ep-return);
   will-change: transform;
 }
 /* The staged spread is driven frame by frame, so no transition there */
 .sp-js .case-grid.is-staging .case-card { transition: none; }
 
-/* The card itself no longer moves on hover — the artwork inside it does. */
+/* The whole issue lifts like a physical comic. No perspective or 3D tilt. */
 .sp-js .case-card:hover,
 .sp-js .case-card:focus-visible {
-  --hy: 0px;
-  transform:
-    translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
-    rotate(var(--sr))
-    scale(var(--ss));
+  --hy: -10px;
+  --hs: 1.01;
+  transition-duration: 240ms;
+  box-shadow: 0 22px 34px rgba(0, 0, 0, 0.34);
+}
+
+/* The Figma cover art remains locked inside the existing card composition. */
+.sp-js .case-card:hover .case-cover,
+.sp-js .case-card:focus-visible .case-cover,
+.sp-js .case-card:nth-child(even):hover .case-cover,
+.sp-js .case-card:nth-child(even):focus-visible .case-cover {
+  transform: none;
   box-shadow: none;
 }
 
@@ -708,7 +784,10 @@
   transform: translateY(40px) scale(0.96);
   transition: opacity 560ms var(--ep), transform 620ms var(--ep);
 }
-.sp-js .case-card.settle-in.is-visible { opacity: 1; transform: none; }
+.sp-js .case-card.settle-in.is-visible {
+  opacity: 1;
+  transform: translate3d(0, var(--hy), 0) scale(var(--hs));
+}
 .sp-js .case-card.settle-in:nth-child(2).is-visible { transition-delay: 110ms; }
 .sp-js .case-card.settle-in:nth-child(3).is-visible { transition-delay: 220ms; }
 
@@ -732,22 +811,43 @@
 }
 .sp-js .sp-settle.is-visible { opacity: 1; transform: none; }
 
+/* The header reads first, followed by its supporting sentence. */
+.sp-js .behind-head.sp-reveal { opacity: 1; transform: none; }
+.sp-js .behind-head.sp-reveal > div,
+.sp-js .behind-head.sp-reveal > .behind-intro {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 560ms var(--ep), transform 560ms var(--ep);
+}
+.sp-js .behind-head.sp-reveal > .behind-intro { transform: translateY(18px); }
+.sp-js .behind-head.sp-reveal.is-visible > div,
+.sp-js .behind-head.sp-reveal.is-visible > .behind-intro { opacity: 1; transform: none; }
+.sp-js .behind-head.sp-reveal.is-visible > .behind-intro { transition-delay: 140ms; }
+
+/* The Origin Story is a quiet reading beat: one small entrance only. */
+.sp-js .story-reveal { transform: translateY(10px); transition-duration: 500ms; }
+
 /* ============================================================
    10. BEHIND THE SCREENS — boards, books, music
    ============================================================ */
 .sp-js .board {
-  transition: transform 420ms var(--ep), border-color 420ms var(--ep),
-              box-shadow 420ms var(--ep);
+  --board-rest: -1deg;
+  transition: transform 320ms var(--ep-return), border-color 320ms var(--ep-return),
+              box-shadow 320ms var(--ep-return);
 }
+.sp-js .board:nth-child(2) { --board-rest: 0.6deg; }
+.sp-js .board:nth-child(3) { --board-rest: -0.6deg; }
+.sp-js .board:nth-child(4) { --board-rest: 1deg; }
+.sp-js .board.sp-settle.is-visible { transform: rotate(var(--board-rest)); }
 @media (pointer: fine) {
-  .sp-js .board:hover {
-    transform: translateY(-6px) rotate(var(--board-r, 1deg)) scale(1.012);
+  .sp-js .board.sp-settle.is-visible:hover {
+    transform: translateY(-6px) rotate(0deg) scale(1.014);
+    transition-duration: 240ms;
     border-color: rgba(255, 197, 61, 0.34);
     box-shadow: inset 0 0 10px 1px rgba(255, 217, 140, 0.06),
                 0 20px 34px rgba(0, 0, 0, 0.42);
   }
 }
-.sp-js .board:nth-child(even) { --board-r: -1deg; }
 .sp-js .board:active { transform: scale(0.99); }
 
 /* Books behave like objects you can pick up */
@@ -760,8 +860,8 @@
 .sp-js .book-2.is-picked { transform: translateY(-12px) rotate(0.4deg) scale(1.02); box-shadow: 0 18px 34px rgba(0,0,0,.6); }
 .sp-js .book-3.is-picked { transform: translateY(-12px) rotate(0.6deg) scale(1.02); box-shadow: 0 18px 34px rgba(0,0,0,.6); }
 /* Neighbours ease apart by a few pixels */
-.sp-js .book.is-nudge-l { transform: translateX(-7px) rotate(8deg); }
-.sp-js .book.is-nudge-r { transform: translateX(7px) rotate(3deg); }
+.sp-js .book.is-nudge-l { transform: translateX(-4px); }
+.sp-js .book.is-nudge-r { transform: translateX(4px); }
 
 .book-hint {
   position: absolute;
@@ -823,6 +923,18 @@
 .sp-js .player .waveform { transition: opacity 400ms var(--ep); opacity: 0.4; }
 .sp-js .player.is-playing .waveform { opacity: 0.85; }
 .sp-js .player-progress span { transition: width 600ms linear; }
+.sp-js .player { position: relative; }
+.spotify-shell {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0.001;
+  pointer-events: none;
+}
+.spotify-shell iframe { width: 80px; height: 80px; border: 0; }
 
 /* ============================================================
    11. ABOUT — calmer, tiny movements only
@@ -835,10 +947,10 @@
 .sp-js .tools-grid li:hover img { transform: translateY(-4px) scale(1.05); }
 .sp-js .sticky-note { transition: transform 460ms var(--ep); }
 .sp-js .sticky-note:hover { transform: rotate(2.4deg) translateY(-4px); }
-.sp-js .timeline-item { transition: transform 380ms var(--ep); }
-.sp-js .timeline-item:hover { transform: translateX(5px); }
-.sp-js .tl-logo { transition: transform 380ms var(--ep); }
-.sp-js .timeline-item:hover .tl-logo { transform: scale(1.06) rotate(-2deg); }
+.sp-js .timeline-item { transform: none; }
+.sp-js .timeline-item:hover { transform: none; }
+.sp-js .tl-logo { transform: none; }
+.sp-js .timeline-item:hover .tl-logo { transform: none; }
 
 /* Hand-drawn squiggles draw themselves in when the section arrives */
 .sp-js .squiggle path { stroke-dasharray: 220; stroke-dashoffset: 220; }
@@ -1155,6 +1267,13 @@
   .hero-sketch             { display: none; }
 }
 
+@media (max-width: 768px) {
+  .sp-cursor, .hero-sketch { display: none !important; }
+  .hero-title .wd, .sp-word { transform: none !important; }
+  .sp-js .case-track { height: auto !important; }
+  .sp-js .case-stage { position: static !important; top: auto !important; }
+}
+
 /* ============================================================
    16. REDUCED MOTION
    Everything expressive switches off. Nothing becomes unusable.
@@ -1168,6 +1287,15 @@
   .sp-js .case-card.settle-in { opacity: 1 !important; transform: none !important; transition: opacity 200ms linear; }
 
   .sp-js .hero-title.is-masked .line-in { transform: none !important; opacity: 1 !important; }
+  .sp-js .hero .role-strip,
+  .sp-js .hero .hero-title,
+  .sp-js .hero .hero-sub,
+  .sp-js .hero .hero-actions,
+  .sp-js .hero .proof-strip,
+  .sp-js .site-header {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   .sp-js .hero-character { opacity: 1 !important; animation: none !important; }
   .sp-js .hero-art { animation: none !important; translate: none !important; rotate: none !important; }
   .sp-js .hero-character .speech { opacity: 1 !important; animation: none !important; }

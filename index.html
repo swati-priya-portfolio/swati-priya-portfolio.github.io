@@ -16,9 +16,9 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=11" />
+  <link rel="stylesheet" href="motion.css?v=12" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -34,10 +34,17 @@
       /* Failsafe: if motion.js never runs, nothing stays hidden. */
       setTimeout(function () {
         d.classList.remove("sp-loading");
+        var h = document.querySelector(".hero");
         var t = document.querySelector(".hero-title");
         var c = document.querySelector(".hero-character");
+        var n = document.querySelector(".site-header");
+        if (h) {
+          h.classList.add("is-role-in", "is-title-in", "is-character-in",
+            "is-copy-in", "is-actions-in", "is-proof-in");
+        }
         if (t) { t.classList.add("is-in"); }
         if (c) { c.classList.add("is-in"); }
+        if (n) { n.classList.add("is-hero-ready"); }
       }, 3500);
     })();
   </script>
@@ -425,7 +432,7 @@
 
         <!-- Right: origin story + timeline -->
         <div class="story-col">
-          <div class="story-head">
+          <div class="story-head sp-reveal story-reveal">
             <div>
               <p class="eyebrow">THE ORIGIN STORY</p>
               <h2 class="story-title">
@@ -445,7 +452,7 @@
 
           <!-- Career timeline — edit your roles here -->
           <ol class="timeline">
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#6c4cf1"><img src="images/logo-grayquest.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -457,7 +464,7 @@
               <p class="tl-date">Feb 2025 &ndash; Jun 2026</p>
             </li>
 
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#ea1b25"><img src="images/logo-tring.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -469,7 +476,7 @@
               <p class="tl-date">May 2023 &ndash; Jan 2025</p>
             </li>
 
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#12b5b0"><img src="images/logo-houzeo.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -481,7 +488,7 @@
               <p class="tl-date">Jul 2022 &ndash; Apr 2023</p>
             </li>
 
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#1673ff"><img src="images/logo-embibe.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -610,7 +617,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=11"></script>
-  <script src="motion.js?v=11"></script>
+  <script src="script.js?v=12"></script>
+  <script src="motion.js?v=12"></script>
 </body>
 </html>
