@@ -749,6 +749,7 @@
     var requested = false;
     var apiRequested = false;
     var hasStarted = false;
+    var needsSeek = false;
 
     host.className = "spotify-shell";
     host.id = "spotify-embed";
@@ -773,6 +774,16 @@
       if (!data) { return; }
       playing = !data.isPaused;
       hasStarted = true;
+      if (needsSeek && controller && data.duration) {
+        if (data.duration > START_MS + 5000 && data.position < START_MS - 1500) {
+          needsSeek = false;
+          try { if (controller.seek) { controller.seek(START_MS); } } catch (e) {}
+        } else if (data.duration <= START_MS + 5000) {
+          // Logged-out Spotify embeds can expose only a short legal preview.
+          // In that case play the available preview instead of seeking past it.
+          needsSeek = false;
+        }
+      }
       if (bar && data.duration) {
         bar.style.width = (clamp(data.position / data.duration, 0, 1) * 100).toFixed(2) + "%";
       }
@@ -784,11 +795,9 @@
       if (!controller || !requested) { return; }
       requested = false;
       hasStarted = true;
+      needsSeek = true;
       try { if (controller.setVolume) { controller.setVolume(0.18); } } catch (e) {}
       try { controller.play(); } catch (e) { paint("OPEN IN SPOTIFY"); return; }
-      setTimeout(function () {
-        try { if (controller && controller.seek) { controller.seek(START_MS); } } catch (e) {}
-      }, 520);
       paint("STARTING…");
       remember();
     }

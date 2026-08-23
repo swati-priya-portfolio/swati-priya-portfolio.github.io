@@ -34,10 +34,17 @@
       /* Failsafe: if motion.js never runs, nothing stays hidden. */
       setTimeout(function () {
         d.classList.remove("sp-loading");
+        var h = document.querySelector(".hero");
         var t = document.querySelector(".hero-title");
         var c = document.querySelector(".hero-character");
+        var n = document.querySelector(".site-header");
+        if (h) {
+          h.classList.add("is-role-in", "is-title-in", "is-character-in",
+            "is-copy-in", "is-actions-in", "is-proof-in");
+        }
         if (t) { t.classList.add("is-in"); }
         if (c) { c.classList.add("is-in"); }
+        if (n) { n.classList.add("is-hero-ready"); }
       }, 3500);
     })();
   </script>

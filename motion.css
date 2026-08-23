@@ -18,6 +18,8 @@
   --d-story: 640ms;
 }
 
+html, body { overflow-x: clip; }
+
 /* Animatable custom properties. Registering them lets hover states ease
    instead of snapping, while JS can still write them every frame. */
 @property --hy { syntax: "<length>";  inherits: false; initial-value: 0px; }
