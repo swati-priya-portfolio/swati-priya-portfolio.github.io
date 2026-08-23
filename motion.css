@@ -18,8 +18,8 @@
 @property --hr { syntax: "<angle>";   inherits: false; initial-value: 0deg; }
 
 /* ============================================================
-   1. LOADER  —  "SWATI PRIYA PRESENTS…"
-   Shown once per browsing session, ~1.2s, then opens like a panel.
+   1. LOADER — comic spider-hero snack loop
+   Shown once per browsing session, then fades into the hero.
    ============================================================ */
 .sp-loader { display: none; }
 
@@ -30,87 +30,147 @@
   z-index: 9999;
   place-content: center;
   justify-items: center;
-  gap: 18px;
+  gap: 10px;
   padding: 0 24px;
-  background: var(--void);
+  background: var(--cream);
   text-align: center;
 }
 .sp-loading { overflow: hidden; }
 
-.sp-loader-presents {
-  font-family: var(--font-display);
-  font-size: clamp(20px, 4.4vw, 34px);
-  letter-spacing: 0.5px;
-  color: var(--cream);
+.sp-loader-scene {
+  position: relative;
+  width: min(440px, 82vw);
+  height: 88px;
+  overflow: hidden;
   opacity: 0;
-  animation: sp-loader-in 420ms var(--ep) 60ms forwards;
+  animation: sp-loader-in 360ms var(--ep) 60ms forwards;
 }
-.sp-loader-presents .accent { color: var(--accent); }
+
+.sp-loader-mask {
+  position: absolute;
+  left: 8px;
+  top: 4px;
+  z-index: 2;
+  width: 80px;
+  height: 80px;
+  overflow: visible;
+  filter: drop-shadow(0 6px 0 rgba(23, 18, 11, 0.16));
+  animation: sp-mask-bob 520ms ease-in-out infinite alternate;
+}
+
+.mask-head {
+  fill: #d93636;
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.mask-web {
+  fill: none;
+  stroke: rgba(245, 239, 227, 0.78);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.mask-eye {
+  fill: var(--cream);
+  stroke: var(--ink);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.mask-mouth {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sp-mask-chomp 260ms steps(2, end) infinite;
+}
+
+.spider-stream {
+  position: absolute;
+  inset: 0;
+}
+.spider-snack {
+  position: absolute;
+  left: 100%;
+  top: 33px;
+  width: 22px;
+  height: 22px;
+  opacity: 0;
+  animation: sp-spider-feed 1.62s linear infinite;
+  animation-delay: calc(var(--i) * -0.27s);
+}
+.spider-snack i,
+.spider-snack::before,
+.spider-snack::after {
+  content: "";
+  position: absolute;
+}
+.spider-snack i {
+  left: 7px;
+  top: 6px;
+  width: 9px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.spider-snack::before,
+.spider-snack::after {
+  inset: 3px 1px;
+  background:
+    linear-gradient(30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 0 / 50% 50%,
+    linear-gradient(-30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 0 / 50% 50%,
+    linear-gradient(150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 100% / 50% 50%,
+    linear-gradient(-150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 100% / 50% 50%;
+  background-repeat: no-repeat;
+}
+.spider-snack::after { transform: rotate(90deg) scale(0.86); }
 
 .sp-loader-sub {
   font-family: var(--font-mono);
   font-size: 12px;
-  letter-spacing: 1.4px;
-  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 1.25px;
+  color: var(--ink);
   opacity: 0;
-  animation: sp-loader-in 420ms var(--ep) 220ms forwards;
+  animation: sp-loader-in 360ms var(--ep) 160ms forwards;
 }
-
-/* Thin progress line — behaves like a comic panel divider at 100%. */
-.sp-loader-line {
-  position: relative;
-  width: min(420px, 74vw);
-  height: 2px;
-  margin-top: 10px;
-  background: rgba(255, 197, 61, 0.18);
-  border-radius: 2px;
-}
-.sp-loader-fill {
-  display: block;
-  height: 100%;
-  width: 0%;
-  border-radius: 2px;
-  background: var(--accent);
-  transform-origin: left center;
-}
-/* Tiny character walking the line */
-/* Same treatment as the nav avatar: the export's own ring is the ring, sized
-   to 26px, with the offsets landing its centre on the progress line. */
-.sp-loader-dot {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 37.8px;
-  height: 37.8px;
-  margin-left: -18.8px;
-  transform: translateY(-16.4px);
-  will-change: left;
-}
-.sp-loader-pct {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: var(--dim);
+.sp-loader-caption {
+  font-family: var(--font-hand);
+  font-size: 19px;
+  color: rgba(23, 18, 11, 0.68);
+  opacity: 0;
+  animation: sp-loader-in 360ms var(--ep) 240ms forwards;
 }
 
 @keyframes sp-loader-in {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
 }
+@keyframes sp-mask-bob {
+  from { transform: translateY(-2px) rotate(-1deg); }
+  to { transform: translateY(2px) rotate(1deg); }
+}
+@keyframes sp-mask-chomp {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+@keyframes sp-spider-feed {
+  0% { left: 100%; opacity: 0; transform: rotate(0deg) scale(0.85); }
+  8% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { left: 70px; opacity: 0; transform: rotate(-120deg) scale(0.55); }
+}
 
-/* The panel opens: line stretches, everything lifts away. */
+/* The page appears without a scale flash after the final bite. */
 .sp-loader.is-done {
   animation: sp-loader-out 420ms var(--ep) forwards;
   pointer-events: none;
 }
 @keyframes sp-loader-out {
-  from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(1.03); }
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
-.sp-loader.is-done .sp-loader-presents,
+.sp-loader.is-done .sp-loader-scene,
 .sp-loader.is-done .sp-loader-sub,
-.sp-loader.is-done .sp-loader-pct { opacity: 0; transition: opacity 180ms linear; }
-.sp-loader.is-done .sp-loader-line { transform: scaleX(1.25); transition: transform 400ms var(--ep); }
+.sp-loader.is-done .sp-loader-caption { opacity: 0; transition: opacity 160ms linear; }
 
 /* Hero waits for the loader instead of playing behind it. */
 .sp-loading .reveal { animation-play-state: paused; }
@@ -904,10 +964,11 @@
           mask-repeat: no-repeat;
 }
 .tear-a {
-  top: -65px;
+  top: -36px;
   height: 130px;
   background: transparent url("images/torn-paper-edge.png") center / 100% 100% no-repeat;
   filter: none;
+  mix-blend-mode: screen;
   -webkit-mask-image: none;
           mask-image: none;
   -webkit-mask-size: auto;

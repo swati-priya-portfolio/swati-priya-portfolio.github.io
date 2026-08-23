@@ -46,7 +46,7 @@
   }
 
   /* ==========================================================
-     1. LOADER — "SWATI PRIYA PRESENTS…"  (once per session)
+     1. LOADER — comic spider-hero snack loop (once per session)
      ========================================================== */
   function runLoader(done) {
     var loader = document.querySelector(".sp-loader");
@@ -54,32 +54,24 @@
 
     if (!loader || !showing || reduced) {
       root.classList.remove("sp-loading");
-      try { sessionStorage.setItem("sp-seen", "1"); } catch (e) {}
+      try { sessionStorage.setItem("sp-seen-v12", "1"); } catch (e) {}
       done();
       return;
     }
 
-    var fill = loader.querySelector(".sp-loader-fill");
-    var dot = loader.querySelector(".sp-loader-dot");
-    var pct = loader.querySelector(".sp-loader-pct");
-    var DURATION = 1100;                    // the whole loader stays ~1.2s
+    var DURATION = 2100;
     var start = null;
 
     requestAnimationFrame(function step(now) {
       if (start === null) { start = now; }
       var p = ease(span(now - start, 0, DURATION));
-      var value = Math.round(p * 100);
-
-      fill.style.transform = "scaleX(" + p + ")";
-      fill.style.width = "100%";
-      if (dot) { dot.style.left = (p * 100) + "%"; }
-      if (pct) { pct.textContent = value + "%"; }
+      loader.style.setProperty("--load", p.toFixed(3));
 
       if (p < 1) { requestAnimationFrame(step); return; }
 
-      // 100% — the line behaves like a panel divider and opens the page.
+      // The final bite fades into the hero.
       loader.classList.add("is-done");
-      try { sessionStorage.setItem("sp-seen", "1"); } catch (e) {}
+      try { sessionStorage.setItem("sp-seen-v12", "1"); } catch (e) {}
       setTimeout(function () {
         root.classList.remove("sp-loading");
         loader.setAttribute("hidden", "");
@@ -327,18 +319,36 @@
     window.addEventListener("resize", measure, { passive: true });
 
     var compact = false;
+    var mini = false;
+    var travelled = 0;
+    var lastY = window.scrollY;
     var queued = false;
 
     function update() {
       queued = false;
       var y = window.scrollY;
+      var delta = y - lastY;
 
       var nextCompact = y > Math.max(160, threshold * 0.42);
       if (nextCompact !== compact) {
         compact = nextCompact;
         header.classList.toggle("is-compact", compact);
       }
-      header.classList.remove("is-mini");
+
+      if ((delta > 0) !== (travelled > 0)) { travelled = 0; }
+      travelled += delta;
+
+      var nextMini = mini;
+      if (y < 220) { nextMini = false; travelled = 0; }
+      else if (travelled > 70) { nextMini = true; }
+      else if (travelled < -50) { nextMini = false; }
+
+      if (nextMini !== mini) {
+        mini = nextMini;
+        header.classList.toggle("is-mini", mini);
+      }
+
+      lastY = y;
     }
 
     window.addEventListener("scroll", function () {

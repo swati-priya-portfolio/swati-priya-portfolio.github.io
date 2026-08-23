@@ -405,7 +405,7 @@ h1, h2, h3, p { margin: 0; }
   .hero { padding-top: 60px; padding-bottom: 106px; }
   .hero-inner { grid-template-columns: minmax(0, 630px) minmax(0, 560px); align-items: start; gap: 24px; }
   .hero-character { padding-top: 0; }
-  .hero-art { width: 103%; max-width: none; margin-left: -1.5%; }
+  .hero-art { width: 98%; max-width: none; margin-left: 1%; }
   .proof-strip { min-height: 84px; }
   .speech-left  { left: 8px;   top: 8px; }
   .speech-right { right: 20px; top: 30px; }
@@ -589,7 +589,16 @@ h1, h2, h3, p { margin: 0; }
 }
 
 @media (min-width: 1080px) {
-  .behind-head { grid-template-columns: 1fr auto; align-items: center; }
+  .behind {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+  .behind-head {
+    grid-template-columns: 1fr 430px;
+    align-items: center;
+    margin-bottom: 54px;
+  }
+  .board { height: 420px; min-height: 420px; }
 }
 
 .board-grid {
