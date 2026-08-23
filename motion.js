@@ -788,8 +788,10 @@
       requested = false;
       hasStarted = true;
       try { if (controller.setVolume) { controller.setVolume(0.18); } } catch (e) {}
-      try { if (controller.seek) { controller.seek(startMs); } } catch (e) {}
       try { controller.play(); } catch (e) { paint("USE SPOTIFY PLAYER"); }
+      setTimeout(function () {
+        try { if (controller && controller.seek) { controller.seek(startMs); } } catch (e) {}
+      }, 520);
       paint("STARTING…");
       remember();
     }
@@ -829,7 +831,8 @@
         return;
       }
       try {
-        if (playing) { controller.pause(); }
+        if (controller.togglePlay) { controller.togglePlay(); }
+        else if (playing) { controller.pause(); }
         else { controller.play(); }
       } catch (e) { paint("USE SPOTIFY PLAYER"); }
     }
@@ -957,7 +960,7 @@
       design.style.transform = "translate3d(0," + (34 * (1 - progress)).toFixed(2) + "px,0) scale(" + (.82 + .18 * progress).toFixed(3) + ")";
       design.style.opacity = (.2 + .8 * progress).toFixed(3);
 
-      var centers = [0.15, 0.50, 0.85];
+      var centers = [0, 0.50, 1];
       var currentIndex = 0;
       var currentAmount = -1;
       panels.forEach(function (panel, i) {
