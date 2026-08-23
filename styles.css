@@ -572,6 +572,21 @@ h1, h2, h3, p { margin: 0; }
   pointer-events: none;
 }
 
+/* The Figma card uses a custom yellow shoulder behind the issue chip before
+   it joins the main information panel. */
+.case-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 69.37%;
+  z-index: 1;
+  width: 65.76%;
+  height: 15.65%;
+  background: var(--accent);
+  clip-path: polygon(0 0, 92% 0, 100% 58%, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
 .case-chip {
   position: absolute;
   z-index: 2;
@@ -914,6 +929,7 @@ h1, h2, h3, p { margin: 0; }
 .tools-grid span { font-size: 13px; font-weight: 500; color: var(--cream); }
 
 /* --- Story column --- */
+.story-col { position: relative; }
 .story-head { display: grid; gap: 24px; }
 @media (min-width: 768px) {
   .story-head { grid-template-columns: 1fr auto; align-items: start; gap: 40px; }
@@ -1012,6 +1028,96 @@ h1, h2, h3, p { margin: 0; }
   color: var(--muted);
 }
 @media (min-width: 900px) { .tl-date { grid-column: 3; white-space: nowrap; } }
+
+@media (min-width: 1080px) {
+  .polaroid-col {
+    width: 398px;
+    height: 690px;
+    padding-top: 0;
+    overflow: hidden;
+    align-self: center;
+  }
+  .thats-me {
+    position: absolute;
+    left: 15px;
+    top: -8px;
+    transform: rotate(8deg);
+  }
+  .thats-me-arrow {
+    left: 71px;
+    top: 48px;
+    width: 40px;
+    height: 37px;
+  }
+  .polaroid {
+    position: absolute;
+    left: 10px;
+    top: 86px;
+    width: 309px;
+    height: 382px;
+    margin: 0;
+    padding: 13px 13px 49px;
+    transform: rotate(2deg);
+  }
+  .polaroid img {
+    width: 282px;
+    height: 320px;
+    aspect-ratio: auto;
+  }
+  .polaroid-signature {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 9px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .sticky-note {
+    position: absolute;
+    left: 222px;
+    top: 360px;
+    width: 135px;
+    margin: 0;
+  }
+  .tools {
+    position: absolute;
+    left: 20px;
+    top: 511px;
+    width: 337px;
+    margin: 0;
+    padding-top: 8px;
+  }
+  .tools-grid {
+    width: 337px;
+    margin-top: 14px;
+  }
+  .story-col {
+    width: 850px;
+    height: 735px;
+    padding-top: 37px;
+    overflow: hidden;
+  }
+  .story-head {
+    grid-template-columns: 521px 170px;
+    align-items: start;
+    gap: 137px;
+  }
+  .thought-bubble {
+    width: 170px;
+    padding: 12px 26px;
+  }
+  .story-body { margin-top: 30px; }
+  .timeline {
+    display: grid;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .timeline-item {
+    height: 80px;
+    padding: 17px 0;
+  }
+}
 
 /* --- What drives me --- */
 .drives {
