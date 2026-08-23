@@ -1055,10 +1055,10 @@
   --tear-surface: var(--void);
   position: relative;
   isolation: isolate;
-  overflow: visible;
+  overflow: hidden;
   pointer-events: none;
   background: none;
-  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.25));
+  filter: none;
   clip-path: inset(0 calc(100% - var(--tear-reveal)) 0 0);
   -webkit-mask-image: none;
           mask-image: none;
@@ -1076,10 +1076,14 @@
           mask-repeat: no-repeat;
 }
 .paper-tear::before {
-  background: rgba(245, 239, 227, 0.13);
-  transform: translateY(-1px);
+  background: rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  filter: blur(3px);
 }
-.paper-tear::after { background: var(--tear-surface); }
+.paper-tear::after {
+  background: var(--tear-surface);
+  filter: drop-shadow(0 -1px 0 rgba(245, 239, 227, 0.13));
+}
 
 .tear.paper-tear {
   top: -42px;
@@ -1098,7 +1102,7 @@
   --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 21C41 18 73 24 109 21L124 20 132 16 140 22C177 26 216 19 257 21L281 22 291 29 303 21C347 18 386 25 430 22L462 20 470 17 478 23C521 27 562 19 604 21L632 22 641 31 652 22C693 18 735 24 778 21L808 20 817 16 825 22C864 26 901 20 942 22L969 23 980 31 992 22C1033 18 1074 24 1117 21L1148 20 1156 17 1164 22C1205 25 1249 19 1292 21L1320 22 1331 28 1342 21C1386 18 1428 24 1470 22L1502 21 1510 17 1519 22C1547 24 1573 21 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
 }
 .tear.tear-a.paper-tear { top: 0; }
-.tear-a.paper-tear::before { background: rgba(245, 239, 227, 0.24); }
+.tear-a.paper-tear::after { filter: drop-shadow(0 -1px 0 rgba(245, 239, 227, 0.24)); }
 .tear-b {
   --tear-surface: var(--void-warm);
   --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 20C35 22 68 18 101 21L127 22 137 27 148 20C186 18 221 23 261 21L292 19 302 15 310 22C351 26 393 20 434 22L457 22 468 30 480 21C519 18 555 24 596 21L629 20 638 16 646 22C688 26 730 19 772 21L801 22 813 27 823 21C861 18 898 23 939 21L970 20 981 14 990 22C1031 27 1068 19 1111 21L1140 22 1150 29 1161 21C1203 18 1244 24 1286 21L1315 20 1324 16 1332 22C1373 25 1413 19 1453 21L1486 22 1498 28 1509 21C1541 18 1570 22 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
