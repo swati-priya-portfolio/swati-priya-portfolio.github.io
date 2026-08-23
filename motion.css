@@ -418,7 +418,7 @@
     background: transparent;
     padding: 0;
     margin-left: 2px;
-    font-size: 10.5px;
+    font-size: 12px;
   }
   .sp-js .site-header.is-mini .nav-links,
   .sp-js .site-header.is-mini .nav-cta {
@@ -479,7 +479,8 @@
   border-radius: 100px;
   background: #100e0b;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.8px;
   color: var(--accent);
   white-space: nowrap;
@@ -624,7 +625,7 @@
 /* Mobile / tablet: cards settle in one after another, no pinning */
 .sp-js .case-card.settle-in {
   opacity: 0;
-  transform: translateY(40px) rotate(2deg) scale(0.96);
+  transform: translateY(40px) scale(0.96);
   transition: opacity 560ms var(--ep), transform 620ms var(--ep);
 }
 .sp-js .case-card.settle-in.is-visible { opacity: 1; transform: none; }
@@ -952,6 +953,13 @@
   transform: translateY(var(--rip-y, 0px)) scaleY(var(--rip-s, 1));
   transform-origin: top center;
   will-change: clip-path, transform;
+}
+
+/* The supplied hero-to-cases tear is a fixed page edge, not a scroll wipe. */
+.tear-a { clip-path: none; }
+.sp-js .tear-a {
+  transform: none;
+  will-change: auto;
 }
 
 /* The band itself settles a moment behind its torn edge. */

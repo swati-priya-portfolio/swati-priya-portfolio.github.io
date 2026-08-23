@@ -327,39 +327,18 @@
     window.addEventListener("resize", measure, { passive: true });
 
     var compact = false;
-    var mini = false;
-    var travelled = 0;
-    var lastY = window.scrollY;
     var queued = false;
 
     function update() {
       queued = false;
       var y = window.scrollY;
-      var delta = y - lastY;
 
       var nextCompact = y > Math.max(160, threshold * 0.42);
       if (nextCompact !== compact) {
         compact = nextCompact;
         header.classList.toggle("is-compact", compact);
       }
-
-      // Distance travelled in one direction decides the state, not the last
-      // frame's delta. A trackpad wobbles a pixel either way constantly, and
-      // reacting to that toggles the bar open and shut.
-      if ((delta > 0) !== (travelled > 0)) { travelled = 0; }
-      travelled += delta;
-
-      var nextMini = mini;
-      if (y < 220) { nextMini = false; travelled = 0; }
-      else if (travelled > 70) { nextMini = true; }
-      else if (travelled < -50) { nextMini = false; }
-
-      if (nextMini !== mini) {
-        mini = nextMini;
-        header.classList.toggle("is-mini", mini);
-      }
-
-      lastY = y;
+      header.classList.remove("is-mini");
     }
 
     window.addEventListener("scroll", function () {
@@ -482,9 +461,9 @@
 
       // Fading in early and travelling further keeps the slide readable.
       setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.86, 1, leftP),
-        lerp(-2.4, 0, leftP), clamp(leftP * 1.7, 0, 1));
+        0, clamp(leftP * 1.7, 0, 1));
       setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.86, 1, rightP),
-        lerp(2.4, 0, rightP), clamp(rightP * 1.7, 0, 1));
+        0, clamp(rightP * 1.7, 0, 1));
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
@@ -561,7 +540,7 @@
      measured once, so scrolling costs no layout reads.
      ========================================================== */
   function paperTear() {
-    var tears = [].slice.call(document.querySelectorAll(".tear"));
+    var tears = [].slice.call(document.querySelectorAll(".tear:not(.tear-a)"));
     if (!tears.length) { return; }
 
     if (reduced) {
