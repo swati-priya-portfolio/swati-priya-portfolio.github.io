@@ -968,7 +968,7 @@
   height: 130px;
   background: transparent url("images/torn-paper-edge.png") center / 100% 100% no-repeat;
   filter: none;
-  mix-blend-mode: screen;
+  mix-blend-mode: normal;
   -webkit-mask-image: none;
           mask-image: none;
   -webkit-mask-size: auto;
