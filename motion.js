@@ -46,56 +46,37 @@
   }
 
   /* ==========================================================
-     1. LOADER — comic-title opening (once per session)
+     1. LOADER — comic spider-hero snack loop (once per session)
      ========================================================== */
   function runLoader(done) {
     var loader = document.querySelector(".sp-loader");
     var showing = root.classList.contains("sp-loading");
-    var percent = loader && loader.querySelector(".sp-loader-percent");
 
-    if (!loader || !showing) {
+    if (!loader || !showing || reduced) {
       root.classList.remove("sp-loading");
+      try { sessionStorage.setItem("sp-seen-v14", "1"); } catch (e) {}
       done();
       return;
     }
 
-    function remember() {
-      try { sessionStorage.setItem("sp-seen-v13", "1"); } catch (e) {}
-    }
-    function finish(after) {
-      loader.classList.add("is-done");
-      remember();
-      setTimeout(function () {
-        root.classList.remove("sp-loading", "sp-reduced-loader");
-        loader.setAttribute("hidden", "");
-        done();
-      }, after);
-    }
-
-    if (reduced) {
-      loader.style.setProperty("--load", "1");
-      loader.style.setProperty("--load-pct", "100%");
-      if (percent) { percent.textContent = "100"; }
-      setTimeout(function () { finish(220); }, 160);
-      return;
-    }
-
-    /* 1.55s title/progress + 0.6s page reveal = 2.15s total. */
-    var DURATION = 1550;
+    var DURATION = 2100;
     var start = null;
 
     requestAnimationFrame(function step(now) {
       if (start === null) { start = now; }
-      var p = span(now - start, 0, DURATION);
+      var p = ease(span(now - start, 0, DURATION));
       loader.style.setProperty("--load", p.toFixed(3));
-      loader.style.setProperty("--load-pct", (p * 100).toFixed(2) + "%");
-      if (percent) {
-        var value = Math.round(p * 100);
-        percent.textContent = value < 10 ? "0" + value : String(value);
-      }
 
       if (p < 1) { requestAnimationFrame(step); return; }
-      finish(600);
+
+      // The final bite fades into the hero.
+      loader.classList.add("is-done");
+      try { sessionStorage.setItem("sp-seen-v14", "1"); } catch (e) {}
+      setTimeout(function () {
+        root.classList.remove("sp-loading");
+        loader.setAttribute("hidden", "");
+        done();
+      }, 380);
     });
   }
 

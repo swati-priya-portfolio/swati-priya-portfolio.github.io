@@ -18,7 +18,7 @@
 
   <link rel="stylesheet" href="styles.css?v=12" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=13" />
+  <link rel="stylesheet" href="motion.css?v=14" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -26,11 +26,9 @@
       var d = document.documentElement;
       d.classList.add("sp-js");
       try {
-        if (!sessionStorage.getItem("sp-seen-v13")) {
+        if (!sessionStorage.getItem("sp-seen-v14") &&
+            !matchMedia("(prefers-reduced-motion: reduce)").matches) {
           d.classList.add("sp-loading");
-          if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            d.classList.add("sp-reduced-loader");
-          }
         }
       } catch (e) {}
       /* Failsafe: if motion.js never runs, nothing stays hidden. */
@@ -40,7 +38,7 @@
         var c = document.querySelector(".hero-character");
         if (t) { t.classList.add("is-in"); }
         if (c) { c.classList.add("is-in"); }
-      }, 2800);
+      }, 3500);
     })();
   </script>
 </head>
@@ -50,33 +48,24 @@
 
   <!-- ================= FIRST-VISIT LOADER (once per session) ================= -->
   <div class="sp-loader" aria-hidden="true">
-    <div class="sp-loader-grain"></div>
-    <div class="sp-loader-content">
-      <p class="sp-loader-presents">SWATI PRIYA PRESENTS</p>
-      <p class="sp-loader-title">
-        <span class="loader-word loader-word-1">LOADING</span>
-        <span class="loader-word loader-word-2">THE <strong>NEXT EPISODE</strong></span>
-      </p>
-
-      <div class="sp-loader-strip">
-        <div class="sp-loader-panels" aria-hidden="true">
-          <span class="loader-panel loader-panel-1">IDEA</span>
-          <span class="loader-panel loader-panel-2">DESIGN</span>
-          <span class="loader-panel loader-panel-3">SHIP</span>
-        </div>
-        <div class="sp-loader-track" aria-hidden="true">
-          <span class="sp-loader-fill"></span>
-          <img class="sp-loader-avatar" src="images/avatar-nav.png" alt="" width="38" height="38" />
-        </div>
-      </div>
-
-      <div class="sp-loader-progress">
-        <span>00</span>
-        <span class="sp-loader-rule" aria-hidden="true"></span>
-        <span class="sp-loader-percent">00</span>
+    <div class="sp-loader-scene">
+      <svg class="sp-loader-mask" viewBox="0 0 80 80" role="presentation">
+        <path class="mask-head" d="M40 5C20 5 10 20 10 40c0 21 12 35 30 35s30-14 30-35C70 20 60 5 40 5z" />
+        <path class="mask-web" d="M40 7v34M18 20l22 21 22-21M11 39h58M17 59l23-18 23 18M25 10c9 8 13 18 15 31M55 10c-9 8-13 18-15 31" />
+        <path class="mask-eye" d="M19 30c7-7 13-9 18-8-2 9-7 15-15 18zM61 30c-7-7-13-9-18-8 2 9 7 15 15 18z" />
+        <path class="mask-mouth" d="M28 53c8 7 16 7 24 0-2 12-22 12-24 0z" />
+      </svg>
+      <div class="spider-stream" aria-hidden="true">
+        <span class="spider-snack" style="--i:0"><i></i></span>
+        <span class="spider-snack" style="--i:1"><i></i></span>
+        <span class="spider-snack" style="--i:2"><i></i></span>
+        <span class="spider-snack" style="--i:3"><i></i></span>
+        <span class="spider-snack" style="--i:4"><i></i></span>
+        <span class="spider-snack" style="--i:5"><i></i></span>
       </div>
     </div>
-    <span class="sp-loader-divider" aria-hidden="true"></span>
+    <p class="sp-loader-sub">SPINNING THE NEXT EPISODE&hellip;</p>
+    <p class="sp-loader-caption">Good stories are worth the wait.</p>
   </div>
 
   <!-- Custom cursor. Desktop only; hidden on touch and reduced motion. -->
@@ -622,6 +611,6 @@
   </footer>
 
   <script src="script.js?v=6"></script>
-  <script src="motion.js?v=13"></script>
+  <script src="motion.js?v=14"></script>
 </body>
 </html>

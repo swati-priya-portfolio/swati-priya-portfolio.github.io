@@ -18,205 +18,159 @@
 @property --hr { syntax: "<angle>";   inherits: false; initial-value: 0deg; }
 
 /* ============================================================
-   1. LOADER — a short comic-title opening
-   The percentage is the actual intro timeline: smooth, monotonic, and tied
-   to the avatar, line and final panel. It runs once per session.
+   1. LOADER — comic spider-hero snack loop
+   Shown once per browsing session, then fades into the hero.
    ============================================================ */
-.sp-loader {
-  --load: 0;
-  --load-pct: 0%;
-  display: none;
-  color: var(--cream);
-}
+.sp-loader { display: none; }
 
 .sp-loading .sp-loader {
   display: grid;
   position: fixed;
   inset: 0;
   z-index: 9999;
-  place-items: center;
-  overflow: hidden;
-  padding: 24px;
-  background: #000;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  background: #000000;
+  text-align: center;
 }
 .sp-loading { overflow: hidden; }
 
-.sp-loader-grain {
+.sp-loader-scene {
+  position: relative;
+  width: min(440px, 82vw);
+  height: 88px;
+  overflow: hidden;
+  opacity: 0;
+  animation: sp-loader-in 360ms var(--ep) 60ms forwards;
+}
+
+.sp-loader-mask {
   position: absolute;
-  inset: -12%;
-  pointer-events: none;
-  opacity: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.68'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-  animation: sp-grain-in 250ms ease-out forwards;
-}
-
-.sp-loader-content {
-  position: relative;
+  left: 8px;
+  top: 4px;
   z-index: 2;
-  width: min(560px, calc(100vw - 48px));
-  display: grid;
-  justify-items: center;
-  text-align: center;
+  width: 80px;
+  height: 80px;
+  overflow: visible;
+  filter: drop-shadow(0 6px 0 rgba(23, 18, 11, 0.16));
+  animation: sp-mask-bob 520ms ease-in-out infinite alternate;
 }
 
-.sp-loader-presents {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 2.2px;
-  color: rgba(245, 239, 227, 0.72);
-  opacity: 0;
-  transform: translateY(8px);
-  animation: sp-loader-copy-in 350ms var(--ep) 250ms forwards;
+.mask-head {
+  fill: #d93636;
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.mask-web {
+  fill: none;
+  stroke: rgba(245, 239, 227, 0.78);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.mask-eye {
+  fill: var(--cream);
+  stroke: var(--ink);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+.mask-mouth {
+  fill: var(--ink);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sp-mask-chomp 260ms steps(2, end) infinite;
 }
 
-.sp-loader-title {
-  margin-top: 16px;
-  font-family: var(--font-display);
-  font-size: clamp(31px, 4vw, 46px);
-  line-height: 1.04;
-  letter-spacing: -0.9px;
-  color: var(--cream);
-}
-.loader-word {
-  display: block;
-  opacity: 0;
-  transform: translateY(10px);
-}
-.loader-word strong { color: var(--accent); font-weight: inherit; }
-.loader-word-1 { animation: sp-loader-copy-in 330ms var(--ep) 500ms forwards; }
-.loader-word-2 { animation: sp-loader-copy-in 360ms var(--ep) 680ms forwards; }
-
-.sp-loader-strip {
-  width: min(460px, 100%);
-  margin-top: 34px;
-}
-.sp-loader-panels {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  padding: 0 12px 13px;
-}
-.loader-panel {
-  min-height: 30px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(245, 239, 227, 0.22);
-  background: #000;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 1.1px;
-  color: rgba(245, 239, 227, 0.76);
-  opacity: 0;
-  transform: translateY(5px);
-}
-.loader-panel-1 { animation: sp-panel-in 260ms var(--ep) 860ms forwards; }
-.loader-panel-2 { animation: sp-panel-in 260ms var(--ep) 1040ms forwards; }
-.loader-panel-3 { animation: sp-panel-final 360ms var(--ep) 1220ms forwards; }
-
-.sp-loader-track {
-  position: relative;
-  width: 100%;
-  height: 2px;
-  background: rgba(245, 239, 227, 0.18);
-}
-.sp-loader-fill {
+.spider-stream {
   position: absolute;
   inset: 0;
-  background: var(--accent);
-  transform: scaleX(var(--load));
-  transform-origin: left center;
-  will-change: transform;
 }
-.sp-loader-avatar {
+.spider-snack {
   position: absolute;
-  left: var(--load-pct);
-  top: 50%;
-  width: 38px;
-  height: 38px;
-  transform: translate(-50%, -50%);
-  will-change: left;
-  filter: grayscale(1) sepia(1) saturate(6) hue-rotate(2deg) brightness(1.05) contrast(1.08);
-}
-
-.sp-loader-progress {
-  width: min(460px, 100%);
-  margin-top: 23px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: rgba(245, 239, 227, 0.62);
-}
-.sp-loader-rule { height: 1px; background: rgba(245, 239, 227, 0.18); }
-.sp-loader-percent { min-width: 2.8ch; text-align: right; color: var(--accent); }
-
-.sp-loader-divider {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  z-index: 3;
-  width: 100%;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: center;
-}
-
-@keyframes sp-grain-in {
-  from { opacity: 0; }
-  to { opacity: 0.045; }
-}
-@keyframes sp-loader-copy-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes sp-panel-in {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 0.72; transform: translateY(0); }
-}
-@keyframes sp-panel-final {
-  0% { opacity: 0; transform: translateY(5px) scale(0.98); }
-  62% { opacity: 1; transform: translateY(0) scale(1.035); border-color: var(--accent); color: var(--accent); }
-  100% { opacity: 1; transform: translateY(0) scale(1.015); border-color: rgba(255, 197, 61, 0.58); color: var(--accent); }
-}
-
-/* The line lands first; then the black title card lifts to reveal the Hero. */
-.sp-loader.is-done {
-  pointer-events: none;
-  animation: sp-loader-wipe 600ms var(--ep) forwards;
-}
-.sp-loader.is-done .sp-loader-divider {
-  animation: sp-divider-draw 230ms var(--ep) forwards;
-}
-.sp-loader.is-done .sp-loader-content {
+  left: 100%;
+  top: 33px;
+  width: 22px;
+  height: 22px;
   opacity: 0;
-  transition: opacity 120ms linear;
+  animation: sp-spider-feed 1.62s linear infinite;
+  animation-delay: calc(var(--i) * -0.27s);
 }
-@keyframes sp-divider-draw {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+.spider-snack i,
+.spider-snack::before,
+.spider-snack::after {
+  content: "";
+  position: absolute;
 }
-@keyframes sp-loader-wipe {
-  0%, 28% { transform: translateY(0); }
-  100% { transform: translateY(-100%); }
+.spider-snack i {
+  left: 7px;
+  top: 6px;
+  width: 9px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.spider-snack::before,
+.spider-snack::after {
+  inset: 3px 1px;
+  background:
+    linear-gradient(30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 0 / 50% 50%,
+    linear-gradient(-30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 0 / 50% 50%,
+    linear-gradient(150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 100% / 50% 50%,
+    linear-gradient(-150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 100% / 50% 50%;
+  background-repeat: no-repeat;
+}
+.spider-snack::after { transform: rotate(90deg) scale(0.86); }
+
+.sp-loader-sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.25px;
+  color: var(--cream);
+  opacity: 0;
+  animation: sp-loader-in 360ms var(--ep) 160ms forwards;
+}
+.sp-loader-caption {
+  font-family: var(--font-hand);
+  font-size: 19px;
+  color: rgba(245, 239, 227, 0.68);
+  opacity: 0;
+  animation: sp-loader-in 360ms var(--ep) 240ms forwards;
 }
 
-@media (max-width: 600px) {
-  .sp-loading .sp-loader { padding: 20px; }
-  .sp-loader-content { width: min(100%, 353px); }
-  .sp-loader-presents { font-size: 9px; letter-spacing: 1.7px; }
-  .sp-loader-title { margin-top: 13px; font-size: clamp(27px, 9vw, 34px); }
-  .sp-loader-strip { margin-top: 29px; }
-  .sp-loader-panels { gap: 7px; padding-inline: 6px; }
-  .loader-panel { min-height: 28px; font-size: 8px; letter-spacing: 0.7px; }
-  .sp-loader-avatar { width: 32px; height: 32px; }
-  .sp-loader-progress { margin-top: 20px; }
+@keyframes sp-loader-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
 }
+@keyframes sp-mask-bob {
+  from { transform: translateY(-2px) rotate(-1deg); }
+  to { transform: translateY(2px) rotate(1deg); }
+}
+@keyframes sp-mask-chomp {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+@keyframes sp-spider-feed {
+  0% { left: 100%; opacity: 0; transform: rotate(0deg) scale(0.85); }
+  8% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { left: 70px; opacity: 0; transform: rotate(-120deg) scale(0.55); }
+}
+
+/* The page appears without a scale flash after the final bite. */
+.sp-loader.is-done {
+  animation: sp-loader-out 420ms var(--ep) forwards;
+  pointer-events: none;
+}
+@keyframes sp-loader-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+.sp-loader.is-done .sp-loader-scene,
+.sp-loader.is-done .sp-loader-sub,
+.sp-loader.is-done .sp-loader-caption { opacity: 0; transition: opacity 160ms linear; }
 
 /* Hero waits for the loader instead of playing behind it. */
 .sp-loading .reveal { animation-play-state: paused; }
@@ -1186,15 +1140,7 @@
    Everything expressive switches off. Nothing becomes unusable.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .sp-loading .sp-loader { display: grid !important; }
-  .sp-loader-grain,
-  .sp-loader-strip,
-  .sp-loader-progress,
-  .sp-loader-divider { display: none !important; }
-  .sp-loader-presents,
-  .loader-word { opacity: 1 !important; transform: none !important; animation: none !important; }
-  .sp-loader.is-done { animation: sp-reduced-loader-out 220ms linear forwards !important; }
-  @keyframes sp-reduced-loader-out { to { opacity: 0; } }
+  .sp-loader { display: none !important; }
   .hero-sketch, .sp-cursor, .footer-giant, .footer-bubble, .sp-egg { display: none !important; }
 
   .sp-js .sp-reveal,
