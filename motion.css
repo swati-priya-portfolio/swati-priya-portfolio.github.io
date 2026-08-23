@@ -493,25 +493,48 @@
   /* Only keyboard focus reopens the bar. Hover used to, but expanding moved
      the pill out from under the cursor, which collapsed it again — a flicker
      loop. Scrolling up is the way back, and focus never oscillates. */
-  .sp-js .site-header.is-mini .nav-pill:focus-within {
+  /* Two states, never a hybrid: the small pill, or the whole bar.
+     :focus-visible excludes mouse clicks, so clicking the availability pill
+     opens the mail client and leaves the small pill exactly as it was. A
+     keyboard tab does open the bar in full, so focus never lands on
+     something invisible. */
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) {
     max-width: var(--max);
     gap: 16px;
     padding: 5px 10px 5px 8px;
     justify-content: space-between;
   }
-  .sp-js .site-header.is-mini .nav-pill:focus-within .nav-links,
-  .sp-js .site-header.is-mini .nav-pill:focus-within .nav-cta {
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) .nav-links,
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) .nav-cta {
     opacity: 1;
     max-width: 640px;
+    /* height too. Restoring width alone leaves the links opaque but zero
+       pixels tall — the half-open bar this replaces. */
+    height: auto;
     margin: 0;
     padding-left: 12px;
     padding-right: 12px;
     transform: none;
     pointer-events: auto;
   }
-  .sp-js .site-header.is-mini .nav-pill:focus-within .identity-name {
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) .nav-cta {
+    border-width: 1.5px;
+    padding: 9px 12px 9px 18px;
+  }
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) .identity-name {
     opacity: 1;
     max-width: 200px;
+  }
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) .nav-available {
+    opacity: 0;
+    max-width: 0;
+  }
+
+  /* Without :has, focus cannot open the bar, so the folded links are taken
+     out of the tab order instead of sitting there invisible. */
+  @supports not selector(:has(*)) {
+    .sp-js .site-header.is-mini .nav-links,
+    .sp-js .site-header.is-mini .nav-cta { visibility: hidden; }
   }
 }
 
