@@ -400,6 +400,7 @@
     var pinned = false;
     var geo = null;
     var travel = 0;
+    var stacked = null;   // whether the spread's stack order is applied
 
     function reset() {
       cards.forEach(function (c) {
@@ -500,6 +501,16 @@
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
       grid.style.pointerEvents = settled ? "" : "none";
+
+      // While the covers are still arriving they overlap, so the stack order
+      // matters. Once they are settled it is dropped, or that inline order
+      // decides which raised artwork wins on hover instead of the pointer.
+      if (settled !== stacked) {
+        stacked = settled;
+        cards[1].style.zIndex = settled ? "" : "3";   // the anchor cover
+        cards[0].style.zIndex = settled ? "" : "2";
+        cards[2].style.zIndex = settled ? "" : "1";
+      }
     }
 
     function setCard(card, x, scale, rot, opacity) {

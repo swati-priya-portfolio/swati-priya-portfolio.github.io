@@ -630,17 +630,16 @@
 /* The staged spread is driven frame by frame, so no transition there */
 .sp-js .case-grid.is-staging .case-card { transition: none; }
 
+/* The card itself no longer moves on hover — the artwork inside it does. */
 .sp-js .case-card:hover,
 .sp-js .case-card:focus-visible {
-  --hy: -56px;
+  --hy: 0px;
   transform:
     translate3d(var(--sx), calc(var(--sy) + var(--hy)), 0)
     rotate(var(--sr))
     scale(var(--ss));
   box-shadow: none;
 }
-
-.sp-js .case-card { overflow: hidden; }
 
 /* Comic annotation that slides in on hover */
 .case-flag {

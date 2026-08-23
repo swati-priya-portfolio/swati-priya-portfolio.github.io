@@ -511,14 +511,11 @@ h1, h2, h3, p { margin: 0; }
   padding: 0;
   border-radius: 22px;
   background: var(--accent);
-  overflow: hidden;
+  /* Visible, so the artwork can rise clear of the frame on hover. */
+  overflow: visible;
   isolation: isolate;
   backface-visibility: hidden;
   transition: transform 0.42s var(--ease);
-}
-.case-card:hover, .case-card:focus-visible {
-  transform: translateY(-56px);
-  box-shadow: none;
 }
 
 .case-cover {
@@ -531,6 +528,28 @@ h1, h2, h3, p { margin: 0; }
   border-radius: 12px;
   border: 1px solid var(--accent);
   background: #2a2118;
+  /* Pulled from a shelf: the frame and its yellow panel stay put while the
+     issue rises out of the top. It pivots at its base, and because the panel
+     sits above it in the stack, the bottom edge slides in behind the panel
+     rather than travelling with it. */
+  transform-origin: 50% 100%;
+  transition: transform 0.56s var(--ease), box-shadow 0.56s var(--ease);
+}
+.case-card:hover .case-cover,
+.case-card:focus-visible .case-cover {
+  transform: translateY(-34px) rotate(-1.6deg) scale(1.015);
+  box-shadow: 0 26px 40px rgba(0, 0, 0, 0.55), 0 8px 16px rgba(0, 0, 0, 0.38);
+}
+/* Alternating tilt, so a row of three does not look stamped out. */
+.case-card:nth-child(even):hover .case-cover,
+.case-card:nth-child(even):focus-visible .case-cover {
+  transform: translateY(-34px) rotate(1.6deg) scale(1.015);
+}
+/* Pressed on a touch screen, the issue settles back into the sleeve. */
+@media (pointer: coarse) {
+  .case-card:hover .case-cover,
+  .case-card:nth-child(even):hover .case-cover { transform: none; box-shadow: none; }
+  .case-card:active .case-cover { transform: translateY(-10px) scale(0.995); }
 }
 
 /* Yellow information panel positioned exactly as in the Figma cover cards. */
