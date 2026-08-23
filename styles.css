@@ -140,7 +140,9 @@ h1, h2, h3, p { margin: 0; }
   top: 0;
   z-index: 100;
   padding: 9px var(--gutter);
-  background: var(--void);
+  /* Transparent, so the page reads straight through the strip either side
+     of the pill. The pill itself does the legibility work. */
+  background: transparent;
 }
 
 .nav-pill {
@@ -153,10 +155,24 @@ h1, h2, h3, p { margin: 0; }
   padding: 8px 12px 8px 14px;
   border: 1px solid rgba(255, 197, 61, 0.34);
   border-radius: 36px;
+  /* Tinted glass: enough veil to keep the links readable over a bright
+     comic cover, light enough to see the page moving underneath. */
   background:
-    linear-gradient(90deg, rgba(255,197,61,0.05) 0%, rgba(255,197,61,0) 50%, rgba(255,197,61,0.035) 100%),
-    #1a150d;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 197, 61, 0.07);
+    linear-gradient(90deg, rgba(255,197,61,0.06) 0%, rgba(255,197,61,0) 50%, rgba(255,197,61,0.04) 100%),
+    rgba(26, 21, 13, 0.55);
+  -webkit-backdrop-filter: blur(10px) saturate(135%);
+          backdrop-filter: blur(10px) saturate(135%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 197, 61, 0.08);
+}
+
+/* Where the browser cannot blur, lean on opacity instead so the nav never
+   becomes unreadable. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav-pill {
+    background:
+      linear-gradient(90deg, rgba(255,197,61,0.06) 0%, rgba(255,197,61,0) 50%, rgba(255,197,61,0.04) 100%),
+      rgba(26, 21, 13, 0.94);
+  }
 }
 
 .identity { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }

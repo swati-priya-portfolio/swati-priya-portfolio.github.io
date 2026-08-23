@@ -471,15 +471,6 @@
     justify-content: center;
     overflow: hidden;
   }
-  /* In the pill, the availability chip drops its own outline so the two do
-     not read as a capsule inside a capsule. */
-  .sp-js .site-header.is-mini .nav-available {
-    border-color: transparent;
-    background: transparent;
-    padding: 0;
-    margin-left: 2px;
-    font-size: 12px;
-  }
   .sp-js .site-header.is-mini .nav-links,
   .sp-js .site-header.is-mini .nav-cta {
     opacity: 0;
@@ -524,33 +515,43 @@
   }
 }
 
-.identity-group { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.identity-group { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
 .sp-js .identity-group { transition: gap 420ms var(--ep); }
-.sp-js .site-header.is-mini .identity-group { gap: 8px; }
+.sp-js .site-header.is-mini .identity-group { gap: 10px; }
 
-/* Available-for-work chip, revealed with the compact bar */
+/* Available-for-work chip. It belongs to the folded pill and nowhere else.
+   In the full bar it collapses to zero width rather than being hidden, so it
+   slides away with everything else instead of snapping out, and it carries no
+   outline of its own — the pill around it is the capsule. */
 .nav-available {
   display: none;
   align-items: center;
   gap: 7px;
-  margin-left: 10px;
-  padding: 5px 10px;
-  border: 1px solid rgba(255, 197, 61, 0.4);
-  border-radius: 100px;
-  background: #100e0b;
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.8px;
   color: var(--accent);
   white-space: nowrap;
+  cursor: pointer;
   opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  pointer-events: none;
   transform: translateY(-4px);
-  transition: opacity 320ms var(--ep), transform 320ms var(--ep);
+  transition: opacity 300ms var(--ep), transform 520ms var(--ep),
+              max-width 520ms var(--ep), margin 520ms var(--ep),
+              color 300ms var(--ep);
 }
 @media (min-width: 1080px) {
-  .sp-js .site-header.is-compact .nav-available,
-  .sp-js .site-header.is-mini .nav-available { display: inline-flex; opacity: 1; transform: none; }
+  .sp-js .nav-available { display: inline-flex; }
+  .sp-js .site-header.is-mini .nav-available {
+    opacity: 1;
+    max-width: 240px;
+    margin-left: 2px;
+    transform: none;
+    pointer-events: auto;
+  }
 }
 .nav-available .nav-dot {
   width: 7px; height: 7px;
@@ -561,14 +562,7 @@
 }
 /* Hover feedback that costs no layout, so it cannot start a flicker loop. */
 .sp-js .nav-available:hover,
-.sp-js .nav-available:focus-visible {
-  color: var(--cream);
-  box-shadow: 0 0 0 1px rgba(255, 197, 61, 0.55), 0 6px 14px rgba(0, 0, 0, 0.35);
-}
-.sp-js .site-header.is-mini .nav-available:hover {
-  box-shadow: none;
-  color: var(--cream);
-}
+.sp-js .nav-available:focus-visible { color: var(--cream); }
 
 @keyframes sp-breathe {
   0%, 100% { opacity: 1; }
