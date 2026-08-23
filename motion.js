@@ -46,37 +46,56 @@
   }
 
   /* ==========================================================
-     1. LOADER — comic spider-hero snack loop (once per session)
+     1. LOADER — comic-title opening (once per session)
      ========================================================== */
   function runLoader(done) {
     var loader = document.querySelector(".sp-loader");
     var showing = root.classList.contains("sp-loading");
+    var percent = loader && loader.querySelector(".sp-loader-percent");
 
-    if (!loader || !showing || reduced) {
+    if (!loader || !showing) {
       root.classList.remove("sp-loading");
-      try { sessionStorage.setItem("sp-seen-v12", "1"); } catch (e) {}
       done();
       return;
     }
 
-    var DURATION = 2100;
+    function remember() {
+      try { sessionStorage.setItem("sp-seen-v13", "1"); } catch (e) {}
+    }
+    function finish(after) {
+      loader.classList.add("is-done");
+      remember();
+      setTimeout(function () {
+        root.classList.remove("sp-loading", "sp-reduced-loader");
+        loader.setAttribute("hidden", "");
+        done();
+      }, after);
+    }
+
+    if (reduced) {
+      loader.style.setProperty("--load", "1");
+      loader.style.setProperty("--load-pct", "100%");
+      if (percent) { percent.textContent = "100"; }
+      setTimeout(function () { finish(220); }, 160);
+      return;
+    }
+
+    /* 1.55s title/progress + 0.6s page reveal = 2.15s total. */
+    var DURATION = 1550;
     var start = null;
 
     requestAnimationFrame(function step(now) {
       if (start === null) { start = now; }
-      var p = ease(span(now - start, 0, DURATION));
+      var p = span(now - start, 0, DURATION);
       loader.style.setProperty("--load", p.toFixed(3));
+      loader.style.setProperty("--load-pct", (p * 100).toFixed(2) + "%");
+      if (percent) {
+        var value = Math.round(p * 100);
+        percent.textContent = value < 10 ? "0" + value : String(value);
+      }
 
       if (p < 1) { requestAnimationFrame(step); return; }
-
-      // The final bite fades into the hero.
-      loader.classList.add("is-done");
-      try { sessionStorage.setItem("sp-seen-v12", "1"); } catch (e) {}
-      setTimeout(function () {
-        root.classList.remove("sp-loading");
-        loader.setAttribute("hidden", "");
-        done();
-      }, 380);
+      finish(600);
     });
   }
 
@@ -545,18 +564,17 @@
 
   /* ==========================================================
      8b. THE RIP
-     Scroll tears each band open: the torn edge sweeps across the page
-     from left to right as the boundary rises into view. Offsets are
-     measured once, so scrolling costs no layout reads.
+     The vector edge reveals left-to-right across a short scroll range. Once
+     complete it is locked in place and receives one restrained settle.
      ========================================================== */
   function paperTear() {
-    var tears = [].slice.call(document.querySelectorAll(".tear:not(.tear-a)"));
+    var tears = [].slice.call(document.querySelectorAll(".paper-tear"));
     if (!tears.length) { return; }
 
     if (reduced) {
       tears.forEach(function (t) {
-        t.style.setProperty("--rip", "0%");
-        t.style.setProperty("--rip-d", "0px");
+        t.style.setProperty("--tear-reveal", "100%");
+        t.classList.add("is-torn");
       });
       return;
     }
@@ -568,7 +586,7 @@
       geo = tears.map(function (t) {
         var top = 0, el = t;
         while (el) { top += el.offsetTop; el = el.offsetParent; }
-        return { el: t, top: top };
+        return { el: t, top: top, done: t.classList.contains("is-torn") };
       });
       dirty = false;
     }
@@ -580,16 +598,23 @@
 
       for (var i = 0; i < geo.length; i++) {
         var g = geo[i];
-        var fromTop = g.top - y;                    // where the edge sits on screen
-        // Starts tearing as the edge enters the bottom of the screen and
-        // finishes near the middle. A symmetric ease keeps the sweep even —
-        // easeOutQuint front-loads it so hard the rip is over before you see it.
-        var t = span(fromTop, vh * 1.06, vh * 0.44);
-        var p = t * t * (3 - 2 * t);
-        g.el.style.setProperty("--rip", ((1 - p) * 100).toFixed(1) + "%");
-        g.el.style.setProperty("--rip-d", (30 * (1 - p)).toFixed(1) + "px");
-        g.el.style.setProperty("--rip-y", (-12 * (1 - p)).toFixed(1) + "px");
-        g.el.style.setProperty("--rip-s", (0.6 + 0.4 * p).toFixed(3));
+        if (g.done) { continue; }
+
+        var fromTop = g.top - y;
+        /* A short 24vh window: hidden near the viewport floor, complete well
+           before the section heading becomes the focus. Only clipping moves. */
+        var p = clamp((vh * 0.98 - fromTop) / (vh * 0.24), 0, 1);
+        var eased = p * p * (3 - 2 * p);
+        g.el.style.setProperty("--tear-reveal", (eased * 100).toFixed(1) + "%");
+
+        if (p >= 0.999) {
+          g.done = true;
+          g.el.style.setProperty("--tear-reveal", "100%");
+          g.el.classList.add("is-torn");
+          requestAnimationFrame(function (edge) {
+            edge.classList.add("is-settled");
+          }.bind(null, g.el));
+        }
       }
     }
 

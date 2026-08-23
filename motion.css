@@ -18,159 +18,205 @@
 @property --hr { syntax: "<angle>";   inherits: false; initial-value: 0deg; }
 
 /* ============================================================
-   1. LOADER — comic spider-hero snack loop
-   Shown once per browsing session, then fades into the hero.
+   1. LOADER — a short comic-title opening
+   The percentage is the actual intro timeline: smooth, monotonic, and tied
+   to the avatar, line and final panel. It runs once per session.
    ============================================================ */
-.sp-loader { display: none; }
+.sp-loader {
+  --load: 0;
+  --load-pct: 0%;
+  display: none;
+  color: var(--cream);
+}
 
 .sp-loading .sp-loader {
   display: grid;
   position: fixed;
   inset: 0;
   z-index: 9999;
-  place-content: center;
-  justify-items: center;
-  gap: 10px;
-  padding: 0 24px;
-  background: var(--cream);
-  text-align: center;
+  place-items: center;
+  overflow: hidden;
+  padding: 24px;
+  background: #000;
 }
 .sp-loading { overflow: hidden; }
 
-.sp-loader-scene {
-  position: relative;
-  width: min(440px, 82vw);
-  height: 88px;
-  overflow: hidden;
-  opacity: 0;
-  animation: sp-loader-in 360ms var(--ep) 60ms forwards;
-}
-
-.sp-loader-mask {
+.sp-loader-grain {
   position: absolute;
-  left: 8px;
-  top: 4px;
+  inset: -12%;
+  pointer-events: none;
+  opacity: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.68'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  animation: sp-grain-in 250ms ease-out forwards;
+}
+
+.sp-loader-content {
+  position: relative;
   z-index: 2;
-  width: 80px;
-  height: 80px;
-  overflow: visible;
-  filter: drop-shadow(0 6px 0 rgba(23, 18, 11, 0.16));
-  animation: sp-mask-bob 520ms ease-in-out infinite alternate;
+  width: min(560px, calc(100vw - 48px));
+  display: grid;
+  justify-items: center;
+  text-align: center;
 }
 
-.mask-head {
-  fill: #d93636;
-  stroke: var(--ink);
-  stroke-width: 3;
-  stroke-linejoin: round;
-}
-.mask-web {
-  fill: none;
-  stroke: rgba(245, 239, 227, 0.78);
-  stroke-width: 1.4;
-  stroke-linecap: round;
-}
-.mask-eye {
-  fill: var(--cream);
-  stroke: var(--ink);
-  stroke-width: 2.4;
-  stroke-linejoin: round;
-}
-.mask-mouth {
-  fill: var(--ink);
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: sp-mask-chomp 260ms steps(2, end) infinite;
+.sp-loader-presents {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2.2px;
+  color: rgba(245, 239, 227, 0.72);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: sp-loader-copy-in 350ms var(--ep) 250ms forwards;
 }
 
-.spider-stream {
+.sp-loader-title {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: clamp(31px, 4vw, 46px);
+  line-height: 1.04;
+  letter-spacing: -0.9px;
+  color: var(--cream);
+}
+.loader-word {
+  display: block;
+  opacity: 0;
+  transform: translateY(10px);
+}
+.loader-word strong { color: var(--accent); font-weight: inherit; }
+.loader-word-1 { animation: sp-loader-copy-in 330ms var(--ep) 500ms forwards; }
+.loader-word-2 { animation: sp-loader-copy-in 360ms var(--ep) 680ms forwards; }
+
+.sp-loader-strip {
+  width: min(460px, 100%);
+  margin-top: 34px;
+}
+.sp-loader-panels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0 12px 13px;
+}
+.loader-panel {
+  min-height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(245, 239, 227, 0.22);
+  background: #000;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1.1px;
+  color: rgba(245, 239, 227, 0.76);
+  opacity: 0;
+  transform: translateY(5px);
+}
+.loader-panel-1 { animation: sp-panel-in 260ms var(--ep) 860ms forwards; }
+.loader-panel-2 { animation: sp-panel-in 260ms var(--ep) 1040ms forwards; }
+.loader-panel-3 { animation: sp-panel-final 360ms var(--ep) 1220ms forwards; }
+
+.sp-loader-track {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(245, 239, 227, 0.18);
+}
+.sp-loader-fill {
   position: absolute;
   inset: 0;
+  background: var(--accent);
+  transform: scaleX(var(--load));
+  transform-origin: left center;
+  will-change: transform;
 }
-.spider-snack {
+.sp-loader-avatar {
   position: absolute;
-  left: 100%;
-  top: 33px;
-  width: 22px;
-  height: 22px;
-  opacity: 0;
-  animation: sp-spider-feed 1.62s linear infinite;
-  animation-delay: calc(var(--i) * -0.27s);
+  left: var(--load-pct);
+  top: 50%;
+  width: 38px;
+  height: 38px;
+  transform: translate(-50%, -50%);
+  will-change: left;
+  filter: grayscale(1) sepia(1) saturate(6) hue-rotate(2deg) brightness(1.05) contrast(1.08);
 }
-.spider-snack i,
-.spider-snack::before,
-.spider-snack::after {
-  content: "";
-  position: absolute;
-}
-.spider-snack i {
-  left: 7px;
-  top: 6px;
-  width: 9px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--ink);
-}
-.spider-snack::before,
-.spider-snack::after {
-  inset: 3px 1px;
-  background:
-    linear-gradient(30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 0 / 50% 50%,
-    linear-gradient(-30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 0 / 50% 50%,
-    linear-gradient(150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 100% / 50% 50%,
-    linear-gradient(-150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 100% / 50% 50%;
-  background-repeat: no-repeat;
-}
-.spider-snack::after { transform: rotate(90deg) scale(0.86); }
 
-.sp-loader-sub {
+.sp-loader-progress {
+  width: min(460px, 100%);
+  margin-top: 23px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1.25px;
-  color: var(--ink);
-  opacity: 0;
-  animation: sp-loader-in 360ms var(--ep) 160ms forwards;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: rgba(245, 239, 227, 0.62);
 }
-.sp-loader-caption {
-  font-family: var(--font-hand);
-  font-size: 19px;
-  color: rgba(23, 18, 11, 0.68);
-  opacity: 0;
-  animation: sp-loader-in 360ms var(--ep) 240ms forwards;
+.sp-loader-rule { height: 1px; background: rgba(245, 239, 227, 0.18); }
+.sp-loader-percent { min-width: 2.8ch; text-align: right; color: var(--accent); }
+
+.sp-loader-divider {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 3;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: center;
 }
 
-@keyframes sp-loader-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
+@keyframes sp-grain-in {
+  from { opacity: 0; }
+  to { opacity: 0.045; }
 }
-@keyframes sp-mask-bob {
-  from { transform: translateY(-2px) rotate(-1deg); }
-  to { transform: translateY(2px) rotate(1deg); }
+@keyframes sp-loader-copy-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-@keyframes sp-mask-chomp {
-  0%, 100% { transform: scaleY(0.35); }
-  50% { transform: scaleY(1); }
+@keyframes sp-panel-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 0.72; transform: translateY(0); }
 }
-@keyframes sp-spider-feed {
-  0% { left: 100%; opacity: 0; transform: rotate(0deg) scale(0.85); }
-  8% { opacity: 1; }
-  86% { opacity: 1; }
-  100% { left: 70px; opacity: 0; transform: rotate(-120deg) scale(0.55); }
+@keyframes sp-panel-final {
+  0% { opacity: 0; transform: translateY(5px) scale(0.98); }
+  62% { opacity: 1; transform: translateY(0) scale(1.035); border-color: var(--accent); color: var(--accent); }
+  100% { opacity: 1; transform: translateY(0) scale(1.015); border-color: rgba(255, 197, 61, 0.58); color: var(--accent); }
 }
 
-/* The page appears without a scale flash after the final bite. */
+/* The line lands first; then the black title card lifts to reveal the Hero. */
 .sp-loader.is-done {
-  animation: sp-loader-out 420ms var(--ep) forwards;
   pointer-events: none;
+  animation: sp-loader-wipe 600ms var(--ep) forwards;
 }
-@keyframes sp-loader-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+.sp-loader.is-done .sp-loader-divider {
+  animation: sp-divider-draw 230ms var(--ep) forwards;
 }
-.sp-loader.is-done .sp-loader-scene,
-.sp-loader.is-done .sp-loader-sub,
-.sp-loader.is-done .sp-loader-caption { opacity: 0; transition: opacity 160ms linear; }
+.sp-loader.is-done .sp-loader-content {
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+@keyframes sp-divider-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes sp-loader-wipe {
+  0%, 28% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+@media (max-width: 600px) {
+  .sp-loading .sp-loader { padding: 20px; }
+  .sp-loader-content { width: min(100%, 353px); }
+  .sp-loader-presents { font-size: 9px; letter-spacing: 1.7px; }
+  .sp-loader-title { margin-top: 13px; font-size: clamp(27px, 9vw, 34px); }
+  .sp-loader-strip { margin-top: 29px; }
+  .sp-loader-panels { gap: 7px; padding-inline: 6px; }
+  .loader-panel { min-height: 28px; font-size: 8px; letter-spacing: 0.7px; }
+  .sp-loader-avatar { width: 32px; height: 32px; }
+  .sp-loader-progress { margin-top: 20px; }
+}
 
 /* Hero waits for the loader instead of playing behind it. */
 .sp-loading .reveal { animation-play-state: paused; }
@@ -964,9 +1010,9 @@
           mask-repeat: no-repeat;
 }
 .tear-a {
-  top: -36px;
-  height: 130px;
-  background: transparent url("images/torn-paper-edge.png") center / 100% 100% no-repeat;
+  top: -42px;
+  height: 50px;
+  background: none;
   filter: none;
   mix-blend-mode: normal;
   -webkit-mask-image: none;
@@ -978,7 +1024,8 @@
   -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 52' preserveAspectRatio='none'><path d='M0 0H1440V22.7L1440 22.7L1428.3 22.3L1417.2 18.9L1406 22.1L1399.9 17.6L1385.2 12.5L1368.4 14.2L1356 6.1L1344.7 39.5L1336.8 41.7L1326.5 41.9L1313.8 43.7L1303.3 46L1286.4 46L1277.6 43.7L1271.8 42.6L1256.6 46L1241.4 39.7L1225.5 45L1215.7 9.8L1201.4 6L1192.4 8.8L1186 6L1180.3 6L1168.6 6L1154.8 9.9L1148.4 6.7L1140.1 10L1131.5 6.9L1121.8 8.4L1115.5 6L1107.5 6L1098.9 6.5L1086.9 7.7L1077.4 12.7L1066.6 16.7L1059.4 11.5L1044.6 8L1030.8 6L1014.4 7.1L1004.3 6.2L987.7 8.5L979.7 9.5L971.1 12L965.3 12.6L950.1 10.2L934.1 6L925.8 6L918.7 6.8L912.2 11.1L895.4 13.2L883.4 6.2L878.2 8.4L861.6 43.1L850.8 41.1L833.8 9.3L820 11.9L806.5 16.4L797.3 20.9L781.9 24.1L766.5 25.4L756.9 26.6L751 32.1L735.4 30.8L721.6 30.2L706.5 10.5L701.2 10.3L693.4 10.3L681 7.6L675.9 9.5L668.5 14L655.5 18.3L646.6 15L636.4 19.5L620.9 20.5L612.1 9L597 11.3L580.6 7.7L570.2 6L560.3 6L551.5 11.3L541 6.2L525.6 43.7L513.7 46L508.5 8.7L503.2 6L496.5 43L486.1 44.7L471.5 46L464.1 42.5L458.9 44.8L451.8 43.1L438.4 44.4L424.3 46L408.5 11.6L394.8 8.7L382.3 7.4L370.5 10.6L354.1 12.3L346.7 15.8L334 12.6L318.2 17.9L306.7 15.9L290.8 14.3L284.8 14.8L270.6 9.6L255.9 44.4L248.8 46L242.1 9.1L228.5 11.2L212.1 16.1L206.1 16.4L197.6 17.9L186.3 18.6L177.6 22.4L161.8 26.3L145.1 27.1L137.7 27.1L125.5 45.8L114.3 46L102.5 46L96.7 45.1L80.3 42.5L69.6 8.6L54.8 8.3L46 9.6L29.9 10.7L24.6 7.7L11.4 6.1L0 10.4Z' fill='black'/></svg>");
           mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 52' preserveAspectRatio='none'><path d='M0 0H1440V22.7L1440 22.7L1428.3 22.3L1417.2 18.9L1406 22.1L1399.9 17.6L1385.2 12.5L1368.4 14.2L1356 6.1L1344.7 39.5L1336.8 41.7L1326.5 41.9L1313.8 43.7L1303.3 46L1286.4 46L1277.6 43.7L1271.8 42.6L1256.6 46L1241.4 39.7L1225.5 45L1215.7 9.8L1201.4 6L1192.4 8.8L1186 6L1180.3 6L1168.6 6L1154.8 9.9L1148.4 6.7L1140.1 10L1131.5 6.9L1121.8 8.4L1115.5 6L1107.5 6L1098.9 6.5L1086.9 7.7L1077.4 12.7L1066.6 16.7L1059.4 11.5L1044.6 8L1030.8 6L1014.4 7.1L1004.3 6.2L987.7 8.5L979.7 9.5L971.1 12L965.3 12.6L950.1 10.2L934.1 6L925.8 6L918.7 6.8L912.2 11.1L895.4 13.2L883.4 6.2L878.2 8.4L861.6 43.1L850.8 41.1L833.8 9.3L820 11.9L806.5 16.4L797.3 20.9L781.9 24.1L766.5 25.4L756.9 26.6L751 32.1L735.4 30.8L721.6 30.2L706.5 10.5L701.2 10.3L693.4 10.3L681 7.6L675.9 9.5L668.5 14L655.5 18.3L646.6 15L636.4 19.5L620.9 20.5L612.1 9L597 11.3L580.6 7.7L570.2 6L560.3 6L551.5 11.3L541 6.2L525.6 43.7L513.7 46L508.5 8.7L503.2 6L496.5 43L486.1 44.7L471.5 46L464.1 42.5L458.9 44.8L451.8 43.1L438.4 44.4L424.3 46L408.5 11.6L394.8 8.7L382.3 7.4L370.5 10.6L354.1 12.3L346.7 15.8L334 12.6L318.2 17.9L306.7 15.9L290.8 14.3L284.8 14.8L270.6 9.6L255.9 44.4L248.8 46L242.1 9.1L228.5 11.2L212.1 16.1L206.1 16.4L197.6 17.9L186.3 18.6L177.6 22.4L161.8 26.3L145.1 27.1L137.7 27.1L125.5 45.8L114.3 46L102.5 46L96.7 45.1L80.3 42.5L69.6 8.6L54.8 8.3L46 9.6L29.9 10.7L24.6 7.7L11.4 6.1L0 10.4Z' fill='black'/></svg>");
 }
-/* The supplied torn-paper PNG is the final source of truth for this edge. */
+/* The raster export is intentionally not used; the unified vector system
+   below supplies every edge at device resolution. */
 .tear-a {
   -webkit-mask-image: none;
           mask-image: none;
@@ -997,34 +1044,102 @@
           mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 52' preserveAspectRatio='none'><path d='M0 0H1440V23.7L1440 23.7L1424.3 26L1408.1 28.6L1394.3 23.5L1387.3 26.2L1379.2 22.6L1369.9 19.6L1363.2 21.2L1354.4 26.5L1348.7 22L1335.6 21.3L1327.6 24.2L1317.3 21.2L1308.1 18.2L1301.4 43.4L1286.5 41.8L1276.8 38.9L1267.2 11.5L1259.8 13.1L1246.9 13.3L1230.7 10L1222 9.2L1212.4 6.8L1199.5 6.3L1191.7 6L1175.8 6L1168 6.7L1161.4 11.6L1152.6 7.2L1137.1 7.9L1123.4 6.5L1115.3 6L1102.9 10.7L1089.8 6.9L1075.1 6L1069.3 6L1054.1 6L1042.8 7.8L1030.1 6L1015.4 40.1L1003.8 42.8L994.9 38.2L985.3 33.2L970.3 33.5L958.7 35.2L945.7 35.4L936.3 10.7L923.3 44.2L906.5 46L898.9 46L889 42L877.5 41.7L865.1 40.7L859.6 43.3L851.1 44.8L840.7 46L830.2 46L818 46L808.6 45.8L802 43.9L792.9 46L783.1 46L767.9 46L762.2 44.5L752.8 45.5L738.7 40.8L728.1 39.5L719.7 40.8L711.1 35.4L704.5 30.6L695.6 34.1L680.6 39.1L672.6 8.9L656.3 10.9L645.2 9.7L632.2 8.2L626.8 9.7L619.5 11.7L610.6 7L601.3 12.2L590.3 10.4L580.5 9.6L571.2 6L556 11.3L540.2 11.6L525 8L518.4 45.4L508.9 46L494.2 43.8L487.8 9.7L471.9 7L465 9.9L454.1 6L447.4 6L432.8 8.6L425.9 10L409.7 14.5L396.6 15.1L381 14.1L371.1 9.3L360.3 11L348.8 9.8L338.5 11L330.7 42L324.4 38L312.1 34.3L297.4 39.1L288.7 37.9L275.3 38.7L264.6 43.8L255.8 44.9L245.6 42.1L239.1 46L232.2 45.7L223.2 44L212 43.4L196.1 45.5L188.5 46L172.4 46L161.6 46L147.1 10.5L130.6 12.4L125.4 7.4L112 12.1L105.9 17.3L90.5 8.4L73.6 8.9L67.2 13.5L57.1 8.2L44.4 8.2L34.6 6.4L25.6 6L11.3 6L4.3 11.6L0 6.9Z' fill='black'/></svg>");
 }
 
-/* The rip. Scroll drives it: the paper tears across the page from left to
-   right as the boundary rises into view. Without JS --rip stays 0 and the
-   torn edge is simply there, fully drawn. */
-/* The leading edge is raked, so the paper tears on an angle rather than
-   being wiped away by a ruler. Both vars sit at 0 at rest, which makes the
-   polygon a plain rectangle. */
-.tear {
-  clip-path: polygon(
-    0 0,
-    calc(100% - var(--rip, 0%)) 0,
-    calc(100% - var(--rip, 0%) - var(--rip-d, 0px)) 100%,
-    0 100%);
+/* Geometry and motion are defined once by the vector system below. */
+
+/* --- Unified vector paper system -----------------------------------------
+   All four boundaries use the same physical construction: a full-resolution
+   SVG mask, a one-pixel fibre lip, and a restrained contact shadow. The four
+   silhouettes share a visual grammar but do not repeat exactly. */
+.paper-tear {
+  --tear-reveal: 100%;
+  --tear-surface: var(--void);
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  pointer-events: none;
+  background: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.25));
+  clip-path: inset(0 calc(100% - var(--tear-reveal)) 0 0);
+  -webkit-mask-image: none;
+          mask-image: none;
 }
-.sp-js .tear {
-  transform: translateY(var(--rip-y, 0px)) scaleY(var(--rip-s, 1));
-  transform-origin: top center;
-  will-change: clip-path, transform;
+.paper-tear::before,
+.paper-tear::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: var(--tear-mask);
+          mask-image: var(--tear-mask);
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+.paper-tear::before {
+  background: rgba(245, 239, 227, 0.13);
+  transform: translateY(-1px);
+}
+.paper-tear::after { background: var(--tear-surface); }
+
+.tear.paper-tear {
+  top: -42px;
+  height: 50px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  position: absolute;
+  background: none;
+  -webkit-mask-image: none;
+          mask-image: none;
 }
 
-/* The supplied hero-to-cases tear is a fixed page edge, not a scroll wipe. */
-.tear-a { clip-path: none; }
-.sp-js .tear-a {
+.tear-a {
+  --tear-surface: var(--void);
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 21C41 18 73 24 109 21L124 20 132 16 140 22C177 26 216 19 257 21L281 22 291 29 303 21C347 18 386 25 430 22L462 20 470 17 478 23C521 27 562 19 604 21L632 22 641 31 652 22C693 18 735 24 778 21L808 20 817 16 825 22C864 26 901 20 942 22L969 23 980 31 992 22C1033 18 1074 24 1117 21L1148 20 1156 17 1164 22C1205 25 1249 19 1292 21L1320 22 1331 28 1342 21C1386 18 1428 24 1470 22L1502 21 1510 17 1519 22C1547 24 1573 21 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+}
+.tear-b {
+  --tear-surface: var(--void-warm);
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 20C35 22 68 18 101 21L127 22 137 27 148 20C186 18 221 23 261 21L292 19 302 15 310 22C351 26 393 20 434 22L457 22 468 30 480 21C519 18 555 24 596 21L629 20 638 16 646 22C688 26 730 19 772 21L801 22 813 27 823 21C861 18 898 23 939 21L970 20 981 14 990 22C1031 27 1068 19 1111 21L1140 22 1150 29 1161 21C1203 18 1244 24 1286 21L1315 20 1324 16 1332 22C1373 25 1413 19 1453 21L1486 22 1498 28 1509 21C1541 18 1570 22 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+}
+.tear-c {
+  --tear-surface: var(--void-deep);
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 22C39 18 78 23 116 21L145 20 155 26 166 21C207 18 245 24 286 22L315 22 326 31 338 21C377 18 415 23 456 20L486 19 494 15 502 22C544 26 583 20 625 22L655 23 667 29 678 21C720 18 761 24 803 21L833 20 843 16 851 22C891 25 930 19 971 21L1002 22 1013 28 1024 21C1066 18 1104 24 1147 22L1177 21 1187 15 1196 22C1238 27 1276 19 1319 21L1348 22 1358 30 1370 21C1410 18 1450 23 1491 21L1518 20 1527 17 1535 22C1558 23 1579 21 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+}
+.tear-d {
+  --tear-surface: var(--void-deep);
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 20C42 24 76 18 116 21L143 22 153 28 165 20C205 18 245 23 286 21L317 20 326 16 334 22C375 26 414 19 456 21L485 22 497 30 508 21C549 18 588 24 630 22L660 21 670 17 678 22C720 25 758 19 801 21L830 22 840 27 850 21C891 18 931 23 972 21L1003 20 1012 15 1020 22C1062 27 1101 19 1144 21L1174 22 1186 29 1197 21C1238 18 1277 24 1320 21L1349 20 1358 16 1366 22C1408 25 1447 19 1488 21L1519 22 1530 27 1541 21C1561 19 1581 21 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+}
+
+/* Footer keeps its existing 38px flow space, but now uses the same vector
+   construction and reveal behaviour as the three section overlaps. */
+.torn-edge.paper-tear {
+  height: 38px;
+  background: none;
+  -webkit-mask-image: none;
+          mask-image: none;
+}
+
+.sp-js .paper-tear {
+  --tear-reveal: 0%;
   transform: none;
+  will-change: clip-path;
+}
+.sp-js .paper-tear.is-torn {
+  --tear-reveal: 100%;
   will-change: auto;
 }
+.sp-js .paper-tear.is-settled {
+  animation: sp-paper-settle 520ms var(--ep) both;
+}
+@keyframes sp-paper-settle {
+  from { opacity: 0.96; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-/* The band itself settles a moment behind its torn edge. */
-.sp-js .tear-band > *:not(.tear) { position: relative; }
+@media (max-width: 700px) {
+  .tear.paper-tear { top: -28px; height: 34px; }
+  .torn-edge.paper-tear { height: 30px; }
+}
 
 
 /* ============================================================
@@ -1065,7 +1180,15 @@
    Everything expressive switches off. Nothing becomes unusable.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .sp-loader { display: none !important; }
+  .sp-loading .sp-loader { display: grid !important; }
+  .sp-loader-grain,
+  .sp-loader-strip,
+  .sp-loader-progress,
+  .sp-loader-divider { display: none !important; }
+  .sp-loader-presents,
+  .loader-word { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .sp-loader.is-done { animation: sp-reduced-loader-out 220ms linear forwards !important; }
+  @keyframes sp-reduced-loader-out { to { opacity: 0; } }
   .hero-sketch, .sp-cursor, .footer-giant, .footer-bubble, .sp-egg { display: none !important; }
 
   .sp-js .sp-reveal,
@@ -1087,6 +1210,12 @@
   .sp-word { transform: none !important; }
   .nav-available .nav-dot, .sp-js .availability .dot, .is-playing .eq i { animation: none !important; }
   .sp-js .tear { clip-path: none !important; transform: none !important; }
+  .sp-js .paper-tear {
+    --tear-reveal: 100% !important;
+    clip-path: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
   .sp-js .case-track { height: auto !important; }
   .sp-js .case-stage { position: static !important; }
 }
