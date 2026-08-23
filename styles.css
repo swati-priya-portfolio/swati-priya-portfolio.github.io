@@ -160,25 +160,19 @@ h1, h2, h3, p { margin: 0; }
 }
 
 .identity { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-/* The export has its own gold ring and a ring of transparent padding baked
-   in, so the photo is zoomed past both and the CSS ring is the only ring. */
+/* The export already carries its own gold ring, sitting on a band of
+   transparent padding and 8px above the canvas centre. So rather than drawing
+   a second ring around all of that, the image is sized until its own ring
+   measures 44px, and the padding is pulled back out of the layout with
+   negative margins — the avatar still occupies exactly a 44x44 slot.
+   If this photo is ever swapped for a plain square headshot, delete this rule
+   and use: width/height 44px, border-radius 50%, object-fit cover,
+   border 1.5px solid var(--accent). */
 .identity-avatar {
-  display: block;
   flex-shrink: 0;
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 1.5px solid var(--accent);
-  background: #2a2118;
-  overflow: hidden;
-}
-.identity-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* The baked ring sits 8px above the canvas centre, so the zoom is
-     nudged down by the same amount to keep the face centred. */
-  transform: scale(1.72) translateY(6.25%);
-  transform-origin: center center;
+  width: 64px;
+  height: 64px;
+  margin: -5.75px -10.25px -14.25px -9.75px;
 }
 .identity-name {
   font-family: var(--font-display);
