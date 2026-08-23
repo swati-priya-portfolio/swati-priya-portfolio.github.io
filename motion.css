@@ -384,26 +384,38 @@
 .sp-js .nav-cta,
 .sp-js .identity-name {
   transition: opacity 300ms var(--ep), max-width 420ms var(--ep),
-              transform 380ms var(--ep), margin 380ms var(--ep),
-              padding 380ms var(--ep);
+              height 380ms var(--ep), transform 380ms var(--ep),
+              margin 380ms var(--ep), padding 380ms var(--ep);
 }
 .sp-js .nav-pill { max-width: var(--max); }
 
 @media (min-width: 1080px) {
   .sp-js .site-header.is-mini .nav-pill {
-    max-width: 296px;
+    max-width: 268px;
     gap: 10px;
-    padding: 5px 14px 5px 6px;
+    padding: 5px 18px 5px 6px;
     justify-content: center;
     overflow: hidden;
+  }
+  /* In the pill, the availability chip drops its own outline so the two do
+     not read as a capsule inside a capsule. */
+  .sp-js .site-header.is-mini .nav-available {
+    border-color: transparent;
+    background: transparent;
+    padding: 0;
+    margin-left: 2px;
+    font-size: 10.5px;
   }
   .sp-js .site-header.is-mini .nav-links,
   .sp-js .site-header.is-mini .nav-cta {
     opacity: 0;
     max-width: 0;
+    /* height too, or the collapsed links keep the pill as tall as the full bar */
+    height: 0;
+    min-height: 0;
     margin: 0;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
+    border-width: 0;
     transform: translateY(-6px);
     pointer-events: none;
     overflow: hidden;
@@ -469,7 +481,7 @@
   width: 7px; height: 7px;
   border-radius: 50%;
   background: #4ade80;
-  box-shadow: 0 0 7px #4ade80;
+  box-shadow: 0 0 0 3.5px rgba(74, 222, 128, 0.20), 0 0 8px rgba(74, 222, 128, 0.9);
   animation: sp-breathe 2.3s ease-in-out infinite;
 }
 @keyframes sp-breathe {
@@ -897,14 +909,24 @@
           mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 34' preserveAspectRatio='none'><path d='M0 0H1440V16.2861L1440 16.2861L1413.39 32.2L1370.8 30.6L1321.15 32.9L1266.54 4.7L1217.27 29.9L1172.72 31.1L1155.2 27.1L1105.79 7.3L1084.1 14.1L1065.64 15.6L1041.26 12.8L1018.55 15.1L979.859 4.7L942.772 8.1L901.942 5.6L879.556 24.4L823.882 18.9L777.499 32L731.348 30.9L676.322 30L626.585 29.3L566.074 7.4L537.333 13.4L503.862 16.6L478.003 24.3L453.695 5.2L411.611 27L385.106 9L341.564 9L280.912 4L237.795 4.2L191.908 30.5L139.858 28.6L96.4773 33L38.7923 8.3L0 5.2Z' fill='black'/></svg>");
 }
 
-/* The tear pulls away as the band arrives. */
-.sp-js .tear {
-  opacity: 0;
-  transform: translateY(-14px) scaleY(0.5);
-  transform-origin: top center;
-  transition: opacity 480ms var(--ep), transform 780ms var(--ep);
+/* The rip. Scroll drives it: the paper tears across the page from left to
+   right as the boundary rises into view. Without JS --rip stays 0 and the
+   torn edge is simply there, fully drawn. */
+/* The leading edge is raked, so the paper tears on an angle rather than
+   being wiped away by a ruler. Both vars sit at 0 at rest, which makes the
+   polygon a plain rectangle. */
+.tear {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--rip, 0%)) 0,
+    calc(100% - var(--rip, 0%) - var(--rip-d, 0px)) 100%,
+    0 100%);
 }
-.sp-js .tear.is-visible { opacity: 1; transform: none; }
+.sp-js .tear {
+  transform: translateY(var(--rip-y, 0px)) scaleY(var(--rip-s, 1));
+  transform-origin: top center;
+  will-change: clip-path, transform;
+}
 
 /* The band itself settles a moment behind its torn edge. */
 .sp-js .tear-band > *:not(.tear) { position: relative; }
@@ -968,7 +990,7 @@
   .sp-js .book { transition: none !important; }
   .sp-word { transform: none !important; }
   .nav-available .nav-dot, .sp-js .availability .dot, .is-playing .eq i { animation: none !important; }
-  .sp-js .tear { opacity: 1 !important; transform: none !important; }
+  .sp-js .tear { clip-path: none !important; transform: none !important; }
   .sp-js .case-track { height: auto !important; }
   .sp-js .case-stage { position: static !important; }
 }

@@ -561,7 +561,7 @@
      8. SCROLL REVEALS — heading, then copy, then visuals. Once.
      ========================================================== */
   function reveals() {
-    var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll, .tear"));
+    var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll"));
     var squiggles = [].slice.call(document.querySelectorAll(".squiggle"));
 
     if (!("IntersectionObserver" in window)) {
@@ -570,15 +570,6 @@
       return;
     }
 
-    // A torn edge is only 34px tall, so it needs its own, looser trigger.
-    var tearObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) { return; }
-        entry.target.classList.add("is-visible");
-        tearObserver.unobserve(entry.target);
-      });
-    }, { threshold: 0, rootMargin: "0px 0px -40px 0px" });
-
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) { return; }
@@ -586,10 +577,7 @@
         io.unobserve(entry.target);
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -70px 0px" });
-    targets.forEach(function (el) {
-      if (el.classList.contains("tear")) { tearObserver.observe(el); }
-      else { io.observe(el); }
-    });
+    targets.forEach(function (el) { io.observe(el); });
 
     var sq = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -599,6 +587,73 @@
       });
     }, { threshold: 0.6 });
     squiggles.forEach(function (el) { sq.observe(el); });
+  }
+
+  /* ==========================================================
+     8b. THE RIP
+     Scroll tears each band open: the torn edge sweeps across the page
+     from left to right as the boundary rises into view. Offsets are
+     measured once, so scrolling costs no layout reads.
+     ========================================================== */
+  function paperTear() {
+    var tears = [].slice.call(document.querySelectorAll(".tear"));
+    if (!tears.length) { return; }
+
+    if (reduced) {
+      tears.forEach(function (t) {
+        t.style.setProperty("--rip", "0%");
+        t.style.setProperty("--rip-d", "0px");
+      });
+      return;
+    }
+
+    var geo = [];
+    var dirty = true;
+
+    function measure() {
+      geo = tears.map(function (t) {
+        var top = 0, el = t;
+        while (el) { top += el.offsetTop; el = el.offsetParent; }
+        return { el: t, top: top };
+      });
+      dirty = false;
+    }
+
+    function draw() {
+      if (dirty) { measure(); }
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+
+      for (var i = 0; i < geo.length; i++) {
+        var g = geo[i];
+        var fromTop = g.top - y;                    // where the edge sits on screen
+        // Starts tearing as the edge enters the bottom of the screen and
+        // finishes near the middle. A symmetric ease keeps the sweep even —
+        // easeOutQuint front-loads it so hard the rip is over before you see it.
+        var t = span(fromTop, vh * 1.06, vh * 0.44);
+        var p = t * t * (3 - 2 * t);
+        g.el.style.setProperty("--rip", ((1 - p) * 100).toFixed(1) + "%");
+        g.el.style.setProperty("--rip-d", (30 * (1 - p)).toFixed(1) + "px");
+        g.el.style.setProperty("--rip-y", (-12 * (1 - p)).toFixed(1) + "px");
+        g.el.style.setProperty("--rip-s", (0.6 + 0.4 * p).toFixed(3));
+      }
+    }
+
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }, { passive: true });
+
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { dirty = true; draw(); }, 160);
+    }, { passive: true });
+
+    window.addEventListener("load", function () { dirty = true; draw(); });
+    draw();
   }
 
   /* ==========================================================
@@ -728,6 +783,7 @@
   function boot() {
     try { stickyNav(); } catch (e) {}
     try { reveals(); } catch (e) {}
+    try { paperTear(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
     try { customCursor(); } catch (e) {}
