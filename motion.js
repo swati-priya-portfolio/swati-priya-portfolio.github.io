@@ -50,7 +50,6 @@
      ========================================================== */
   function runLoader(done) {
     var loader = document.querySelector(".sp-loader");
-    var status = loader ? loader.querySelector(".sp-loader-status") : null;
     var showing = root.classList.contains("sp-loading");
 
     if (!loader || !showing || reduced) {
@@ -70,19 +69,14 @@
 
       if (p < 1) { requestAnimationFrame(step); return; }
 
-      // The final bite lands on one small READY beat, then the existing
-      // black layer fades so the Hero can assemble underneath it.
-      if (status) { status.textContent = "READY."; }
-      loader.classList.add("is-ready");
+      // The final bite fades into the hero.
+      loader.classList.add("is-done");
       try { sessionStorage.setItem("sp-seen-v14", "1"); } catch (e) {}
       setTimeout(function () {
-        loader.classList.add("is-done");
-        setTimeout(function () {
-          root.classList.remove("sp-loading");
-          loader.setAttribute("hidden", "");
-          done();
-        }, 420);
-      }, 220);
+        root.classList.remove("sp-loading");
+        loader.setAttribute("hidden", "");
+        done();
+      }, 380);
     });
   }
 
@@ -90,52 +84,17 @@
      2. HERO ENTRANCE — eyebrow, headline lines, copy, portrait
      ========================================================== */
   function heroEntrance() {
-    var hero = document.querySelector(".hero");
     var title = document.querySelector(".hero-title");
     var character = document.querySelector(".hero-character");
-    var role = document.querySelector(".role-strip");
-    var sub = document.querySelector(".hero-sub");
-    var actions = document.querySelector(".hero-actions");
-    var proof = document.querySelector(".proof-strip");
-    var header = document.querySelector(".site-header");
-
-    if (!hero) {
-      root.classList.remove("sp-hero-waiting");
-      return;
-    }
-
-    hero.classList.add("is-sequencing");
-
-    if (reduced) {
-      [role, title, character, sub, actions, proof, header].forEach(function (el) {
-        if (el) { el.classList.add("is-hero-in", "is-in"); }
-      });
-      root.classList.remove("sp-hero-waiting");
-      return;
-    }
-
-    function arrive(el, delay, extra) {
-      if (!el) { return; }
-      setTimeout(function () {
-        el.classList.add("is-hero-in");
-        if (extra) { el.classList.add(extra); }
-      }, delay);
-    }
-
-    // Background is already visible beneath the fading black loader.
-    arrive(role, 90);
-    arrive(title, 240, "is-in");
-    arrive(character, 520, "is-in");
-    arrive(sub, 930);
-    arrive(actions, 1080);
-    arrive(proof, 1180);
-    arrive(header, 1280);
 
     if (title) {
+      requestAnimationFrame(function () { title.classList.add("is-in"); });
       // Once the lines have landed, drop the clip so hover strokes can breathe.
-      setTimeout(function () { title.classList.remove("is-masked"); }, 1280);
+      setTimeout(function () { title.classList.remove("is-masked"); }, 1200);
     }
-    setTimeout(function () { root.classList.remove("sp-hero-waiting"); }, 1280);
+    if (character) {
+      setTimeout(function () { character.classList.add("is-in"); }, reduced ? 0 : 420);
+    }
   }
 
   /* ==========================================================
@@ -717,307 +676,52 @@
   }
 
   /* ==========================================================
-     10. MUSIC — legal Spotify embed, user gesture only
-     The official embed is created lazily after Play. No copyrighted audio
-     file is stored in the repository and no audible autoplay is possible.
+     10. MUSIC — never autoplays, remembers the session choice
      ========================================================== */
   function music() {
-    var player = document.querySelector(".player[data-audio-provider='spotify']");
+    var player = document.querySelector(".player");
     var button = document.querySelector(".ctrl-main");
     var state = document.querySelector(".music-state");
-    var navControl = document.querySelector(".nav-music");
-    var host = document.getElementById("spotify-embed");
-    if (!player || !button || !state || !host) { return; }
+    if (!player || !button || !state) { return; }
 
     var stateText = state.querySelector(".music-label");
-    var bar = player.querySelector(".player-progress span");
-    var timeNow = player.querySelector(".player-time span");
-    var navTime = navControl ? navControl.querySelector(".nav-music-time") : null;
-    var navIcon = navControl ? navControl.querySelector(".nav-music-icon") : null;
-    var trackId = player.getAttribute("data-track-id");
-    var startMs = parseInt(player.getAttribute("data-start-ms"), 10) || 0;
-    var controller = null;
+    var bar = document.querySelector(".player-progress span");
     var playing = false;
-    var requested = false;
-    var hasStarted = false;
-    var apiRequested = false;
+    var pos = 0.42;
+    var timer = null;
 
-    function format(ms) {
-      var seconds = Math.max(0, Math.floor((ms || 0) / 1000));
-      var minutes = Math.floor(seconds / 60);
-      return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds % 60 < 10 ? "0" : "") + (seconds % 60);
-    }
-
-    function remember() {
-      try {
-        sessionStorage.setItem("sp-music-started", hasStarted ? "1" : "0");
-        sessionStorage.setItem("sp-music-state", playing ? "playing" : "paused");
-      } catch (e) {}
-    }
-
-    function paint(label) {
+    function paint() {
       player.classList.toggle("is-playing", playing);
       state.classList.toggle("is-playing", playing);
       button.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
       button.setAttribute("aria-pressed", String(playing));
-      button.setAttribute("aria-label", playing ? "Pause Bye Bye Bye" : "Play Bye Bye Bye");
+      button.setAttribute("aria-label", playing ? "Pause the focus track" : "Play the focus track");
       button.setAttribute("data-cursor", playing ? "PAUSE ♪" : "PLAY ♪");
-      if (stateText) { stateText.textContent = label || (playing ? "MUSIC ON" : "MUSIC OFF"); }
-      if (navControl) {
-        navControl.hidden = !hasStarted;
-        navControl.setAttribute("aria-label", playing ? "Pause Bye Bye Bye" : "Play Bye Bye Bye");
-      }
-      if (navIcon) { navIcon.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;"; }
+      if (stateText) { stateText.textContent = playing ? "MUSIC ON" : "MUSIC OFF"; }
     }
 
-    function updatePlayback(data) {
-      if (!data) { return; }
-      playing = !data.isPaused;
-      hasStarted = true;
-      var position = data.position || startMs;
-      var duration = data.duration || 200000;
-      if (bar) { bar.style.transform = "scaleX(" + clamp(position / duration, 0, 1).toFixed(4) + ")"; }
-      if (timeNow) { timeNow.textContent = format(position); }
-      if (navTime) { navTime.textContent = format(position); }
-      paint();
-      remember();
-    }
-
-    function startRequestedTrack() {
-      if (!controller || !requested) { return; }
-      requested = false;
-      hasStarted = true;
-      try { if (controller.setVolume) { controller.setVolume(0.18); } } catch (e) {}
-      try { controller.play(); } catch (e) { paint("USE SPOTIFY PLAYER"); }
-      setTimeout(function () {
-        try { if (controller && controller.seek) { controller.seek(startMs); } } catch (e) {}
-      }, 520);
-      paint("STARTING…");
-      remember();
-    }
-
-    function connectSpotify() {
-      if (apiRequested) { return; }
-      apiRequested = true;
-      window.onSpotifyIframeApiReady = function (IFrameAPI) {
-        var options = {
-          width: "100%",
-          height: 80,
-          uri: "spotify:track:" + trackId
-        };
-        IFrameAPI.createController(host, options, function (nextController) {
-          controller = nextController;
-          if (controller.addListener) {
-            controller.addListener("ready", startRequestedTrack);
-            controller.addListener("playback_update", function (event) { updatePlayback(event && event.data); });
-          }
-          startRequestedTrack();
-        });
-      };
-      var script = document.createElement("script");
-      script.src = "https://open.spotify.com/embed/iframe-api/v1";
-      script.async = true;
-      script.onerror = function () { requested = false; paint("OPEN IN SPOTIFY"); };
-      document.head.appendChild(script);
+    function step() {
+      pos += 0.004;
+      if (pos > 1) { pos = 0; }
+      if (bar) { bar.style.transform = "scaleX(" + pos.toFixed(3) + ")"; }
     }
 
     function toggle() {
-      hasStarted = true;
-      if (!controller) {
-        requested = true;
-        paint("CONNECTING…");
-        remember();
-        connectSpotify();
-        return;
-      }
-      try {
-        if (controller.togglePlay) { controller.togglePlay(); }
-        else if (playing) { controller.pause(); }
-        else { controller.play(); }
-      } catch (e) { paint("USE SPOTIFY PLAYER"); }
+      playing = !playing;
+      try { sessionStorage.setItem("sp-music", playing ? "on" : "off"); } catch (e) {}
+      paint();
+      clearInterval(timer);
+      if (playing && !reduced) { timer = setInterval(step, 600); }
     }
 
     button.addEventListener("click", function (e) { e.preventDefault(); toggle(); });
-    if (navControl) { navControl.addEventListener("click", function (e) { e.preventDefault(); toggle(); }); }
 
-    // Remember that the visitor intentionally used music, but never resume
-    // audibly after reload—the next Play remains a fresh user gesture.
-    try { hasStarted = sessionStorage.getItem("sp-music-started") === "1"; } catch (e) {}
-    if (timeNow) { timeNow.textContent = format(startMs); }
-    if (navTime) { navTime.textContent = format(startMs); }
-    if (bar) { bar.style.transform = "scaleX(0.18)"; }
-    paint();
-  }
-
-  /* ==========================================================
-     10b. STORY THREAD — one visual thread, used sparingly
-     ========================================================== */
-  function storyThreads() {
-    var lines = [].slice.call(document.querySelectorAll(".story-thread"));
-    var footerEl = document.querySelector(".site-footer");
-    if (reduced || !("IntersectionObserver" in window)) {
-      lines.forEach(function (line) { line.classList.add("is-drawn"); });
-      if (footerEl) { footerEl.classList.add("is-threaded"); }
-      return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) { return; }
-        entry.target.classList.add("is-drawn");
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.34 });
-    lines.forEach(function (line) { observer.observe(line); });
-
-    if (footerEl) {
-      var footerObserver = new IntersectionObserver(function (entries) {
-        if (entries[0] && entries[0].isIntersecting) {
-          footerEl.classList.add("is-threaded");
-          footerObserver.disconnect();
-        }
-      }, { threshold: 0.22 });
-      footerObserver.observe(footerEl);
-    }
-  }
-
-  /* ==========================================================
-     10c. DESIGNER'S DESK — four restrained physical depth planes
-     ========================================================== */
-  function deskParallax() {
-    var scene = document.querySelector("[data-parallax-scene='desk']");
-    var objects = scene ? [].slice.call(scene.querySelectorAll(".desk-object[data-depth]")) : [];
-    if (!scene || !objects.length || reduced || !desktop()) { return; }
-    root.classList.add("sp-motion-ready");
-
-    var active = false;
-    var queued = false;
-    var observer = new IntersectionObserver(function (entries) {
-      active = !!(entries[0] && entries[0].isIntersecting);
-      if (active) { schedule(); }
-    }, { rootMargin: "35% 0px 35% 0px" });
-    observer.observe(scene);
-
-    function render() {
-      queued = false;
-      if (!active) { return; }
-      var rect = scene.getBoundingClientRect();
-      var travel = window.innerHeight + rect.height;
-      var progress = clamp((window.innerHeight - rect.top) / travel, 0, 1);
-      var centered = progress - 0.5;
-      objects.forEach(function (object) {
-        var depth = parseFloat(object.getAttribute("data-depth")) || 0;
-        var y = clamp(centered * depth * -72, -32, 32);
-        var x = clamp(centered * depth * 14, -7, 7);
-        object.style.setProperty("--desk-y", y.toFixed(2) + "px");
-        object.style.setProperty("--desk-x", x.toFixed(2) + "px");
-      });
-    }
-
-    function schedule() {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(render);
-    }
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    schedule();
-  }
-
-  /* ==========================================================
-     10d. ORIGIN STORY — one cinematic pinned chapter, never a trap
-     ========================================================== */
-  function originStory() {
-    var scroller = document.querySelector("[data-origin-story]");
-    if (!scroller || reduced || !desktop()) { return; }
-    var curiosity = scroller.querySelector(".origin-curiosity");
-    var design = scroller.querySelector(".origin-design");
-    var panels = [].slice.call(scroller.querySelectorAll(".origin-panel"));
-    if (!curiosity || !design || panels.length !== 3) { return; }
-    root.classList.add("sp-cinematic");
-
-    var active = false;
-    var queued = false;
-    var observer = new IntersectionObserver(function (entries) {
-      active = !!(entries[0] && entries[0].isIntersecting);
-      if (active) { schedule(); }
-    }, { rootMargin: "20% 0px 20% 0px" });
-    observer.observe(scroller);
-
-    function panelAmount(progress, center) {
-      return clamp(1 - Math.abs(progress - center) / 0.29, 0, 1);
-    }
-
-    function render() {
-      queued = false;
-      if (!active) { return; }
-      var rect = scroller.getBoundingClientRect();
-      var range = Math.max(1, rect.height - window.innerHeight);
-      var progress = clamp(-rect.top / range, 0, 1);
-
-      curiosity.style.transform = "translate3d(0," + (-30 * progress).toFixed(2) + "px,0) scale(" + (1 - .13 * progress).toFixed(3) + ")";
-      curiosity.style.opacity = (1 - .58 * progress).toFixed(3);
-      design.style.transform = "translate3d(0," + (34 * (1 - progress)).toFixed(2) + "px,0) scale(" + (.82 + .18 * progress).toFixed(3) + ")";
-      design.style.opacity = (.2 + .8 * progress).toFixed(3);
-
-      var centers = [0, 0.50, 1];
-      var currentIndex = 0;
-      var currentAmount = -1;
-      panels.forEach(function (panel, i) {
-        var amount = panelAmount(progress, centers[i]);
-        var offset = (centers[i] - progress) * 104;
-        var scale = .91 + amount * .09;
-        panel.style.opacity = amount.toFixed(3);
-        panel.style.transform = "translate3d(" + offset.toFixed(2) + "px," + ((1 - amount) * 24).toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
-        if (amount > currentAmount) { currentAmount = amount; currentIndex = i; }
-      });
-      panels.forEach(function (panel, i) { panel.classList.toggle("is-current", i === currentIndex); });
-    }
-
-    function schedule() {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(render);
-    }
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    schedule();
-  }
-
-  /* The story line settles into the proof timeline after the panels. */
-  function timelineStory() {
-    var timeline = document.querySelector(".origin-proof .timeline");
-    if (!timeline || reduced) { return; }
-    var items = [].slice.call(timeline.querySelectorAll(".timeline-item"));
-    var active = false;
-    var queued = false;
-    var observer = new IntersectionObserver(function (entries) {
-      active = !!(entries[0] && entries[0].isIntersecting);
-      if (active) { schedule(); }
-    }, { rootMargin: "20% 0px 20% 0px" });
-    observer.observe(timeline);
-
-    function render() {
-      queued = false;
-      if (!active) { return; }
-      var rect = timeline.getBoundingClientRect();
-      var progress = clamp((window.innerHeight * .68 - rect.top) / rect.height, 0, 1);
-      timeline.style.setProperty("--timeline-progress", progress.toFixed(3));
-      var activeLine = window.innerHeight * .62;
-      items.forEach(function (item) {
-        var itemRect = item.getBoundingClientRect();
-        item.classList.toggle("is-active", itemRect.top <= activeLine && itemRect.bottom >= window.innerHeight * .18);
-      });
-    }
-
-    function schedule() {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(render);
-    }
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
-    schedule();
+    // Restore the choice made earlier in this session — never on first load.
+    try {
+      if (sessionStorage.getItem("sp-music") === "on") { toggle(); }
+    } catch (e) {}
+    if (!playing) { paint(); }
+    if (bar) { bar.style.transform = "scaleX(" + pos + ")"; }
   }
 
   /* ==========================================================
@@ -1080,10 +784,6 @@
     try { headlineChars(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
-    try { storyThreads(); } catch (e) {}
-    try { deskParallax(); } catch (e) {}
-    try { originStory(); } catch (e) {}
-    try { timelineStory(); } catch (e) {}
     try { footer(); } catch (e) {}
     try { easterEggs(); } catch (e) {}
   }

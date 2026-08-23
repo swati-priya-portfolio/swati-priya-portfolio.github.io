@@ -16,16 +16,15 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=11" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=12" />
+  <link rel="stylesheet" href="motion.css?v=11" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
     (function () {
       var d = document.documentElement;
       d.classList.add("sp-js");
-      d.classList.add("sp-hero-waiting");
       try {
         if (!sessionStorage.getItem("sp-seen-v14") &&
             !matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -35,7 +34,6 @@
       /* Failsafe: if motion.js never runs, nothing stays hidden. */
       setTimeout(function () {
         d.classList.remove("sp-loading");
-        d.classList.remove("sp-hero-waiting");
         var t = document.querySelector(".hero-title");
         var c = document.querySelector(".hero-character");
         if (t) { t.classList.add("is-in"); }
@@ -66,7 +64,7 @@
         <span class="spider-snack" style="--i:5"><i></i></span>
       </div>
     </div>
-    <p class="sp-loader-sub"><span class="sp-loader-status">SPINNING THE NEXT EPISODE&hellip;</span></p>
+    <p class="sp-loader-sub">SPINNING THE NEXT EPISODE&hellip;</p>
     <p class="sp-loader-caption">Good stories are worth the wait.</p>
   </div>
 
@@ -104,12 +102,6 @@
         <li><a class="nav-link" href="#behind">BEHIND THE SCREENS</a></li>
         <li><a class="nav-link" href="#about">ABOUT</a></li>
       </ul>
-
-      <button class="nav-music" type="button" hidden aria-label="Pause Bye Bye Bye">
-        <span aria-hidden="true">&#9835;</span>
-        <span class="nav-music-time">00:36</span>
-        <span class="nav-music-icon" aria-hidden="true">&#10074;&#10074;</span>
-      </button>
 
       <!-- Change your contact link here -->
       <a class="btn btn-primary nav-cta" href="mailto:swatipriya4422@gmail.com" data-cursor="WRITE TO ME &#8599;">
@@ -224,9 +216,6 @@
         <li class="proof-item"><strong>6,500+</strong><span>Institution network</span></li>
         <li class="proof-item"><strong>0&#8594;1</strong><span>Category launched</span></li>
       </ul>
-      <svg class="story-thread story-thread-hero" viewBox="0 0 320 44" aria-hidden="true">
-        <path d="M4 24C58 8 96 39 148 22C198 5 242 35 316 16" />
-      </svg>
     </section>
 
     <!-- ================= CASE STUDIES ================= -->
@@ -237,12 +226,7 @@
           <p class="eyebrow">CASE STUDIES</p>
           <p class="eyebrow-note">START HERE &middot; 0&#8594;1 STORY &middot; ~7 MIN &#8595;</p>
         </div>
-        <div class="case-title-wrap">
-          <h2 class="section-title">Pick an episode.</h2>
-          <svg class="story-thread story-thread-cases" viewBox="0 0 430 84" aria-hidden="true">
-            <path d="M10 48C78 8 314 5 409 39C449 54 386 76 316 70" />
-          </svg>
-        </div>
+        <h2 class="section-title">Pick an episode.</h2>
       </div>
 
       <p class="sp-egg" style="left: var(--gutter); top: 46px;">KEEP GOING &#8595;</p>
@@ -288,122 +272,125 @@
       </div>
     </section>
 
-    <!-- ================= BEHIND THE SCREENS / DESIGNER'S DESK ================= -->
-    <section class="behind desk-section" id="behind">
+    <!-- ================= BEHIND THE SCREENS ================= -->
+    <section class="behind" id="behind">
       <div class="tear tear-b paper-tear" aria-hidden="true"></div>
-      <div class="desk-camera" data-parallax-scene="desk">
-        <div class="desk-surface">
-          <div class="desk-object desk-title-object" data-depth="0.32">
-            <header class="desk-paper desk-title-paper">
-              <p class="eyebrow eyebrow-mono">BEHIND THE SCREENS</p>
-              <h2>A little life<br /><span class="accent">behind</span> the work.</h2>
-              <p class="desk-intro">The books, sounds and small reminders that quietly shape how I design.</p>
-              <p class="desk-annotation">the things currently living rent-free in my head &#8594;</p>
-            </header>
-          </div>
-
-          <div class="desk-object desk-books-object" data-depth="0.62">
-            <article class="desk-piece desk-books" data-cursor="GOOD ONE">
-              <h3>CURRENTLY READING</h3>
-              <div class="board-books">
-                <img class="book book-3" src="images/book-back-2.png" alt="" loading="lazy" />
-                <img class="book book-2" src="images/book-back-1.png" alt="" loading="lazy" />
-                <img class="book book-1" src="images/book-inspired.png" alt="Book cover: Inspired" loading="lazy" />
-              </div>
-              <p>Great products start with discovery and deep empathy.</p>
-            </article>
-          </div>
-
-          <div class="desk-object desk-music-object" data-depth="0.58">
-            <article class="desk-piece desk-music" data-cursor="PLAY &#9834;">
-              <h3>MUSIC WHILE DESIGNING</h3>
-              <div class="player" data-audio-provider="spotify" data-track-id="62bOmKYxYg7dhrC6gH9vFn" data-start-ms="36000">
-                <img class="player-art" src="images/album-art.png" alt="Bye Bye Bye album artwork" loading="lazy" />
-                <div class="player-meta">
-                  <p class="player-track">Bye Bye Bye</p>
-                  <p class="player-mode">NSYNC &middot; Focus Mode</p>
-                  <div class="waveform" aria-hidden="true"></div>
-                </div>
-                <div class="player-progress" aria-hidden="true"><span></span></div>
-                <p class="player-time" aria-live="polite"><span>00:36</span><span>03:20</span></p>
-                <div class="player-controls">
-                  <button type="button" class="ctrl ctrl-main" aria-pressed="false"
-                    aria-label="Play Bye Bye Bye" data-cursor="PLAY &#9834;">&#9654;</button>
-                  <p class="music-state">
-                    <span class="music-label">MUSIC OFF</span>
-                    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                  </p>
-                </div>
-                <div class="spotify-shell" id="spotify-embed" aria-live="polite"></div>
-                <a class="spotify-link" href="https://open.spotify.com/track/62bOmKYxYg7dhrC6gH9vFn" target="_blank" rel="noopener">OPEN IN SPOTIFY &#8599;</a>
-              </div>
-              <p class="desk-caption">Cuts the noise. Keeps me in flow.</p>
-            </article>
-          </div>
-
-          <div class="desk-object desk-obsession-object" data-depth="0.68">
-            <article class="desk-piece desk-polaroid" data-cursor="CURRENT OBSESSION">
-              <p class="desk-label">CURRENT OBSESSION</p>
-              <div class="desk-polaroid-frame">
-                <p>AI-assisted design systems + human-centred experiences</p>
-                <svg class="star" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 4l5.3 11.6L40 17.1l-9.4 8.5 2.6 12.6L22 31.8 10.8 38.2l2.6-12.6L4 17.1l12.7-1.5z" /></svg>
-              </div>
-              <p>Exploring where automation supports&mdash;not replaces&mdash;empathy.</p>
-            </article>
-          </div>
-
-          <div class="desk-object desk-reminders-object" data-depth="0.54">
-            <article class="desk-piece desk-reminders" data-cursor="NOTE TO SELF">
-              <h3>LITTLE REMINDERS</h3>
-              <div class="reminders">
-                <div class="reminder"><span aria-hidden="true">&#9734;</span><p>Start with the user,<br />not the solution.</p></div>
-                <div class="reminder"><span aria-hidden="true">&#9825;</span><p>Clarity is the kindest<br />thing you can design.</p></div>
-                <div class="reminder"><span aria-hidden="true">&#9889;</span><p>Progress over<br />perfection. Always.</p></div>
-              </div>
-            </article>
-          </div>
-
-          <div class="desk-object desk-tools-object" data-depth="0.88" aria-hidden="true">
-            <span class="desk-pencil"></span><span class="desk-paperclip"></span>
-          </div>
-          <svg class="story-thread story-thread-desk" viewBox="0 0 540 120" aria-hidden="true"><path d="M8 82C115 18 218 115 322 53C392 11 456 34 529 15" /></svg>
+      <div class="behind-head sp-reveal">
+        <div>
+          <p class="eyebrow eyebrow-mono">BEHIND THE SCREENS</p>
+          <h2 class="section-title">A little life<br /><span class="accent">behind</span> the work.</h2>
         </div>
+        <p class="behind-intro">
+          The books, sounds and small reminders that quietly shape how I design.
+        </p>
+      </div>
+
+      <p class="sp-egg" style="right: var(--gutter); top: 60px;">CURRENT RABBIT HOLE &#8594;</p>
+
+      <div class="board-grid">
+        <!-- Board 1 — Currently reading -->
+        <article class="board sp-settle" data-cursor="GOOD ONE">
+          <h3 class="board-title">CURRENTLY READING</h3>
+          <div class="board-books">
+            <img class="book book-3" src="images/book-back-2.png" alt="" />
+            <img class="book book-2" src="images/book-back-1.png" alt="" />
+            <img class="book book-1" src="images/book-inspired.png" alt="Book cover: Inspired" />
+            <span class="book-hint" aria-hidden="true">WHAT I TOOK FROM THIS &#8594;</span>
+          </div>
+          <p class="board-note board-note-side">
+            Great products start with discovery and deep empathy.
+            <svg class="squiggle" viewBox="0 0 86 18" aria-hidden="true">
+              <path d="M2 11c14-6 30-6 44-2s26 4 38-2" />
+            </svg>
+          </p>
+        </article>
+
+        <!-- Board 2 — Music -->
+        <article class="board sp-settle" data-cursor="PLAY &#9834;">
+          <h3 class="board-title">MUSIC WHILE DESIGNING</h3>
+          <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true">
+            <path d="M7 26v-6a14 14 0 0 1 28 0v6" />
+            <rect x="3" y="24" width="8" height="13" rx="4" />
+            <rect x="31" y="24" width="8" height="13" rx="4" />
+          </svg>
+
+          <div class="player">
+            <img class="player-art" src="images/album-art.png" alt="" />
+            <div class="player-meta">
+              <p class="player-track">Bye Bye Bye</p>
+              <p class="player-mode">Focus Mode</p>
+              <div class="waveform" aria-hidden="true"></div>
+            </div>
+            <div class="player-progress" aria-hidden="true"><span></span></div>
+            <div class="player-controls">
+              <span class="ctrl" aria-hidden="true">&#9198;</span>
+              <!-- Real control. Never autoplays; remembers the session choice. -->
+              <button type="button" class="ctrl ctrl-main" aria-pressed="false"
+                aria-label="Play the focus track" data-cursor="PLAY &#9834;">&#9654;</button>
+              <span class="ctrl" aria-hidden="true">&#9197;</span>
+            </div>
+            <p class="music-state">
+              <span aria-hidden="true">&#9834;</span>
+              <span class="music-label">MUSIC OFF</span>
+              <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            </p>
+          </div>
+
+          <p class="board-note">Cuts the noise. Keeps me in flow.</p>
+          <p class="board-notes-glyph" aria-hidden="true">&#9834; &#9834;</p>
+        </article>
+
+        <!-- Board 3 — Current obsession -->
+        <article class="board sp-settle" data-cursor="CURRENT OBSESSION">
+          <h3 class="board-title">CURRENT OBSESSION</h3>
+          <div class="sticky-wrap">
+            <span class="pin" aria-hidden="true"></span>
+            <div class="sticky">
+              <p>AI-assisted design systems + human-centred experiences</p>
+              <svg class="star" viewBox="0 0 44 44" aria-hidden="true">
+                <path d="M22 4l5.3 11.6L40 17.1l-9.4 8.5 2.6 12.6L22 31.8 10.8 38.2l2.6-12.6L4 17.1l12.7-1.5z" />
+              </svg>
+            </div>
+          </div>
+          <p class="board-note">
+            Exploring where automation supports&mdash;not replaces&mdash;empathy.
+            <svg class="squiggle squiggle-wide" viewBox="0 0 108 12" aria-hidden="true">
+              <path d="M2 7c18-5 38-5 56-1s32 3 48-2" />
+            </svg>
+          </p>
+        </article>
+
+        <!-- Board 4 — Little reminders -->
+        <article class="board sp-settle" data-cursor="NOTE TO SELF">
+          <h3 class="board-title">LITTLE REMINDERS</h3>
+          <div class="reminders">
+            <div class="reminder">
+              <svg viewBox="0 0 38 38" aria-hidden="true">
+                <path d="M19 3l4.6 10.1 11 1.3-8.1 7.4 2.2 10.8L19 27.1 9.3 32.6l2.2-10.8-8.1-7.4 11-1.3z" />
+              </svg>
+              <p>Start with the user,<br />not the solution.</p>
+            </div>
+            <div class="reminder">
+              <svg viewBox="0 0 38 38" aria-hidden="true">
+                <path d="M19 32S4 23 4 14a8 8 0 0 1 15-4 8 8 0 0 1 15 4c0 9-15 18-15 18z" />
+              </svg>
+              <p>Clarity is the kindest<br />thing you can design.</p>
+            </div>
+            <div class="reminder">
+              <svg viewBox="0 0 38 38" aria-hidden="true">
+                <path d="M21 3L7 22h10l-2 13 14-19H19z" />
+              </svg>
+              <p>Progress over<br />perfection. Always.</p>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- ================= ORIGIN STORY / ABOUT ================= -->
-    <section class="about origin-section" id="about">
+    <!-- ================= ABOUT ================= -->
+    <section class="about" id="about">
       <div class="tear tear-c paper-tear" aria-hidden="true"></div>
-      <div class="origin-scroll" data-origin-story>
-        <div class="origin-stage">
-          <p class="origin-kicker">CHAPTER 02 &middot; THE ORIGIN STORY</p>
-          <h2 class="sr-only">Curiosity came first. Design followed.</h2>
-          <div class="origin-depth-copy" aria-hidden="true">
-            <p class="origin-curiosity">CURIOSITY<br />CAME FIRST.</p>
-            <p class="origin-design"><span>DESIGN</span><br />FOLLOWED.</p>
-          </div>
-          <div class="origin-panels">
-            <article class="origin-panel" data-panel="1">
-              <span class="panel-number">01</span>
-              <svg viewBox="0 0 180 140" aria-hidden="true"><path d="M48 94C28 58 45 20 88 20c40 0 62 27 49 58-8 19-30 20-31 39M106 127h1"/><path class="accent-stroke" d="M23 113c39 16 80 18 137 1"/></svg>
-              <h3>I WAS ALWAYS<br />ASKING WHY.</h3>
-            </article>
-            <article class="origin-panel" data-panel="2">
-              <span class="panel-number">02</span>
-              <svg viewBox="0 0 180 140" aria-hidden="true"><rect x="24" y="22" width="132" height="92" rx="8"/><path d="M38 44h50M38 61h84M38 80h35M112 94l13-20 15 20z"/><path class="accent-stroke" d="M42 124c30-8 65-8 98 0"/></svg>
-              <h3>THEN I REALISED<br />&ldquo;WHY&rdquo; WAS A JOB.</h3>
-            </article>
-            <article class="origin-panel" data-panel="3">
-              <span class="panel-number">03</span>
-              <svg viewBox="0 0 180 140" aria-hidden="true"><path d="M22 94h111M112 73l24 21-24 21M40 94V40h72"/><circle class="accent-stroke" cx="112" cy="40" r="18"/><path class="accent-stroke" d="M104 40l6 6 11-13"/></svg>
-              <h3>THEN I STARTED<br />SHIPPING ANSWERS.</h3>
-            </article>
-          </div>
-          <p class="origin-scroll-note">SCROLL TO TURN THE PAGE &#8595;</p>
-        </div>
-      </div>
-
-      <div class="about-grid origin-proof">
+      <div class="about-grid">
         <!-- Left: polaroid + tools -->
         <div class="polaroid-col">
           <p class="sp-egg" style="right: 0; top: 8px;">MY AMAZON CART IS NOT OKAY.</p>
@@ -436,11 +423,18 @@
           </div>
         </div>
 
-        <!-- Right: professional timeline after the origin panels -->
+        <!-- Right: origin story + timeline -->
         <div class="story-col">
-          <div class="timeline-proof-head">
-            <div><p class="eyebrow">WHERE CURIOSITY LED</p><h2 class="story-title">THE WORK<br /><span class="accent">THAT FOLLOWED.</span></h2></div>
-            <div class="thought-bubble"><p>I ask why.<br />I listen.<br />I observe.<br /><span class="accent">Then I design.</span></p></div>
+          <div class="story-head">
+            <div>
+              <p class="eyebrow">THE ORIGIN STORY</p>
+              <h2 class="story-title">
+                <span class="sp-word">CURIOSITY</span> FIRST.<br /><span class="sp-word has-grid accent underlined">DESIGN</span> FOLLOWED.
+              </h2>
+            </div>
+            <div class="thought-bubble">
+              <p>I ask why.<br />I listen.<br />I observe.<br /><span class="accent">Then I design.</span></p>
+            </div>
           </div>
 
           <p class="story-body">
@@ -616,7 +610,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=12"></script>
-  <script src="motion.js?v=12"></script>
+  <script src="script.js?v=11"></script>
+  <script src="motion.js?v=11"></script>
 </body>
 </html>

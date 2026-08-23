@@ -1143,96 +1143,7 @@
 @media (max-width: 1079px), (pointer: coarse) { .sp-egg { display: none; } }
 
 /* ============================================================
-   15. CONNECTED STORY CHOREOGRAPHY
-   ============================================================ */
-/* One restrained loader beat: the last bite resolves to READY, then the
-   existing black layer fades. The Spider-Man artwork/timing remains intact. */
-.sp-loader-status { display: inline-block; transition: color 180ms ease, transform 220ms var(--ep), letter-spacing 220ms var(--ep); }
-.sp-loader.is-ready .sp-loader-status {
-  color: var(--accent);
-  transform: scale(1.045);
-  letter-spacing: 2px;
-  animation: sp-ready-pulse 360ms ease-out 1;
-}
-@keyframes sp-ready-pulse {
-  0% { text-shadow: 0 0 0 rgba(255,197,61,0); }
-  48% { text-shadow: 0 0 20px rgba(255,197,61,.42); }
-  100% { text-shadow: 0 0 0 rgba(255,197,61,0); }
-}
-
-/* Deliberate Hero assembly. Only active while motion.js sequences the entry. */
-.sp-js.sp-hero-waiting .site-header { opacity: 0; transform: translateY(-10px); }
-.sp-js.sp-hero-waiting .site-header.is-hero-in { opacity: 1; transform: none; transition: opacity 520ms var(--ep), transform 560ms var(--ep); }
-.sp-js .hero.is-sequencing .reveal { animation: none; opacity: 0; transform: translateY(12px); }
-.sp-js .hero.is-sequencing .reveal.is-hero-in { opacity: 1; transform: none; transition: opacity 520ms var(--ep), transform 620ms var(--ep); }
-.sp-js .hero.is-sequencing .hero-title { transform: none; }
-.sp-js .hero.is-sequencing .hero-title.is-hero-in { opacity: 1; }
-.sp-js .hero.is-sequencing .proof-strip { opacity: 0; transform: translateY(10px); }
-.sp-js .hero.is-sequencing .proof-strip.is-hero-in { opacity: 1; transform: none; transition: opacity 520ms var(--ep), transform 600ms var(--ep); }
-
-/* The yellow thread is quiet and only draws when its chapter arrives. */
-.sp-js .story-thread path { stroke-dasharray: 760; stroke-dashoffset: 760; }
-.sp-js .story-thread.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 980ms var(--ep); }
-
-/* Desk depth moves the object wrapper; tactile hover lives on the paper itself. */
-.sp-motion-ready .desk-object {
-  transform: translate3d(var(--desk-x, 0px), var(--desk-y, 0px), 0);
-  will-change: transform;
-}
-.sp-js .desk-piece,
-.sp-js .desk-paper { transition: transform 440ms var(--ep), box-shadow 440ms var(--ep); }
-@media (pointer: fine) and (min-width: 1080px) {
-  .sp-js .desk-books:hover { transform: translateY(-6px) rotate(.4deg); box-shadow: 0 24px 42px rgba(0,0,0,.42); }
-  .sp-js .desk-music:hover { transform: translateY(-5px) rotate(.2deg); box-shadow: 0 24px 42px rgba(0,0,0,.42); }
-  .sp-js .desk-polaroid:hover { transform: translateY(-5px) rotate(0deg); box-shadow: 0 24px 42px rgba(0,0,0,.4); }
-  .sp-js .desk-reminders:hover { transform: translateY(-4px) rotate(1.1deg); }
-  .sp-js .desk-title-paper:hover { transform: translateY(-3px) rotate(-.5deg); }
-}
-.sp-js .desk-reminders .reminder { transition: transform 300ms var(--ep), box-shadow 300ms var(--ep); }
-.sp-js .desk-reminders .reminder:hover { transform: translateY(-3px) rotate(0deg); box-shadow: 0 8px 13px rgba(0,0,0,.34); }
-.sp-js .desk-pencil { transition: transform 260ms var(--ep); }
-.sp-js .desk-tools-object:hover .desk-pencil { transform: translate3d(3px,-2px,0) rotate(-7deg); }
-.sp-js .player-art { transition: transform 700ms var(--ep); }
-.sp-js .player.is-playing .player-art { animation: sp-record-turn 8s linear infinite; border-radius: 50%; }
-@keyframes sp-record-turn { to { transform: rotate(360deg); } }
-
-/* Desktop Origin Story: one compact pinned chapter, then the proof timeline. */
-.sp-cinematic .origin-scroll { height: 178vh; min-height: 1120px; }
-.sp-cinematic .origin-stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  min-height: 720px;
-  overflow: hidden;
-  padding-top: clamp(84px, 11vh, 122px);
-}
-.sp-cinematic .origin-depth-copy { position: absolute; inset: 17% 0 auto; margin: 0; }
-.sp-cinematic .origin-curiosity,
-.sp-cinematic .origin-design { will-change: transform, opacity; }
-.sp-cinematic .origin-panels { position: absolute; inset: 48% 0 auto; display: block; margin: 0; }
-.sp-cinematic .origin-panel {
-  position: absolute;
-  left: 50%; top: 0;
-  width: min(520px, 44vw);
-  min-height: 290px;
-  margin-left: min(-260px, -22vw);
-  opacity: 0;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-.sp-cinematic .origin-panel.is-current { pointer-events: auto; }
-.sp-cinematic .origin-scroll-note { position: absolute; left: 0; right: 0; bottom: 28px; margin: 0; }
-
-.sp-js .timeline::before { transition: height 220ms linear; }
-.sp-js .timeline-item { opacity: .6; }
-.sp-js .timeline-item.is-active { opacity: 1; transition: opacity 420ms var(--ep), transform 420ms var(--ep); }
-
-/* Footer receives the same line language as the previous chapters. */
-.sp-js .footer-title .underlined { background-size: 0 3px, 0 2px; transition: background-size 900ms var(--ep); }
-.sp-js .site-footer.is-threaded .footer-title .underlined { background-size: 100% 3px, 88% 2px; }
-
-/* ============================================================
-   16. TOUCH BEHAVIOUR
+   15. TOUCH BEHAVIOUR
    Hover choreography is desktop-only; touch gets press states.
    ============================================================ */
 @media (pointer: coarse) {
@@ -1245,7 +1156,7 @@
 }
 
 /* ============================================================
-   17. REDUCED MOTION
+   16. REDUCED MOTION
    Everything expressive switches off. Nothing becomes unusable.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -1279,11 +1190,4 @@
   }
   .sp-js .case-track { height: auto !important; }
   .sp-js .case-stage { position: static !important; }
-  .sp-js.sp-hero-waiting .site-header,
-  .sp-js .hero.is-sequencing .reveal,
-  .sp-js .hero.is-sequencing .proof-strip { opacity: 1 !important; transform: none !important; }
-  .sp-js .story-thread path { stroke-dashoffset: 0 !important; }
-  .sp-motion-ready .desk-object { transform: none !important; }
-  .sp-js .player.is-playing .player-art { animation: none !important; }
-  .sp-js .timeline-item { opacity: 1 !important; transform: none !important; }
 }
