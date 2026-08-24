@@ -85,3 +85,5 @@ if old_origin not in js:
     raise SystemExit('origin clock block not found')
 js = js.replace(old_origin, new_origin, 1)
 js_path.write_text(js)
+
+# This file is temporary and is removed after the repair commit lands.
