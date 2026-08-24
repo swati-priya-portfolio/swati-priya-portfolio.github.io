@@ -1017,7 +1017,7 @@
     window.addEventListener("load", function () { dirty = true; schedule(); });
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { dirty = true; schedule(); }); }
     if ("MutationObserver" in window) {
-      new MutationObserver(schedule).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
+      new MutationObserver(function () { dirty = true; schedule(); }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
     }
     measure();
   }
