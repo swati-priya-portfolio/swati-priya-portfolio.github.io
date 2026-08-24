@@ -924,7 +924,96 @@
   }
 
   /* ==========================================================
-     11b. ORIGIN STORY — curiosity draws into the career line
+     11a. SUBTLE SCROLL PARALLAX — selected physical objects only
+     Uses the individual translate property in CSS, so existing transforms
+     for paper, rotation, hover and record playback remain untouched.
+     ========================================================== */
+  function scrollParallax() {
+    var elements = [].slice.call(document.querySelectorAll("[data-parallax]"));
+    if (!elements.length) { return; }
+
+    if (reduced) {
+      elements.forEach(function (el) { el.style.setProperty("--parallax-y", "0px"); });
+      return;
+    }
+
+    var geometry = [];
+    var dirty = true;
+    var knownHeight = 0;
+    var queued = false;
+
+    function pageTop(el) {
+      var top = 0;
+      while (el) { top += el.offsetTop; el = el.offsetParent; }
+      return top;
+    }
+
+    function strength() {
+      if (window.innerWidth < 768) { return 0; }
+      if (window.innerWidth < 1080) { return 0.5; }
+      return 1;
+    }
+
+    function measure() {
+      var scale = strength();
+      geometry = elements.map(function (el) {
+        return {
+          el: el,
+          top: pageTop(el),
+          height: el.offsetHeight || 1,
+          depth: (parseFloat(el.getAttribute("data-parallax")) || 0) * scale,
+          last: null
+        };
+      });
+      knownHeight = document.documentElement.scrollHeight;
+      dirty = false;
+    }
+
+    function draw() {
+      queued = false;
+      if (dirty || document.documentElement.scrollHeight !== knownHeight) { measure(); }
+
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+      for (var i = 0; i < geometry.length; i++) {
+        var g = geometry[i];
+        if (g.depth === 0) {
+          if (g.last !== 0) { g.el.style.setProperty("--parallax-y", "0px"); g.last = 0; }
+          continue;
+        }
+
+        var bottom = g.top + g.height;
+        if (bottom < y - vh * 0.35 || g.top > y + vh * 1.35) { continue; }
+
+        var centre = g.top + g.height * 0.5;
+        var range = vh * 0.5 + g.height * 0.5;
+        var p = clamp((y + vh * 0.5 - centre) / Math.max(range, 1), -1, 1);
+        /* data-parallax describes total travel, so the element only moves
+           half that value to either side of its resting position. */
+        var offset = p * g.depth * 0.5;
+        if (g.last !== null && Math.abs(offset - g.last) < 0.04) { continue; }
+        g.last = offset;
+        g.el.style.setProperty("--parallax-y", offset.toFixed(2) + "px");
+      }
+    }
+
+    function schedule() {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", function () { dirty = true; schedule(); }, { passive: true });
+    window.addEventListener("load", function () { dirty = true; schedule(); });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { dirty = true; schedule(); });
+    }
+    schedule();
+  }
+
+  /* ==========================================================
+     11b. ORIGIN STORY — local thoughts, then design, then career
      ========================================================== */
   function originStory() {
     var section = document.querySelector(".about");
@@ -932,46 +1021,75 @@
     if (!section || !story) { return; }
 
     var steps = [].slice.call(story.querySelectorAll(".origin-step"));
+    var arrows = [].slice.call(story.querySelectorAll(".origin-arrow"));
+    var bubble = story.querySelector(".thought-bubble");
     var design = story.querySelector(".origin-design");
     var body = story.querySelector(".story-body");
+    var timeline = story.querySelector(".timeline");
     var items = [].slice.call(story.querySelectorAll(".timeline-item"));
-    var path = story.querySelector(".origin-journey path");
 
     if (reduced) {
-      [design, body].concat(steps, items).forEach(function (el) {
+      [design, body].concat(steps, arrows, items).forEach(function (el) {
         if (el) { el.classList.add("is-reached"); }
       });
       story.style.setProperty("--timeline-draw", "1");
-      if (path) { path.style.strokeDashoffset = "0"; }
       return;
     }
 
     story.classList.add("is-origin-ready");
-    var top = 0, height = 1;
+    var stepThresholds = [];
+    var designThreshold = 0;
+    var bodyThreshold = 0;
+    var itemThresholds = [];
+    var lineStart = 0;
+    var lineLength = 1;
+    var furthestLine = 0;
+
+    function pageTop(el) {
+      var top = 0;
+      while (el) { top += el.offsetTop; el = el.offsetParent; }
+      return top;
+    }
 
     function measure() {
-      top = 0;
-      var node = section;
-      while (node) { top += node.offsetTop; node = node.offsetParent; }
-      height = section.offsetHeight || 1;
+      var vh = window.innerHeight;
+      var gap = clamp(vh * 0.055, 36, 52);
+      var bubbleTop = pageTop(bubble || story);
+      var firstStep = bubbleTop - vh * 0.72;
+
+      stepThresholds = steps.map(function (_, i) { return firstStep + gap * i; });
+      designThreshold = (stepThresholds[stepThresholds.length - 1] || firstStep) + gap * 0.9;
+      bodyThreshold = Math.max(pageTop(body) - vh * 0.72, designThreshold + gap * 0.8);
+
+      var timelineTop = pageTop(timeline);
+      lineStart = timelineTop + 40;
+      lineLength = Math.max((timeline ? timeline.offsetHeight : 1) - 80, 1);
+      itemThresholds = items.map(function (item, i) {
+        var marker = pageTop(item) + item.offsetHeight * 0.5 - vh * 0.68;
+        return Math.max(marker, bodyThreshold + gap * 0.85 + i * 10);
+      });
       draw();
     }
 
-    function reached(el, yes) { if (el) { el.classList.toggle("is-reached", yes); } }
+    function reached(el, yes) {
+      if (el && yes && !el.classList.contains("is-reached")) { el.classList.add("is-reached"); }
+    }
 
     function draw() {
-      var start = top - window.innerHeight * 0.82;
-      var end = top + height - window.innerHeight * 0.28;
-      var p = clamp((window.scrollY - start) / Math.max(end - start, 1), 0, 1);
+      var y = window.scrollY;
+      steps.forEach(function (step, i) { reached(step, y >= stepThresholds[i]); });
+      arrows.forEach(function (arrow, i) { reached(arrow, y >= stepThresholds[i + 1]); });
+      reached(design, y >= designThreshold);
+      reached(body, y >= bodyThreshold);
 
-      steps.forEach(function (step, i) { reached(step, p >= 0.10 + i * 0.085); });
-      reached(design, p >= 0.43);
-      reached(body, p >= 0.49);
-      items.forEach(function (item, i) { reached(item, p >= 0.57 + i * 0.105); });
+      var playhead = y + window.innerHeight * 0.68;
+      var line = ease(clamp((playhead - lineStart) / lineLength, 0, 1));
+      furthestLine = Math.max(furthestLine, line);
+      story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
 
-      var line = ease(span(p, 0.08, 0.94));
-      if (path) { path.style.strokeDashoffset = (1 - line).toFixed(4); }
-      story.style.setProperty("--timeline-draw", ease(span(p, 0.50, 0.97)).toFixed(4));
+      items.forEach(function (item, i) {
+        reached(item, y >= itemThresholds[i] && furthestLine > 0);
+      });
     }
 
     var queued = false;
@@ -982,6 +1100,7 @@
     }, { passive: true });
     window.addEventListener("resize", measure, { passive: true });
     window.addEventListener("load", measure);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(measure); }
     measure();
   }
 
@@ -1166,6 +1285,7 @@
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
     try { originStory(); } catch (e) {}
+    try { scrollParallax(); } catch (e) {}
     try { footer(); } catch (e) {}
     try { easterEggs(); } catch (e) {}
     try { wayfinding(); } catch (e) {}
