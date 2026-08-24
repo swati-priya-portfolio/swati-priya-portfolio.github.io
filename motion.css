@@ -1269,3 +1269,42 @@
   .sp-js .sp-top.is-shown { transform: none; }
   .sp-progress span { box-shadow: none; }
 }
+
+/* --- Sheets of paper ------------------------------------------------------
+   Each band below the case studies lies over the one above it. The negative
+   margin sets the final overlap; the scroll driver starts the sheet flush and
+   climbs it into that overlap, so a gap can never open between two bands.
+
+   The case studies band is deliberately left out. It holds the pinned card
+   stage, and a transform on it would become the containing block for that
+   sticky element and shift the pin's own scroll arithmetic. Its torn edge
+   against the hero is unchanged. */
+.paper-sheet {
+  --lap: 86px;
+  --slide: 1;                  /* 1 = flush with the band above, 0 = fully lapped */
+  margin-top: calc(var(--lap) * -1);
+  transform: translate3d(0, calc(var(--lap) * var(--slide)), 0);
+}
+.sp-js .paper-sheet { will-change: transform; }
+
+/* The sheet carries its own contact shadow along the whole top edge, so the
+   overlap reads as thickness rather than as a card floating above a card. */
+.paper-sheet > .tear.paper-tear::before {
+  filter: drop-shadow(0 -2px 3px rgba(0, 0, 0, 0.3))
+          drop-shadow(0 -8px 16px rgba(0, 0, 0, 0.45));
+}
+
+@media (max-width: 767px) {
+  /* Shorter lap on a phone: the bands are narrower and the overlap would
+     otherwise swallow a useful amount of the band above. */
+  .paper-sheet { --lap: 46px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paper-sheet {
+    margin-top: 0 !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+

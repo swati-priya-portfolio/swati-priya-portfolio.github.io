@@ -595,6 +595,7 @@
 
     var geo = [];
     var dirty = true;
+    var knownHeight = 0;
 
     function measure() {
       geo = tears.map(function (t) {
@@ -602,11 +603,16 @@
         while (el) { top += el.offsetTop; el = el.offsetParent; }
         return { el: t, top: top, done: t.classList.contains("is-torn") };
       });
+      knownHeight = document.documentElement.scrollHeight;
       dirty = false;
     }
 
     function draw() {
-      if (dirty) { measure(); }
+      // Same guard as the sheets: the page is taller after boot than during
+      // it, and a stale offset tears the edge at the wrong moment.
+      if (dirty || document.documentElement.scrollHeight !== knownHeight) {
+        measure();
+      }
       var y = window.scrollY;
       var vh = window.innerHeight;
 
@@ -771,6 +777,85 @@
   }
 
   /* ==========================================================
+     12b. SHEETS OF PAPER
+     Each band below the case studies climbs over the one above it as
+     you scroll. The negative margin in CSS sets the final overlap; this
+     writes how much of it has been taken up, from 1 (flush) to 0 (fully
+     lapped). Offsets are measured once — offsetTop is a layout value and
+     is not disturbed by the transform being written back to it — so
+     nothing here reads layout while scrolling.
+     ========================================================== */
+  function paperSheets() {
+    var sheets = [].slice.call(document.querySelectorAll(".paper-sheet"));
+    if (!sheets.length) { return; }
+
+    if (reduced) {
+      sheets.forEach(function (el) { el.style.setProperty("--slide", "0"); });
+      return;
+    }
+
+    var geo = [];
+    var dirty = true;
+    var knownHeight = 0;
+
+    function measure() {
+      geo = sheets.map(function (el) {
+        var top = 0, node = el;
+        while (node) { top += node.offsetTop; node = node.offsetParent; }
+        return { el: el, top: top, last: -1 };
+      });
+      knownHeight = document.documentElement.scrollHeight;
+      dirty = false;
+    }
+
+    function draw() {
+      // Measuring once is not enough. The page grows after boot — images
+      // arrive, fonts swap, and the case-study track is given its pinned
+      // height by script — and a stale offset fires the sheet hundreds of
+      // pixels early. One cheap property read per frame catches all of it.
+      if (dirty || document.documentElement.scrollHeight !== knownHeight) {
+        measure();
+      }
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+
+      for (var i = 0; i < geo.length; i++) {
+        var g = geo[i];
+        var fromTop = g.top - y;
+
+        // Begins as the sheet's edge reaches the floor of the screen and is
+        // done once it has climbed to around the middle. A longer window than
+        // the rest of the page's motion, so the sheet reads as having weight.
+        var p = clamp((vh - fromTop) / (vh * 0.55), 0, 1);
+        var eased = p * p * (3 - 2 * p);
+        var slide = 1 - eased;
+
+        // Skip the write when nothing has changed; most frames of a scroll
+        // leave at least one sheet exactly where it was.
+        if (Math.abs(slide - g.last) < 0.0015) { continue; }
+        g.last = slide;
+        g.el.style.setProperty("--slide", slide.toFixed(4));
+      }
+    }
+
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }, { passive: true });
+
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () { dirty = true; draw(); }, 160);
+    }, { passive: true });
+
+    window.addEventListener("load", function () { dirty = true; draw(); });
+    draw();
+  }
+
+  /* ==========================================================
      13. WAYFINDING
      How far through the issue you are, and a way back to page one.
      Both ride the same throttled scroll handler.
@@ -822,6 +907,7 @@
     try { stickyNav(); } catch (e) {}
     try { reveals(); } catch (e) {}
     try { paperTear(); } catch (e) {}
+    try { paperSheets(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
     try { customCursor(); } catch (e) {}
