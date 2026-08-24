@@ -8,6 +8,25 @@
   <!-- Change your page title and description here -->
   <title>Swati Priya — Senior Product Designer</title>
   <meta name="description" content="Senior Product Designer working across fintech, insurtech and edtech. I turn complexity into clarity." />
+  <meta name="author" content="Swati Priya" />
+  <meta name="theme-color" content="#17120b" />
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="images/avatar-nav.png" />
+
+  <!-- How the link looks when it is shared. Without these a post shows a bare
+       URL with no title, blurb or picture. Replace og-cover.png with a proper
+       1200x630 card when you have one. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Swati Priya" />
+  <meta property="og:title" content="Swati Priya — Senior Product Designer" />
+  <meta property="og:description" content="I turn complexity into clarity. Fintech, insurtech and edtech journeys, told as a comic." />
+  <meta property="og:url" content="https://swatipriya4422-gif.github.io/" />
+  <meta property="og:image" content="https://swatipriya4422-gif.github.io/images/hero-character.png" />
+  <meta property="og:image:alt" content="Swati Priya waving from a laptop screen" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Swati Priya — Senior Product Designer" />
+  <meta name="twitter:description" content="I turn complexity into clarity. Fintech, insurtech and edtech journeys, told as a comic." />
+  <meta name="twitter:image" content="https://swatipriya4422-gif.github.io/images/hero-character.png" />
 
   <!-- Fonts used in the Figma file: Archivo Black, Luckiest Guy, Inter, Caveat, IBM Plex Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,9 +35,9 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=11" />
+  <link rel="stylesheet" href="styles.css?v=12" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=11" />
+  <link rel="stylesheet" href="motion.css?v=12" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -45,6 +64,9 @@
 
 <body>
   <a class="skip-link" href="#home">Skip to content</a>
+
+  <!-- How far through the issue you are. -->
+  <div class="sp-progress" aria-hidden="true"><span></span></div>
 
   <!-- ================= FIRST-VISIT LOADER (once per session) ================= -->
   <div class="sp-loader" aria-hidden="true">
@@ -610,7 +632,14 @@
     </div>
   </footer>
 
-  <script src="script.js?v=11"></script>
-  <script src="motion.js?v=11"></script>
+  <!-- Appears once you are well into the page. -->
+  <button class="sp-top" type="button" aria-label="Back to the top of the page"
+    data-cursor="PAGE ONE &#8593;">
+    <span class="sp-top-arrow" aria-hidden="true">&#8593;</span>
+    <span class="sp-top-label">PAGE ONE</span>
+  </button>
+
+  <script src="script.js?v=12"></script>
+  <script src="motion.js?v=12"></script>
 </body>
 </html>

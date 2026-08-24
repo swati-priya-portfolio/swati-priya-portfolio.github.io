@@ -1191,3 +1191,81 @@
   .sp-js .case-track { height: auto !important; }
   .sp-js .case-stage { position: static !important; }
 }
+
+/* ============================================================
+   17. READING PROGRESS + BACK TO THE TOP
+   Two small pieces of wayfinding for a long single page.
+   ============================================================ */
+
+/* An ink line across the very top, filling as you read. */
+.sp-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  height: 3px;
+  pointer-events: none;
+  background: rgba(255, 197, 61, 0.10);
+}
+.sp-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(var(--read, 0));
+  transform-origin: left center;
+  box-shadow: 0 0 10px rgba(255, 197, 61, 0.5);
+}
+.sp-loading .sp-progress { opacity: 0; }
+/* Without JS it would sit at zero across the top, so it stays hidden. */
+.sp-progress { display: none; }
+.sp-js .sp-progress { display: block; }
+
+/* Back to the first page of the issue. */
+.sp-top {
+  position: fixed;
+  right: clamp(16px, 3vw, 34px);
+  bottom: clamp(16px, 3vw, 34px);
+  z-index: 99;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 18px 11px 14px;
+  border: 1px solid rgba(255, 197, 61, 0.45);
+  border-radius: 100px;
+  background: rgba(26, 21, 13, 0.72);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+  transition: opacity 320ms var(--ep), transform 420ms var(--ep),
+              border-color 300ms var(--ep), color 300ms var(--ep);
+}
+.sp-js .sp-top { display: inline-flex; }
+.sp-js .sp-top.is-shown { opacity: 1; transform: none; }
+.sp-js .sp-top:hover,
+.sp-js .sp-top:focus-visible {
+  border-color: var(--accent);
+  color: var(--cream);
+}
+.sp-top-arrow { display: inline-block; transition: transform 300ms var(--ep); }
+.sp-js .sp-top:hover .sp-top-arrow { transform: translateY(-3px); }
+.sp-js .sp-top:active { transform: scale(0.97); }
+
+@media (max-width: 599px) {
+  .sp-top-label { display: none; }
+  .sp-top { padding: 12px; min-width: 44px; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-js .sp-top { transition: opacity 200ms linear; transform: none; }
+  .sp-js .sp-top.is-shown { transform: none; }
+  .sp-progress span { box-shadow: none; }
+}

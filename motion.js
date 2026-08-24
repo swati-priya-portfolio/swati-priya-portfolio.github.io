@@ -771,6 +771,51 @@
   }
 
   /* ==========================================================
+     13. WAYFINDING
+     How far through the issue you are, and a way back to page one.
+     Both ride the same throttled scroll handler.
+     ========================================================== */
+  function wayfinding() {
+    var bar = document.querySelector(".sp-progress span");
+    var top = document.querySelector(".sp-top");
+    if (!bar && !top) { return; }
+
+    var shown = false;
+
+    function draw() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var y = window.scrollY;
+
+      if (bar) {
+        bar.style.setProperty("--read", max > 0 ? clamp(y / max, 0, 1).toFixed(4) : "0");
+      }
+      if (top) {
+        var next = y > window.innerHeight * 1.4;
+        if (next !== shown) {
+          shown = next;
+          top.classList.toggle("is-shown", shown);
+        }
+      }
+    }
+
+    if (top) {
+      top.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+      });
+    }
+
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }, { passive: true });
+    window.addEventListener("resize", draw, { passive: true });
+    draw();
+  }
+
+  /* ==========================================================
      Boot
      ========================================================== */
   function boot() {
@@ -786,6 +831,7 @@
     try { music(); } catch (e) {}
     try { footer(); } catch (e) {}
     try { easterEggs(); } catch (e) {}
+    try { wayfinding(); } catch (e) {}
   }
 
   function start() {
