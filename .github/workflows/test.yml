@@ -1,10 +1,24 @@
-name: Test workflow
+name: Apply scroll repair
 on:
   push:
+    branches:
+      - fix/final-scroll-motion-20260825
+    paths:
+      - tools/scroll_repair.py
 permissions:
   contents: write
 jobs:
-  test:
+  repair:
     runs-on: ubuntu-latest
     steps:
-      - run: echo hello
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/final-scroll-motion-20260825
+          fetch-depth: 0
+      - run: python tools/scroll_repair.py
+      - run: |
+          git config user.name "ChatGPT Motion Repair"
+          git config user.email "actions@users.noreply.github.com"
+          git add motion.js
+          git commit -m "[motion-fix] Repair scroll timing and footer completion"
+          git push origin HEAD:fix/final-scroll-motion-20260825
