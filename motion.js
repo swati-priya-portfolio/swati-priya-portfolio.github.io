@@ -906,11 +906,13 @@
         host.addEventListener("pointerleave", function () {
           foot.classList.remove("is-shouting", "is-talking");
         });
-        if (host.hasAttribute("data-bubble")) {
-          host.addEventListener("focus", function () { foot.classList.add("is-talking"); });
-          host.addEventListener("blur", function () { foot.classList.remove("is-talking"); });
-        }
       });
+    }
+
+    var bubbleHost = foot.querySelector("[data-bubble]");
+    if (bubbleHost) {
+      bubbleHost.addEventListener("focus", function () { foot.classList.add("is-talking"); });
+      bubbleHost.addEventListener("blur", function () { foot.classList.remove("is-talking"); });
     }
 
     if (water && !reduced) {
@@ -993,7 +995,7 @@
         [[.12,"is-eyebrow-reached"],[.15,"is-line-one-reached"],[.18,"is-accent-reached"],[.21,"is-work-reached"],[.24,"is-intro-reached"]].forEach(function (beat) {
           if (reduced || (bh.staged ? bp >= beat[0] : y >= bh.top - vh * .72 + beat[0] * 220)) { behind.classList.add(beat[1]); }
         });
-        [.26,.44,.61,.78].forEach(function (point, i) {
+        [.26,.48,.70,.86].forEach(function (point, i) {
           if (reduced || (bh.staged ? bp >= point : y >= bh.board[i])) { reveal(boards[i]); }
         });
         [.89,.94,.98].forEach(function (point, i) {
@@ -1179,7 +1181,7 @@
         }
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.18, rootMargin: "0px 0px -65% 0px" });
+    }, { threshold: 0.18, rootMargin: "0px 0px -75% 0px" });
 
     targets.forEach(function (el) { io.observe(el); });
     if (designChapter) { io.observe(designChapter); }

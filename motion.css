@@ -1620,7 +1620,7 @@
 /* Desktop gets real story runway: the visual remains present while normalized
    section progress advances. Short laptops and stacked layouts stay natural. */
 @media (min-width: 1080px) and (min-height: 760px) {
-  .behind { min-height: 155vh; }
+  .behind { min-height: 165vh; }
   .behind-stage {
     position: sticky;
     top: 88px;
@@ -1789,14 +1789,14 @@
   transform: scaleX(0) rotate(-.5deg);
   transform-origin: left center;
 }
-.career-strips { display: grid; gap: 10px; margin-top: 22px; }
+.career-strips { display: grid; gap: 16px; margin-top: 22px; }
 .career-strips::before { display: none; }
 .career-strips .career-strip {
   display: grid;
   grid-template-columns: 42px 46px minmax(0,1fr) auto;
   gap: 14px;
-  min-height: 86px;
-  padding: 14px 16px;
+  min-height: 110px;
+  padding: 18px 16px;
   border: 1px solid rgba(245,239,227,.13);
   border-radius: 10px;
   background: rgba(245,239,227,.025);
