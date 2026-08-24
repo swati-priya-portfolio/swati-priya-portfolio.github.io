@@ -1703,6 +1703,10 @@
   opacity: 1;
   transform: none;
 }
+.sp-js .story-col.is-origin-ready .story-head .eyebrow.is-reached {
+  opacity: 1;
+  transform: none;
+}
 .sp-js .story-col.is-origin-ready .origin-arrow.is-reached path { stroke-dashoffset: 0; }
 .sp-js .story-col.is-origin-ready .origin-design .underlined {
   background-size: 0 3px, 0 2px;
