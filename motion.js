@@ -68,7 +68,7 @@
 
     if (!loader || !showing || reduced) {
       root.classList.remove("sp-loading");
-      try { sessionStorage.setItem("sp-seen-v14", "1"); } catch (e) {}
+      try { sessionStorage.setItem("sp-seen-v15", "1"); } catch (e) {}
       done();
       return;
     }
@@ -92,7 +92,7 @@
 
       // The final bite fades into the hero.
       loader.classList.add("is-done");
-      try { sessionStorage.setItem("sp-seen-v14", "1"); } catch (e) {}
+      try { sessionStorage.setItem("sp-seen-v15", "1"); } catch (e) {}
       setTimeout(function () {
         root.classList.remove("sp-loading");
         loader.setAttribute("hidden", "");
@@ -264,14 +264,14 @@
 
     function measure() {
       var sx = window.scrollX, sy = window.scrollY;
-      boxes = chars.map(function (c) {
+      boxes = chars.map(function (c, i) {
         var r = c.getBoundingClientRect();
         return {
           el: c,
           px: r.left + r.width / 2 + sx,
           py: r.top + r.height / 2 + sy,
           v: 0,
-          reaction: reactions[chars.indexOf(c) % reactions.length]
+          reaction: reactions[i % reactions.length]
         };
       });
       dirty = false;
@@ -794,6 +794,12 @@
       else {
         book.setAttribute("tabindex", "0");
         book.addEventListener("click", function () {
+          if (book.classList.contains("is-picked")) { clear(); }
+          else { pick(i); }
+        });
+        book.addEventListener("keydown", function (e) {
+          if (e.key !== "Enter" && e.key !== " ") { return; }
+          e.preventDefault();
           if (book.classList.contains("is-picked")) { clear(); }
           else { pick(i); }
         });
