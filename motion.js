@@ -891,28 +891,37 @@
     if (!foot) { return; }
     var giant = foot.querySelector(".footer-giant");
     var hosts = [].slice.call(foot.querySelectorAll("[data-giant]"));
+    var bubble = foot.querySelector(".footer-bubble");
     var water = foot.querySelector(".footer-water");
     var growth = 0;
+
+    function setTalking(on) {
+      foot.classList.toggle("is-talking", on);
+      if (!bubble) { return; }
+      bubble.style.opacity = on ? "1" : "";
+      bubble.style.transform = on ? "translate(-50%, 0) rotate(-1deg)" : "";
+    }
 
     if (!reduced && finePointer) {
       hosts.forEach(function (host) {
         host.addEventListener("pointerenter", function () {
-          if (host.hasAttribute("data-bubble")) { foot.classList.add("is-talking"); }
+          if (host.hasAttribute("data-bubble")) { setTalking(true); }
           if (giant && foot.classList.contains("is-social-reached")) {
             giant.textContent = host.getAttribute("data-giant");
             foot.classList.add("is-shouting");
           }
         });
         host.addEventListener("pointerleave", function () {
-          foot.classList.remove("is-shouting", "is-talking");
+          foot.classList.remove("is-shouting");
+          if (host.hasAttribute("data-bubble")) { setTalking(false); }
         });
       });
     }
 
     var bubbleHost = foot.querySelector("[data-bubble]");
     if (bubbleHost) {
-      bubbleHost.addEventListener("focus", function () { foot.classList.add("is-talking"); });
-      bubbleHost.addEventListener("blur", function () { foot.classList.remove("is-talking"); });
+      bubbleHost.addEventListener("focus", function () { setTalking(true); });
+      bubbleHost.addEventListener("blur", function () { setTalking(false); });
     }
 
     if (water && !reduced) {
