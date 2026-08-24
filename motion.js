@@ -504,6 +504,8 @@
       });
       grid.classList.remove("is-staging");
       grid.style.pointerEvents = "";
+      grid.style.transform = "";
+      stage.style.height = "";
     }
 
     function teardown() {
@@ -535,11 +537,15 @@
     function measure() {
       if (!desktop() || reduced) { teardown(); return; }
 
+      grid.style.transform = "";
+      stage.style.height = "";
       var stageH = stage.offsetHeight;
       var room = window.innerHeight - PIN_TOP - 40;
-      // The stage has to fit on screen while pinned, with the lead cover
-      // scaled up. If it does not, fall back to a plain staggered reveal.
-      if (stageH > room) { teardown(); return; }
+      var fit = Math.min(1, room / Math.max(stageH, 1));
+      if (fit < .76) { teardown(); return; }
+      grid.style.transformOrigin = "top center";
+      grid.style.transform = "scale(" + fit.toFixed(4) + ")";
+      stage.style.height = Math.round(stageH * fit) + "px";
 
       cards.forEach(function (c) { c.classList.remove("settle-in", "is-visible"); });
       if (settleObserver) { settleObserver.disconnect(); settleObserver = null; }
@@ -548,16 +554,15 @@
       var gridCentre = gridRect.left + gridRect.width / 2;
 
       geo = {
-        stageH: stageH,
-        lead: Math.min(1.08, room / stageH),
+        stageH: stageH * fit,
         offsets: cards.map(function (c) {
           var r = c.getBoundingClientRect();
-          return gridCentre - (r.left + r.width / 2);
+          return (gridCentre - (r.left + r.width / 2)) / fit;
         })
       };
 
       travel = Math.round(Math.min(window.innerHeight * 1.15, 940));
-      track.style.height = (stageH + travel) + "px";
+      track.style.height = Math.round(stageH * fit + travel) + "px";
       stage.style.position = "sticky";
       stage.style.top = PIN_TOP + "px";
       pinned = true;
@@ -576,18 +581,18 @@
       // The middle cover is the anchor: it opens the section alone and never
       // moves sideways. The other two slide out from behind it, left first,
       // then right, each as its own beat so nothing overlaps.
-      var anchorP = ease(span(p, 0.22, 0.74));   // its scale easing back to 1
-      var leftP = ease(span(p, 0.18, 0.64));
-      var rightP = ease(span(p, 0.44, 0.92));
+      var leftP = ease(span(p, 0.20, 0.52));
+      var rightP = ease(span(p, 0.52, 0.82));
 
-      setCard(cards[1], 0, lerp(geo.lead, 1, anchorP), 0, 1);
+      setCard(cards[1], 0, 1, 0, 1);
       cards[1].style.boxShadow = "";
 
-      // Fading in early and travelling further keeps the slide readable.
-      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(0.86, 1, leftP),
-        0, clamp(leftP * 1.7, 0, 1));
-      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(0.86, 1, rightP),
-        0, clamp(rightP * 1.7, 0, 1));
+      // Side issues are always opaque physical sheets. They are invisible at
+      // first only because Guardian One sits above the stack.
+      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(.97, 1, leftP),
+        lerp(0, -1, leftP), 1);
+      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(.97, 1, rightP),
+        lerp(0, 1, rightP), 1);
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
@@ -639,7 +644,9 @@
      8. SCROLL REVEALS — heading, then copy, then visuals. Once.
      ========================================================== */
   function reveals() {
-    var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll"));
+    var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll")).filter(function (el) {
+      return !el.matches(".behind .board, .drives, .footer-story, .footer-cover");
+    });
     var squiggles = [].slice.call(document.querySelectorAll(".squiggle"));
 
     if (!("IntersectionObserver" in window)) {
@@ -881,16 +888,22 @@
     var water = foot.querySelector(".footer-water");
     var growth = 0;
 
-    if (giant && !reduced && finePointer) {
+    if (!reduced && finePointer) {
       hosts.forEach(function (host) {
         host.addEventListener("pointerenter", function () {
-          giant.textContent = host.getAttribute("data-giant");
-          foot.classList.add("is-shouting");
           if (host.hasAttribute("data-bubble")) { foot.classList.add("is-talking"); }
+          if (giant && foot.classList.contains("is-social-reached")) {
+            giant.textContent = host.getAttribute("data-giant");
+            foot.classList.add("is-shouting");
+          }
         });
         host.addEventListener("pointerleave", function () {
           foot.classList.remove("is-shouting", "is-talking");
         });
+        if (host.hasAttribute("data-bubble")) {
+          host.addEventListener("focus", function () { foot.classList.add("is-talking"); });
+          host.addEventListener("blur", function () { foot.classList.remove("is-talking"); });
+        }
       });
     }
 
@@ -968,16 +981,16 @@
       var y = window.scrollY;
       var vh = window.innerHeight;
 
-      if (behind && (reduced || behind.classList.contains("is-sheet-settled"))) {
+      if (behind) {
         var bh = geometry.behind;
         var bp = bh.staged ? clamp((y - bh.top) / Math.max(bh.height - vh, 1), 0, 1) : 0;
         [[.12,"is-eyebrow-reached"],[.15,"is-line-one-reached"],[.18,"is-accent-reached"],[.21,"is-work-reached"],[.24,"is-intro-reached"]].forEach(function (beat) {
           if (reduced || (bh.staged ? bp >= beat[0] : y >= bh.top - vh * .72 + beat[0] * 220)) { behind.classList.add(beat[1]); }
         });
-        [.30,.47,.63,.78].forEach(function (point, i) {
+        [.26,.44,.61,.78].forEach(function (point, i) {
           if (reduced || (bh.staged ? bp >= point : y >= bh.board[i])) { reveal(boards[i]); }
         });
-        [.84,.90,.96].forEach(function (point, i) {
+        [.89,.94,.98].forEach(function (point, i) {
           if (reduced || (bh.staged ? bp >= point : y >= bh.reminder[i])) { reveal(reminders[i]); }
         });
       }
@@ -999,11 +1012,12 @@
         var distance = footerStaged ? Math.max(fg.height - vh, 1) : Math.min(fg.height * .9, vh * .9);
         var p = reduced ? 1 : footerStaged ? clamp((y - fg.top) / distance, 0, 1) : clamp((y + vh - fg.top) / Math.max(distance, 1), 0, 1);
         var titleP = ease(span(p, .22, .60));
-        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(window.innerWidth < 768 ? .84 : .60, 1, titleP)).toFixed(4));
+        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(window.innerWidth < 768 ? .84 : .56, 1, titleP)).toFixed(4));
         footerEl.style.setProperty("--footer-title-lift", (reduced ? 0 : lerp(0, -18, ease(span(p, .68, .76)))).toFixed(2) + "px");
-        [[.10,"is-kicker-reached"],[.20,"is-title-reached"],[.76,"is-lede-reached"],[.82,"is-actions-reached"],[.86,"is-cover-reached"],[.92,"is-bubble-reached"],[.95,"is-social-reached"]].forEach(function (beat) {
+        [[.10,"is-kicker-reached"],[.22,"is-title-reached"],[.62,"is-title-max"],[.78,"is-lede-reached"],[.84,"is-actions-reached"],[.88,"is-cover-reached"],[.95,"is-social-reached"]].forEach(function (beat) {
           if (reduced || p >= beat[0]) { footerEl.classList.add(beat[1]); }
         });
+        if (!finePointer && (reduced || p >= .90)) { footerEl.classList.add("is-touch-note-reached"); }
       }
     }
 
@@ -1125,101 +1139,44 @@
   }
 
   /* ==========================================================
-     11b. ORIGIN STORY — local thoughts, then design, then career
+     11b. ORIGIN STORY — questions become clarity, then chapters
      ========================================================== */
   function originStory() {
     var section = document.querySelector(".about");
     var story = section && section.querySelector(".story-col");
     if (!section || !story) { return; }
 
-    var steps = [].slice.call(story.querySelectorAll(".origin-step"));
-    var arrows = [].slice.call(story.querySelectorAll(".origin-arrow"));
-    var bubble = story.querySelector(".thought-bubble");
+    var curiosity = story.querySelector(".origin-curiosity");
+    var questions = [].slice.call(story.querySelectorAll(".origin-questions span"));
+    var methods = [].slice.call(story.querySelectorAll(".origin-method span"));
+    var marker = story.querySelector(".marker-sweep");
+    var designChapter = story.querySelector(".design-chapter");
     var design = story.querySelector(".origin-design");
     var body = story.querySelector(".story-body");
-    var timeline = story.querySelector(".timeline");
-    var items = [].slice.call(story.querySelectorAll(".timeline-item"));
+    var careerHeading = story.querySelector(".career-heading");
+    var items = [].slice.call(story.querySelectorAll(".career-strip"));
+    var targets = [curiosity].concat(questions, methods, [marker, design, body, careerHeading], items).filter(Boolean);
 
-    if (reduced) {
-      [design, body].concat(steps, arrows, items).forEach(function (el) {
-        if (el) { el.classList.add("is-reached"); }
-      });
-      story.style.setProperty("--timeline-draw", "1");
+    if (reduced || !("IntersectionObserver" in window)) {
+      targets.forEach(function (el) { el.classList.add("is-reached"); });
+      story.classList.add("is-origin-ready", "is-synthesizing");
       return;
     }
 
     story.classList.add("is-origin-ready");
-    var stepThresholds = [];
-    var designThreshold = 0;
-    var bodyThreshold = 0;
-    var itemThresholds = [];
-    var lineStart = 0;
-    var lineLength = 1;
-    var furthestLine = 0;
-
-    function pageTop(el) {
-      /* Measure relative to the section's layout position. The paper sheet
-         may still be translating when this runs; subtracting the section's
-         rendered top cancels that shared transform and keeps every reveal
-         tied to its real content position. */
-      var sectionTop = 0;
-      var node = section;
-      while (node) { sectionTop += node.offsetTop || 0; node = node.offsetParent; }
-      return sectionTop + el.getBoundingClientRect().top - section.getBoundingClientRect().top;
-    }
-
-    function measure() {
-      var vh = window.innerHeight;
-      var gap = clamp(vh * 0.055, 36, 52);
-      var bubbleTop = pageTop(bubble || story);
-      var firstStep = bubbleTop - vh * 0.72;
-
-      stepThresholds = steps.map(function (_, i) { return firstStep + gap * i; });
-      designThreshold = (stepThresholds[stepThresholds.length - 1] || firstStep) + gap * 0.9;
-      bodyThreshold = Math.max(pageTop(body) - vh * 0.72, designThreshold + gap * 0.8);
-
-      var timelineTop = pageTop(timeline);
-      lineStart = timelineTop + 40;
-      lineLength = Math.max((timeline ? timeline.offsetHeight : 1) - 80, 1);
-      itemThresholds = items.map(function (item, i) {
-        var marker = pageTop(item) + item.offsetHeight * 0.5 - vh * 0.68;
-        return Math.max(marker, bodyThreshold + gap * 0.85 + i * 10);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        entry.target.classList.add("is-reached");
+        if (entry.target === marker || entry.target === design || entry.target === designChapter) {
+          story.classList.add("is-synthesizing");
+        }
+        io.unobserve(entry.target);
       });
-      draw();
-    }
+    }, { threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
 
-    function reached(el, yes) {
-      if (el && yes && !el.classList.contains("is-reached")) { el.classList.add("is-reached"); }
-    }
-
-    function draw() {
-      var y = window.scrollY;
-      steps.forEach(function (step, i) { reached(step, y >= stepThresholds[i]); });
-      arrows.forEach(function (arrow, i) { reached(arrow, y >= stepThresholds[i + 1]); });
-      reached(design, y >= designThreshold);
-      reached(body, y >= bodyThreshold);
-
-      var playhead = y + window.innerHeight * 0.68;
-      var lineRaw = clamp((playhead - lineStart) / lineLength, 0, 1);
-      var line = lineRaw * lineRaw * (3 - 2 * lineRaw);
-      furthestLine = Math.max(furthestLine, line);
-      story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
-
-      items.forEach(function (item, i) {
-        reached(item, y >= itemThresholds[i] && furthestLine > 0);
-      });
-    }
-
-    var queued = false;
-    window.addEventListener("scroll", function () {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(function () { queued = false; draw(); });
-    }, { passive: true });
-    window.addEventListener("resize", measure, { passive: true });
-    window.addEventListener("load", measure);
-    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(measure); }
-    measure();
+    targets.forEach(function (el) { io.observe(el); });
+    if (designChapter) { io.observe(designChapter); }
   }
 
   /* ==========================================================
