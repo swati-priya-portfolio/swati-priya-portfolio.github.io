@@ -669,7 +669,6 @@ h1, h2, h3, p { margin: 0; }
   font-weight: 700;
   line-height: 1.2;
   color: var(--accent);
-  padding-right: 52px; /* leaves room for the headphone mark on board 2 */
 }
 
 .board-note {
@@ -827,7 +826,7 @@ h1, h2, h3, p { margin: 0; }
   display: grid;
   gap: 56px;
 }
-@media (min-width: 1080px) {
+@media (min-width: 1280px) {
   .about { padding-top: 96px; padding-bottom: 104px; }
   .about-grid {
     height: 735px;
@@ -930,7 +929,10 @@ h1, h2, h3, p { margin: 0; }
 .tools-grid span { font-size: 13px; font-weight: 500; color: var(--cream); }
 
 /* --- Story column --- */
-.story-col { position: relative; }
+.story-col {
+  position: relative;
+  min-width: 0; /* allow the story column to shrink inside the desktop grid */
+}
 .story-head { display: grid; gap: 24px; }
 @media (min-width: 768px) {
   .story-head { grid-template-columns: 1fr auto; align-items: start; gap: 40px; }
@@ -1030,7 +1032,7 @@ h1, h2, h3, p { margin: 0; }
 }
 @media (min-width: 900px) { .tl-date { grid-column: 3; white-space: nowrap; } }
 
-@media (min-width: 1080px) {
+@media (min-width: 1280px) {
   .polaroid-col {
     width: 398px;
     height: 690px;
@@ -1094,16 +1096,17 @@ h1, h2, h3, p { margin: 0; }
     margin-top: 14px;
   }
   .story-col {
-    width: 850px;
+    width: 100%;
     height: 735px;
     padding-top: 37px;
     overflow: hidden;
   }
   .story-head {
-    grid-template-columns: 521px 170px;
+    grid-template-columns: minmax(0, 1fr) 170px;
     align-items: start;
-    gap: 137px;
+    gap: 40px;
   }
+  .story-title { font-size: clamp(40px, 3.25vw, 46px); }
   .thought-bubble {
     width: 170px;
     padding: 12px 26px;
