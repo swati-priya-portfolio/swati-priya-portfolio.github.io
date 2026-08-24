@@ -995,7 +995,7 @@
         [[.12,"is-eyebrow-reached"],[.15,"is-line-one-reached"],[.18,"is-accent-reached"],[.21,"is-work-reached"],[.24,"is-intro-reached"]].forEach(function (beat) {
           if (reduced || (bh.staged ? bp >= beat[0] : y >= bh.top - vh * .72 + beat[0] * 220)) { behind.classList.add(beat[1]); }
         });
-        [.26,.48,.70,.86].forEach(function (point, i) {
+        [.22,.50,.76,.90].forEach(function (point, i) {
           if (reduced || (bh.staged ? bp >= point : y >= bh.board[i])) { reveal(boards[i]); }
         });
         [.89,.94,.98].forEach(function (point, i) {

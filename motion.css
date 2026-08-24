@@ -1614,8 +1614,8 @@
   transform: translate(-50%, 8px) rotate(-2deg);
   transition: opacity 260ms linear, transform 380ms var(--ep);
 }
-.sp-js .site-footer.is-talking .footer-bubble,
-.sp-js .site-footer.is-touch-note-reached .footer-bubble { opacity: 1; transform: translate(-50%, 0) rotate(-1deg); }
+.sp-js .site-footer.is-footer-story-ready.is-talking .footer-bubble,
+.sp-js .site-footer.is-footer-story-ready.is-touch-note-reached .footer-bubble { opacity: 1; transform: translate(-50%, 0) rotate(-1deg); }
 
 /* Desktop gets real story runway: the visual remains present while normalized
    section progress advances. Short laptops and stacked layouts stay natural. */
