@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - fix/final-scroll-motion-20260825
+    paths:
+      - .github/workflows/one-time-scroll-repair.yml
 
 permissions:
   contents: write
 
 jobs:
   repair:
-    if: ${{ !contains(github.event.head_commit.message, '[motion-fix]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,8 +28,6 @@ jobs:
           path = Path('motion.js')
           s = path.read_text()
 
-          # Slow the comic stack slightly so one normal trackpad gesture cannot
-          # collapse the complete one -> two -> three story.
           s = s.replace(
               'travel = Math.round(Math.min(window.innerHeight * 1.22, 980));',
               'travel = Math.round(Math.min(window.innerHeight * 1.34, 1040));'
@@ -38,8 +37,6 @@ jobs:
               'var guardianP = ease(span(p, 0.18, 0.50));\n      var embibeP = ease(span(p, 0.56, 0.84));\n      var settleP = ease(span(p, 0.84, 1));'
           )
 
-          # Keep footer hover geometry correct while the outer title is still
-          # being scroll-scaled.
           old = '''    title.addEventListener("pointerenter", function () { active = true; dirty = true; });
     title.addEventListener("pointerleave", function () { active = false; });
     window.addEventListener("resize", function () { dirty = true; }, { passive: true });'''
@@ -83,7 +80,6 @@ jobs:
     function measure() {
       var vh = window.innerHeight;
       var staged = window.innerWidth >= 1024;
-
       if (behind) {
         geometry.behind = {
           top: layoutTop(behind),
@@ -93,7 +89,6 @@ jobs:
           reminder: reminders.map(function (item) { return layoutTop(item) - vh * .82; })
         };
       }
-
       if (drives) {
         var track = drives.closest(".drives-track") || drives;
         geometry.drives = {
@@ -103,14 +98,9 @@ jobs:
           items: principles.map(function (item) { return layoutTop(item) - vh * .82; })
         };
       }
-
       if (footerEl) {
-        geometry.footer = {
-          top: layoutTop(footerEl),
-          height: Math.max(footerEl.offsetHeight, 1)
-        };
+        geometry.footer = { top: layoutTop(footerEl), height: Math.max(footerEl.offsetHeight, 1) };
       }
-
       dirty = false;
       draw();
     }
@@ -134,15 +124,11 @@ jobs:
 
     function draw() {
       if (dirty) { measure(); return; }
-
       var y = window.scrollY;
       var vh = window.innerHeight;
       var doc = document.documentElement;
       var nearBottom = y + vh >= doc.scrollHeight - 8;
 
-      /* Behind starts while its heading is visibly entering, not only after
-         the section top has already hit the viewport top. The final beat lands
-         exactly as the sticky stage releases. */
       if (behind) {
         var bh = geometry.behind;
         if (bh.staged) {
@@ -172,9 +158,6 @@ jobs:
         }
       }
 
-      /* What Drives Me is visually short on desktop, so section-height progress
-         used to divide by ~1px and reveal at the wrong time. Give the strip a
-         predictable viewport-based scroll window instead. */
       if (drives) {
         var dg = geometry.drives;
         if (dg.staged) {
@@ -194,15 +177,10 @@ jobs:
         }
       }
 
-      /* Footer motion no longer waits for paper-sheet settlement. That gate was
-         capable of keeping the complete final chapter hidden. Progress begins
-         as the footer enters, and all content is guaranteed visible before the
-         absolute bottom of the document. */
       if (footerEl) {
         var fg = geometry.footer;
         var footerStaged = window.innerWidth >= 1024 && fg.height > vh * 1.05;
         var p;
-
         if (reduced) {
           p = 1;
         } else if (footerStaged) {
@@ -211,7 +189,6 @@ jobs:
           var fStart = fg.top - vh * .82;
           p = clamp((y - fStart) / Math.max(vh * .90, 1), 0, 1);
         }
-
         if (nearBottom) { p = 1; }
 
         var grow = ease(span(p, .10, .44));
@@ -225,7 +202,6 @@ jobs:
          [.82,"is-social-reached"]].forEach(function (beat) {
           if (reduced || p >= beat[0]) { footerEl.classList.add(beat[1]); }
         });
-
         if (p >= .985 || nearBottom) { finishFooter(); }
       }
     }
@@ -242,7 +218,6 @@ jobs:
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { dirty = true; schedule(); });
     }
-
     if ("MutationObserver" in window) {
       [].slice.call(document.querySelectorAll(".paper-sheet")).forEach(function (sheet) {
         var settled = sheet.classList.contains("is-sheet-settled");
@@ -252,7 +227,6 @@ jobs:
         }).observe(sheet, { attributes: true, attributeFilter: ["class"] });
       });
     }
-
     measure();
   }
 '''
@@ -283,7 +257,6 @@ jobs:
     }
 
     if (reduced) { showAll(); return; }
-
     story.classList.add("is-origin-ready");
 
     var sectionTop = 0;
@@ -305,10 +278,7 @@ jobs:
       while (node) { top += node.offsetTop || 0; node = node.offsetParent; }
       return top;
     }
-
-    function pageTop(el) {
-      return layoutTop(el);
-    }
+    function pageTop(el) { return layoutTop(el); }
 
     function measure() {
       var vh = window.innerHeight;
@@ -316,8 +286,6 @@ jobs:
       sectionTop = layoutTop(section);
       sectionHeight = Math.max(section.offsetHeight, 1);
 
-      /* Mobile/tablet keep natural position-driven reveals. Desktop gets a
-         paced section clock so one trackpad gesture cannot fire every thought. */
       var gap = clamp(vh * .085, 54, 76);
       var bubbleTop = pageTop(bubble || story);
       var firstStep = bubbleTop - vh * .72;
@@ -336,7 +304,6 @@ jobs:
         var marker = pageTop(item) + item.offsetHeight * .5 - vh * .68;
         return Math.max(marker, bodyThreshold + gap * .9 + i * gap * .55);
       });
-
       draw();
     }
 
@@ -352,7 +319,6 @@ jobs:
         var start = sectionTop - vh * .78;
         var end = sectionTop + sectionHeight - vh * .18;
         var p = clamp((y - start) / Math.max(end - start, 1), 0, 1);
-
         reached(eyebrow, p >= .04);
         reached(curiosity, p >= .09);
         var points = [.18,.27,.36,.45];
@@ -366,7 +332,6 @@ jobs:
         story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
         var itemPoints = [.68,.77,.86,.94];
         items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .94)); });
-
         if (p >= .985) { showAll(); }
       } else {
         reached(eyebrow, y >= eyebrowThreshold);
@@ -393,7 +358,6 @@ jobs:
       queued = true;
       requestAnimationFrame(function () { queued = false; draw(); });
     }
-
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", measure, { passive: true });
     window.addEventListener("load", measure);
@@ -402,13 +366,7 @@ jobs:
   }
 '''
           s = s[:origin_start] + origin_fn + s[origin_end:]
-
           path.write_text(s)
-
-          # Remove this temporary workflow from the finished branch.
-          wf = Path('.github/workflows/one-time-scroll-repair.yml')
-          if wf.exists():
-              wf.unlink()
           PY
 
       - name: Commit repaired motion
@@ -416,6 +374,6 @@ jobs:
         run: |
           git config user.name "ChatGPT Motion Repair"
           git config user.email "actions@users.noreply.github.com"
-          git add motion.js .github/workflows/one-time-scroll-repair.yml
+          git add motion.js
           git commit -m "[motion-fix] Repair scroll timing and footer completion"
           git push origin HEAD:fix/final-scroll-motion-20260825
