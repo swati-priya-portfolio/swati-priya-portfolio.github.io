@@ -1473,6 +1473,145 @@
 .sp-js .reminder:nth-child(3)::after { content: "○"; }
 .sp-js .reminder:hover::after { opacity: .72; transform: none; }
 
+/* Behind the Screens is read as one desk being assembled, not four cards
+   arriving on a timer. JS advances these beats only as the page is scrolled. */
+.sp-js .behind.is-behind-ready .behind-head.sp-reveal {
+  opacity: 1;
+  transform: none;
+}
+.sp-js .behind.is-behind-ready .behind-head .eyebrow,
+.sp-js .behind.is-behind-ready .behind-line,
+.sp-js .behind.is-behind-ready .behind-intro {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 430ms linear, transform 590ms var(--ep);
+}
+.sp-js .behind.is-behind-ready.is-eyebrow-reached .behind-head .eyebrow,
+.sp-js .behind.is-behind-ready.is-line-one-reached .behind-line:first-child,
+.sp-js .behind.is-behind-ready.is-accent-reached .behind-accent,
+.sp-js .behind.is-behind-ready.is-work-reached .behind-work,
+.sp-js .behind.is-behind-ready.is-intro-reached .behind-intro {
+  opacity: 1;
+  transform: none;
+}
+.behind-accent { position: relative; display: inline-block; }
+.behind-accent::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: scaleX(0) rotate(-1deg);
+  transform-origin: left center;
+  transition: transform 520ms var(--ep) 70ms;
+}
+.sp-js .behind.is-accent-reached .behind-accent::after { transform: scaleX(1) rotate(-1deg); }
+
+.sp-js .behind.is-behind-ready .board.sp-settle {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 440ms linear, transform 680ms var(--ep), border-color 260ms var(--ep), box-shadow 260ms var(--ep);
+}
+.sp-js .behind.is-behind-ready .board:nth-child(1) { transform: translateY(46px) rotate(-1.8deg) scale(.97); }
+.sp-js .behind.is-behind-ready .board:nth-child(2) { transform: translateY(42px) rotate(1.3deg) scale(.97); }
+.sp-js .behind.is-behind-ready .board:nth-child(3) { transform: translateY(38px) rotate(-1deg) scale(.975); }
+.sp-js .behind.is-behind-ready .board:nth-child(4) { transform: translateY(40px) rotate(1deg) scale(.975); }
+.sp-js .behind.is-behind-ready .board.is-beat-reached {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+.sp-js .behind.is-behind-ready .board:not(.is-beat-reached) [data-parallax] { --parallax-y: 0px !important; }
+.sp-js .behind.is-behind-ready .reminder {
+  opacity: 0;
+  transition: opacity 360ms linear, transform 540ms var(--ep);
+}
+.sp-js .behind.is-behind-ready .reminder:nth-child(1) { transform: translateY(18px) rotate(-1.5deg) scale(.975); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(2) { transform: translateY(18px) rotate(.8deg) scale(.975); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(3) { transform: translateY(18px) rotate(-.6deg) scale(.975); }
+.sp-js .behind.is-behind-ready .reminder.is-beat-reached { opacity: 1; transform: none; }
+
+/* What Drives Me draws its shell, then reveals one principle per scroll beat. */
+.sp-js .drives.is-drives-ready.sp-reveal { position: relative; opacity: 1; transform: none; border-color: transparent; }
+.sp-js .drives.is-drives-ready::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px dashed #f5efe2;
+  border-radius: inherit;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 650ms var(--ep);
+  pointer-events: none;
+}
+.sp-js .drives.is-drives-ready.is-border-reached::before { clip-path: inset(0); }
+.sp-js .drives.is-drives-ready .drives-title,
+.sp-js .drives.is-drives-ready .drives-list li {
+  opacity: 0;
+  transform: translateY(9px);
+  transition: opacity 390ms linear, transform 540ms var(--ep);
+}
+.sp-js .drives.is-drives-ready.is-title-reached .drives-title,
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached { opacity: 1; transform: none; }
+.sp-js .drives.is-drives-ready .drives-list li svg { transform: scale(.84); transition: transform 480ms var(--ep); }
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached svg { transform: scale(1); }
+.sp-js .drives.is-drives-ready:not(.is-title-reached) .squiggle path { stroke-dashoffset: 220 !important; }
+
+/* Final chapter: scale the complete title, then let the contact details and
+   cover arrive. The watering control remains a click-only easter egg. */
+.sp-js .site-footer.is-footer-story-ready .footer-story.sp-reveal { opacity: 1; transform: none; }
+.sp-js .site-footer.is-footer-story-ready .footer-kicker,
+.sp-js .site-footer.is-footer-story-ready .footer-title,
+.sp-js .site-footer.is-footer-story-ready .footer-lede,
+.sp-js .site-footer.is-footer-story-ready .footer-actions,
+.sp-js .site-footer.is-footer-story-ready .footer-social,
+.sp-js .site-footer.is-footer-story-ready .footer-legal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 420ms linear, transform 570ms var(--ep);
+}
+.sp-js .site-footer.is-footer-story-ready .footer-title {
+  transform: translateY(12px) scale(var(--footer-title-scale, .66));
+  transform-origin: left center;
+  will-change: transform;
+}
+.sp-js .site-footer.is-kicker-reached .footer-kicker,
+.sp-js .site-footer.is-lede-reached .footer-lede,
+.sp-js .site-footer.is-actions-reached .footer-actions,
+.sp-js .site-footer.is-social-reached .footer-social,
+.sp-js .site-footer.is-social-reached .footer-legal { opacity: 1; transform: none; }
+.sp-js .site-footer.is-title-reached .footer-title {
+  opacity: 1;
+  transform: scale(var(--footer-title-scale, 1));
+}
+.sp-js .site-footer.is-footer-story-ready .footer-grow { transform: none; }
+.sp-js .site-footer.is-footer-story-ready .footer-actions,
+.sp-js .site-footer.is-footer-story-ready .footer-social { visibility: hidden; pointer-events: none; }
+.sp-js .site-footer.is-actions-reached .footer-actions,
+.sp-js .site-footer.is-social-reached .footer-social { visibility: visible; pointer-events: auto; }
+.sp-js .site-footer.is-footer-story-ready .footer-cover.sp-settle {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(56px) rotate(3deg) scale(.96);
+  transition: opacity 460ms linear, transform 680ms var(--ep);
+}
+.sp-js .site-footer.is-footer-story-ready.is-cover-reached .footer-cover.sp-settle {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.sp-js .site-footer.is-footer-story-ready .footer-bubble {
+  opacity: 0;
+  transform: translateY(10px) scale(.94) rotate(-2deg);
+  transition: opacity 340ms linear, transform 520ms var(--ep);
+}
+.sp-js .site-footer.is-footer-story-ready.is-bubble-reached .footer-bubble,
+.sp-js .site-footer.is-talking .footer-bubble { opacity: 1; transform: none; }
+
 /* Reusable scroll depth. Individual translate composes with the site's
    existing rotate/scale transforms, so hover, records and paper sheets keep
    their own motion systems. */
@@ -1668,5 +1807,26 @@
   .sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 100% 3px, 88% 2px !important; }
   .sp-js [data-parallax] { translate: none !important; will-change: auto; }
   .sp-js .player-art, .footer-grow { transform: none !important; }
+  .sp-js .behind.is-behind-ready .behind-head .eyebrow,
+  .sp-js .behind.is-behind-ready .behind-line,
+  .sp-js .behind.is-behind-ready .behind-intro,
+  .sp-js .behind.is-behind-ready .board.sp-settle,
+  .sp-js .behind.is-behind-ready .reminder,
+  .sp-js .drives.is-drives-ready .drives-title,
+  .sp-js .drives.is-drives-ready .drives-list li,
+  .sp-js .site-footer.is-footer-story-ready .footer-kicker,
+  .sp-js .site-footer.is-footer-story-ready .footer-title,
+  .sp-js .site-footer.is-footer-story-ready .footer-lede,
+  .sp-js .site-footer.is-footer-story-ready .footer-actions,
+  .sp-js .site-footer.is-footer-story-ready .footer-social,
+  .sp-js .site-footer.is-footer-story-ready .footer-legal,
+  .sp-js .site-footer.is-footer-story-ready .footer-cover.sp-settle,
+  .sp-js .site-footer.is-footer-story-ready .footer-bubble {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+  .sp-js .drives.is-drives-ready::before { clip-path: inset(0) !important; }
   .footer-water, .footer-garden { display: none !important; }
 }

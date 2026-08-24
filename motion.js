@@ -878,7 +878,6 @@
     if (!foot) { return; }
     var giant = foot.querySelector(".footer-giant");
     var hosts = [].slice.call(foot.querySelectorAll("[data-giant]"));
-    var grow = foot.querySelector(".footer-grow");
     var water = foot.querySelector(".footer-water");
     var growth = 0;
 
@@ -895,21 +894,6 @@
       });
     }
 
-    function drawGrowth() {
-      if (!grow || reduced) { return; }
-      var r = foot.getBoundingClientRect();
-      var p = ease(span(window.innerHeight - r.top, 0, window.innerHeight * 0.72));
-      grow.style.setProperty("--footer-scale", lerp(0.78, 1, p).toFixed(4));
-    }
-
-    var queued = false;
-    window.addEventListener("scroll", function () {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(function () { queued = false; drawGrowth(); });
-    }, { passive: true });
-    drawGrowth();
-
     if (water && !reduced) {
       water.addEventListener("click", function () {
         if (growth >= 3) { return; }
@@ -924,7 +908,122 @@
   }
 
   /* ==========================================================
-     11a. SUBTLE SCROLL PARALLAX — selected physical objects only
+     11a. SECTION STORIES — one scroll clock, three quiet chapters
+     ========================================================== */
+  function sectionStories() {
+    var behind = document.querySelector(".behind");
+    var drives = document.querySelector(".drives");
+    var footerEl = document.querySelector(".site-footer");
+    if (!behind && !drives && !footerEl) { return; }
+
+    var boards = behind ? [].slice.call(behind.querySelectorAll(".board")) : [];
+    var reminders = behind ? [].slice.call(behind.querySelectorAll(".reminder")) : [];
+    var principles = drives ? [].slice.call(drives.querySelectorAll(".drives-list li")) : [];
+    var geometry = {};
+    var dirty = true;
+    var queued = false;
+
+    if (behind) { behind.classList.add("is-behind-ready"); }
+    if (drives) { drives.classList.add("is-drives-ready"); }
+    if (footerEl) { footerEl.classList.add("is-footer-story-ready"); }
+
+    function layoutTop(el) {
+      var top = 0;
+      while (el) { top += el.offsetTop || 0; el = el.offsetParent; }
+      return top;
+    }
+
+    function reveal(el) {
+      if (el) { el.classList.add("is-beat-reached"); }
+    }
+
+    function measure() {
+      var vh = window.innerHeight;
+      var mobile = window.innerWidth < 768;
+      if (behind) {
+        var boardTop = boards[0] ? layoutTop(boards[0]) : layoutTop(behind);
+        geometry.behind = {
+          top: layoutTop(behind),
+          board: boards.map(function (board, i) {
+            return mobile ? layoutTop(board) - vh * 0.82 : boardTop - vh * 0.72 + i * clamp(vh * .065, 48, 72);
+          }),
+          reminder: reminders.map(function (item, i) {
+            var natural = layoutTop(item) - vh * .82;
+            var staged = boardTop - vh * .72 + boards.length * clamp(vh * .065, 48, 72) + 28 + i * 46;
+            return mobile ? natural : staged;
+          })
+        };
+      }
+      if (drives) {
+        var dTop = layoutTop(drives);
+        geometry.drives = {
+          top: dTop - vh * .79,
+          items: principles.map(function (item, i) {
+            return mobile ? layoutTop(item) - vh * .82 : dTop - vh * .68 + 120 + i * 54;
+          })
+        };
+      }
+      if (footerEl) {
+        geometry.footer = { top: layoutTop(footerEl), height: Math.max(footerEl.offsetHeight, 1) };
+      }
+      dirty = false;
+      draw();
+    }
+
+    function draw() {
+      if (dirty) { measure(); return; }
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+
+      if (behind && (reduced || behind.classList.contains("is-sheet-settled"))) {
+        var bh = geometry.behind;
+        var beats = ["is-eyebrow-reached", "is-line-one-reached", "is-accent-reached", "is-work-reached", "is-intro-reached"];
+        var gap = clamp(vh * .045, 28, 44);
+        beats.forEach(function (name, i) {
+          if (reduced || y >= bh.top - vh * .72 + i * gap) { behind.classList.add(name); }
+        });
+        boards.forEach(function (board, i) { if (reduced || y >= bh.board[i]) { reveal(board); } });
+        reminders.forEach(function (item, i) { if (reduced || y >= bh.reminder[i]) { reveal(item); } });
+      }
+
+      var about = drives && drives.closest(".paper-sheet");
+      if (drives && (reduced || !about || about.classList.contains("is-sheet-settled"))) {
+        var dg = geometry.drives;
+        if (reduced || y >= dg.top) { drives.classList.add("is-border-reached"); }
+        if (reduced || y >= dg.top + 52) { drives.classList.add("is-title-reached"); }
+        principles.forEach(function (item, i) { if (reduced || y >= dg.items[i]) { reveal(item); } });
+      }
+
+      if (footerEl && (reduced || footerEl.classList.contains("is-sheet-settled"))) {
+        var fg = geometry.footer;
+        var distance = Math.min(fg.height * .9, vh * .82);
+        var p = reduced ? 1 : clamp((y + vh - fg.top) / Math.max(distance, 1), 0, 1);
+        var titleP = ease(span(p, .18, .68));
+        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(window.innerWidth < 768 ? .84 : .66, 1, titleP)).toFixed(4));
+        [[.08,"is-kicker-reached"],[.18,"is-title-reached"],[.67,"is-lede-reached"],[.76,"is-actions-reached"],[.80,"is-cover-reached"],[.89,"is-bubble-reached"],[.93,"is-social-reached"]].forEach(function (beat) {
+          if (reduced || p >= beat[0]) { footerEl.classList.add(beat[1]); }
+        });
+      }
+    }
+
+    function schedule() {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", function () { dirty = true; schedule(); }, { passive: true });
+    window.addEventListener("load", function () { dirty = true; schedule(); });
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { dirty = true; schedule(); }); }
+    if ("MutationObserver" in window) {
+      new MutationObserver(schedule).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
+    }
+    measure();
+  }
+
+  /* ==========================================================
+     11b. SUBTLE SCROLL PARALLAX — selected physical objects only
      Uses the individual translate property in CSS, so existing transforms
      for paper, rotation, hover and record playback remain untouched.
      ========================================================== */
@@ -1296,6 +1395,7 @@
     try { headlineChars(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
+    try { sectionStories(); } catch (e) {}
     try { originStory(); } catch (e) {}
     try { scrollParallax(); } catch (e) {}
     try { footer(); } catch (e) {}
