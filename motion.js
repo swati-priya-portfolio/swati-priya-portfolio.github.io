@@ -1094,7 +1094,8 @@
       reached(body, y >= bodyThreshold);
 
       var playhead = y + window.innerHeight * 0.68;
-      var line = ease(clamp((playhead - lineStart) / lineLength, 0, 1));
+      var lineRaw = clamp((playhead - lineStart) / lineLength, 0, 1);
+      var line = lineRaw * lineRaw * (3 - 2 * lineRaw);
       furthestLine = Math.max(furthestLine, line);
       story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
 
