@@ -1052,8 +1052,14 @@
     var furthestLine = 0;
 
     function pageTop(el) {
-      var rect = el.getBoundingClientRect();
-      return rect.top + window.scrollY;
+      /* Measure relative to the section's layout position. The paper sheet
+         may still be translating when this runs; subtracting the section's
+         rendered top cancels that shared transform and keeps every reveal
+         tied to its real content position. */
+      var sectionTop = 0;
+      var node = section;
+      while (node) { sectionTop += node.offsetTop || 0; node = node.offsetParent; }
+      return sectionTop + el.getBoundingClientRect().top - section.getBoundingClientRect().top;
     }
 
     function measure() {
@@ -1106,12 +1112,6 @@
     window.addEventListener("resize", measure, { passive: true });
     window.addEventListener("load", measure);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(measure); }
-    if ("MutationObserver" in window) {
-      new MutationObserver(function () { measure(); }).observe(section, {
-        attributes: true,
-        attributeFilter: ["class"]
-      });
-    }
     measure();
   }
 
