@@ -15,7 +15,7 @@
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(pointer: fine)").matches;
   var EASE = 0.16;                                  // pointer follow smoothing
-  var desktop = function () { return window.innerWidth >= 1080; };
+  var desktop = function () { return window.innerWidth >= 1024; };
 
   var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
   var lerp = function (a, b, t) { return a + (b - a) * t; };
@@ -317,6 +317,71 @@
     });
   }
 
+  /* The final title echoes the Hero's distance-based letter response. The
+     outer title keeps scroll scale; only these inner spans own hover motion. */
+  function footerTitleChars() {
+    var title = document.querySelector(".footer-title");
+    if (!title || reduced || !finePointer) { return; }
+
+    function wrapText(node) {
+      if (node.nodeType === 3) {
+        if (!node.nodeValue.trim()) { return; }
+        var frag = document.createDocumentFragment();
+        node.nodeValue.split(/(\s+)/).forEach(function (part) {
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          var word = document.createElement("span");
+          word.className = "footer-word";
+          [].slice.call(part).forEach(function (char, i) {
+            var letter = document.createElement("span");
+            letter.className = "footer-letter";
+            letter.textContent = char;
+            letter.setAttribute("data-letter-seed", String(i));
+            word.appendChild(letter);
+          });
+          frag.appendChild(word);
+        });
+        node.parentNode.replaceChild(frag, node);
+        return;
+      }
+      if (node.nodeType !== 1 || node.classList.contains("footer-letter")) { return; }
+      [].slice.call(node.childNodes).forEach(wrapText);
+    }
+    wrapText(title);
+
+    var letters = [].slice.call(title.querySelectorAll(".footer-letter"));
+    var boxes = [];
+    var active = false;
+    var dirty = true;
+    function measure() {
+      boxes = letters.map(function (letter, i) {
+        var r = letter.getBoundingClientRect();
+        return { el: letter, x: r.left + r.width / 2, y: r.top + r.height / 2, v: 0, i: i };
+      });
+      dirty = false;
+    }
+    title.addEventListener("pointerenter", function () { active = true; dirty = true; });
+    title.addEventListener("pointerleave", function () { active = false; });
+    window.addEventListener("resize", function () { dirty = true; }, { passive: true });
+
+    addJob(function () {
+      if (active && dirty) { measure(); }
+      for (var i = 0; i < boxes.length; i++) {
+        var b = boxes[i];
+        var dx = ptr.x - b.x;
+        var dy = (ptr.y - b.y) * 1.2;
+        var t = active ? clamp(1 - Math.sqrt(dx * dx + dy * dy) / 105, 0, 1) : 0;
+        t = t * t * (3 - 2 * t);
+        b.v = lerp(b.v, t, active ? .24 : .16);
+        if (b.v < .002) { b.v = 0; }
+        var yours = !!b.el.closest(".accent");
+        var sign = b.i % 2 ? 1 : -1;
+        b.el.style.setProperty("--fc-y", (-7 * b.v).toFixed(2) + "px");
+        b.el.style.setProperty("--fc-s", (1 + (yours ? .065 : .05) * b.v).toFixed(3));
+        b.el.style.setProperty("--fc-r", (sign * (0.45 + (b.i % 3) * .35) * b.v).toFixed(2) + "deg");
+      }
+    });
+  }
+
   /* ==========================================================
      4. CUSTOM CURSOR — a dot that turns into a comic annotation
      ========================================================== */
@@ -547,11 +612,7 @@
       });
       var stageH = stage.offsetHeight;
       var room = window.innerHeight - PIN_TOP - 40;
-      var fit = Math.min(1, room / Math.max(stageH, 1));
-      if (fit < .76) { teardown(); return; }
-      grid.style.transformOrigin = "top center";
-      grid.style.transform = "scale(" + fit.toFixed(4) + ")";
-      stage.style.height = Math.round(stageH * fit) + "px";
+      var fit = Math.max(.72, Math.min(1, room / Math.max(stageH, 1)));
 
       cards.forEach(function (c) { c.classList.remove("settle-in", "is-visible"); });
       if (settleObserver) { settleObserver.disconnect(); settleObserver = null; }
@@ -560,20 +621,23 @@
       var gridCentre = gridRect.left + gridRect.width / 2;
 
       geo = {
-        stageH: stageH * fit,
+        stageH: stageH,
+        fit: fit,
         offsets: cards.map(function (c) {
           var r = c.getBoundingClientRect();
-          return (gridCentre - (r.left + r.width / 2)) / fit;
+          return gridCentre - (r.left + r.width / 2);
         })
       };
 
-      travel = Math.round(Math.min(window.innerHeight * 1.15, 940));
+      travel = Math.round(Math.min(window.innerHeight * 1.22, 980));
       track.style.height = Math.round(stageH * fit + travel) + "px";
+      grid.style.transformOrigin = "top center";
+      stage.style.height = Math.round(stageH * fit) + "px";
       stage.style.position = "sticky";
       stage.style.top = PIN_TOP + "px";
       pinned = true;
-      cards[1].style.zIndex = "3";   // the anchor cover
-      cards[0].style.zIndex = "2";
+      cards[0].style.zIndex = "3";   // Guardian One opens the story
+      cards[1].style.zIndex = "2";
       cards[2].style.zIndex = "1";
       draw();
     }
@@ -584,21 +648,16 @@
       var top = track.getBoundingClientRect().top;   // relative to viewport
       var p = clamp((PIN_TOP - top) / travel, 0, 1);
 
-      // The middle cover is the anchor: it opens the section alone and never
-      // moves sideways. The other two slide out from behind it, left first,
-      // then right, each as its own beat so nothing overlaps.
-      var leftP = ease(span(p, 0.20, 0.52));
-      var rightP = ease(span(p, 0.52, 0.82));
+      // Final order stays Guardian | GrayQuest | Embibe. All three sheets
+      // begin at the middle slot with Guardian physically on top.
+      var guardianP = ease(span(p, 0.18, 0.52));
+      var embibeP = ease(span(p, 0.52, 0.82));
+      var settleP = ease(span(p, 0.82, 1));
+      grid.style.transform = "scale(" + lerp(geo.fit, 1, settleP).toFixed(4) + ")";
 
+      setCard(cards[0], lerp(geo.offsets[0], 0, guardianP), lerp(.97, 1, guardianP), 0, 1);
       setCard(cards[1], 0, 1, 0, 1);
-      cards[1].style.boxShadow = "";
-
-      // Side issues are always opaque physical sheets. They are invisible at
-      // first only because Guardian One sits above the stack.
-      setCard(cards[0], lerp(geo.offsets[0], 0, leftP), lerp(.97, 1, leftP),
-        lerp(0, -1, leftP), 1);
-      setCard(cards[2], lerp(geo.offsets[2], 0, rightP), lerp(.97, 1, rightP),
-        lerp(0, 1, rightP), 1);
+      setCard(cards[2], lerp(geo.offsets[2], 0, embibeP), lerp(.97, 1, embibeP), 0, 1);
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
@@ -609,8 +668,8 @@
       // decides which raised artwork wins on hover instead of the pointer.
       if (settled !== stacked) {
         stacked = settled;
-        cards[1].style.zIndex = settled ? "" : "3";   // the anchor cover
-        cards[0].style.zIndex = settled ? "" : "2";
+        cards[0].style.zIndex = settled ? "" : "3";
+        cards[1].style.zIndex = settled ? "" : "2";
         cards[2].style.zIndex = settled ? "" : "1";
       }
     }
@@ -651,7 +710,7 @@
      ========================================================== */
   function reveals() {
     var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll")).filter(function (el) {
-      return !el.matches(".behind .board, .drives, .footer-story, .footer-cover");
+      return !el.matches(".behind .board, .behind .reminder, .drives, .footer-story, .footer-cover");
     });
     var squiggles = [].slice.call(document.querySelectorAll(".squiggle"));
 
@@ -967,7 +1026,7 @@
 
     function measure() {
       var vh = window.innerHeight;
-      var staged = window.innerWidth >= 1080 && vh >= 760;
+      var staged = window.innerWidth >= 1024;
       if (behind) {
         geometry.behind = {
           top: layoutTop(behind),
@@ -982,8 +1041,8 @@
         geometry.drives = {
           top: layoutTop(track),
           height: Math.max(track.offsetHeight, 1),
-          staged: staged && track.offsetHeight > vh,
-          items: principles.map(function (_, i) { return layoutTop(track) - vh * .58 + i * 90; })
+          staged: staged,
+          items: principles.map(function (item) { return layoutTop(item) - vh * .82; })
         };
       }
       if (footerEl) {
@@ -1004,10 +1063,10 @@
         [[.12,"is-eyebrow-reached"],[.15,"is-line-one-reached"],[.18,"is-accent-reached"],[.21,"is-work-reached"],[.24,"is-intro-reached"]].forEach(function (beat) {
           if (reduced || (bh.staged ? bp >= beat[0] : y >= bh.top - vh * .72 + beat[0] * 220)) { behind.classList.add(beat[1]); }
         });
-        [.22,.50,.76,.90].forEach(function (point, i) {
+        [.22,.42,.62,.80].forEach(function (point, i) {
           if (reduced || (bh.staged ? bp >= point : y >= bh.board[i])) { reveal(boards[i]); }
         });
-        [.89,.94,.98].forEach(function (point, i) {
+        [.91,.95,.98].forEach(function (point, i) {
           if (reduced || (bh.staged ? bp >= point : y >= bh.reminder[i])) { reveal(reminders[i]); }
         });
       }
@@ -1025,16 +1084,17 @@
 
       if (footerEl && (reduced || footerEl.classList.contains("is-sheet-settled"))) {
         var fg = geometry.footer;
-        var footerStaged = window.innerWidth >= 1080 && vh >= 760;
+        var footerStaged = window.innerWidth >= 1024;
         var distance = footerStaged ? Math.max(fg.height - vh, 1) : Math.min(fg.height * .9, vh * .9);
         var p = reduced ? 1 : footerStaged ? clamp((y - fg.top) / distance, 0, 1) : clamp((y + vh - fg.top) / Math.max(distance, 1), 0, 1);
-        var titleP = ease(span(p, .22, .60));
-        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(window.innerWidth < 768 ? .84 : .56, 1, titleP)).toFixed(4));
-        footerEl.style.setProperty("--footer-title-lift", (reduced ? 0 : lerp(0, -18, ease(span(p, .68, .76)))).toFixed(2) + "px");
-        [[.10,"is-kicker-reached"],[.22,"is-title-reached"],[.62,"is-title-max"],[.78,"is-lede-reached"],[.84,"is-actions-reached"],[.88,"is-cover-reached"],[.95,"is-social-reached"]].forEach(function (beat) {
+        var grow = ease(span(p, .20, .58));
+        var settle = ease(span(p, .58, .70));
+        var peak = lerp(window.innerWidth < 768 ? .78 : .74, 1.06, grow);
+        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(peak, 1, settle)).toFixed(4));
+        footerEl.style.setProperty("--footer-title-lift", (reduced ? 0 : lerp(12, 0, grow)).toFixed(2) + "px");
+        [[.10,"is-kicker-reached"],[.20,"is-title-reached"],[.58,"is-title-max"],[.74,"is-lede-reached"],[.80,"is-actions-reached"],[.86,"is-cover-reached"],[.94,"is-social-reached"]].forEach(function (beat) {
           if (reduced || p >= beat[0]) { footerEl.classList.add(beat[1]); }
         });
-        if (!finePointer && (reduced || p >= .90)) { footerEl.classList.add("is-touch-note-reached"); }
       }
     }
 
@@ -1156,44 +1216,110 @@
   }
 
   /* ==========================================================
-     11b. ORIGIN STORY — questions become clarity, then chapters
+     11b. ORIGIN STORY — local thoughts, then design, then career
      ========================================================== */
   function originStory() {
     var section = document.querySelector(".about");
     var story = section && section.querySelector(".story-col");
     if (!section || !story) { return; }
 
+    var steps = [].slice.call(story.querySelectorAll(".origin-step"));
+    var arrows = [].slice.call(story.querySelectorAll(".origin-arrow"));
+    var eyebrow = story.querySelector(".eyebrow");
     var curiosity = story.querySelector(".origin-curiosity");
-    var questions = [].slice.call(story.querySelectorAll(".origin-questions span"));
-    var methods = [].slice.call(story.querySelectorAll(".origin-method span"));
-    var marker = story.querySelector(".marker-sweep");
-    var designChapter = story.querySelector(".design-chapter");
+    var bubble = story.querySelector(".thought-bubble");
     var design = story.querySelector(".origin-design");
     var body = story.querySelector(".story-body");
-    var careerHeading = story.querySelector(".career-heading");
-    var items = [].slice.call(story.querySelectorAll(".career-strip"));
-    var targets = [curiosity].concat(questions, methods, [marker, design, body, careerHeading], items).filter(Boolean);
+    var timeline = story.querySelector(".timeline");
+    var items = [].slice.call(story.querySelectorAll(".timeline-item"));
 
-    if (reduced || !("IntersectionObserver" in window)) {
-      targets.forEach(function (el) { el.classList.add("is-reached"); });
-      story.classList.add("is-origin-ready", "is-synthesizing");
+    if (reduced) {
+      [eyebrow, curiosity, design, body].concat(steps, arrows, items).forEach(function (el) {
+        if (el) { el.classList.add("is-reached"); }
+      });
+      story.style.setProperty("--timeline-draw", "1");
       return;
     }
 
     story.classList.add("is-origin-ready");
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) { return; }
-        entry.target.classList.add("is-reached");
-        if (entry.target === marker || entry.target === design || entry.target === designChapter) {
-          story.classList.add("is-synthesizing");
-        }
-        io.unobserve(entry.target);
-      });
-    }, { threshold: 0.18, rootMargin: "0px 0px -75% 0px" });
+    var stepThresholds = [];
+    var eyebrowThreshold = 0;
+    var curiosityThreshold = 0;
+    var designThreshold = 0;
+    var bodyThreshold = 0;
+    var itemThresholds = [];
+    var lineStart = 0;
+    var lineLength = 1;
+    var furthestLine = 0;
 
-    targets.forEach(function (el) { io.observe(el); });
-    if (designChapter) { io.observe(designChapter); }
+    function pageTop(el) {
+      /* Measure relative to the section's layout position. The paper sheet
+         may still be translating when this runs; subtracting the section's
+         rendered top cancels that shared transform and keeps every reveal
+         tied to its real content position. */
+      var sectionTop = 0;
+      var node = section;
+      while (node) { sectionTop += node.offsetTop || 0; node = node.offsetParent; }
+      return sectionTop + el.getBoundingClientRect().top - section.getBoundingClientRect().top;
+    }
+
+    function measure() {
+      var vh = window.innerHeight;
+      var gap = clamp(vh * 0.055, 36, 52);
+      var bubbleTop = pageTop(bubble || story);
+      var firstStep = bubbleTop - vh * 0.72;
+
+      eyebrowThreshold = pageTop(story) - vh * .78;
+      curiosityThreshold = eyebrowThreshold + clamp(vh * .055, 34, 48);
+
+      stepThresholds = steps.map(function (_, i) { return Math.max(firstStep + gap * i, curiosityThreshold + gap * (i + 1)); });
+      designThreshold = (stepThresholds[stepThresholds.length - 1] || firstStep) + gap * 0.9;
+      bodyThreshold = Math.max(pageTop(body) - vh * 0.72, designThreshold + gap * 0.8);
+
+      var timelineTop = pageTop(timeline);
+      lineStart = timelineTop + 40;
+      lineLength = Math.max((timeline ? timeline.offsetHeight : 1) - 80, 1);
+      itemThresholds = items.map(function (item, i) {
+        var marker = pageTop(item) + item.offsetHeight * 0.5 - vh * 0.68;
+        return Math.max(marker, bodyThreshold + gap * 0.85 + i * 10);
+      });
+      draw();
+    }
+
+    function reached(el, yes) {
+      if (el && yes && !el.classList.contains("is-reached")) { el.classList.add("is-reached"); }
+    }
+
+    function draw() {
+      var y = window.scrollY;
+      reached(eyebrow, y >= eyebrowThreshold);
+      reached(curiosity, y >= curiosityThreshold);
+      steps.forEach(function (step, i) { reached(step, y >= stepThresholds[i]); });
+      arrows.forEach(function (arrow, i) { reached(arrow, y >= stepThresholds[i + 1]); });
+      reached(design, y >= designThreshold);
+      reached(body, y >= bodyThreshold);
+
+      var playhead = y + window.innerHeight * 0.68;
+      var lineRaw = clamp((playhead - lineStart) / lineLength, 0, 1);
+      var line = lineRaw * lineRaw * (3 - 2 * lineRaw);
+      furthestLine = Math.max(furthestLine, line);
+      story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
+
+      items.forEach(function (item, i) {
+        reached(item, y >= itemThresholds[i] && furthestLine > 0);
+      });
+    }
+
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }, { passive: true });
+    window.addEventListener("resize", measure, { passive: true });
+    window.addEventListener("load", measure);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(measure); }
+    measure();
   }
 
   /* ==========================================================
@@ -1230,7 +1356,7 @@
      nothing here reads layout while scrolling.
      ========================================================== */
   function paperSheets() {
-    var sheets = [].slice.call(document.querySelectorAll(".paper-sheet"));
+    var sheets = [].slice.call(document.querySelectorAll(".paper-sheet:not(.behind)"));
     if (!sheets.length) { return; }
 
     if (reduced) {
@@ -1374,6 +1500,7 @@
     try { customCursor(); } catch (e) {}
     try { magneticWords(); } catch (e) {}
     try { headlineChars(); } catch (e) {}
+    try { footerTitleChars(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
     try { sectionStories(); } catch (e) {}

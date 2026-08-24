@@ -37,7 +37,7 @@
 
   <link rel="stylesheet" href="styles.css?v=13" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=14" />
+  <link rel="stylesheet" href="motion.css?v=15" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -258,16 +258,6 @@
         <div class="case-stage">
           <div class="case-grid">
         <!-- Case card 1 — change link, image and copy -->
-            <a class="case-card is-soon" href="#" aria-disabled="true" data-cursor="NOT YET &#128064;">
-              <img class="case-cover" src="images/case-grayquest.png" alt="GrayQuest comic cover" loading="lazy" />
-              <span class="case-flag" aria-hidden="true">NEXT EPISODE &#8226; COMING SOON</span>
-              <span class="case-chip">READ ISSUE #02</span>
-              <div class="case-meta">
-                <h3>GrayQuest</h3>
-                <p>Education finance &middot; Simplifying complex decisions</p>
-              </div>
-            </a>
-
             <!-- Lead cover. The one case study that is open to read. -->
             <a class="case-card is-live" href="#" data-cursor="OPEN ISSUE &#8599;">
               <img class="case-cover" src="images/case-guardian-one.png" alt="Guardian One comic cover" />
@@ -277,6 +267,16 @@
               <div class="case-meta">
                 <h3>Guardian One</h3>
                 <p>0&#8594;1 insurance &middot; Strategy to shipped product</p>
+              </div>
+            </a>
+
+            <a class="case-card is-soon" href="#" aria-disabled="true" data-cursor="NOT YET &#128064;">
+              <img class="case-cover" src="images/case-grayquest.png" alt="GrayQuest comic cover" loading="lazy" />
+              <span class="case-flag" aria-hidden="true">NEXT EPISODE &#8226; COMING SOON</span>
+              <span class="case-chip">READ ISSUE #02</span>
+              <div class="case-meta">
+                <h3>GrayQuest</h3>
+                <p>Education finance &middot; Simplifying complex decisions</p>
               </div>
             </a>
 
@@ -295,7 +295,7 @@
     </section>
 
     <!-- ================= BEHIND THE SCREENS ================= -->
-    <section class="behind" id="behind">
+    <section class="behind paper-sheet" id="behind">
       <div class="tear tear-b paper-tear" aria-hidden="true"></div>
       <div class="behind-stage">
       <div class="behind-head sp-reveal">
@@ -447,61 +447,84 @@
           </div>
         </div>
 
-        <!-- Right: questions become clarity, then career chapters -->
+        <!-- Right: origin story + timeline -->
         <div class="story-col">
-          <section class="origin-chapter curiosity-chapter">
-            <p class="chapter-index">01 &mdash; THE ORIGIN STORY</p>
-            <h2 class="story-title origin-curiosity">CURIOSITY FIRST.</h2>
-            <div class="origin-questions" aria-hidden="true">
-              <span>WHY?</span><span>WHAT IF?</span><span>WHO IS THIS FOR?</span><span>WHERE DO PEOPLE STOP?</span>
+          <div class="story-head">
+            <div>
+              <p class="eyebrow">THE ORIGIN STORY</p>
+              <h2 class="story-title">
+                <span class="origin-title-line origin-curiosity"><span class="sp-word">CURIOSITY</span> FIRST.</span><br /><span class="origin-title-line origin-design"><span class="sp-word has-grid accent underlined">DESIGN</span> FOLLOWED.</span>
+              </h2>
             </div>
-            <div class="origin-method">
-              <span>I ASK WHY.</span><span>I LISTEN.</span><span>I OBSERVE.</span>
+            <div class="thought-bubble" data-parallax="-6">
+              <p class="origin-thoughts">
+                <span class="origin-step">I ask why.</span>
+                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c-.4 3.5.6 6.2 0 10M3 8l3 3 3-3" /></svg>
+                <span class="origin-step">I listen.</span>
+                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c.5 3.4-.7 6.3 0 10M3 8l3 3 3-3" /></svg>
+                <span class="origin-step">I observe.</span>
+                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c-.5 3.5.7 6.2 0 10M3 8l3 3 3-3" /></svg>
+                <span class="origin-step accent">Then I design.</span>
+              </p>
             </div>
-          </section>
+          </div>
 
-          <div class="marker-sweep" aria-hidden="true"></div>
+          <p class="story-body">
+            I&rsquo;ve always been fascinated by how people think, choose and act. Product design gave
+            that curiosity a purpose: turning complex problems into experiences that feel clear,
+            trustworthy and human.
+          </p>
 
-          <section class="origin-chapter design-chapter">
-            <p class="chapter-index">02 &mdash; SYNTHESIS</p>
-            <h2 class="story-title origin-design"><span class="has-grid accent underlined">DESIGN</span> FOLLOWED.</h2>
-            <p class="story-body">
-              I&rsquo;ve always been fascinated by how people think, choose and act. Product design gave
-              that curiosity a purpose: turning complex problems into experiences that feel clear,
-              trustworthy and human.
-            </p>
-          </section>
+          <!-- Career timeline — edit your roles here -->
+          <ol class="timeline">
+            <li class="timeline-item">
+              <span class="tl-logo" style="--logo-bg:#6c4cf1"><img src="images/logo-grayquest.png" alt="" /></span>
+              <div class="tl-body">
+                <p class="tl-role">
+                  <a href="https://grayquest.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">GrayQuest</a>
+                  <span class="tl-title">SENIOR PRODUCT DESIGNER</span>
+                </p>
+                <p class="tl-detail">Guardian One 0&#8594;1 &middot; Fintech &middot; Insurtech</p>
+              </div>
+              <p class="tl-date">Feb 2025 &ndash; Jun 2026</p>
+            </li>
 
-          <section class="origin-chapter career-chapter">
-            <p class="chapter-index">03 &mdash; CAREER</p>
-            <h3 class="career-heading">THE CHAPTERS SO FAR.</h3>
-            <ol class="timeline career-strips">
-              <li class="timeline-item career-strip">
-                <span class="career-number">01</span>
-                <span class="tl-logo" style="--logo-bg:#1673ff"><img src="images/logo-embibe.png" alt="" /></span>
-                <div class="tl-body"><p class="tl-role"><a href="https://www.embibe.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Embibe &middot; Reliance Jio</a><span class="tl-title">UI/UX DESIGN INTERN</span></p><p class="tl-detail">Design system &middot; Scalable components</p></div>
-                <p class="tl-date">Apr 2022 &ndash; Jun 2022</p>
-              </li>
-              <li class="timeline-item career-strip">
-                <span class="career-number">02</span>
-                <span class="tl-logo" style="--logo-bg:#12b5b0"><img src="images/logo-houzeo.png" alt="" /></span>
-                <div class="tl-body"><p class="tl-role"><a href="https://www.houzeo.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Houzeo</a><span class="tl-title">UI/UX DESIGNER</span></p><p class="tl-detail">Listings revamp &middot; 40% fallout reduction</p></div>
-                <p class="tl-date">Jul 2022 &ndash; Apr 2023</p>
-              </li>
-              <li class="timeline-item career-strip">
-                <span class="career-number">03</span>
-                <span class="tl-logo" style="--logo-bg:#ea1b25"><img src="images/logo-tring.png" alt="" /></span>
-                <div class="tl-body"><p class="tl-role"><a href="https://www.tring.co.in/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Tring</a><span class="tl-title">UI/UX DESIGNER</span></p><p class="tl-detail">100K+ downloads &middot; Lifestyle &amp; Social</p></div>
-                <p class="tl-date">May 2023 &ndash; Jan 2025</p>
-              </li>
-              <li class="timeline-item career-strip">
-                <span class="career-number">04</span>
-                <span class="tl-logo" style="--logo-bg:#6c4cf1"><img src="images/logo-grayquest.png" alt="" /></span>
-                <div class="tl-body"><p class="tl-role"><a href="https://grayquest.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">GrayQuest</a><span class="tl-title">SENIOR PRODUCT DESIGNER</span></p><p class="tl-detail">Guardian One 0&#8594;1 &middot; Fintech &middot; Insurtech</p></div>
-                <p class="tl-date">Feb 2025 &ndash; Jun 2026</p>
-              </li>
-            </ol>
-          </section>
+            <li class="timeline-item">
+              <span class="tl-logo" style="--logo-bg:#ea1b25"><img src="images/logo-tring.png" alt="" /></span>
+              <div class="tl-body">
+                <p class="tl-role">
+                  <a href="https://www.tring.co.in/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Tring</a>
+                  <span class="tl-title">UI/UX DESIGNER</span>
+                </p>
+                <p class="tl-detail">100K+ downloads &middot; Lifestyle &amp; Social</p>
+              </div>
+              <p class="tl-date">May 2023 &ndash; Jan 2025</p>
+            </li>
+
+            <li class="timeline-item">
+              <span class="tl-logo" style="--logo-bg:#12b5b0"><img src="images/logo-houzeo.png" alt="" /></span>
+              <div class="tl-body">
+                <p class="tl-role">
+                  <a href="https://www.houzeo.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Houzeo</a>
+                  <span class="tl-title">UI/UX DESIGNER</span>
+                </p>
+                <p class="tl-detail">Listings revamp &middot; 40% fallout reduction</p>
+              </div>
+              <p class="tl-date">Jul 2022 &ndash; Apr 2023</p>
+            </li>
+
+            <li class="timeline-item">
+              <span class="tl-logo" style="--logo-bg:#1673ff"><img src="images/logo-embibe.png" alt="" /></span>
+              <div class="tl-body">
+                <p class="tl-role">
+                  <a href="https://www.embibe.com/" target="_blank" rel="noopener" data-cursor="OPEN &#8599;">Embibe &middot; Reliance Jio</a>
+                  <span class="tl-title">UI/UX DESIGN INTERN</span>
+                </p>
+                <p class="tl-detail">Design system &middot; Scalable components</p>
+              </div>
+              <p class="tl-date">Apr 2022 &ndash; Jun 2022</p>
+            </li>
+          </ol>
         </div>
       </div>
 
@@ -637,6 +660,6 @@
   </button>
 
   <script src="script.js?v=13"></script>
-  <script src="motion.js?v=14"></script>
+  <script src="motion.js?v=15"></script>
 </body>
 </html>

@@ -900,7 +900,7 @@
 .sp-js .site-footer.is-shouting .footer-giant { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media (max-width: 899px) { .footer-giant { display: none; } }
 
-/* A single handwritten CTA response; the cover already supplies the frame. */
+/* Handwritten invitation. It is deliberately plain text, not a bubble. */
 .sp-js .footer-cover { position: relative; }
 .sp-js .footer-cover .cover-card,
 .sp-js .footer-cover .cover-caption { position: relative; z-index: 1; }
@@ -908,34 +908,29 @@
 .footer-bubble {
   position: absolute;
   left: 50%;
-  top: -38px;
+  top: -48px;
   z-index: 2;
   width: max-content;
-  max-width: 100%;
+  max-width: 112%;
   padding: 0;
   border: 0;
   background: transparent;
   font-family: var(--font-hand);
   font-weight: 700;
-  font-size: clamp(19px, 1.8vw, 25px);
+  font-size: clamp(17px, 1.6vw, 21px);
   line-height: 1.15;
   color: var(--accent);
   text-align: center;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 8px) rotate(-2deg);
-  transition: opacity 260ms linear, transform 380ms var(--ep);
+  transform-origin: center top;
+  transition: opacity 280ms linear, transform 380ms var(--ep);
 }
+.footer-bubble::after { content: none; }
 .sp-js .site-footer.is-talking .footer-bubble {
   opacity: 1;
   transform: translate(-50%, 0) rotate(-1deg);
-}
-
-@media (hover: none) {
-  .sp-js .site-footer.is-touch-note-reached .footer-bubble {
-    opacity: 1;
-    transform: translate(-50%, 0) rotate(-1deg);
-  }
 }
 
 /* The cover card peeks over the bubble */
@@ -1277,6 +1272,11 @@
   transform: translate3d(0, calc(var(--lap) * var(--slide)), 0);
 }
 .sp-js .paper-sheet { will-change: transform; }
+.behind.paper-sheet {
+  --slide: 0;
+  transform: none;
+  will-change: auto;
+}
 
 /* The sheet carries its own contact shadow along the whole top edge, so the
    overlap reads as thickness rather than as a card floating above a card. */
@@ -1507,7 +1507,7 @@
   pointer-events: none;
   transition: opacity 440ms linear, transform 680ms var(--ep), border-color 260ms var(--ep), box-shadow 260ms var(--ep);
 }
-.sp-js .behind.is-behind-ready .board:nth-child(1) { transform: translateY(34px) rotate(-1.5deg) scale(.98); }
+.sp-js .behind.is-behind-ready .board:nth-child(1) { transform: translateY(34px) rotate(-1deg) scale(.98); }
 .sp-js .behind.is-behind-ready .board:nth-child(2) { transform: translateY(34px) rotate(1deg) scale(.98); }
 .sp-js .behind.is-behind-ready .board:nth-child(3) { transform: translateY(30px) rotate(-1deg) scale(.98); }
 .sp-js .behind.is-behind-ready .board:nth-child(4) { transform: translateY(30px) rotate(1deg) scale(.98); }
@@ -1575,7 +1575,7 @@
   transition: opacity 420ms linear, transform 570ms var(--ep);
 }
 .sp-js .site-footer.is-footer-story-ready .footer-title {
-  transform: translateY(calc(12px + var(--footer-title-lift, 0px))) scale(var(--footer-title-scale, .56));
+  transform: translateY(calc(12px + var(--footer-title-lift, 0px))) scale(var(--footer-title-scale, .74));
   transform-origin: left center;
   will-change: transform;
 }
@@ -1612,56 +1612,34 @@
 .sp-js .site-footer.is-footer-story-ready .footer-bubble {
   opacity: 0;
   transform: translate(-50%, 8px) rotate(-2deg);
-  transition: opacity 260ms linear, transform 380ms var(--ep);
+  transition: opacity 280ms linear, transform 380ms var(--ep);
 }
-.sp-js .site-footer.is-footer-story-ready.is-talking .footer-bubble,
-.sp-js .site-footer.is-footer-story-ready.is-touch-note-reached .footer-bubble { opacity: 1; transform: translate(-50%, 0) rotate(-1deg); }
+.sp-js .site-footer.is-talking .footer-bubble { opacity: 1; transform: translate(-50%, 0) rotate(-1deg); }
 
 /* Desktop gets real story runway: the visual remains present while normalized
    section progress advances. Short laptops and stacked layouts stay natural. */
-@media (min-width: 1080px) and (min-height: 760px) {
-  .behind { min-height: 165vh; }
+@media (min-width: 1024px) {
+  .behind { min-height: 155vh; }
   .behind-stage {
     position: sticky;
     top: 88px;
     min-height: 630px;
   }
 
-  .drives-track {
-    min-height: 440px;
-    margin-top: 32px;
-  }
-  .drives-track .drives {
-    position: sticky;
-    top: 42vh;
-    margin-top: 0;
-  }
-
-  .site-footer { min-height: 185vh; }
+  .site-footer { min-height: 160vh; }
   .site-footer .footer-body {
     position: sticky;
     top: 72px;
-    grid-template-columns: minmax(0, 1fr) 440px;
-    grid-template-rows: auto auto repeat(4, auto);
-    column-gap: 40px;
-    row-gap: 14px;
-    align-items: center;
   }
-  .site-footer .footer-story { display: contents; }
-  .site-footer .footer-kicker { grid-column: 1; grid-row: 1; }
-  .site-footer .footer-title {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: min(100%, 1260px);
-    font-size: clamp(72px, 10.5vw, 160px);
-    line-height: .88;
-    letter-spacing: -.035em;
-  }
-  .site-footer .footer-lede { grid-column: 1; grid-row: 3; }
-  .site-footer .footer-actions { grid-column: 1; grid-row: 4; }
-  .site-footer .footer-social { grid-column: 1; grid-row: 5; }
-  .site-footer .footer-legal { grid-column: 1; grid-row: 6; }
-  .site-footer .footer-cover { grid-column: 2; grid-row: 3 / 7; }
+}
+
+.footer-title .footer-word { display: inline-block; white-space: nowrap; }
+.footer-title .footer-letter {
+  display: inline-block;
+  transform: translateY(var(--fc-y, 0)) scale(var(--fc-s, 1)) rotate(var(--fc-r, 0deg));
+  transform-origin: center 72%;
+  transition: transform 360ms var(--ep);
+  will-change: transform;
 }
 
 /* Reusable scroll depth. Individual translate composes with the site's
@@ -1694,6 +1672,8 @@
 }
 .story-head, .story-body, .timeline { position: relative; z-index: 1; }
 .sp-js .story-col.is-origin-ready .origin-design,
+.sp-js .story-col.is-origin-ready .story-head .eyebrow,
+.sp-js .story-col.is-origin-ready .origin-curiosity,
 .sp-js .story-col.is-origin-ready .story-body,
 .sp-js .story-col.is-origin-ready .origin-step,
 .sp-js .story-col.is-origin-ready .timeline-item {
@@ -1706,6 +1686,8 @@
 }
 .sp-js .story-col.is-origin-ready .origin-arrow path { stroke-dashoffset: 1; }
 .sp-js .story-col.is-origin-ready .origin-design,
+.sp-js .story-col.is-origin-ready .story-head .eyebrow,
+.sp-js .story-col.is-origin-ready .origin-curiosity,
 .sp-js .story-col.is-origin-ready .story-body,
 .sp-js .story-col.is-origin-ready .origin-step,
 .sp-js .story-col.is-origin-ready .timeline-item {
@@ -1737,123 +1719,6 @@
 .sp-js .story-col.is-origin-ready .timeline-item.is-reached .tl-logo {
   transform: scale(1);
   transition: transform 320ms var(--ep);
-}
-
-/* Origin correction: questions calm into a marker sweep, then the career is
-   presented as four issue strips instead of a résumé timeline. */
-.chapter-index {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: .1em;
-  color: var(--accent);
-}
-.origin-chapter { position: relative; }
-.curiosity-chapter { min-height: 390px; padding-top: 24px; }
-.design-chapter {
-  min-height: 300px;
-  padding: 42px 24px 36px;
-  border-left: 1px solid rgba(255,197,61,.18);
-  background-image: linear-gradient(rgba(245,239,227,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(245,239,227,.025) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.career-chapter { padding-top: 42px; }
-.career-heading {
-  margin-top: 10px;
-  font-family: var(--font-display);
-  font-size: clamp(30px, 4vw, 44px);
-  line-height: 1;
-  color: var(--cream);
-}
-.origin-questions span,
-.origin-method span {
-  position: absolute;
-  font-family: var(--font-hand);
-  color: var(--cream);
-  white-space: nowrap;
-}
-.origin-questions span { font-size: clamp(17px, 1.7vw, 23px); opacity: .78; }
-.origin-questions span:nth-child(1) { top: 34px; right: 9%; transform: rotate(2deg); }
-.origin-questions span:nth-child(2) { top: 126px; right: 1%; transform: rotate(-1.5deg); }
-.origin-questions span:nth-child(3) { top: 214px; left: 5%; transform: rotate(1deg); }
-.origin-questions span:nth-child(4) { top: 282px; right: 5%; transform: rotate(-1deg); }
-.origin-method span { top: 168px; font-size: 18px; color: var(--accent); }
-.origin-method span:nth-child(1) { left: 4%; }
-.origin-method span:nth-child(2) { left: 37%; }
-.origin-method span:nth-child(3) { left: 67%; }
-.marker-sweep {
-  width: 100%;
-  height: 12px;
-  margin: 4px 0 16px;
-  border-radius: 60% 44% 55% 42%;
-  background: rgba(255,197,61,.78);
-  transform: scaleX(0) rotate(-.5deg);
-  transform-origin: left center;
-}
-.career-strips { display: grid; gap: 16px; margin-top: 22px; }
-.career-strips::before { display: none; }
-.career-strips .career-strip {
-  display: grid;
-  grid-template-columns: 42px 46px minmax(0,1fr) auto;
-  gap: 14px;
-  min-height: 110px;
-  padding: 18px 16px;
-  border: 1px solid rgba(245,239,227,.13);
-  border-radius: 10px;
-  background: rgba(245,239,227,.025);
-}
-.career-number {
-  align-self: start;
-  font-family: var(--font-display);
-  font-size: 28px;
-  line-height: 1;
-  color: var(--accent);
-}
-.career-strips .tl-date { grid-column: 4; align-self: center; }
-
-.sp-js .story-col.is-origin-ready .origin-curiosity,
-.sp-js .story-col.is-origin-ready .origin-questions span,
-.sp-js .story-col.is-origin-ready .origin-method span,
-.sp-js .story-col.is-origin-ready .marker-sweep,
-.sp-js .story-col.is-origin-ready .origin-design,
-.sp-js .story-col.is-origin-ready .story-body,
-.sp-js .story-col.is-origin-ready .career-heading,
-.sp-js .story-col.is-origin-ready .career-strip {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 420ms linear, transform 570ms var(--ep);
-}
-.sp-js .story-col.is-origin-ready .origin-questions span { transform: translateY(8px) rotate(var(--note-rot, 0deg)); }
-.sp-js .story-col.is-origin-ready .origin-questions span:nth-child(1) { --note-rot: 2deg; }
-.sp-js .story-col.is-origin-ready .origin-questions span:nth-child(2) { --note-rot: -1.5deg; }
-.sp-js .story-col.is-origin-ready .origin-questions span:nth-child(3) { --note-rot: 1deg; }
-.sp-js .story-col.is-origin-ready .origin-questions span:nth-child(4) { --note-rot: -1deg; }
-.sp-js .story-col.is-origin-ready .is-reached { opacity: 1; transform: none; }
-.sp-js .story-col.is-origin-ready .origin-questions span.is-reached { transform: rotate(var(--note-rot)); }
-.sp-js .story-col.is-origin-ready.is-synthesizing .origin-questions span { opacity: .28; }
-.sp-js .story-col.is-origin-ready.is-synthesizing .origin-questions span:nth-child(1) { transform: translate(-5px,5px) rotate(.5deg); }
-.sp-js .story-col.is-origin-ready.is-synthesizing .origin-questions span:nth-child(2) { transform: translate(-7px,-3px) rotate(-.5deg); }
-.sp-js .story-col.is-origin-ready.is-synthesizing .origin-questions span:nth-child(3) { transform: translate(6px,-4px) rotate(.3deg); }
-.sp-js .story-col.is-origin-ready.is-synthesizing .origin-questions span:nth-child(4) { transform: translate(-5px,-5px) rotate(-.3deg); }
-.sp-js .story-col.is-origin-ready .marker-sweep.is-reached { opacity: 1; transform: scaleX(1) rotate(-.5deg); transition-duration: 650ms; }
-.sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 0 3px, 0 2px; transition: background-size 600ms var(--ep) 120ms; }
-.sp-js .story-col.is-origin-ready .origin-design.is-reached .underlined { background-size: 100% 3px, 88% 2px; }
-.sp-js .story-col.is-origin-ready .career-strip.is-reached .career-number,
-.sp-js .story-col.is-origin-ready .career-strip.is-reached .tl-logo,
-.sp-js .story-col.is-origin-ready .career-strip.is-reached .tl-body,
-.sp-js .story-col.is-origin-ready .career-strip.is-reached .tl-date { transition: opacity 360ms linear, transform 500ms var(--ep); }
-
-@media (min-width: 1280px) {
-  .about-grid { height: auto; align-items: start; }
-  .polaroid-col { position: sticky; top: 96px; }
-  .story-col { height: auto; min-height: 1120px; padding-top: 12px; overflow: visible; }
-}
-
-@media (max-width: 899px) {
-  .curiosity-chapter { min-height: 430px; }
-  .origin-method span { position: relative; top: auto; left: auto !important; display: block; margin-top: 9px; }
-  .origin-method { position: absolute; left: 5%; top: 150px; }
-  .career-strips .career-strip { grid-template-columns: 38px 44px minmax(0,1fr); }
-  .career-strips .tl-date { grid-column: 3; }
 }
 
 /* Button feedback stays crisp and useful, not magnetic. */
@@ -1888,8 +1753,6 @@
 .footer-water svg { width: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .footer-water:hover, .footer-water:focus-visible { transform: rotate(-4deg) translateY(-2px); border-color: var(--accent); }
 .footer-water:active { transform: rotate(-4deg) scale(.96); }
-.sp-js .site-footer.is-footer-story-ready .footer-water { opacity: 0; visibility: hidden; pointer-events: none; }
-.sp-js .site-footer.is-footer-story-ready.is-social-reached .footer-water { opacity: 1; visibility: visible; pointer-events: auto; }
 .footer-garden {
   position: absolute;
   right: 60px;
@@ -1964,13 +1827,10 @@
   .sp-js .hero.motion-primed .reveal,
   .sp-js .proof-strip.is-metrics-ready .proof-item,
   .sp-js .story-col.is-origin-ready .origin-design,
+  .sp-js .story-col.is-origin-ready .story-head .eyebrow,
+  .sp-js .story-col.is-origin-ready .origin-curiosity,
   .sp-js .story-col.is-origin-ready .story-body,
   .sp-js .story-col.is-origin-ready .origin-step,
-  .sp-js .story-col.is-origin-ready .origin-curiosity,
-  .sp-js .story-col.is-origin-ready .origin-questions span,
-  .sp-js .story-col.is-origin-ready .origin-method span,
-  .sp-js .story-col.is-origin-ready .marker-sweep,
-  .sp-js .story-col.is-origin-ready .career-heading,
   .sp-js .story-col.is-origin-ready .timeline-item {
     opacity: 1 !important;
     transform: none !important;
@@ -1981,7 +1841,6 @@
   }
   .sp-js .story-col.is-origin-ready .origin-arrow path { stroke-dashoffset: 0 !important; }
   .sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 100% 3px, 88% 2px !important; }
-  .sp-js .story-col.is-origin-ready .marker-sweep { opacity: 1 !important; transform: scaleX(1) !important; }
   .sp-js [data-parallax] { translate: none !important; will-change: auto; }
   .sp-js .player-art, .footer-grow { transform: none !important; }
   .sp-js .behind.is-behind-ready .behind-head .eyebrow,
@@ -2000,12 +1859,13 @@
   .sp-js .site-footer.is-footer-story-ready .footer-social,
   .sp-js .site-footer.is-footer-story-ready .footer-legal,
   .sp-js .site-footer.is-footer-story-ready .footer-cover.sp-settle,
-  .sp-js .site-footer.is-footer-story-ready .footer-bubble {
+  .footer-title .footer-letter {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
     transform: none !important;
   }
+  .sp-js .site-footer.is-footer-story-ready .footer-bubble { opacity: 0 !important; }
   .sp-js .drives.is-drives-ready::before { clip-path: inset(0) !important; }
   .behind, .drives-track, .site-footer { min-height: 0 !important; }
   .behind-stage, .drives-track .drives, .site-footer .footer-body { position: static !important; }
