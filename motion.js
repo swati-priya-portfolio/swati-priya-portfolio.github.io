@@ -928,9 +928,7 @@
     if (footerEl) { footerEl.classList.add("is-footer-story-ready"); }
 
     function layoutTop(el) {
-      var top = 0;
-      while (el) { top += el.offsetTop || 0; el = el.offsetParent; }
-      return top;
+      return el.getBoundingClientRect().top + window.scrollY;
     }
 
     function reveal(el) {
@@ -990,7 +988,7 @@
         var dp = dg.staged ? clamp((y - dg.top) / Math.max(dg.height - vh, 1), 0, 1) : 0;
         if (reduced || (dg.staged ? dp >= .06 : y >= dg.top - vh * .79)) { drives.classList.add("is-border-reached"); }
         if (reduced || (dg.staged ? dp >= .17 : y >= dg.top - vh * .70)) { drives.classList.add("is-title-reached"); }
-        [.30,.48,.66,.82].forEach(function (point, i) {
+        [.30,.53,.75,.91].forEach(function (point, i) {
           if (reduced || (dg.staged ? dp >= point : y >= dg.items[i])) { reveal(principles[i]); }
         });
       }
