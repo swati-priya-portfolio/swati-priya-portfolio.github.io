@@ -539,6 +539,12 @@
 
       grid.style.transform = "";
       stage.style.height = "";
+      cards.forEach(function (c) {
+        c.style.removeProperty("--sx");
+        c.style.removeProperty("--ss");
+        c.style.removeProperty("--sr");
+        c.style.removeProperty("--so");
+      });
       var stageH = stage.offsetHeight;
       var room = window.innerHeight - PIN_TOP - 40;
       var fit = Math.min(1, room / Math.max(stageH, 1));
@@ -965,8 +971,8 @@
         geometry.drives = {
           top: layoutTop(track),
           height: Math.max(track.offsetHeight, 1),
-          staged: staged,
-          items: principles.map(function (item) { return layoutTop(item) - vh * .82; })
+          staged: staged && track.offsetHeight > vh,
+          items: principles.map(function (_, i) { return layoutTop(track) - vh * .58 + i * 90; })
         };
       }
       if (footerEl) {
@@ -1173,7 +1179,7 @@
         }
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.18, rootMargin: "0px 0px -12% 0px" });
+    }, { threshold: 0.18, rootMargin: "0px 0px -65% 0px" });
 
     targets.forEach(function (el) { io.observe(el); });
     if (designChapter) { io.observe(designChapter); }

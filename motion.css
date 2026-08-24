@@ -1628,7 +1628,7 @@
   }
 
   .drives-track {
-    min-height: 155vh;
+    min-height: 440px;
     margin-top: 32px;
   }
   .drives-track .drives {
@@ -1888,6 +1888,8 @@
 .footer-water svg { width: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .footer-water:hover, .footer-water:focus-visible { transform: rotate(-4deg) translateY(-2px); border-color: var(--accent); }
 .footer-water:active { transform: rotate(-4deg) scale(.96); }
+.sp-js .site-footer.is-footer-story-ready .footer-water { opacity: 0; visibility: hidden; pointer-events: none; }
+.sp-js .site-footer.is-footer-story-ready.is-social-reached .footer-water { opacity: 1; visibility: visible; pointer-events: auto; }
 .footer-garden {
   position: absolute;
   right: 60px;
@@ -1964,6 +1966,11 @@
   .sp-js .story-col.is-origin-ready .origin-design,
   .sp-js .story-col.is-origin-ready .story-body,
   .sp-js .story-col.is-origin-ready .origin-step,
+  .sp-js .story-col.is-origin-ready .origin-curiosity,
+  .sp-js .story-col.is-origin-ready .origin-questions span,
+  .sp-js .story-col.is-origin-ready .origin-method span,
+  .sp-js .story-col.is-origin-ready .marker-sweep,
+  .sp-js .story-col.is-origin-ready .career-heading,
   .sp-js .story-col.is-origin-ready .timeline-item {
     opacity: 1 !important;
     transform: none !important;
@@ -1974,6 +1981,7 @@
   }
   .sp-js .story-col.is-origin-ready .origin-arrow path { stroke-dashoffset: 0 !important; }
   .sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 100% 3px, 88% 2px !important; }
+  .sp-js .story-col.is-origin-ready .marker-sweep { opacity: 1 !important; transform: scaleX(1) !important; }
   .sp-js [data-parallax] { translate: none !important; will-change: auto; }
   .sp-js .player-art, .footer-grow { transform: none !important; }
   .sp-js .behind.is-behind-ready .behind-head .eyebrow,
