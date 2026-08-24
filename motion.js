@@ -943,9 +943,8 @@
     var queued = false;
 
     function pageTop(el) {
-      var top = 0;
-      while (el) { top += el.offsetTop; el = el.offsetParent; }
-      return top;
+      var rect = el.getBoundingClientRect();
+      return rect.top + window.scrollY;
     }
 
     function strength() {
@@ -957,10 +956,11 @@
     function measure() {
       var scale = strength();
       geometry = elements.map(function (el) {
+        var rect = el.getBoundingClientRect();
         return {
           el: el,
           top: pageTop(el),
-          height: el.offsetHeight || 1,
+          height: rect.height || el.offsetHeight || 1,
           depth: (parseFloat(el.getAttribute("data-parallax")) || 0) * scale,
           last: null
         };
@@ -1009,6 +1009,12 @@
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () { dirty = true; schedule(); });
     }
+    if ("MutationObserver" in window) {
+      var sheetObserver = new MutationObserver(function () { dirty = true; schedule(); });
+      [].slice.call(document.querySelectorAll(".paper-sheet")).forEach(function (sheet) {
+        sheetObserver.observe(sheet, { attributes: true, attributeFilter: ["class"] });
+      });
+    }
     schedule();
   }
 
@@ -1046,9 +1052,8 @@
     var furthestLine = 0;
 
     function pageTop(el) {
-      var top = 0;
-      while (el) { top += el.offsetTop; el = el.offsetParent; }
-      return top;
+      var rect = el.getBoundingClientRect();
+      return rect.top + window.scrollY;
     }
 
     function measure() {
@@ -1101,6 +1106,12 @@
     window.addEventListener("resize", measure, { passive: true });
     window.addEventListener("load", measure);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(measure); }
+    if ("MutationObserver" in window) {
+      new MutationObserver(function () { measure(); }).observe(section, {
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+    }
     measure();
   }
 
