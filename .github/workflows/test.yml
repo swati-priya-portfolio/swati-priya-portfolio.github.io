@@ -4,6 +4,7 @@ on:
     branches:
       - fix/final-scroll-motion-20260825
     paths:
+      - .github/workflows/test.yml
       - tools/scroll_repair.py
 permissions:
   contents: write
