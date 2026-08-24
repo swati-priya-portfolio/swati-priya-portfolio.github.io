@@ -48,6 +48,20 @@
   /* ==========================================================
      1. LOADER — comic spider-hero snack loop (once per session)
      ========================================================== */
+  function primeHero() {
+    var hero = document.querySelector(".hero");
+    if (!hero) { return; }
+    hero.classList.add("motion-primed");
+
+    // Local fail-safe: the page-level fail-safe handles the old entrance,
+    // this one also covers the refined staged elements.
+    setTimeout(function () {
+      [].slice.call(hero.querySelectorAll(".reveal")).forEach(function (el) {
+        el.classList.add("is-stage-in");
+      });
+    }, 3400);
+  }
+
   function runLoader(done) {
     var loader = document.querySelector(".sp-loader");
     var showing = root.classList.contains("sp-loading");
@@ -61,13 +75,20 @@
 
     var DURATION = 2100;
     var start = null;
+    var ready = false;
 
     requestAnimationFrame(function step(now) {
       if (start === null) { start = now; }
-      var p = ease(span(now - start, 0, DURATION));
+      var raw = span(now - start, 0, DURATION);
+      var p = ease(raw);
       loader.style.setProperty("--load", p.toFixed(3));
 
-      if (p < 1) { requestAnimationFrame(step); return; }
+      if (!ready && raw >= 0.88) {
+        ready = true;
+        loader.classList.add("is-ready");
+      }
+
+      if (raw < 1) { requestAnimationFrame(step); return; }
 
       // The final bite fades into the hero.
       loader.classList.add("is-done");
@@ -84,16 +105,35 @@
      2. HERO ENTRANCE — eyebrow, headline lines, copy, portrait
      ========================================================== */
   function heroEntrance() {
+    var hero = document.querySelector(".hero");
+    var role = document.querySelector(".role-strip");
     var title = document.querySelector(".hero-title");
+    var sub = document.querySelector(".hero-sub");
+    var actions = document.querySelector(".hero-actions");
     var character = document.querySelector(".hero-character");
 
+    function enter(el, delay) {
+      if (!el) { return; }
+      setTimeout(function () { el.classList.add("is-stage-in"); }, reduced ? 0 : delay);
+    }
+
+    enter(role, 40);
+
     if (title) {
-      requestAnimationFrame(function () { title.classList.add("is-in"); });
+      setTimeout(function () {
+        title.classList.add("is-stage-in", "is-in");
+      }, reduced ? 0 : 170);
       // Once the lines have landed, drop the clip so hover strokes can breathe.
-      setTimeout(function () { title.classList.remove("is-masked"); }, 1200);
+      setTimeout(function () { title.classList.remove("is-masked"); }, reduced ? 0 : 1280);
     }
     if (character) {
-      setTimeout(function () { character.classList.add("is-in"); }, reduced ? 0 : 420);
+      setTimeout(function () { character.classList.add("is-in"); }, reduced ? 0 : 450);
+    }
+    enter(sub, 590);
+    enter(actions, 760);
+
+    if (hero) {
+      setTimeout(function () { hero.classList.add("entrance-complete"); }, reduced ? 0 : 1420);
     }
   }
 
@@ -158,10 +198,43 @@
       for (var i = 0; i < speeches.length; i++) {
         var s = speeches[i];
         var rot = s.getAttribute("data-rot") || "0";
-        s.style.transform = "rotate(" + rot + "deg) translate3d(" +
-          (nx * 5).toFixed(2) + "px," + (ny * 5).toFixed(2) + "px,0)";
+        s.style.setProperty("--speech-rot", rot + "deg");
+        s.style.setProperty("--speech-x", (nx * 5).toFixed(2) + "px");
+        s.style.setProperty("--speech-y", (ny * 5).toFixed(2) + "px");
       }
     });
+  }
+
+  /* Subconscious scroll depth. It is intentionally capped well below the
+     mathematical ratios in the brief so the composition never detaches. */
+  function heroScrollDepth() {
+    var hero = document.querySelector(".hero");
+    var art = document.querySelector(".hero-art");
+    var sketch = document.querySelector(".hero-sketch");
+    var speeches = [].slice.call(document.querySelectorAll(".hero-character .speech"));
+    if (!hero || reduced || window.innerWidth < 900) { return; }
+
+    var height = hero.offsetHeight || 1;
+    var queued = false;
+
+    function measure() { height = hero.offsetHeight || 1; draw(); }
+    function draw() {
+      queued = false;
+      var p = clamp(window.scrollY / height, 0, 1);
+      if (art) { art.style.setProperty("--scroll-art", (p * 14).toFixed(2) + "px"); }
+      if (sketch) { sketch.style.setProperty("--scroll-sketch", (p * 5).toFixed(2) + "px"); }
+      speeches.forEach(function (s) {
+        s.style.setProperty("--scroll-speech", (-p * 8).toFixed(2) + "px");
+      });
+    }
+
+    window.addEventListener("scroll", function () {
+      if (queued || window.scrollY > height + window.innerHeight) { return; }
+      queued = true;
+      requestAnimationFrame(draw);
+    }, { passive: true });
+    window.addEventListener("resize", measure, { passive: true });
+    draw();
   }
 
   /* ==========================================================
@@ -177,9 +250,15 @@
     var chars = [].slice.call(title.querySelectorAll(".ch"));
     if (!chars.length) { return; }
 
-    var RADIUS = 96;          // how far the wave reaches
-    var LIFT = 8;             // px the closest letter rises
-    var POP = 0.22;           // how much it grows
+    var RADIUS = 96;          // how far the response reaches
+    var reactions = [
+      { lift: 1.00, scale: 0.045, rotate: -0.8 },
+      { lift: 0.45, scale: 0.105, rotate: 0.0 },
+      { lift: 0.30, scale: 0.040, rotate: -1.2 },
+      { lift: 0.92, scale: 0.055, rotate: 0.0 },
+      { lift: 0.35, scale: 0.035, rotate: 1.35 },
+      { lift: 0.55, scale: 0.085, rotate: 0.0 }
+    ];
     var boxes = [];
     var dirty = true;
 
@@ -187,7 +266,13 @@
       var sx = window.scrollX, sy = window.scrollY;
       boxes = chars.map(function (c) {
         var r = c.getBoundingClientRect();
-        return { el: c, px: r.left + r.width / 2 + sx, py: r.top + r.height / 2 + sy, v: 0 };
+        return {
+          el: c,
+          px: r.left + r.width / 2 + sx,
+          py: r.top + r.height / 2 + sy,
+          v: 0,
+          reaction: reactions[chars.indexOf(c) % reactions.length]
+        };
       });
       dirty = false;
     }
@@ -208,7 +293,12 @@
         var b = boxes[i];
         var cy = b.py - sy;
         if (cy < -160 || cy > window.innerHeight + 160) {
-          if (b.v !== 0) { b.v = 0; b.el.style.setProperty("--c-s", "1"); b.el.style.setProperty("--c-y", "0px"); }
+          if (b.v !== 0) {
+            b.v = 0;
+            b.el.style.setProperty("--c-s", "1");
+            b.el.style.setProperty("--c-y", "0px");
+            b.el.style.setProperty("--c-r", "0deg");
+          }
           continue;
         }
         var dx = ptr.x - (b.px - sx);
@@ -220,8 +310,9 @@
         b.v = lerp(b.v, t, 0.22);
 
         if (b.v < 0.002) { b.v = 0; }
-        b.el.style.setProperty("--c-s", (1 + POP * b.v).toFixed(3));
-        b.el.style.setProperty("--c-y", (-LIFT * b.v).toFixed(2) + "px");
+        b.el.style.setProperty("--c-s", (1 + b.reaction.scale * b.v).toFixed(3));
+        b.el.style.setProperty("--c-y", (-7 * b.reaction.lift * b.v).toFixed(2) + "px");
+        b.el.style.setProperty("--c-r", (b.reaction.rotate * b.v).toFixed(2) + "deg");
       }
     });
   }
@@ -268,7 +359,7 @@
      5. MAGNETIC DISPLAY WORDS — headings only, never body copy
      ========================================================== */
   function magneticWords() {
-    var words = [].slice.call(document.querySelectorAll(".sp-word:not(.hero-title .sp-word)"));
+    var words = [].slice.call(document.querySelectorAll(".sp-word:not(.hero-title .sp-word):not(.story-title .sp-word):not(.footer-title .sp-word)"));
     if (!words.length || reduced || !finePointer) { return; }
 
     var boxes = [];
@@ -458,7 +549,7 @@
 
       geo = {
         stageH: stageH,
-        lead: Math.min(1.12, room / stageH),
+        lead: Math.min(1.08, room / stageH),
         offsets: cards.map(function (c) {
           var r = c.getBoundingClientRect();
           return gridCentre - (r.left + r.width / 2);
@@ -576,6 +667,26 @@
     squiggles.forEach(function (el) { sq.observe(el); });
   }
 
+  /* The proof strip is a calm, single entrance: value first, description
+     second through CSS, with no counters or looping motion. */
+  function metrics() {
+    var strip = document.querySelector(".proof-strip");
+    if (!strip) { return; }
+    strip.classList.add("is-metrics-ready");
+
+    if (reduced || !("IntersectionObserver" in window)) {
+      strip.classList.add("is-visible");
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) { return; }
+      strip.classList.add("is-visible");
+      io.disconnect();
+    }, { threshold: 0.3 });
+    io.observe(strip);
+  }
+
   /* ==========================================================
      8b. THE RIP
      The vector edge reveals left-to-right across a short scroll range. Once
@@ -660,25 +771,36 @@
      ========================================================== */
   function books() {
     var shelf = document.querySelector(".board-books");
-    if (!shelf || reduced || !finePointer) { return; }
+    if (!shelf || reduced) { return; }
     var all = [].slice.call(shelf.querySelectorAll(".book"));
 
-    all.forEach(function (book, i) {
-      book.addEventListener("pointerenter", function () {
-        shelf.classList.add("is-active");
-        all.forEach(function (other, j) {
-          other.classList.remove("is-picked", "is-nudge-l", "is-nudge-r");
-          if (j === i) { other.classList.add("is-picked"); }
-          else if (j < i) { other.classList.add("is-nudge-l"); }
-          else { other.classList.add("is-nudge-r"); }
-        });
+    function pick(i) {
+      shelf.classList.add("is-active");
+      all.forEach(function (other, j) {
+        other.classList.remove("is-picked", "is-nudge-l", "is-nudge-r");
+        if (j === i) { other.classList.add("is-picked"); }
+        else if (j < i) { other.classList.add("is-nudge-l"); }
+        else { other.classList.add("is-nudge-r"); }
       });
-    });
+    }
 
-    shelf.addEventListener("pointerleave", function () {
+    function clear() {
       shelf.classList.remove("is-active");
       all.forEach(function (b) { b.classList.remove("is-picked", "is-nudge-l", "is-nudge-r"); });
+    }
+
+    all.forEach(function (book, i) {
+      if (finePointer) { book.addEventListener("pointerenter", function () { pick(i); }); }
+      else {
+        book.setAttribute("tabindex", "0");
+        book.addEventListener("click", function () {
+          if (book.classList.contains("is-picked")) { clear(); }
+          else { pick(i); }
+        });
+      }
     });
+
+    if (finePointer) { shelf.addEventListener("pointerleave", clear); }
   }
 
   /* ==========================================================
@@ -694,7 +816,10 @@
     var bar = document.querySelector(".player-progress span");
     var playing = false;
     var pos = 0.42;
-    var timer = null;
+    var angle = 0;
+    var last = 0;
+    var art = player.querySelector(".player-art");
+    var inView = true;
 
     function paint() {
       player.classList.toggle("is-playing", playing);
@@ -706,28 +831,37 @@
       if (stateText) { stateText.textContent = playing ? "MUSIC ON" : "MUSIC OFF"; }
     }
 
-    function step() {
-      pos += 0.004;
-      if (pos > 1) { pos = 0; }
-      if (bar) { bar.style.transform = "scaleX(" + pos.toFixed(3) + ")"; }
-    }
-
     function toggle() {
       playing = !playing;
-      try { sessionStorage.setItem("sp-music", playing ? "on" : "off"); } catch (e) {}
+      try { sessionStorage.setItem("sp-music-choice", playing ? "on" : "off"); } catch (e) {}
       paint();
-      clearInterval(timer);
-      if (playing && !reduced) { timer = setInterval(step, 600); }
     }
 
     button.addEventListener("click", function (e) { e.preventDefault(); toggle(); });
 
-    // Restore the choice made earlier in this session — never on first load.
-    try {
-      if (sessionStorage.getItem("sp-music") === "on") { toggle(); }
-    } catch (e) {}
-    if (!playing) { paint(); }
-    if (bar) { bar.style.transform = "scaleX(" + pos + ")"; }
+    // A stored preference may describe the last choice, but audible/active
+    // playback still requires a fresh user gesture after every page load.
+    paint();
+    player.style.setProperty("--music-progress", pos.toFixed(3));
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+      }, { threshold: 0 }).observe(player);
+    }
+
+    addJob(function () {
+      var now = performance.now();
+      if (!last) { last = now; return; }
+      var dt = Math.min(now - last, 64);
+      last = now;
+      if (!playing || reduced || !inView) { return; }
+      angle = (angle + dt * 0.012) % 360;
+      pos += dt * 0.000018;
+      if (pos > 1) { pos = 0; }
+      if (art) { art.style.setProperty("--record-angle", angle.toFixed(2) + "deg"); }
+      player.style.setProperty("--music-progress", pos.toFixed(3));
+    });
   }
 
   /* ==========================================================
@@ -738,18 +872,111 @@
     if (!foot) { return; }
     var giant = foot.querySelector(".footer-giant");
     var hosts = [].slice.call(foot.querySelectorAll("[data-giant]"));
-    if (!giant || reduced || !finePointer) { return; }
+    var grow = foot.querySelector(".footer-grow");
+    var water = foot.querySelector(".footer-water");
+    var growth = 0;
 
-    hosts.forEach(function (host) {
-      host.addEventListener("pointerenter", function () {
-        giant.textContent = host.getAttribute("data-giant");
-        foot.classList.add("is-shouting");
-        if (host.hasAttribute("data-bubble")) { foot.classList.add("is-talking"); }
+    if (giant && !reduced && finePointer) {
+      hosts.forEach(function (host) {
+        host.addEventListener("pointerenter", function () {
+          giant.textContent = host.getAttribute("data-giant");
+          foot.classList.add("is-shouting");
+          if (host.hasAttribute("data-bubble")) { foot.classList.add("is-talking"); }
+        });
+        host.addEventListener("pointerleave", function () {
+          foot.classList.remove("is-shouting", "is-talking");
+        });
       });
-      host.addEventListener("pointerleave", function () {
-        foot.classList.remove("is-shouting", "is-talking");
+    }
+
+    function drawGrowth() {
+      if (!grow || reduced) { return; }
+      var r = foot.getBoundingClientRect();
+      var p = ease(span(window.innerHeight - r.top, 0, window.innerHeight * 0.72));
+      grow.style.setProperty("--footer-scale", lerp(0.78, 1, p).toFixed(4));
+    }
+
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; drawGrowth(); });
+    }, { passive: true });
+    drawGrowth();
+
+    if (water && !reduced) {
+      water.addEventListener("click", function () {
+        if (growth >= 3) { return; }
+        growth += 1;
+        foot.setAttribute("data-growth", String(growth));
+        if (growth === 3) {
+          water.setAttribute("aria-label", "The idea is fully grown");
+          water.setAttribute("data-cursor", "BLOOMED");
+        }
       });
-    });
+    }
+  }
+
+  /* ==========================================================
+     11b. ORIGIN STORY — curiosity draws into the career line
+     ========================================================== */
+  function originStory() {
+    var section = document.querySelector(".about");
+    var story = section && section.querySelector(".story-col");
+    if (!section || !story) { return; }
+
+    var steps = [].slice.call(story.querySelectorAll(".origin-step"));
+    var design = story.querySelector(".origin-design");
+    var body = story.querySelector(".story-body");
+    var items = [].slice.call(story.querySelectorAll(".timeline-item"));
+    var path = story.querySelector(".origin-journey path");
+
+    if (reduced) {
+      [design, body].concat(steps, items).forEach(function (el) {
+        if (el) { el.classList.add("is-reached"); }
+      });
+      story.style.setProperty("--timeline-draw", "1");
+      if (path) { path.style.strokeDashoffset = "0"; }
+      return;
+    }
+
+    story.classList.add("is-origin-ready");
+    var top = 0, height = 1;
+
+    function measure() {
+      top = 0;
+      var node = section;
+      while (node) { top += node.offsetTop; node = node.offsetParent; }
+      height = section.offsetHeight || 1;
+      draw();
+    }
+
+    function reached(el, yes) { if (el) { el.classList.toggle("is-reached", yes); } }
+
+    function draw() {
+      var start = top - window.innerHeight * 0.82;
+      var end = top + height - window.innerHeight * 0.28;
+      var p = clamp((window.scrollY - start) / Math.max(end - start, 1), 0, 1);
+
+      steps.forEach(function (step, i) { reached(step, p >= 0.10 + i * 0.085); });
+      reached(design, p >= 0.43);
+      reached(body, p >= 0.49);
+      items.forEach(function (item, i) { reached(item, p >= 0.57 + i * 0.105); });
+
+      var line = ease(span(p, 0.08, 0.94));
+      if (path) { path.style.strokeDashoffset = (1 - line).toFixed(4); }
+      story.style.setProperty("--timeline-draw", ease(span(p, 0.50, 0.97)).toFixed(4));
+    }
+
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () { queued = false; draw(); });
+    }, { passive: true });
+    window.addEventListener("resize", measure, { passive: true });
+    window.addEventListener("load", measure);
+    measure();
   }
 
   /* ==========================================================
@@ -790,7 +1017,10 @@
     if (!sheets.length) { return; }
 
     if (reduced) {
-      sheets.forEach(function (el) { el.style.setProperty("--slide", "0"); });
+      sheets.forEach(function (el) {
+        el.style.setProperty("--slide", "0");
+        el.classList.add("is-sheet-settled");
+      });
       return;
     }
 
@@ -802,7 +1032,12 @@
       geo = sheets.map(function (el) {
         var top = 0, node = el;
         while (node) { top += node.offsetTop; node = node.offsetParent; }
-        return { el: el, top: top, last: -1 };
+        return {
+          el: el,
+          top: top,
+          last: -1,
+          done: el.classList.contains("is-sheet-settled")
+        };
       });
       knownHeight = document.documentElement.scrollHeight;
       dirty = false;
@@ -821,6 +1056,7 @@
 
       for (var i = 0; i < geo.length; i++) {
         var g = geo[i];
+        if (g.done) { continue; }
         var fromTop = g.top - y;
 
         // Begins as the sheet's edge reaches the floor of the screen and is
@@ -835,6 +1071,12 @@
         if (Math.abs(slide - g.last) < 0.0015) { continue; }
         g.last = slide;
         g.el.style.setProperty("--slide", slide.toFixed(4));
+
+        if (p >= 0.999) {
+          g.done = true;
+          g.el.style.setProperty("--slide", "0");
+          g.el.classList.add("is-sheet-settled");
+        }
       }
     }
 
@@ -906,21 +1148,25 @@
   function boot() {
     try { stickyNav(); } catch (e) {}
     try { reveals(); } catch (e) {}
+    try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
     try { paperSheets(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
+    try { heroScrollDepth(); } catch (e) {}
     try { customCursor(); } catch (e) {}
     try { magneticWords(); } catch (e) {}
     try { headlineChars(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
+    try { originStory(); } catch (e) {}
     try { footer(); } catch (e) {}
     try { easterEggs(); } catch (e) {}
     try { wayfinding(); } catch (e) {}
   }
 
   function start() {
+    primeHero();
     runLoader(function () {
       heroEntrance();
       boot();

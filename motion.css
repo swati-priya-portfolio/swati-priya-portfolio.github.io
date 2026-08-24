@@ -1308,3 +1308,326 @@
   }
 }
 
+/* ============================================================
+   18. CHOREOGRAPHY REFINEMENT
+   This pass keeps the approved composition intact and improves only
+   sequencing, tactile behaviour and scroll narrative.
+   ============================================================ */
+
+/* Loader remains the same playful scene. READY is a one-beat pause before
+   the existing simple fade, so the last bite and the Hero do not collide. */
+.sp-loader.is-ready .sp-loader-mask { animation-play-state: paused; }
+.sp-loader.is-ready .sp-loader-sub { color: var(--accent); }
+
+/* The Hero's existing elements enter in a deliberate order after the loader.
+   The primed class is applied by motion.js; without JS the original CSS reveal
+   remains in charge, so nothing can be left invisible. */
+.sp-js .hero.motion-primed .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: none;
+}
+.sp-js .hero.motion-primed .reveal.is-stage-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 500ms linear, transform 650ms var(--ep);
+}
+.sp-js .hero.motion-primed .hero-title.reveal { transform: none; }
+
+@keyframes sp-portrait-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Pointer depth and scroll depth share variables rather than fighting over
+   transform. The values remain intentionally small. */
+.sp-js .hero-art {
+  transform: translate3d(var(--px, 0px), calc(var(--py, 0px) + var(--scroll-art, 0px)), 0);
+}
+.sp-js .hero-sketch {
+  transform: translate3d(var(--bx, 0px), calc(var(--by, 0px) + var(--scroll-sketch, 0px)), 0);
+}
+.sp-js .hero-character .speech {
+  transform: rotate(var(--speech-rot, 0deg))
+             translate3d(var(--speech-x, 0px), calc(var(--speech-y, 0px) + var(--scroll-speech, 0px)), 0);
+}
+
+/* Organic character response: JS supplies a different lift, scale and tiny
+   rotation per glyph. Words remain unbroken and the line never reflows. */
+.hero-title .ch {
+  transform: translateY(var(--c-y, 0px)) scale(var(--c-s, 1)) rotate(var(--c-r, 0deg));
+}
+
+/* Thinking is a quiet local reveal, not a bright circular spotlight. */
+.hero-sketch {
+  opacity: 0;
+  filter: saturate(0.92);
+  -webkit-mask-image: radial-gradient(circle var(--sk-r, 184px) at var(--sk-x, -999px) var(--sk-y, -999px),
+                       #000 0%, rgba(0,0,0,0.56) 44%, transparent 76%);
+          mask-image: radial-gradient(circle var(--sk-r, 184px) at var(--sk-x, -999px) var(--sk-y, -999px),
+                       #000 0%, rgba(0,0,0,0.56) 44%, transparent 76%);
+}
+.sp-js .hero.is-exploring .hero-sketch { opacity: 0.78; }
+
+/* Metrics are the deliberate calm beat after the Hero. */
+.sp-js .proof-strip.is-metrics-ready .proof-item {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.sp-js .proof-strip.is-metrics-ready.is-visible .proof-item {
+  opacity: 1;
+  transform: none;
+  transition: opacity 440ms linear, transform 560ms var(--ep);
+}
+.sp-js .proof-strip.is-visible .proof-item:nth-child(2) { transition-delay: 70ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(3) { transition-delay: 140ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(4) { transition-delay: 210ms; }
+.sp-js .proof-item span { transition: opacity 380ms linear 100ms; }
+
+/* Two-dimensional issue sleeves: no 3D camera, no whole-card tilt. */
+.sp-js .case-grid { perspective: none; }
+.case-flag { display: block; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.32); }
+.sp-js .case-card:hover .case-cover,
+.sp-js .case-card:focus-visible .case-cover {
+  transform: translateY(-16px) rotate(-0.8deg) scale(1.008);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.46), 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+.sp-js .case-card:nth-child(even):hover .case-cover,
+.sp-js .case-card:nth-child(even):focus-visible .case-cover {
+  transform: translateY(-16px) rotate(0.8deg) scale(1.008);
+}
+
+/* The section boards stay calm; the physical objects inside provide the
+   interaction. This avoids four identical floating website cards. */
+@media (pointer: fine) {
+  .sp-js .board:hover {
+    transform: none;
+    border-color: rgba(255, 197, 61, 0.26);
+    box-shadow: inset 0 0 10px 1px rgba(255, 217, 140, 0.07);
+  }
+}
+.sp-js .book-1.is-picked { transform: translateY(-14px) rotate(3.7deg) scale(1.02); }
+.sp-js .book-2.is-picked { transform: translateY(-14px) rotate(3.7deg) scale(1.02); }
+.sp-js .book-3.is-picked { transform: translateY(-14px) rotate(1.2deg) scale(1.02); }
+.sp-js .book-1.is-nudge-l { transform: translateX(-4px) rotate(4.6deg); }
+.sp-js .book-2.is-nudge-l { transform: translateX(-4px) rotate(4.5deg); }
+.sp-js .book-3.is-nudge-l { transform: translateX(-4px) rotate(7deg); }
+.sp-js .book-1.is-nudge-r { transform: translateX(4px) rotate(4.6deg); }
+.sp-js .book-2.is-nudge-r { transform: translateX(4px) rotate(4.5deg); }
+.sp-js .book-3.is-nudge-r { transform: translateX(4px) rotate(7deg); }
+
+/* The album becomes the desk's small record: it turns only after a deliberate
+   Play press and keeps its angle when paused. */
+.sp-js .player-art {
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px rgba(14, 14, 12, 0.52), 0 6px 12px rgba(0,0,0,.34);
+  transform: rotate(var(--record-angle, 0deg));
+  will-change: transform;
+}
+.sp-js .player-progress span {
+  width: 100%;
+  transform: scaleX(var(--music-progress, .42));
+  transform-origin: left center;
+  transition: none;
+}
+
+/* Pinned note and reminders receive one local notebook gesture each. */
+.sp-js .sticky { transition: transform 480ms var(--ep), box-shadow 480ms var(--ep); }
+.sp-js .sticky::before {
+  content: "";
+  position: absolute;
+  right: 0; top: 0;
+  width: 24px; height: 24px;
+  background: linear-gradient(225deg, var(--card) 0 49%, rgba(245,239,227,.25) 50% 53%, #eab62f 54%);
+  transform-origin: top right;
+  transition: transform 460ms var(--ep);
+}
+.sp-js .sticky::after {
+  content: "";
+  position: absolute;
+  left: 20px; bottom: 28px;
+  width: 62%; height: 2px;
+  border-radius: 2px;
+  background: #1f1721;
+  transform: scaleX(0) rotate(-1deg);
+  transform-origin: left center;
+  transition: transform 520ms var(--ep);
+}
+.sp-js .sticky-wrap:hover .sticky { transform: rotate(4.6deg) translateY(-2px); }
+.sp-js .sticky-wrap:hover .sticky::before { transform: translate(-3px, 3px) rotate(-2deg); }
+.sp-js .sticky-wrap:hover .sticky::after { transform: scaleX(1) rotate(-1deg); }
+
+.sp-js .reminder { position: relative; transition: transform 360ms var(--ep); }
+.sp-js .reminder::after {
+  position: absolute;
+  right: 9px; top: 4px;
+  font-family: var(--font-hand);
+  font-size: 18px;
+  color: #1f1c17;
+  opacity: 0;
+  transform: translateY(4px) rotate(-5deg);
+  transition: opacity 220ms linear, transform 360ms var(--ep);
+}
+.sp-js .reminder:nth-child(1)::after { content: "★"; }
+.sp-js .reminder:nth-child(2)::after { content: "↗"; }
+.sp-js .reminder:nth-child(3)::after { content: "○"; }
+.sp-js .reminder:hover::after { opacity: .72; transform: none; }
+
+/* Origin Story: content is fully visible until JS opts into this narrative.
+   The line arrives first; each thought and job then settles as it is reached. */
+.origin-title-line, .origin-step { display: inline-block; }
+.origin-step { display: block; }
+.origin-journey {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.origin-journey path {
+  fill: none;
+  stroke: rgba(255, 197, 61, 0.46);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.story-head, .story-body, .timeline { position: relative; z-index: 1; }
+.sp-js .story-col.is-origin-ready .origin-design,
+.sp-js .story-col.is-origin-ready .story-body,
+.sp-js .story-col.is-origin-ready .origin-step,
+.sp-js .story-col.is-origin-ready .timeline-item {
+  opacity: 0;
+  transform: translateY(9px);
+}
+.sp-js .story-col.is-origin-ready .origin-design,
+.sp-js .story-col.is-origin-ready .story-body,
+.sp-js .story-col.is-origin-ready .origin-step,
+.sp-js .story-col.is-origin-ready .timeline-item {
+  transition: opacity 420ms linear, transform 560ms var(--ep);
+}
+.sp-js .story-col.is-origin-ready .is-reached {
+  opacity: 1;
+  transform: none;
+}
+.sp-js .story-col.is-origin-ready .timeline::before {
+  transform: scaleY(var(--timeline-draw, 0));
+  transform-origin: top center;
+}
+.sp-js .story-col.is-origin-ready .timeline-item .tl-logo { transform: scale(.82); }
+.sp-js .story-col.is-origin-ready .timeline-item.is-reached .tl-logo {
+  transform: scale(1);
+  transition: transform 320ms var(--ep);
+}
+
+/* Button feedback stays crisp and useful, not magnetic. */
+.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-2px); }
+.sp-js .btn:active { transform: translateY(0) scale(.98); }
+
+/* The existing footer line grows as the final sheet enters. Copy and layout
+   are unchanged. The tiny watering control is an optional, finite easter egg. */
+.footer-grow {
+  display: inline-block;
+  transform: scale(var(--footer-scale, 1));
+  transform-origin: left bottom;
+  will-change: transform;
+}
+.footer-cover { position: relative; }
+.footer-water {
+  position: absolute;
+  right: 4px;
+  bottom: 2px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 48px; height: 42px;
+  padding: 5px;
+  border: 1px solid rgba(255, 197, 61, .36);
+  border-radius: 10px;
+  background: rgba(23, 18, 11, .88);
+  color: var(--accent);
+  cursor: pointer;
+  transition: transform 260ms var(--ep), border-color 260ms var(--ep);
+}
+.footer-water svg { width: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.footer-water:hover, .footer-water:focus-visible { transform: rotate(-4deg) translateY(-2px); border-color: var(--accent); }
+.footer-water:active { transform: rotate(-4deg) scale(.96); }
+.footer-garden {
+  position: absolute;
+  right: 60px;
+  bottom: 3px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 42px;
+  pointer-events: none;
+}
+.footer-garden span {
+  position: relative;
+  display: block;
+  width: 4px; height: 28px;
+  border-radius: 4px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 520ms var(--ep);
+}
+.footer-garden span::before,
+.footer-garden span::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  width: 11px; height: 6px;
+  border: 2px solid var(--accent);
+  border-radius: 10px 10px 2px 10px;
+  opacity: 0;
+  transition: opacity 300ms linear 220ms;
+}
+.footer-garden span::before { right: 2px; transform: rotate(25deg); }
+.footer-garden span::after { left: 2px; transform: scaleX(-1) rotate(25deg); }
+.footer-garden span:nth-child(2) { height: 36px; transition-delay: 80ms; }
+.footer-garden span:nth-child(3) { height: 23px; transition-delay: 150ms; }
+.site-footer[data-growth="1"] .footer-garden span:nth-child(1),
+.site-footer[data-growth="2"] .footer-garden span:nth-child(-n+2),
+.site-footer[data-growth="3"] .footer-garden span { transform: scaleY(1); }
+.site-footer[data-growth="2"] .footer-garden span:nth-child(-n+2)::before,
+.site-footer[data-growth="2"] .footer-garden span:nth-child(-n+2)::after,
+.site-footer[data-growth="3"] .footer-garden span::before,
+.site-footer[data-growth="3"] .footer-garden span::after { opacity: 1; }
+
+/* Let the incoming surface finish its physical movement before its primary
+   heading takes focus. */
+.sp-js .paper-sheet:not(.is-sheet-settled) > .behind-head.sp-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+@media (max-width: 1079px) {
+  .origin-journey { display: none; }
+  .footer-water { right: 0; }
+  .footer-garden { right: 56px; }
+}
+
+@media (max-width: 599px) {
+  .footer-water { width: 44px; height: 40px; bottom: -4px; }
+  .footer-garden { bottom: -4px; }
+  .sp-js .player-art { border-radius: 12px; transform: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-js .hero.motion-primed .reveal,
+  .sp-js .proof-strip.is-metrics-ready .proof-item,
+  .sp-js .story-col.is-origin-ready .origin-design,
+  .sp-js .story-col.is-origin-ready .story-body,
+  .sp-js .story-col.is-origin-ready .origin-step,
+  .sp-js .story-col.is-origin-ready .timeline-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .origin-journey { display: none !important; }
+  .sp-js .player-art, .footer-grow { transform: none !important; }
+  .footer-water, .footer-garden { display: none !important; }
+}
