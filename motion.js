@@ -1360,23 +1360,27 @@
       var y = window.scrollY;
       var vh = window.innerHeight;
       if (desktopFlow) {
-        var start = sectionTop - vh * .78;
-        var end = sectionTop + sectionHeight - vh * .18;
+        /* Keep the original Origin design, but use a shorter viewport window.
+           The previous clock left a large black void while valid content was
+           still intentionally hidden. */
+        var start = sectionTop - vh * .72;
+        var end = sectionTop + sectionHeight - vh * .62;
+        if (end <= start) { end = start + Math.max(vh * .72, 520); }
         var p = clamp((y - start) / Math.max(end - start, 1), 0, 1);
-        reached(eyebrow, p >= .04);
-        reached(curiosity, p >= .09);
-        var points = [.18,.27,.36,.45];
-        steps.forEach(function (step, i) { reached(step, p >= (points[i] || .45)); });
-        arrows.forEach(function (arrow, i) { reached(arrow, p >= (points[i + 1] || .45)); });
-        reached(design, p >= .52);
-        reached(body, p >= .59);
+        reached(eyebrow, p >= .03);
+        reached(curiosity, p >= .07);
+        var points = [.14,.22,.30,.38];
+        steps.forEach(function (step, i) { reached(step, p >= (points[i] || .38)); });
+        arrows.forEach(function (arrow, i) { reached(arrow, p >= (points[i + 1] || .38)); });
+        reached(design, p >= .44);
+        reached(body, p >= .50);
 
-        var line = ease(span(p, .60, .96));
+        var line = ease(span(p, .52, .91));
         furthestLine = Math.max(furthestLine, line);
         story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
-        var itemPoints = [.68,.77,.86,.94];
-        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .94)); });
-        if (p >= .985) { showAll(); }
+        var itemPoints = [.60,.70,.80,.89];
+        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .89)); });
+        if (p >= .95) { showAll(); }
       } else {
         reached(eyebrow, y >= eyebrowThreshold);
         reached(curiosity, y >= curiosityThreshold);

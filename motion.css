@@ -1626,10 +1626,12 @@
     min-height: 630px;
   }
 
-  .site-footer { min-height: 160vh; }
+  /* Footer keeps its approved layout but no longer manufactures an extra
+     160vh scroll tail. Its motion runs while the real footer enters. */
+  .site-footer { min-height: 0; }
   .site-footer .footer-body {
-    position: sticky;
-    top: 72px;
+    position: relative;
+    top: auto;
   }
 }
 
