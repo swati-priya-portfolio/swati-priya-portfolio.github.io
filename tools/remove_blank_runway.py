@@ -1,46 +1,20 @@
 from pathlib import Path
+import re
 
-# Remove the artificial footer runway. The footer should animate while it
-# naturally enters the viewport, then end when its real content ends.
+# Remove only the artificial footer runway/sticky mechanics. Do not touch the
+# footer layout, typography, artwork or any approved design rules.
 css_path = Path('motion.css')
 css = css_path.read_text()
-old_css = '''@media (min-width: 1024px) {
-  .behind { min-height: 155vh; }
-  .behind-stage {
-    position: sticky;
-    top: 88px;
-    min-height: 630px;
-  }
-
-  .site-footer { min-height: 160vh; }
-  .site-footer .footer-body {
-    position: sticky;
-    top: 72px;
-  }
-}'''
-new_css = '''@media (min-width: 1024px) {
-  .behind { min-height: 155vh; }
-  .behind-stage {
-    position: sticky;
-    top: 88px;
-    min-height: 630px;
-  }
-
-  /* Footer keeps its approved layout but no longer manufactures an extra
-     160vh scroll tail. Its motion runs while the real footer enters. */
-  .site-footer { min-height: 0; }
-  .site-footer .footer-body {
-    position: relative;
-    top: auto;
-  }
-}'''
-if old_css not in css:
-    raise SystemExit('footer runway block not found')
-css = css.replace(old_css, new_css, 1)
+css, n1 = re.subn(r'(?m)^\s*\.site-footer\s*\{\s*min-height:\s*160vh;\s*\}\s*$',
+                  '  .site-footer { min-height: 0; }', css, count=1)
+css, n2 = re.subn(r'(?ms)^\s*\.site-footer \.footer-body\s*\{\s*position:\s*sticky;\s*top:\s*72px;\s*\}\s*',
+                  '  .site-footer .footer-body {\n    position: relative;\n    top: auto;\n  }\n', css, count=1)
+if not (n1 and n2):
+    raise SystemExit(f'footer rules not found: min-height={n1}, sticky={n2}')
 css_path.write_text(css)
 
-# Tighten the Origin story clock so the right side does not sit empty while
-# existing content is still hidden. No markup, layout or design is changed.
+# Tighten only the Origin reveal clock so the existing right-side content is
+# not kept invisible across a large empty viewport.
 js_path = Path('motion.js')
 js = js_path.read_text()
 old_origin = '''        var start = sectionTop - vh * .78;
@@ -60,9 +34,8 @@ old_origin = '''        var start = sectionTop - vh * .78;
         var itemPoints = [.68,.77,.86,.94];
         items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .94)); });
         if (p >= .985) { showAll(); }'''
-new_origin = '''        /* Keep the original Origin design, but use a shorter viewport window.
-           The previous clock left a large black void while valid content was
-           still intentionally hidden. */
+new_origin = '''        /* Same Origin design, shorter reveal runway: existing content fills
+           the viewport instead of leaving a long black void. */
         var start = sectionTop - vh * .72;
         var end = sectionTop + sectionHeight - vh * .62;
         if (end <= start) { end = start + Math.max(vh * .72, 520); }
@@ -85,5 +58,3 @@ if old_origin not in js:
     raise SystemExit('origin clock block not found')
 js = js.replace(old_origin, new_origin, 1)
 js_path.write_text(js)
-
-# This file is temporary and is removed after the repair commit lands.
