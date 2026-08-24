@@ -1534,7 +1534,10 @@
 .sp-js .behind.is-behind-ready .reminder:nth-child(1) { transform: translateY(18px) rotate(-1.5deg) scale(.975); }
 .sp-js .behind.is-behind-ready .reminder:nth-child(2) { transform: translateY(18px) rotate(.8deg) scale(.975); }
 .sp-js .behind.is-behind-ready .reminder:nth-child(3) { transform: translateY(18px) rotate(-.6deg) scale(.975); }
-.sp-js .behind.is-behind-ready .reminder.is-beat-reached { opacity: 1; transform: none; }
+.sp-js .behind.is-behind-ready .reminder.is-beat-reached { opacity: 1; }
+.sp-js .behind.is-behind-ready .reminder:nth-child(1).is-beat-reached { transform: rotate(1.2deg); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(2).is-beat-reached { transform: rotate(-.7deg); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(3).is-beat-reached { transform: rotate(.8deg); }
 
 /* What Drives Me draws its shell, then reveals one principle per scroll beat. */
 .sp-js .drives.is-drives-ready.sp-reveal { position: relative; opacity: 1; transform: none; border-color: transparent; }
@@ -1549,16 +1552,22 @@
   pointer-events: none;
 }
 .sp-js .drives.is-drives-ready.is-border-reached::before { clip-path: inset(0); }
-.sp-js .drives.is-drives-ready .drives-title,
-.sp-js .drives.is-drives-ready .drives-list li {
+.sp-js .drives.is-drives-ready .drives-title {
   opacity: 0;
   transform: translateY(9px);
   transition: opacity 390ms linear, transform 540ms var(--ep);
 }
 .sp-js .drives.is-drives-ready.is-title-reached .drives-title,
 .sp-js .drives.is-drives-ready .drives-list li.is-beat-reached { opacity: 1; transform: none; }
-.sp-js .drives.is-drives-ready .drives-list li svg { transform: scale(.84); transition: transform 480ms var(--ep); }
-.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached svg { transform: scale(1); }
+.sp-js .drives.is-drives-ready .drives-list li svg,
+.sp-js .drives.is-drives-ready .drives-list li p {
+  opacity: 0;
+  transition: opacity 360ms linear, transform 500ms var(--ep);
+}
+.sp-js .drives.is-drives-ready .drives-list li svg { transform: scale(.82); }
+.sp-js .drives.is-drives-ready .drives-list li p { transform: translateY(8px); }
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached svg { opacity: 1; transform: scale(1); }
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached p { opacity: 1; transform: none; transition-delay: 90ms; }
 .sp-js .drives.is-drives-ready:not(.is-title-reached) .squiggle path { stroke-dashoffset: 220 !important; }
 
 /* Final chapter: scale the complete title, then let the contact details and
@@ -1575,7 +1584,7 @@
   transition: opacity 420ms linear, transform 570ms var(--ep);
 }
 .sp-js .site-footer.is-footer-story-ready .footer-title {
-  transform: translateY(12px) scale(var(--footer-title-scale, .66));
+  transform: translateY(calc(12px + var(--footer-title-lift, 0px))) scale(var(--footer-title-scale, .60));
   transform-origin: left center;
   will-change: transform;
 }
@@ -1586,7 +1595,7 @@
 .sp-js .site-footer.is-social-reached .footer-legal { opacity: 1; transform: none; }
 .sp-js .site-footer.is-title-reached .footer-title {
   opacity: 1;
-  transform: scale(var(--footer-title-scale, 1));
+  transform: translateY(var(--footer-title-lift, 0px)) scale(var(--footer-title-scale, 1));
 }
 .sp-js .site-footer.is-footer-story-ready .footer-grow { transform: none; }
 .sp-js .site-footer.is-footer-story-ready .footer-actions,
@@ -1596,8 +1605,8 @@
 .sp-js .site-footer.is-footer-story-ready .footer-cover.sp-settle {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(56px) rotate(3deg) scale(.96);
-  transition: opacity 460ms linear, transform 680ms var(--ep);
+  transform: translateY(70px) rotate(4deg) scale(.94);
+  transition: opacity 460ms linear, transform 760ms var(--ep);
 }
 .sp-js .site-footer.is-footer-story-ready.is-cover-reached .footer-cover.sp-settle {
   opacity: 1;
@@ -1611,6 +1620,53 @@
 }
 .sp-js .site-footer.is-footer-story-ready.is-bubble-reached .footer-bubble,
 .sp-js .site-footer.is-talking .footer-bubble { opacity: 1; transform: none; }
+
+/* Desktop gets real story runway: the visual remains present while normalized
+   section progress advances. Short laptops and stacked layouts stay natural. */
+@media (min-width: 1080px) and (min-height: 760px) {
+  .behind { min-height: 210vh; }
+  .behind-stage {
+    position: sticky;
+    top: 88px;
+    min-height: 630px;
+  }
+
+  .drives-track {
+    min-height: 112vh;
+    margin-top: 32px;
+  }
+  .drives-track .drives {
+    position: sticky;
+    top: 42vh;
+    margin-top: 0;
+  }
+
+  .site-footer { min-height: 185vh; }
+  .site-footer .footer-body {
+    position: sticky;
+    top: 72px;
+    grid-template-columns: minmax(0, 1fr) 440px;
+    grid-template-rows: auto auto repeat(4, auto);
+    column-gap: 40px;
+    row-gap: 14px;
+    align-items: center;
+  }
+  .site-footer .footer-story { display: contents; }
+  .site-footer .footer-kicker { grid-column: 1; grid-row: 1; }
+  .site-footer .footer-title {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: min(100%, 1260px);
+    font-size: clamp(72px, 10.5vw, 160px);
+    line-height: .88;
+    letter-spacing: -.035em;
+  }
+  .site-footer .footer-lede { grid-column: 1; grid-row: 3; }
+  .site-footer .footer-actions { grid-column: 1; grid-row: 4; }
+  .site-footer .footer-social { grid-column: 1; grid-row: 5; }
+  .site-footer .footer-legal { grid-column: 1; grid-row: 6; }
+  .site-footer .footer-cover { grid-column: 2; grid-row: 3 / 7; }
+}
 
 /* Reusable scroll depth. Individual translate composes with the site's
    existing rotate/scale transforms, so hover, records and paper sheets keep
@@ -1814,6 +1870,8 @@
   .sp-js .behind.is-behind-ready .reminder,
   .sp-js .drives.is-drives-ready .drives-title,
   .sp-js .drives.is-drives-ready .drives-list li,
+  .sp-js .drives.is-drives-ready .drives-list li svg,
+  .sp-js .drives.is-drives-ready .drives-list li p,
   .sp-js .site-footer.is-footer-story-ready .footer-kicker,
   .sp-js .site-footer.is-footer-story-ready .footer-title,
   .sp-js .site-footer.is-footer-story-ready .footer-lede,
@@ -1828,5 +1886,7 @@
     transform: none !important;
   }
   .sp-js .drives.is-drives-ready::before { clip-path: inset(0) !important; }
+  .behind, .drives-track, .site-footer { min-height: 0 !important; }
+  .behind-stage, .drives-track .drives, .site-footer .footer-body { position: static !important; }
   .footer-water, .footer-garden { display: none !important; }
 }

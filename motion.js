@@ -939,28 +939,23 @@
 
     function measure() {
       var vh = window.innerHeight;
-      var mobile = window.innerWidth < 768;
+      var staged = window.innerWidth >= 1080 && vh >= 760;
       if (behind) {
-        var boardTop = boards[0] ? layoutTop(boards[0]) : layoutTop(behind);
         geometry.behind = {
           top: layoutTop(behind),
-          board: boards.map(function (board, i) {
-            return mobile ? layoutTop(board) - vh * 0.82 : boardTop - vh * 0.72 + i * clamp(vh * .065, 48, 72);
-          }),
-          reminder: reminders.map(function (item, i) {
-            var natural = layoutTop(item) - vh * .82;
-            var staged = boardTop - vh * .72 + boards.length * clamp(vh * .065, 48, 72) + 28 + i * 46;
-            return mobile ? natural : staged;
-          })
+          height: Math.max(behind.offsetHeight, 1),
+          staged: staged,
+          board: boards.map(function (board) { return layoutTop(board) - vh * .82; }),
+          reminder: reminders.map(function (item) { return layoutTop(item) - vh * .82; })
         };
       }
       if (drives) {
-        var dTop = layoutTop(drives);
+        var track = drives.closest(".drives-track") || drives;
         geometry.drives = {
-          top: dTop - vh * .79,
-          items: principles.map(function (item, i) {
-            return mobile ? layoutTop(item) - vh * .82 : dTop - vh * .68 + 120 + i * 54;
-          })
+          top: layoutTop(track),
+          height: Math.max(track.offsetHeight, 1),
+          staged: staged,
+          items: principles.map(function (item) { return layoutTop(item) - vh * .82; })
         };
       }
       if (footerEl) {
@@ -977,30 +972,38 @@
 
       if (behind && (reduced || behind.classList.contains("is-sheet-settled"))) {
         var bh = geometry.behind;
-        var beats = ["is-eyebrow-reached", "is-line-one-reached", "is-accent-reached", "is-work-reached", "is-intro-reached"];
-        var gap = clamp(vh * .045, 28, 44);
-        beats.forEach(function (name, i) {
-          if (reduced || y >= bh.top - vh * .72 + i * gap) { behind.classList.add(name); }
+        var bp = bh.staged ? clamp((y - bh.top) / Math.max(bh.height - vh, 1), 0, 1) : 0;
+        [[.12,"is-eyebrow-reached"],[.15,"is-line-one-reached"],[.18,"is-accent-reached"],[.21,"is-work-reached"],[.24,"is-intro-reached"]].forEach(function (beat) {
+          if (reduced || (bh.staged ? bp >= beat[0] : y >= bh.top - vh * .72 + beat[0] * 220)) { behind.classList.add(beat[1]); }
         });
-        boards.forEach(function (board, i) { if (reduced || y >= bh.board[i]) { reveal(board); } });
-        reminders.forEach(function (item, i) { if (reduced || y >= bh.reminder[i]) { reveal(item); } });
+        [.30,.47,.63,.78].forEach(function (point, i) {
+          if (reduced || (bh.staged ? bp >= point : y >= bh.board[i])) { reveal(boards[i]); }
+        });
+        [.84,.90,.96].forEach(function (point, i) {
+          if (reduced || (bh.staged ? bp >= point : y >= bh.reminder[i])) { reveal(reminders[i]); }
+        });
       }
 
       var about = drives && drives.closest(".paper-sheet");
       if (drives && (reduced || !about || about.classList.contains("is-sheet-settled"))) {
         var dg = geometry.drives;
-        if (reduced || y >= dg.top) { drives.classList.add("is-border-reached"); }
-        if (reduced || y >= dg.top + 52) { drives.classList.add("is-title-reached"); }
-        principles.forEach(function (item, i) { if (reduced || y >= dg.items[i]) { reveal(item); } });
+        var dp = dg.staged ? clamp((y - dg.top) / Math.max(dg.height - vh, 1), 0, 1) : 0;
+        if (reduced || (dg.staged ? dp >= .06 : y >= dg.top - vh * .79)) { drives.classList.add("is-border-reached"); }
+        if (reduced || (dg.staged ? dp >= .17 : y >= dg.top - vh * .70)) { drives.classList.add("is-title-reached"); }
+        [.30,.48,.66,.82].forEach(function (point, i) {
+          if (reduced || (dg.staged ? dp >= point : y >= dg.items[i])) { reveal(principles[i]); }
+        });
       }
 
       if (footerEl && (reduced || footerEl.classList.contains("is-sheet-settled"))) {
         var fg = geometry.footer;
-        var distance = Math.min(fg.height * .9, vh * .82);
-        var p = reduced ? 1 : clamp((y + vh - fg.top) / Math.max(distance, 1), 0, 1);
-        var titleP = ease(span(p, .18, .68));
-        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(window.innerWidth < 768 ? .84 : .66, 1, titleP)).toFixed(4));
-        [[.08,"is-kicker-reached"],[.18,"is-title-reached"],[.67,"is-lede-reached"],[.76,"is-actions-reached"],[.80,"is-cover-reached"],[.89,"is-bubble-reached"],[.93,"is-social-reached"]].forEach(function (beat) {
+        var footerStaged = window.innerWidth >= 1080 && vh >= 760;
+        var distance = footerStaged ? Math.max(fg.height - vh, 1) : Math.min(fg.height * .9, vh * .9);
+        var p = reduced ? 1 : footerStaged ? clamp((y - fg.top) / distance, 0, 1) : clamp((y + vh - fg.top) / Math.max(distance, 1), 0, 1);
+        var titleP = ease(span(p, .22, .60));
+        footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(window.innerWidth < 768 ? .84 : .60, 1, titleP)).toFixed(4));
+        footerEl.style.setProperty("--footer-title-lift", (reduced ? 0 : lerp(0, -18, ease(span(p, .68, .76)))).toFixed(2) + "px");
+        [[.10,"is-kicker-reached"],[.20,"is-title-reached"],[.76,"is-lede-reached"],[.82,"is-actions-reached"],[.86,"is-cover-reached"],[.92,"is-bubble-reached"],[.95,"is-social-reached"]].forEach(function (beat) {
           if (reduced || p >= beat[0]) { footerEl.classList.add(beat[1]); }
         });
       }
@@ -1017,7 +1020,13 @@
     window.addEventListener("load", function () { dirty = true; schedule(); });
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(function () { dirty = true; schedule(); }); }
     if ("MutationObserver" in window) {
-      new MutationObserver(function () { dirty = true; schedule(); }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
+      [].slice.call(document.querySelectorAll(".paper-sheet")).forEach(function (sheet) {
+        var settled = sheet.classList.contains("is-sheet-settled");
+        new MutationObserver(function () {
+          var next = sheet.classList.contains("is-sheet-settled");
+          if (next !== settled) { settled = next; dirty = true; schedule(); }
+        }).observe(sheet, { attributes: true, attributeFilter: ["class"] });
+      });
     }
     measure();
   }
