@@ -1,0 +1,25 @@
+name: Final Portfolio Motion Tuning
+on:
+  push:
+    branches:
+      - fix/final-scroll-motion-20260825
+    paths:
+      - .github/workflows/final-motion-tuning.yml
+permissions:
+  contents: write
+jobs:
+  tune:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/final-scroll-motion-20260825
+          fetch-depth: 0
+      - run: python tools/final_motion_tuning.py
+      - run: |
+          git config user.name "ChatGPT Motion Repair"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add motion.js motion.css
+          git diff --cached --quiet && exit 0
+          git commit -m "Tune Hero About career drives and footer motion"
+          git push origin HEAD:fix/final-scroll-motion-20260825
