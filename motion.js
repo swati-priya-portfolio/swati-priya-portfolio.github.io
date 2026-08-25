@@ -143,6 +143,7 @@
   function heroInteractions() {
     var hero = document.querySelector(".hero");
     var sketch = document.querySelector(".hero-sketch");
+    var character = document.querySelector(".hero-character");
     var art = document.querySelector(".hero-art");
     var speeches = [].slice.call(document.querySelectorAll(".hero-character .speech"));
     if (!hero || reduced || !finePointer) { return; }
@@ -183,24 +184,36 @@
         sketch.style.setProperty("--sk-y", current.y.toFixed(1) + "px");
       }
 
-      // Depth: nothing chases the cursor, everything drifts a few pixels.
-      var nx = target.on ? clamp((current.x / rect.width - 0.5) * 2, -1, 1) : 0;
-      var ny = target.on ? clamp((current.y / rect.height - 0.5) * 2, -1, 1) : 0;
+      /* Hero is the strongest mouse-interaction zone. The previous 3px drift
+         was technically working but visually imperceptible. Keep it controlled,
+         but make the illustrated character/laptop clearly respond to the cursor.
+         current.on makes the return to rest glide rather than snap. */
+      var rawNx = clamp((current.x / rect.width - 0.5) * 2, -1, 1);
+      var rawNy = clamp((current.y / rect.height - 0.5) * 2, -1, 1);
+      var nx = rawNx * current.on;
+      var ny = rawNy * current.on;
 
+      if (character) {
+        character.style.setProperty("--hero-shell-x", (nx * 3.5).toFixed(2) + "px");
+        character.style.setProperty("--hero-shell-y", (ny * 2.5).toFixed(2) + "px");
+      }
       if (art) {
-        art.style.setProperty("--px", (nx * 3).toFixed(2) + "px");
-        art.style.setProperty("--py", (ny * 3).toFixed(2) + "px");
+        art.style.setProperty("--px", (nx * 12).toFixed(2) + "px");
+        art.style.setProperty("--py", (ny * 9).toFixed(2) + "px");
+        art.style.setProperty("--hero-tilt", (nx * 0.65).toFixed(3) + "deg");
+        art.style.setProperty("--hero-scale", (1 + current.on * 0.006).toFixed(4));
       }
       if (sketch) {
-        sketch.style.setProperty("--bx", (nx * -2).toFixed(2) + "px");
-        sketch.style.setProperty("--by", (ny * -2).toFixed(2) + "px");
+        sketch.style.setProperty("--bx", (nx * -4).toFixed(2) + "px");
+        sketch.style.setProperty("--by", (ny * -3).toFixed(2) + "px");
       }
       for (var i = 0; i < speeches.length; i++) {
         var s = speeches[i];
         var rot = s.getAttribute("data-rot") || "0";
         s.style.setProperty("--speech-rot", rot + "deg");
-        s.style.setProperty("--speech-x", (nx * 5).toFixed(2) + "px");
-        s.style.setProperty("--speech-y", (ny * 5).toFixed(2) + "px");
+        /* Speech sits in a shallower plane, moving opposite the character. */
+        s.style.setProperty("--speech-x", (nx * -8).toFixed(2) + "px");
+        s.style.setProperty("--speech-y", (ny * -6).toFixed(2) + "px");
       }
     });
   }
@@ -1364,30 +1377,33 @@
       var y = window.scrollY;
       var vh = window.innerHeight;
       if (desktopFlow) {
-        /* Keep the original Origin design, but use a shorter viewport window.
-           The previous clock left a large black void while valid content was
-           still intentionally hidden. */
+        /* ONE CONTINUOUS SCROLL: the whole Origin chapter runs over roughly
+           one viewport of travel. Tiny thresholds create a progressive reveal
+           inside that same gesture; they are not separate scroll stops. */
         var start = sectionTop - vh * .72;
-        var end = sectionTop + sectionHeight - vh * .62;
-        if (end <= start) { end = start + Math.max(vh * .72, 520); }
-        var p = clamp((y - start) / Math.max(end - start, 1), 0, 1);
-        /* Reading beat: the Origin copy should be understood in one natural
-           scroll gesture, not rationed out line by line. */
-        var readingOn = p >= .055;
-        reached(eyebrow, readingOn);
-        reached(curiosity, readingOn);
-        steps.forEach(function (step) { reached(step, readingOn); });
-        arrows.forEach(function (arrow) { reached(arrow, readingOn); });
-        reached(design, p >= .095);
-        reached(body, p >= .135);
+        var travel = clamp(vh * .92, 640, 920);
+        var p = clamp((y - start) / travel, 0, 1);
 
-        /* The professional journey is the sequential part. The line follows
-           scroll continuously in both directions; each role gets its own beat. */
-        var line = ease(span(p, .24, .92));
+        reached(eyebrow, p >= .025);
+        reached(curiosity, p >= .045);
+        var readingPoints = [.070,.105,.140,.175];
+        var arrowPoints = [.090,.125,.160];
+        steps.forEach(function (step, i) {
+          reached(step, p >= (readingPoints[i] || .175));
+        });
+        arrows.forEach(function (arrow, i) {
+          reached(arrow, p >= (arrowPoints[i] || .160));
+        });
+        reached(design, p >= .205);
+        reached(body, p >= .235);
+
+        /* Professional journey: still one-by-one, but all within the same
+           continuous scroll sequence rather than one wheel gesture per role. */
+        var line = ease(span(p, .285, .94));
         furthestLine = line;
         story.style.setProperty("--timeline-draw", line.toFixed(4));
-        var itemPoints = [.34,.50,.67,.84];
-        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .84)); });
+        var itemPoints = [.375,.525,.675,.825];
+        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .825)); });
         if (p >= .96) { showAll(); }
       } else {
         var readingThreshold = Math.min(eyebrowThreshold, curiosityThreshold);
@@ -1446,12 +1462,12 @@
       var body = item.querySelector(".tl-body");
       var date = item.querySelector(".tl-date");
 
-      var lx = state.x * 4.2 * state.v;
-      var ly = state.y * 3.6 * state.v;
-      var bx = state.x * 2.3 * state.v;
-      var by = state.y * 2.1 * state.v;
-      var dx = state.x * -1.4 * state.v;
-      var dy = state.y * -1.2 * state.v;
+      var lx = state.x * 6.5 * state.v;
+      var ly = state.y * 5.2 * state.v;
+      var bx = state.x * 3.8 * state.v;
+      var by = state.y * 3.2 * state.v;
+      var dx = state.x * -2.2 * state.v;
+      var dy = state.y * -1.8 * state.v;
 
       if (logo) {
         logo.style.setProperty("--career-x", lx.toFixed(2) + "px");
@@ -1486,7 +1502,7 @@
             var dx = ptr.x - cx;
             var dy = ptr.y - cy;
             var d = Math.sqrt(dx * dx * 0.28 + dy * dy);
-            var radius = Math.max(145, Math.min(230, r.height * 1.9));
+            var radius = Math.max(220, Math.min(320, r.height * 3.2));
             var t = d < radius ? 1 - d / radius : 0;
             t = t * t * (3 - 2 * t);
             targetV = t;

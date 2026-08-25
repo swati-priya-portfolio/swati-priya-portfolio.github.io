@@ -333,10 +333,25 @@
 }
 .sp-js .hero-art { animation: sp-paper-float 6.5s ease-in-out infinite; }
 
-/* Parallax layers — JS writes the offsets, max 5px */
-.sp-js .hero-art       { will-change: transform; transform: translate3d(var(--px, 0px), var(--py, 0px), 0); }
+/* Hero mouse depth. The wrapper makes the character visibly responsive;
+   the art inside travels further, while speech/sketch live on shallower planes. */
+.sp-js .hero-character.is-in {
+  translate: var(--hero-shell-x, 0px) var(--hero-shell-y, 0px);
+  will-change: translate;
+}
+.sp-js .hero-art {
+  will-change: transform;
+  transform: translate3d(var(--px, 0px), var(--py, 0px), 0)
+             rotate(var(--hero-tilt, 0deg)) scale(var(--hero-scale, 1));
+  transform-origin: center 58%;
+}
 .sp-js .hero-character .speech { will-change: transform; }
-.sp-js .hero-sketch    { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0); }
+.sp-js .hero-sketch { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0); }
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .hero-character.is-in { translate: 0 0 !important; }
+  .sp-js .hero-art { transform: none !important; }
+}
 
 /* ============================================================
    4b. HEADLINE, CHARACTER BY CHARACTER
