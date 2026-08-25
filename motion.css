@@ -11,18 +11,16 @@
   pointer-events: none;
 }
 
-/* Keep every incoming torn edge attached to the top of its sheet.
-   The Case Studies tear previously had a special top:0 override, which made
-   the first fold read differently from the remaining pages. */
+/* Give the torn edge a little more breathing distance from the incoming
+   section while keeping the sheet travel and scroll timing untouched. */
 .paper-sheet > .tear.paper-tear,
 .cases.paper-sheet > .tear-a.paper-tear {
-  top: -44px;
+  top: -52px;
 }
 
-/* The footer uses the same paper construction, with a slightly shallower
-   overhang so the black final page does not look ripped or detached. */
+/* The footer keeps the same visual rhythm with a slightly shallower overhang. */
 .site-footer.paper-sheet > .torn-edge.paper-tear {
-  top: -38px;
+  top: -44px;
 }
 
 /* Softer exposed paper core. Preserve the existing SVG tear silhouettes;
@@ -38,15 +36,14 @@
     drop-shadow(0 -6px 12px rgba(0, 0, 0, 0.30));
 }
 
-/* Keep the tear readable but restrained on smaller windows. This changes
-   only the silhouette placement — not the sheet travel or scroll timing. */
+/* Slightly more distance on laptop/tablet too, but still restrained. */
 @media (max-width: 1100px) {
   .paper-sheet > .tear.paper-tear,
   .cases.paper-sheet > .tear-a.paper-tear {
-    top: -32px;
+    top: -38px;
   }
 
   .site-footer.paper-sheet > .torn-edge.paper-tear {
-    top: -28px;
+    top: -34px;
   }
 }
