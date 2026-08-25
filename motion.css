@@ -625,8 +625,8 @@
   transition: transform 260ms var(--ep),
               background-color 260ms var(--ep), color 260ms var(--ep);
 }
-.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-4px); box-shadow: none; }
-.sp-js .btn:active { transform: translateY(-1px); }
+.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-2px); box-shadow: none; }
+.sp-js .btn:active { transform: translateY(0) scale(.98); }
 
 /* ============================================================
    8. PICK AN EPISODE — one cover becomes three
@@ -1967,4 +1967,61 @@
   .behind, .drives-track, .site-footer { min-height: 0 !important; }
   .behind-stage, .drives-track .drives, .site-footer .footer-body { position: static !important; }
   .footer-water, .footer-garden { display: none !important; }
+}
+
+
+/* ============================================================
+   19. SIGNATURE MOTION PASS — strong moments, no design changes
+   ============================================================ */
+
+/* COMPLEXITY and CLARITY zoom as complete ideas. Their letters stay locked,
+   while I TURN / INTO retain the playful character-by-character response. */
+.sp-js .hero-title .hero-focus-word {
+  transform: scale(var(--focus-s, 1)) !important;
+  transform-origin: center 68%;
+  will-change: transform;
+}
+.sp-js .hero-title .hero-focus-word .ch {
+  transform: none !important;
+}
+
+/* Torn edges carry only a few pixels of scroll-velocity lag. Clip-path reveal
+   and settle animations still own their original transform independently. */
+.sp-js .paper-tear {
+  translate: 0 var(--tear-drift, 0px);
+}
+
+/* One small object wakes up after each Behind board lands. Nothing loops. */
+@keyframes sp-board-object-wake {
+  0%   { transform: translateY(6px) scale(.992); }
+  72%  { transform: translateY(-1px) scale(1.002); }
+  100% { transform: none; }
+}
+.sp-js .behind .board:nth-child(1).is-beat-reached .board-books {
+  animation: sp-board-object-wake 620ms var(--ep) 150ms both;
+}
+.sp-js .behind .board:nth-child(2).is-beat-reached .player {
+  animation: sp-board-object-wake 650ms var(--ep) 170ms both;
+}
+.sp-js .behind .board:nth-child(3).is-beat-reached .sticky-wrap {
+  animation: sp-board-object-wake 620ms var(--ep) 170ms both;
+}
+
+/* The career line is a journey: reached rows stay readable, but the current
+   stop carries full focus while earlier stops soften slightly. */
+.sp-js .story-col.is-origin-ready .timeline-item.is-reached {
+  opacity: .76;
+  transition: opacity 460ms var(--ep), transform 560ms var(--ep);
+}
+.sp-js .story-col.is-origin-ready .timeline-item.is-current {
+  opacity: 1;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .hero-title .hero-focus-word { transform: none !important; }
+  .sp-js .paper-tear { translate: 0 0 !important; }
+  .sp-js .behind .board.is-beat-reached .board-books,
+  .sp-js .behind .board.is-beat-reached .player,
+  .sp-js .behind .board.is-beat-reached .sticky-wrap { animation: none !important; }
+  .sp-js .story-col.is-origin-ready .timeline-item.is-reached { opacity: 1 !important; }
 }

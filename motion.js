@@ -148,9 +148,10 @@
     var speeches = [].slice.call(document.querySelectorAll(".hero-character .speech"));
     if (!hero || reduced || !finePointer) { return; }
 
-    var target = { x: 0, y: 0, on: 0 };
-    var current = { x: 0, y: 0, on: 0 };
+    var target = { x: 0, y: 0, on: 0, speed: 0 };
+    var current = { x: 0, y: 0, on: 0, speed: 0 };
     var rect = null;
+    var lastPointer = { x: 0, y: 0, t: 0 };
 
     function measure() { rect = hero.getBoundingClientRect(); }
 
@@ -162,10 +163,22 @@
     hero.addEventListener("pointerleave", function () {
       hero.classList.remove("is-exploring");
       target.on = 0;
+      target.speed = 0;
       target.x = 0; target.y = 0;                 // layers glide home
     });
     hero.addEventListener("pointermove", function (e) {
       if (!rect) { measure(); }
+      var now = performance.now();
+      if (lastPointer.t) {
+        var dt = Math.max(now - lastPointer.t, 16);
+        var ddx = e.clientX - lastPointer.x;
+        var ddy = e.clientY - lastPointer.y;
+        var pxPerMs = Math.sqrt(ddx * ddx + ddy * ddy) / dt;
+        target.speed = clamp(pxPerMs / 1.35, 0, 1);
+      }
+      lastPointer.x = e.clientX;
+      lastPointer.y = e.clientY;
+      lastPointer.t = now;
       target.x = e.clientX - rect.left;
       target.y = e.clientY - rect.top;
     }, { passive: true });
@@ -178,10 +191,14 @@
       current.x = lerp(current.x, target.x, EASE);
       current.y = lerp(current.y, target.y, EASE);
       current.on = lerp(current.on, target.on, 0.12);
+      current.speed = lerp(current.speed, target.speed, 0.18);
+      target.speed *= 0.88;
 
       if (sketch) {
         sketch.style.setProperty("--sk-x", current.x.toFixed(1) + "px");
         sketch.style.setProperty("--sk-y", current.y.toFixed(1) + "px");
+        /* Slow exploration opens the thinking layer; fast movement tightens it. */
+        sketch.style.setProperty("--sk-r", lerp(265, 185, current.speed).toFixed(1) + "px");
       }
 
       /* Hero is the strongest mouse-interaction zone. The previous 3px drift
@@ -263,6 +280,12 @@
     var chars = [].slice.call(title.querySelectorAll(".ch"));
     if (!chars.length) { return; }
 
+    var focusWords = [].slice.call(title.querySelectorAll(".wd")).filter(function (word) {
+      var text = word.textContent.replace(/\s+/g, " ").trim().toUpperCase();
+      return text.indexOf("COMPLEXITY") === 0 || text === "CLARITY.";
+    });
+    focusWords.forEach(function (word) { word.classList.add("hero-focus-word"); });
+
     var RADIUS = 96;          // how far the response reaches
     var reactions = [
       { lift: 1.00, scale: 0.045, rotate: -0.8 },
@@ -273,6 +296,7 @@
       { lift: 0.55, scale: 0.085, rotate: 0.0 }
     ];
     var boxes = [];
+    var focusBoxes = [];
     var dirty = true;
 
     function measure() {
@@ -284,8 +308,13 @@
           px: r.left + r.width / 2 + sx,
           py: r.top + r.height / 2 + sy,
           v: 0,
+          focus: !!c.closest(".hero-focus-word"),
           reaction: reactions[i % reactions.length]
         };
+      });
+      focusBoxes = focusWords.map(function (word) {
+        var r = word.getBoundingClientRect();
+        return { el: word, px: r.left + r.width / 2 + sx, py: r.top + r.height / 2 + sy, v: 0 };
       });
       dirty = false;
     }
@@ -304,6 +333,12 @@
       var sx = window.scrollX, sy = window.scrollY;
       for (var i = 0; i < boxes.length; i++) {
         var b = boxes[i];
+        if (b.focus) {
+          b.el.style.setProperty("--c-s", "1");
+          b.el.style.setProperty("--c-y", "0px");
+          b.el.style.setProperty("--c-r", "0deg");
+          continue;
+        }
         var cy = b.py - sy;
         if (cy < -160 || cy > window.innerHeight + 160) {
           if (b.v !== 0) {
@@ -326,6 +361,21 @@
         b.el.style.setProperty("--c-s", (1 + b.reaction.scale * b.v).toFixed(3));
         b.el.style.setProperty("--c-y", (-7 * b.reaction.lift * b.v).toFixed(2) + "px");
         b.el.style.setProperty("--c-r", (b.reaction.rotate * b.v).toFixed(2) + "deg");
+      }
+
+      /* COMPLEXITY and CLARITY stay typographically stable. They zoom as one
+         unit instead of wobbling letter by letter. */
+      for (var j = 0; j < focusBoxes.length; j++) {
+        var f = focusBoxes[j];
+        var fy = f.py - sy;
+        var fdx = ptr.x - (f.px - sx);
+        var fdy = (ptr.y - fy) * 1.15;
+        var fd = Math.sqrt(fdx * fdx + fdy * fdy);
+        var ft = clamp(1 - fd / 155, 0, 1);
+        ft = ft * ft * (3 - 2 * ft);
+        f.v = lerp(f.v, ft, 0.18);
+        if (f.v < 0.002) { f.v = 0; }
+        f.el.style.setProperty("--focus-s", (1 + 0.075 * f.v).toFixed(3));
       }
     });
   }
@@ -391,8 +441,8 @@
         if (b.v < .002) { b.v = 0; }
         var yours = !!b.el.closest(".accent");
         var sign = b.i % 2 ? 1 : -1;
-        b.el.style.setProperty("--fc-y", (-7 * b.v).toFixed(2) + "px");
-        b.el.style.setProperty("--fc-s", (1 + (yours ? .065 : .05) * b.v).toFixed(3));
+        b.el.style.setProperty("--fc-y", ((yours ? -9 : -7) * b.v).toFixed(2) + "px");
+        b.el.style.setProperty("--fc-s", (1 + (yours ? .085 : .05) * b.v).toFixed(3));
         b.el.style.setProperty("--fc-r", (sign * (0.45 + (b.i % 3) * .35) * b.v).toFixed(2) + "deg");
       }
     });
@@ -674,11 +724,20 @@
       var settleP = ease(span(p, 0.88, 1));
       grid.style.transform = "scale(" + lerp(geo.fit, 1, settleP).toFixed(4) + ")";
 
-      setCard(cards[0], lerp(geo.offsets[0], 0, guardianP), lerp(.985, 1, guardianP), lerp(-.35, 0, guardianP), 1);
-      setCard(cards[1], 0, lerp(.965, 1, grayP), lerp(.45, 0, grayP), 1);
-      setCard(cards[2], lerp(geo.offsets[2], 0, embibeP), lerp(.95, 1, embibeP), lerp(-.45, 0, embibeP), 1);
+      var settleArc = Math.sin(span(p, .88, 1) * Math.PI) * 2.4;
+      setCard(cards[0], lerp(geo.offsets[0], 0, guardianP), lerp(.985, 1, guardianP), lerp(-.35, 0, guardianP), 1, -settleArc);
+      setCard(cards[1], 0, lerp(.965, 1, grayP), lerp(.45, 0, grayP), 1, settleArc * .45);
+      setCard(cards[2], lerp(geo.offsets[2], 0, embibeP), lerp(.95, 1, embibeP), lerp(-.45, 0, embibeP), 1, -settleArc * .7);
 
       var settled = p > 0.97;
+      if (!settled) {
+        var depth = ease(span(p, .22, .88));
+        cards[0].style.boxShadow = "0 " + (12 + depth * 10).toFixed(1) + "px " + (24 + depth * 14).toFixed(1) + "px rgba(0,0,0," + (0.26 + depth * .14).toFixed(3) + ")";
+        cards[1].style.boxShadow = "0 " + (8 + depth * 7).toFixed(1) + "px " + (18 + depth * 10).toFixed(1) + "px rgba(0,0,0," + (0.22 + depth * .10).toFixed(3) + ")";
+        cards[2].style.boxShadow = "0 " + (7 + depth * 6).toFixed(1) + "px " + (16 + depth * 9).toFixed(1) + "px rgba(0,0,0," + (0.20 + depth * .09).toFixed(3) + ")";
+      } else {
+        cards.forEach(function (card) { card.style.boxShadow = ""; });
+      }
       grid.classList.toggle("is-staging", !settled);
       grid.style.pointerEvents = settled ? "" : "none";
 
@@ -693,8 +752,9 @@
       }
     }
 
-    function setCard(card, x, scale, rot, opacity) {
+    function setCard(card, x, scale, rot, opacity, y) {
       card.style.setProperty("--sx", x.toFixed(2) + "px");
+      card.style.setProperty("--sy", ((y || 0)).toFixed(2) + "px");
       card.style.setProperty("--ss", scale.toFixed(4));
       card.style.setProperty("--sr", rot.toFixed(2) + "deg");
       card.style.setProperty("--so", opacity.toFixed(3));
@@ -855,6 +915,38 @@
 
     window.addEventListener("load", function () { dirty = true; draw(); });
     draw();
+  }
+
+  /* ==========================================================
+     8c. TORN EDGE VELOCITY — tiny physical lag from scroll speed
+     ========================================================== */
+  function tearVelocity() {
+    var tears = [].slice.call(document.querySelectorAll(".paper-tear"));
+    if (!tears.length || reduced || window.innerWidth < 768) { return; }
+
+    var lastY = window.scrollY;
+    var lastT = performance.now();
+    var target = 0;
+    var current = 0;
+
+    window.addEventListener("scroll", function () {
+      var now = performance.now();
+      var y = window.scrollY;
+      var dt = Math.max(now - lastT, 16);
+      var frameVelocity = (y - lastY) / (dt / 16.67);
+      target = clamp(frameVelocity * .065, -4, 4);
+      lastY = y;
+      lastT = now;
+    }, { passive: true });
+
+    addJob(function () {
+      current = lerp(current, target, .18);
+      target *= .78;
+      if (Math.abs(current) < .015) { current = 0; }
+      for (var i = 0; i < tears.length; i++) {
+        tears[i].style.setProperty("--tear-drift", current.toFixed(2) + "px");
+      }
+    });
   }
 
   /* ==========================================================
@@ -1164,15 +1256,17 @@
         }
         if (nearBottom) { p = 1; }
 
-        var grow = ease(span(p, .10, .44));
-        var settle = ease(span(p, .44, .54));
+        /* Grow, hold briefly at the peak, then settle. The pause creates anticipation
+           without adding another visual element. */
+        var grow = ease(span(p, .10, .42));
+        var settle = ease(span(p, .50, .60));
         var peak = lerp(window.innerWidth < 768 ? .84 : .74, 1.06, grow);
         footerEl.style.setProperty("--footer-title-scale", (reduced ? 1 : lerp(peak, 1, settle)).toFixed(4));
         footerEl.style.setProperty("--footer-title-lift", (reduced ? 0 : lerp(12, 0, grow)).toFixed(2) + "px");
 
-        [[.04,"is-kicker-reached"],[.10,"is-title-reached"],[.44,"is-title-max"],
-         [.55,"is-lede-reached"],[.64,"is-actions-reached"],[.72,"is-cover-reached"],
-         [.82,"is-social-reached"]].forEach(function (beat) {
+        [[.04,"is-kicker-reached"],[.10,"is-title-reached"],[.42,"is-title-max"],
+         [.62,"is-lede-reached"],[.70,"is-actions-reached"],[.77,"is-cover-reached"],
+         [.86,"is-social-reached"]].forEach(function (beat) {
           setState(footerEl, beat[1], p >= beat[0]);
         });
         if (p >= .985 || nearBottom) { finishFooter(); }
@@ -1378,6 +1472,12 @@
       if (el) { el.classList.toggle("is-reached", reduced || !!yes); }
     }
 
+    function focusItem(index) {
+      items.forEach(function (item, i) {
+        item.classList.toggle("is-current", index >= 0 && i === index && item.classList.contains("is-reached"));
+      });
+    }
+
     function draw() {
       var y = window.scrollY;
       var vh = window.innerHeight;
@@ -1407,7 +1507,10 @@
         story.style.setProperty("--timeline-draw", line.toFixed(4));
         var itemPoints = [.30,.40,.50,.60];
         items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .60)); });
-        if (p >= .96) { showAll(); }
+        var activeIndex = -1;
+        itemPoints.forEach(function (point, i) { if (p >= point) { activeIndex = i; } });
+        focusItem(activeIndex);
+        if (p >= .96) { showAll(); focusItem(items.length - 1); }
       } else {
         var readingThreshold = Math.min(eyebrowThreshold, curiosityThreshold);
         var readingOn = y >= readingThreshold;
@@ -1424,9 +1527,12 @@
         furthestLine = mobileLine;
         story.style.setProperty("--timeline-draw", mobileLine.toFixed(4));
         items.forEach(function (item, i) { reached(item, y >= itemThresholds[i] && mobileLine > 0); });
+        var mobileActive = -1;
+        itemThresholds.forEach(function (point, i) { if (y >= point) { mobileActive = i; } });
+        focusItem(mobileActive);
       }
 
-      if (y + vh >= sectionTop + sectionHeight - 8) { showAll(); }
+      if (y + vh >= sectionTop + sectionHeight - 8) { showAll(); focusItem(items.length - 1); }
     }
 
     var queued = false;
@@ -1780,6 +1886,7 @@
     try { reveals(); } catch (e) {}
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
+    try { tearVelocity(); } catch (e) {}
     try { paperSheets(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
