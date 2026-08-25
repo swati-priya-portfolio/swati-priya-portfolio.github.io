@@ -1335,6 +1335,20 @@
   transform: translate3d(0, calc(var(--lap) * var(--slide)), 0);
 }
 .sp-js .paper-sheet { will-change: transform; }
+
+/* A settled sheet drops its transform rather than holding it at zero. A
+   transformed ancestor is a containing block for sticky positioning, and the
+   case studies band contains the pinned card stage — the climb is long
+   finished before the pin engages, so by then the band carries no transform
+   at all and the stage behaves exactly as it did before. */
+.paper-sheet.is-sheet-settled {
+  transform: none;
+  will-change: auto;
+}
+
+/* The band had no surface of its own, and a sheet with no surface cannot
+   lie over anything. */
+.cases.paper-sheet { background: var(--void); }
 .behind.paper-sheet {
   --slide: 0;
   transform: none;
