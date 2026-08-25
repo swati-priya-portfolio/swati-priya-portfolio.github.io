@@ -1116,19 +1116,117 @@
 
     var stateText = state.querySelector(".music-label");
     var audio = player.querySelector(".player-audio");
+    var board = player.closest(".board");
+    var bars = [].slice.call(player.querySelectorAll(".waveform i"));
     var playing = false;
     var audible = false;   // true once a real file is actually running
     var pos = 0.42;
     var angle = 0;
+    var spin = 0;          // the turntable takes a moment to come up to speed
     var last = 0;
-    var art = player.querySelector(".player-art");
     var inView = true;
 
     if (audio) { audio.volume = 0.55; }
 
+    /* --- the bars ----------------------------------------------------
+       Shorter at both ends, so the row reads as one envelope rather than
+       28 separate meters. */
+    var taper = bars.map(function (_, i) {
+      return Math.pow(Math.sin((i + 0.5) / bars.length * Math.PI), 0.42);
+    });
+    var rest = bars.map(function (_, i) {
+      return clamp((0.17 + 0.1 * Math.sin(i * 1.9)) * taper[i] + 0.05, 0.05, 1);
+    });
+    // Bars are spaced by ear, not by array index: each one covers an equal
+    // slice of the 45Hz-12kHz range on a log scale, the way octaves sit. The
+    // map needs the context's real sample rate, so it is built with the graph.
+    var LOW_HZ = 45, HIGH_HZ = 12000;
+    var binMap = null;
+    // Sound falls away toward the top of the spectrum, so the upper bars are
+    // lifted or the right-hand half of the row would never move.
+    var tilt = bars.map(function (_, i) { return 0.8 + 1.25 * (i / bars.length); });
+    var lastV = bars.map(function () { return -1; });
+
+    function setBar(i, v) {
+      if (Math.abs(v - lastV[i]) < 0.01) { return; }
+      lastV[i] = v;
+      bars[i].style.setProperty("--v", v.toFixed(3));
+    }
+    function restBars() { rest.forEach(function (v, i) { setBar(i, v); }); }
+
+    /* --- the analyser ------------------------------------------------
+       Built on the first Play press, because an AudioContext wants a user
+       gesture. If any of it is unavailable the bars fall back to the
+       simulated envelope and the audio is left alone. */
+    var actx = null;
+    var analyser = null;
+    var freq = null;
+    var graphTried = false;
+
+    function ensureGraph() {
+      if (graphTried || !audio) { return; }
+      graphTried = true;
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { return; }
+      try {
+        actx = new AC();
+        var srcNode = actx.createMediaElementSource(audio);
+        analyser = actx.createAnalyser();
+        // 512 puts each bin at roughly 86Hz, which is fine enough to tell a
+        // kick from a bassline. 128 lumped the whole low end into one bin and
+        // the leftmost bars all moved together.
+        analyser.fftSize = 512;
+        analyser.smoothingTimeConstant = 0.7;   // the beat without the jitter
+        srcNode.connect(analyser);
+        // Routing the element through the graph mutes it unless the chain
+        // reaches the speakers, so this connection is not optional.
+        analyser.connect(actx.destination);
+        freq = new Uint8Array(analyser.frequencyBinCount);
+
+        var perBin = actx.sampleRate / analyser.fftSize;
+        var ratio = HIGH_HZ / LOW_HZ;
+        binMap = bars.map(function (_, i) {
+          var lo = Math.round(LOW_HZ * Math.pow(ratio, i / bars.length) / perBin);
+          var hi = Math.round(LOW_HZ * Math.pow(ratio, (i + 1) / bars.length) / perBin);
+          return [Math.min(lo, freq.length - 1), Math.min(Math.max(hi, lo + 1), freq.length)];
+        });
+      } catch (e) {
+        actx = null;
+        analyser = null;
+      }
+    }
+
+    function drawBars(now) {
+      if (!bars.length) { return; }
+      if (!playing || reduced) { return restBars(); }
+
+      if (analyser && binMap && audible) {
+        analyser.getByteFrequencyData(freq);
+        for (var i = 0; i < bars.length; i++) {
+          var range = binMap[i], sum = 0, n = 0;
+          for (var k = range[0]; k < range[1] && k < freq.length; k++) { sum += freq[k]; n++; }
+          var v = n ? (sum / n) / 255 : 0;
+          // A gentle curve, so quiet passages still show movement.
+          setBar(i, clamp(Math.pow(v, 0.78) * tilt[i] * taper[i], 0.06, 1));
+        }
+        return;
+      }
+
+      // Playing, but there is no track to read: two drifting sines summed so
+      // the row still looks like sound rather than a metronome.
+      for (var j = 0; j < bars.length; j++) {
+        var a = Math.sin(now * 0.0042 + j * 0.55);
+        var b = Math.sin(now * 0.0026 - j * 0.31);
+        setBar(j, clamp((0.5 + 0.28 * a + 0.2 * b) * taper[j], 0.08, 1));
+      }
+    }
+
     function paint() {
       player.classList.toggle("is-playing", playing);
       state.classList.toggle("is-playing", playing);
+      // The notes on the desk sit outside the player, so the board carries
+      // the flag for them.
+      if (board) { board.classList.toggle("is-track-playing", playing); }
       button.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
       button.setAttribute("aria-pressed", String(playing));
       button.setAttribute("aria-label", playing ? "Pause the focus track" : "Play the focus track");
@@ -1149,6 +1247,8 @@
       playing = true;
       paint();
       if (!audio) { return silentFallback(); }
+      ensureGraph();
+      if (actx && actx.state === "suspended") { try { actx.resume(); } catch (e) {} }
       var attempt = audio.play();
       if (!attempt || !attempt.then) { audible = true; return paint(); }
       attempt.then(function () { audible = true; paint(); }, silentFallback);
@@ -1191,7 +1291,16 @@
       if (!last) { last = now; return; }
       var dt = Math.min(now - last, 64);
       last = now;
-      if (!playing) { return; }
+
+      if (!playing) {
+        if (spin > 0.001 && !reduced) {
+          spin += (0 - spin) * Math.min(dt / 620, 1);
+          angle = (angle + dt * 0.012 * spin) % 360;
+          player.style.setProperty("--record-angle", angle.toFixed(2) + "deg");
+        }
+        drawBars(now);
+        return;
+      }
 
       // A real track owns the playhead. Without one the bar keeps its old
       // simulated crawl, which only runs while the board is on screen.
@@ -1202,11 +1311,15 @@
         pos += dt * 0.000018;
         if (pos > 1) { pos = 0; }
       }
-      if (!reduced && inView) {
-        angle = (angle + dt * 0.012) % 360;
-        if (art) { art.style.setProperty("--record-angle", angle.toFixed(2) + "deg"); }
-      }
       player.style.setProperty("--music-progress", pos.toFixed(3));
+
+      if (reduced || !inView) { return; }
+
+      // A record does not reach speed instantly, and does not stop dead.
+      spin += (1 - spin) * Math.min(dt / 420, 1);
+      angle = (angle + dt * 0.012 * spin) % 360;
+      player.style.setProperty("--record-angle", angle.toFixed(2) + "deg");
+      drawBars(now);
     });
   }
 

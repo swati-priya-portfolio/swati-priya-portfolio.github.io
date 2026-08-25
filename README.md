@@ -21,6 +21,13 @@ Two notes before this goes live on a public site:
    local demo, but it is the kind of thing that draws a takedown. A short
    royalty-free loop, or just leaving the player as the silent prop it is
    today, avoids that entirely.
-2. `images/album-art.png` is currently the illustrated placeholder. Swap
-   that file if you want the record sleeve from the Figma frame; the album
-   art is square and gets cropped to a circle.
+2. `images/album-art.png` is the label in the middle of the record. Swap
+   that file for whatever you want spinning there — a Deadpool still, the
+   NSYNC sleeve, anything. Save it **square** (512x512 is plenty); it is
+   cropped to a circle and sits at 60% of the disc, so keep the subject's
+   face near the centre or the crop will cut it.
+
+While the track plays, the 28 bars beside it are driven by the track's own
+frequency data through a Web Audio analyser — they really are following the
+beat, not looping an animation. With no file present they fall back to a
+simulated envelope so the widget still looks alive.

@@ -1485,13 +1485,10 @@
 .sp-js .book-3.is-nudge-r { transform: translateX(4px) rotate(7deg); }
 
 /* The album becomes the desk's small record: it turns only after a deliberate
-   Play press and keeps its angle when paused. */
-.sp-js .player-art {
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 3px rgba(14, 14, 12, 0.52), 0 6px 12px rgba(0,0,0,.34);
-  transform: rotate(var(--record-angle, 0deg));
-  will-change: transform;
-}
+   Play press and keeps its angle when paused. The rotation moved onto the
+   vinyl itself (see THE RECORD at the foot of this file); the art is now the
+   label riding in the middle of it. */
+.sp-js .player-art { border-radius: 50%; }
 .sp-js .player-progress span {
   width: 100%;
   transform: scaleX(var(--music-progress, .42));
@@ -2482,4 +2479,110 @@
   .sp-js .book, .sp-js .sticky, .sp-js .reminder,
   .sp-js .reminder svg, .sp-js .sticky .star, .sp-js .headphone { transition: none !important; }
   .sp-js .board-books:hover .book { --bk-x: 0px; --bk-y: 0px; --bk-s: 1; }
+}
+
+
+/* ============================================================
+   THE RECORD — the album art turns on a piece of vinyl, the
+   waveform reads the track's own frequency data, and the two
+   notes on the desk dance while it runs.
+   ============================================================ */
+
+/* ---------- The disc ---------- */
+.record {
+  position: relative;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  /* Pressed vinyl: a soft sheen, then the groove rings. */
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.13) 0 12%, transparent 42%),
+    repeating-radial-gradient(circle at 50% 50%,
+      #14120f 0 1.5px, #1d1a16 1.5px 2.4px, #100e0c 2.4px 3.4px),
+    #0d0c0a;
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 239, 227, 0.09),
+    0 6px 14px rgba(0, 0, 0, 0.55);
+  transform: rotate(var(--record-angle, 0deg));
+  will-change: transform;
+}
+/* The art is the label at the centre, not the whole thumbnail. */
+.record .player-art {
+  width: 60%; height: 60%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 0 0 3px rgba(245, 239, 227, 0.07);
+  transform: none;          /* the disc carries the rotation now */
+}
+.record-spindle {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--card-deep, #16140f);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(245, 239, 227, 0.14);
+}
+/* A highlight sweeps the disc while it turns. It counter-rotates so the
+   glint stays put in the room rather than riding around with the vinyl. */
+.record::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(118deg, transparent 34%, rgba(255, 240, 205, 0.16) 47%, transparent 60%);
+  opacity: 0;
+  transform: rotate(calc(var(--record-angle, 0deg) * -1));
+  transition: opacity 420ms linear;
+  pointer-events: none;
+}
+.sp-js .player.is-playing .record::after { opacity: 1; }
+
+/* ---------- The bars ---------- */
+.waveform {
+  height: 34px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1.5px;
+  opacity: 0.72;
+  transition: opacity 400ms var(--ep);
+}
+.sp-js .player.is-playing .waveform { opacity: 1; }
+.waveform i {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--cream);
+  /* --v is 0..1 and is written by the analyser each frame. */
+  transform: scaleY(var(--v, 0.12));
+  transform-origin: 50% 50%;   /* grows out from the centre line, both ways */
+}
+/* Only the resting state eases; while playing the value is already
+   smoothed by the analyser, and a transition would lag the beat. */
+.sp-js .waveform i { transition: transform 240ms var(--ep), background 400ms linear; }
+.sp-js .player.is-playing .waveform i { transition: background 400ms linear; }
+.sp-js .player.is-playing .waveform i { background: linear-gradient(180deg, var(--accent), #ffe9a8 50%, var(--accent)); }
+
+/* ---------- The two notes on the desk ---------- */
+.board-notes-glyph span { display: inline-block; margin-left: 6px; }
+.sp-js .board.is-track-playing .board-notes-glyph span {
+  animation: sp-note-dance 900ms ease-in-out infinite;
+  color: var(--accent);
+}
+.sp-js .board.is-track-playing .board-notes-glyph span:nth-child(2) { animation-delay: 150ms; animation-duration: 760ms; }
+.sp-js .board.is-track-playing .board-notes-glyph span:nth-child(3) { animation-delay: 320ms; animation-duration: 1040ms; }
+@keyframes sp-note-dance {
+  0%, 100% { transform: translateY(0) rotate(-8deg); }
+  30%      { transform: translateY(-9px) rotate(7deg); }
+  60%      { transform: translateY(-2px) rotate(-4deg); }
+}
+.board-notes-glyph span { transition: color 400ms linear; }
+
+@media (prefers-reduced-motion: reduce) {
+  .record, .record::after { transform: none !important; }
+  .sp-js .board.is-track-playing .board-notes-glyph span { animation: none; }
+  .sp-js .waveform i { transition: none !important; }
 }
