@@ -232,3 +232,192 @@
     scale: 1 !important;
   }
 }
+
+/* ============================================================
+   MOBILE MOTION PASS — <= 767px ONLY
+   Desktop/tablet remain exactly as before.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* ---------- Stable floating navigation ----------
+     The top pill no longer grows vertically when the menu opens. The links
+     float below it, so opening navigation never pushes the page or changes
+     the current scroll position. */
+  .site-header,
+  .sp-js .site-header.is-compact {
+    padding: max(8px, env(safe-area-inset-top)) 12px 0 !important;
+  }
+
+  .nav-pill,
+  .sp-js .site-header.is-compact .nav-pill {
+    position: relative;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    min-height: 54px;
+    padding: 5px 8px !important;
+    border-radius: 28px;
+    overflow: visible;
+  }
+
+  .identity-group {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .identity {
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .identity-name,
+  .sp-js .site-header.is-compact .identity-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px !important;
+  }
+
+  /* Keep the approved avatar size stable instead of shrinking it on scroll. */
+  .sp-js .site-header.is-compact .identity-avatar {
+    width: 64px;
+    height: 64px;
+    margin: -5.75px -10.25px -14.25px -9.75px;
+  }
+
+  .nav-toggle {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    padding: 0 9px;
+    border-radius: 50%;
+    background: rgba(255, 197, 61, 0.04);
+  }
+
+  .nav-toggle[aria-expanded="true"] {
+    background: rgba(255, 197, 61, 0.10);
+    border-color: rgba(255, 197, 61, 0.62);
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    order: initial;
+    width: auto;
+    max-height: 0;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 197, 61, 0.22);
+    border-radius: 18px;
+    background: rgba(20, 16, 10, 0.96);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+            backdrop-filter: blur(12px) saturate(120%);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px) scale(0.985);
+    transform-origin: top center;
+    overflow: hidden;
+    transition:
+      max-height 360ms var(--ep),
+      padding 360ms var(--ep),
+      opacity 220ms linear,
+      transform 360ms var(--ep),
+      visibility 0s linear 360ms;
+  }
+
+  .nav-links.is-open {
+    max-height: 320px;
+    padding: 8px 10px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .nav-link,
+  .sp-js .site-header.is-compact .nav-link {
+    padding: 13px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .nav-links li + li {
+    border-top: 1px solid rgba(245, 239, 227, 0.07);
+  }
+
+  .nav-link::after {
+    left: 12px;
+    right: auto;
+    width: 34px;
+    bottom: 7px;
+  }
+
+  .nav-cta,
+  .nav-available {
+    display: none !important;
+  }
+
+  /* ---------- Pick an episode: scroll-stacked comic issues ---------- */
+  .case-track.mobile-episode-stack {
+    position: relative;
+    overflow: visible;
+  }
+
+  .case-track.mobile-episode-stack .case-stage {
+    position: sticky !important;
+    top: var(--mobile-stack-top, 82px) !important;
+    height: var(--mobile-card-h, 480px) !important;
+    overflow: visible;
+  }
+
+  .case-track.mobile-episode-stack .case-grid {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 406px;
+    height: var(--mobile-card-h, 480px);
+    margin: 0 auto;
+    perspective: 1200px;
+    overflow: visible;
+  }
+
+  .case-track.mobile-episode-stack .case-card,
+  .sp-js .case-track.mobile-episode-stack .case-card.settle-in,
+  .sp-js .case-track.mobile-episode-stack .case-card.settle-in.is-visible {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0 !important;
+    opacity: 1 !important;
+    transform-origin: 50% 8%;
+    transition: none !important;
+    will-change: transform;
+  }
+
+  /* Later issues physically sit above earlier issues as they arrive. */
+  .case-track.mobile-episode-stack .case-card:nth-child(1) { z-index: 1; }
+  .case-track.mobile-episode-stack .case-card:nth-child(2) { z-index: 2; }
+  .case-track.mobile-episode-stack .case-card:nth-child(3) { z-index: 3; }
+
+  /* The next cover can peek in from below without being clipped by the page. */
+  .cases,
+  .cases .case-track,
+  .cases .case-stage,
+  .cases .case-grid {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 360px) {
+  .identity-name,
+  .sp-js .site-header.is-compact .identity-name {
+    max-width: 92px;
+    font-size: 11px !important;
+  }
+}
