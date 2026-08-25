@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio Parallax Preview</title>
+  <style>
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#17120b}
+    iframe{border:0;width:100%;height:100%;display:block;background:#17120b}
+  </style>
+</head>
+<body>
+  <iframe id="preview" src="index.html" title="Parallax preview"></iframe>
+  <script>
+  (function(){
+    var frame=document.getElementById('preview');
+    frame.addEventListener('load',function(){
+      var w=frame.contentWindow,d=frame.contentDocument;
+      if(!w||!d)return;
+      var presets=[
+        ['.hero-copy',-34],['.section-head',-28],
+        ['.case-card:nth-child(1)',34],['.case-card:nth-child(2)',54],['.case-card:nth-child(3)',76],
+        ['.behind-head',-28],['.board:nth-child(1)',30],['.board:nth-child(2)',48],['.board:nth-child(3)',38],['.board:nth-child(4)',62],
+        ['.about-grid > .polaroid-col',44],['.about-grid > .story-col',-30],
+        ['.timeline-item:nth-child(1)',12],['.timeline-item:nth-child(2)',20],['.timeline-item:nth-child(3)',16],['.timeline-item:nth-child(4)',26],
+        ['.drives-title',-22],['.drives-list',34],['.footer-story',-38]
+      ];
+      var items=[];
+      presets.forEach(function(p){
+        d.querySelectorAll(p[0]).forEach(function(el){items.push({el:el,depth:p[1],top:0,height:1,current:0,target:0});});
+      });
+      var reduced=w.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function scale(){return w.innerWidth<768?0:(w.innerWidth<1080?.62:1)}
+      function measure(){
+        items.forEach(function(i){var r=i.el.getBoundingClientRect();i.top=r.top+w.scrollY;i.height=r.height||1;});
+      }
+      function targets(){
+        var y=w.scrollY,vh=w.innerHeight,s=scale();
+        items.forEach(function(i){
+          var centre=i.top+i.height*.5, range=vh*.5+i.height*.5;
+          var p=Math.max(-1,Math.min(1,(y+vh*.5-centre)/Math.max(range,1)));
+          i.target=reduced?0:p*i.depth*s*.5;
+        });
+      }
+      var raf=0;
+      function render(){
+        var moving=false;
+        items.forEach(function(i){
+          i.current += (i.target-i.current)*.14;
+          if(Math.abs(i.target-i.current)<.03)i.current=i.target;else moving=true;
+          i.el.style.setProperty('--parallax-y',i.current.toFixed(2)+'px','important');
+          i.el.style.translate='0 var(--parallax-y, 0px)';
+        });
+        raf=moving?w.requestAnimationFrame(render):0;
+      }
+      function update(){targets();if(!raf)raf=w.requestAnimationFrame(render)}
+      measure();update();
+      w.addEventListener('scroll',update,{passive:true});
+      w.addEventListener('resize',function(){measure();update()},{passive:true});
+      w.setTimeout(function(){measure();update()},1200);
+      w.setTimeout(function(){measure();update()},3200);
+    });
+  })();
+  </script>
+</body>
+</html>
