@@ -1,27 +1,20 @@
 /* script.js — Swati Priya portfolio
-   Core page utilities + a lightweight motion-polish layer. */
+   Core utilities + motion polish. */
 
 (function () {
   "use strict";
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ----------------------------------------------------------
-     0. FIRST-VISIT LOADER — keep the signature, lose the wait
-     The large motion engine used to hold the page for ~2.5s before even
-     starting the hero. We hand the loader off early so motion.js boots
-     immediately behind it, then clear the loader in under one second.
-     ---------------------------------------------------------- */
+  /* Quick first-visit loader handoff. */
   (function quickLoaderHandoff() {
     var root = document.documentElement;
     var loader = document.querySelector(".sp-loader");
     if (!loader || reducedMotion || !root.classList.contains("sp-loading")) { return; }
 
-    /* Prevent motion.js from running its long loader branch. */
     root.classList.remove("sp-loading");
     try { sessionStorage.setItem("sp-seen-v15", "1"); } catch (e) {}
 
-    /* Keep the same loader artwork visible while the hero starts behind it. */
     root.style.overflow = "hidden";
     loader.style.display = "grid";
     loader.style.position = "fixed";
@@ -34,10 +27,7 @@
     loader.style.background = "#000000";
     loader.style.textAlign = "center";
 
-    setTimeout(function () {
-      loader.classList.add("is-done");
-    }, 760);
-
+    setTimeout(function () { loader.classList.add("is-done"); }, 760);
     setTimeout(function () {
       loader.setAttribute("hidden", "");
       loader.removeAttribute("style");
@@ -45,15 +35,28 @@
     }, 980);
   })();
 
-  /* ----------------------------------------------------------
-     0b. CALMER PARALLAX HIERARCHY
-     Page-over-page paper motion is the hero. These inner layers now support
-     it rather than competing with it.
-     ---------------------------------------------------------- */
+  /* Keep page motion dominant; secondary parallax stays restrained. */
   (function calmParallax() {
     if (reducedMotion) { return; }
 
-    var presets = [
+    var phone = window.matchMedia("(max-width: 767px)").matches;
+    var presets = phone ? [
+      [".hero-copy", -6],
+      [".section-head", -6],
+      [".case-card:nth-child(1)", 0],
+      [".case-card:nth-child(2)", 0],
+      [".case-card:nth-child(3)", 0],
+      [".behind-head", -6],
+      [".board:nth-child(1)", 6],
+      [".board:nth-child(2)", 8],
+      [".board:nth-child(3)", 6],
+      [".board:nth-child(4)", 8],
+      [".about-grid > .polaroid-col", 0],
+      [".about-grid > .story-col", 0],
+      [".drives-title", -4],
+      [".drives-list", 6],
+      [".footer-story", -6]
+    ] : [
       [".hero-copy", -18],
       [".section-head", -14],
       [".case-card:nth-child(1)", 16],
@@ -82,12 +85,7 @@
     });
   })();
 
-  /* ----------------------------------------------------------
-     0c. EDIT THE BUSY BEATS, NOT THE DESIGN
-     - Reminder notes arrive as one idea, not three rapid micro-beats.
-     - Footer contact actions appear as soon as the lede is readable.
-     motion.js still owns the actual scroll clock.
-     ---------------------------------------------------------- */
+  /* Reminder notes arrive together; footer CTA arrives earlier. */
   (function simplifySecondaryBeats() {
     if (!("MutationObserver" in window)) { return; }
 
@@ -102,7 +100,6 @@
             note.classList.toggle("is-beat-reached", show);
           });
         };
-
         new MutationObserver(function () {
           requestAnimationFrame(syncReminders);
         }).observe(behind, { subtree: true, attributes: true, attributeFilter: ["class"] });
@@ -116,18 +113,13 @@
           footer.classList.add("is-actions-reached");
         }
       };
-
       new MutationObserver(function () {
         requestAnimationFrame(syncFooterActions);
       }).observe(footer, { attributes: true, attributeFilter: ["class"] });
     }
   })();
 
-  /* ----------------------------------------------------------
-     0d. MOBILE-ONLY POLISH
-     Desktop remains untouched. On phones, Pick an episode becomes a real
-     comic stack and the nav behaves like a stable floating control.
-     ---------------------------------------------------------- */
+  /* Mobile-only choreography. Desktop is not touched. */
   (function mobileOnlyPolish() {
     var mobile = window.matchMedia("(max-width: 767px)");
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -138,9 +130,9 @@
       t = clamp(t, 0, 1);
       return t * t * (3 - 2 * t);
     }
-    function span(v, a, b) { return clamp((v - a) / (b - a), 0, 1); }
+    function span(v, a, b) { return clamp((v - a) / Math.max(b - a, 0.0001), 0, 1); }
 
-    function mobileEpisodeStack() {
+    function mobileEpisodeSequence() {
       var track = document.querySelector(".case-track");
       var stage = document.querySelector(".case-stage");
       var grid = document.querySelector(".case-grid");
@@ -153,25 +145,32 @@
       var enabled = false;
       var cardH = 0;
       var travel = 0;
-      var startY = 0;
-      var stackTop = 82;
+      var top = 78;
       var queued = false;
+      var resizeTimer = 0;
 
-      function clearCard(card) {
-        card.style.removeProperty("transform");
-        card.style.removeProperty("z-index");
-        card.style.removeProperty("pointer-events");
-        card.style.removeProperty("opacity");
+      function cleanCard(card) {
+        card.style.removeProperty("--m-y");
+        card.style.removeProperty("--m-s");
+        card.style.removeProperty("--m-r");
+        card.style.removeProperty("--m-o");
+        card.classList.remove("is-mobile-active");
       }
 
       function disable() {
-        if (!enabled) { return; }
         enabled = false;
-        track.classList.remove("mobile-episode-stack");
-        track.style.removeProperty("height");
-        track.style.removeProperty("--mobile-card-h");
-        track.style.removeProperty("--mobile-stack-top");
-        cards.forEach(clearCard);
+        track.classList.remove("mobile-episode-v2", "mobile-episode-stack");
+        track.style.removeProperty("--mobile-v2-card-h");
+        track.style.removeProperty("--mobile-v2-top");
+        track.style.removeProperty("--mobile-v2-track-h");
+        cards.forEach(cleanCard);
+      }
+
+      function setCard(card, y, scale, rotate, opacity) {
+        card.style.setProperty("--m-y", y.toFixed(1) + "px");
+        card.style.setProperty("--m-s", scale.toFixed(4));
+        card.style.setProperty("--m-r", rotate.toFixed(2) + "deg");
+        card.style.setProperty("--m-o", opacity.toFixed(3));
       }
 
       function measure() {
@@ -181,31 +180,28 @@
         }
 
         enabled = true;
-        track.classList.add("mobile-episode-stack");
+        track.classList.remove("mobile-episode-stack");
+        track.classList.add("mobile-episode-v2");
 
         cards.forEach(function (card) {
           card.classList.remove("settle-in");
-          card.style.opacity = "1";
+          card.style.opacity = "";
+          card.style.pointerEvents = "";
+          card.style.transform = "";
+          card.style.zIndex = "";
         });
 
-        var headerH = header ? header.getBoundingClientRect().height : 60;
-        stackTop = Math.max(76, Math.round(headerH + 12));
+        var headerH = header ? header.getBoundingClientRect().height : 58;
+        top = Math.max(74, Math.round(headerH + 10));
         cardH = Math.round(cards[0].getBoundingClientRect().height || cards[0].offsetHeight || 480);
-        travel = Math.round(Math.max(window.innerHeight * 1.55, 980));
-        startY = Math.round(Math.max(cardH * 0.72, Math.min(window.innerHeight * 0.78, 640)));
+        travel = Math.round(Math.max(window.innerHeight * 2.05, 1120));
+        var finalHold = Math.round(Math.min(100, window.innerHeight * 0.14));
 
-        track.style.setProperty("--mobile-card-h", cardH + "px");
-        track.style.setProperty("--mobile-stack-top", stackTop + "px");
-        track.style.height = Math.round(cardH + travel) + "px";
+        track.style.setProperty("--mobile-v2-card-h", cardH + "px");
+        track.style.setProperty("--mobile-v2-top", top + "px");
+        track.style.setProperty("--mobile-v2-track-h", (cardH + travel + finalHold) + "px");
+
         draw();
-      }
-
-      function setCard(card, y, scale, rotate, z) {
-        card.style.zIndex = String(z);
-        card.style.transform =
-          "translate3d(0," + y.toFixed(1) + "px,0) " +
-          "rotate(" + rotate.toFixed(2) + "deg) " +
-          "scale(" + scale.toFixed(4) + ")";
       }
 
       function draw() {
@@ -213,32 +209,37 @@
         if (!enabled) { return; }
 
         var rect = track.getBoundingClientRect();
-        var p = clamp((stackTop - rect.top) / Math.max(travel, 1), 0, 1);
+        var p = clamp((top - rect.top) / Math.max(travel, 1), 0, 1);
+        var incomingY = Math.min(window.innerHeight * 0.66, Math.max(260, cardH * 0.68));
 
-        var second = smooth(span(p, 0.14, 0.46));
-        var third = smooth(span(p, 0.56, 0.88));
+        /* One issue per beat. Nothing peeks in before its chapter begins. */
+        var gray = smooth(span(p, 0.18, 0.43));
+        var embibe = smooth(span(p, 0.50, 0.75));
+        var grayOpacity = smooth(span(p, 0.18, 0.25));
+        var embibeOpacity = smooth(span(p, 0.50, 0.57));
 
         setCard(cards[0],
-          -6 * second - 5 * third,
-          1 - 0.026 * second - 0.014 * third,
-          -0.45 * second - 0.20 * third,
+          -8 * gray - 7 * embibe,
+          1 - 0.018 * gray - 0.018 * embibe,
+          -0.25 * gray - 0.18 * embibe,
           1);
 
         setCard(cards[1],
-          lerp(startY, 10, second) - 5 * third,
-          lerp(0.985, 1, second) - 0.024 * third,
-          lerp(1.1, 0.15, second) - 0.55 * third,
-          2);
+          lerp(incomingY, 0, gray) - 7 * embibe,
+          lerp(0.985, 1, gray) - 0.018 * embibe,
+          lerp(0.8, 0, gray) - 0.28 * embibe,
+          grayOpacity);
 
         setCard(cards[2],
-          lerp(startY + 24, 20, third),
-          lerp(0.985, 1, third),
-          lerp(-1.0, 0, third),
-          3);
+          lerp(incomingY, 0, embibe),
+          lerp(0.985, 1, embibe),
+          lerp(-0.8, 0, embibe),
+          embibeOpacity);
 
-        cards[0].style.pointerEvents = second < 0.72 ? "auto" : "none";
-        cards[1].style.pointerEvents = second >= 0.72 && third < 0.72 ? "auto" : "none";
-        cards[2].style.pointerEvents = third >= 0.72 ? "auto" : "none";
+        var active = p < 0.34 ? 0 : (p < 0.64 ? 1 : 2);
+        cards.forEach(function (card, index) {
+          card.classList.toggle("is-mobile-active", index === active);
+        });
       }
 
       function requestDraw() {
@@ -249,7 +250,8 @@
 
       window.addEventListener("scroll", requestDraw, { passive: true });
       window.addEventListener("resize", function () {
-        requestAnimationFrame(function () { requestAnimationFrame(measure); });
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(measure, 120);
       }, { passive: true });
 
       if (mobile.addEventListener) {
@@ -277,70 +279,56 @@
         if (!mobile.matches || !links.classList.contains("is-open")) { return; }
         if (!header.contains(event.target)) { close(); }
       });
-
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") { close(); }
       });
 
       var lastY = window.scrollY;
       window.addEventListener("scroll", function () {
-        if (!mobile.matches || !links.classList.contains("is-open")) {
-          lastY = window.scrollY;
-          return;
+        var y = window.scrollY;
+        if (mobile.matches && links.classList.contains("is-open") && Math.abs(y - lastY) > 24) {
+          close();
         }
-        if (Math.abs(window.scrollY - lastY) > 24) { close(); }
+        lastY = y;
       }, { passive: true });
     }
 
     function boot() {
-      mobileEpisodeStack();
+      mobileEpisodeSequence();
       mobileNav();
     }
 
-    if (document.readyState === "complete") { boot(); }
-    else { window.addEventListener("load", boot, { once: true }); }
+    if (document.readyState === "complete") {
+      setTimeout(boot, 0);
+    } else {
+      window.addEventListener("load", function () { setTimeout(boot, 0); }, { once: true });
+    }
   })();
 
-  /* ----------------------------------------------------------
-     1. Scroll-triggered reveals
-     Adds .is-visible to any .reveal-on-scroll element that
-     enters the viewport, which CSS then animates.
-     ---------------------------------------------------------- */
+  /* Generic one-time reveals. */
   var revealTargets = document.querySelectorAll(".reveal-on-scroll");
-
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    // No animation wanted (or very old browser): just show everything.
     revealTargets.forEach(function (el) { el.classList.add("is-visible"); });
   } else {
-    var revealObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            revealObserver.unobserve(entry.target); // animate once, then stop watching
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
-    );
-
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
     revealTargets.forEach(function (el) { revealObserver.observe(el); });
   }
 
-  /* ----------------------------------------------------------
-     2. Mobile navigation toggle
-     ---------------------------------------------------------- */
+  /* Mobile navigation toggle. */
   var toggle = document.querySelector(".nav-toggle");
   var navLinks = document.getElementById("nav-links");
-
   if (toggle && navLinks) {
     toggle.addEventListener("click", function () {
       var isOpen = navLinks.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(isOpen));
       toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
     });
-
-    // Close the menu after tapping a link on mobile
     navLinks.addEventListener("click", function (event) {
       if (event.target.closest(".nav-link")) {
         navLinks.classList.remove("is-open");
@@ -350,34 +338,25 @@
     });
   }
 
-  /* ----------------------------------------------------------
-     3. Highlight the nav link for the section you're reading
-     ---------------------------------------------------------- */
+  /* Highlight the nav link for the section currently being read. */
   var sections = document.querySelectorAll("main section[id], footer[id]");
   var linkFor = {};
-
   document.querySelectorAll(".nav-link").forEach(function (link) {
     var id = link.getAttribute("href").replace("#", "");
     if (id) { linkFor[id] = link; }
   });
 
   if ("IntersectionObserver" in window && sections.length) {
-    var sectionObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          var link = linkFor[entry.target.id];
-          if (!link || !entry.isIntersecting) { return; }
-
-          document.querySelectorAll(".nav-link").forEach(function (el) {
-            el.classList.remove("is-active");
-          });
-          link.classList.add("is-active");
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = linkFor[entry.target.id];
+        if (!link || !entry.isIntersecting) { return; }
+        document.querySelectorAll(".nav-link").forEach(function (el) {
+          el.classList.remove("is-active");
         });
-      },
-      // Fires when a section crosses the upper third of the screen
-      { rootMargin: "-30% 0px -60% 0px" }
-    );
-
+        link.classList.add("is-active");
+      });
+    }, { rootMargin: "-30% 0px -60% 0px" });
     sections.forEach(function (section) { sectionObserver.observe(section); });
   }
 })();
