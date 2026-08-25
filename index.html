@@ -37,7 +37,7 @@
 
   <link rel="stylesheet" href="styles.css?v=13" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=13" />
+  <link rel="stylesheet" href="motion.css?v=15" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -45,7 +45,7 @@
       var d = document.documentElement;
       d.classList.add("sp-js");
       try {
-        if (!sessionStorage.getItem("sp-seen-v14") &&
+        if (!sessionStorage.getItem("sp-seen-v15") &&
             !matchMedia("(prefers-reduced-motion: reduce)").matches) {
           d.classList.add("sp-loading");
         }
@@ -135,7 +135,7 @@
 
   <main>
     <!-- ================= HERO ================= -->
-    <section class="hero" id="home" data-cursor="CURIOUS?">
+    <section class="hero" id="home">
       <!-- The thinking underneath the polished page. Revealed only
            around the cursor, so the default state stays clean. -->
       <div class="hero-sketch" aria-hidden="true">
@@ -226,7 +226,7 @@
           <p class="speech speech-left" data-rot="3">Designs the experience</p>
           <p class="speech speech-right" data-rot="-3">Tells the story behind it</p>
           <!-- Replace with your hero illustration export -->
-          <img class="hero-art" src="images/hero-character.png" data-cursor="THAT&#8217;S ME &#8593;"
+          <img class="hero-art" src="images/hero-character.png" data-cursor="THAT&#8217;S ME :)"
             alt="Illustration of Swati waving from a laptop screen" />
         </div>
       </div>
@@ -245,8 +245,8 @@
       <div class="tear tear-a paper-tear" aria-hidden="true"></div>
       <div class="section-head sp-reveal">
         <div class="eyebrow-row">
-          <p class="eyebrow">CASE STUDIES</p>
-          <p class="eyebrow-note">START HERE &middot; 0&#8594;1 STORY &middot; ~7 MIN &#8595;</p>
+          <p class="eyebrow" data-parallax="-4">CASE STUDIES</p>
+          <p class="eyebrow-note" data-parallax="6">START HERE &middot; 0&#8594;1 STORY &middot; ~7 MIN &#8595;</p>
         </div>
         <h2 class="section-title">Pick an episode.</h2>
       </div>
@@ -259,7 +259,7 @@
           <div class="case-grid">
         <!-- Case card 1 — change link, image and copy -->
             <!-- Lead cover. The one case study that is open to read. -->
-            <a class="case-card is-live" href="#" data-cursor="READ THIS &#8594;">
+            <a class="case-card is-live" href="#" data-cursor="OPEN ISSUE &#8599;">
               <img class="case-cover" src="images/case-guardian-one.png" alt="Guardian One comic cover" />
               <span class="case-scan" aria-hidden="true"></span>
               <span class="case-flag" aria-hidden="true">OPEN CASE STUDY &#8594;</span>
@@ -297,10 +297,11 @@
     <!-- ================= BEHIND THE SCREENS ================= -->
     <section class="behind paper-sheet" id="behind">
       <div class="tear tear-b paper-tear" aria-hidden="true"></div>
+      <div class="behind-stage">
       <div class="behind-head sp-reveal">
         <div>
           <p class="eyebrow eyebrow-mono">BEHIND THE SCREENS</p>
-          <h2 class="section-title">A little life<br /><span class="accent">behind</span> the work.</h2>
+          <h2 class="section-title"><span class="behind-line">A little life</span><br /><span class="behind-line behind-accent accent">behind</span> <span class="behind-line behind-work">the work.</span></h2>
         </div>
         <p class="behind-intro">
           The books, sounds and small reminders that quietly shape how I design.
@@ -311,9 +312,9 @@
 
       <div class="board-grid">
         <!-- Board 1 — Currently reading -->
-        <article class="board sp-settle" data-cursor="GOOD ONE">
+        <article class="board sp-settle">
           <h3 class="board-title">CURRENTLY READING</h3>
-          <div class="board-books">
+          <div class="board-books" data-cursor="PICK IT UP" data-parallax="8">
             <img class="book book-3" src="images/book-back-2.png" alt="" />
             <img class="book book-2" src="images/book-back-1.png" alt="" />
             <img class="book book-1" src="images/book-inspired.png" alt="Book cover: Inspired" />
@@ -328,15 +329,15 @@
         </article>
 
         <!-- Board 2 — Music -->
-        <article class="board sp-settle" data-cursor="PLAY &#9834;">
+        <article class="board sp-settle">
           <h3 class="board-title">MUSIC WHILE DESIGNING</h3>
-          <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true">
+          <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true" data-parallax="-6">
             <path d="M7 26v-6a14 14 0 0 1 28 0v6" />
             <rect x="3" y="24" width="8" height="13" rx="4" />
             <rect x="31" y="24" width="8" height="13" rx="4" />
           </svg>
 
-          <div class="player">
+          <div class="player" data-parallax="9">
             <img class="player-art" src="images/album-art.png" alt="" />
             <div class="player-meta">
               <p class="player-track">Bye Bye Bye</p>
@@ -359,13 +360,13 @@
           </div>
 
           <p class="board-note">Cuts the noise. Keeps me in flow.</p>
-          <p class="board-notes-glyph" aria-hidden="true">&#9834; &#9834;</p>
+          <p class="board-notes-glyph" aria-hidden="true" data-parallax="11">&#9834; &#9834;</p>
         </article>
 
         <!-- Board 3 — Current obsession -->
-        <article class="board sp-settle" data-cursor="CURRENT OBSESSION">
+        <article class="board sp-settle">
           <h3 class="board-title">CURRENT OBSESSION</h3>
-          <div class="sticky-wrap">
+          <div class="sticky-wrap" data-cursor="THIS HELPS." data-parallax="-7">
             <span class="pin" aria-hidden="true"></span>
             <div class="sticky">
               <p>AI-assisted design systems + human-centred experiences</p>
@@ -383,9 +384,9 @@
         </article>
 
         <!-- Board 4 — Little reminders -->
-        <article class="board sp-settle" data-cursor="NOTE TO SELF">
+        <article class="board sp-settle">
           <h3 class="board-title">LITTLE REMINDERS</h3>
-          <div class="reminders">
+          <div class="reminders" data-cursor="NOTE TO SELF">
             <div class="reminder">
               <svg viewBox="0 0 38 38" aria-hidden="true">
                 <path d="M19 3l4.6 10.1 11 1.3-8.1 7.4 2.2 10.8L19 27.1 9.3 32.6l2.2-10.8-8.1-7.4 11-1.3z" />
@@ -407,6 +408,7 @@
           </div>
         </article>
       </div>
+      </div>
     </section>
 
     <!-- ================= ABOUT ================= -->
@@ -416,24 +418,24 @@
         <!-- Left: polaroid + tools -->
         <div class="polaroid-col">
           <p class="sp-egg" style="right: 0; top: 8px;">MY AMAZON CART IS NOT OKAY.</p>
-          <p class="thats-me">That&rsquo;s me!</p>
-          <svg class="thats-me-arrow" viewBox="0 0 40 40" aria-hidden="true">
+          <p class="thats-me" data-parallax="6">That&rsquo;s me!</p>
+          <svg class="thats-me-arrow" viewBox="0 0 40 40" aria-hidden="true" data-parallax="6">
             <path d="M6 4c14 2 24 12 26 28" />
             <path d="M24 30l8 4-2-9" />
           </svg>
 
-          <div class="polaroid sp-settle" data-cursor="HELLO &#128075;">
+          <div class="polaroid sp-settle" data-cursor="HELLO &#128075;" data-parallax="12">
             <!-- Replace with your portrait export -->
             <img src="images/polaroid-portrait.png" alt="Portrait of Swati Priya" />
             <p class="polaroid-signature">Swati Priya</p>
           </div>
 
-          <div class="sticky-note">
+          <div class="sticky-note" data-parallax="-8">
             <p>Designer by choice.<br />Problem solver by curiosity.<br />Storyteller by nature.</p>
             <span class="heart" aria-hidden="true">&#9825;</span>
           </div>
 
-          <div class="tools">
+          <div class="tools" data-parallax="5">
             <h3 class="tools-title">TOOLS I USE</h3>
             <ul class="tools-grid">
               <li><img src="images/tool-figma.png" alt="" /><span>Figma</span></li>
@@ -451,11 +453,19 @@
             <div>
               <p class="eyebrow">THE ORIGIN STORY</p>
               <h2 class="story-title">
-                <span class="sp-word">CURIOSITY</span> FIRST.<br /><span class="sp-word has-grid accent underlined">DESIGN</span> FOLLOWED.
+                <span class="origin-title-line origin-curiosity"><span class="sp-word">CURIOSITY</span> FIRST.</span><br /><span class="origin-title-line origin-design"><span class="sp-word has-grid accent underlined">DESIGN</span> FOLLOWED.</span>
               </h2>
             </div>
-            <div class="thought-bubble">
-              <p>I ask why.<br />I listen.<br />I observe.<br /><span class="accent">Then I design.</span></p>
+            <div class="thought-bubble" data-parallax="-6">
+              <p class="origin-thoughts">
+                <span class="origin-step">I ask why.</span>
+                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c-.4 3.5.6 6.2 0 10M3 8l3 3 3-3" /></svg>
+                <span class="origin-step">I listen.</span>
+                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c.5 3.4-.7 6.3 0 10M3 8l3 3 3-3" /></svg>
+                <span class="origin-step">I observe.</span>
+                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c-.5 3.5.7 6.2 0 10M3 8l3 3 3-3" /></svg>
+                <span class="origin-step accent">Then I design.</span>
+              </p>
             </div>
           </div>
 
@@ -467,7 +477,7 @@
 
           <!-- Career timeline — edit your roles here -->
           <ol class="timeline">
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#6c4cf1"><img src="images/logo-grayquest.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -479,7 +489,7 @@
               <p class="tl-date">Feb 2025 &ndash; Jun 2026</p>
             </li>
 
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#ea1b25"><img src="images/logo-tring.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -491,7 +501,7 @@
               <p class="tl-date">May 2023 &ndash; Jan 2025</p>
             </li>
 
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#12b5b0"><img src="images/logo-houzeo.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -503,7 +513,7 @@
               <p class="tl-date">Jul 2022 &ndash; Apr 2023</p>
             </li>
 
-            <li class="timeline-item sp-reveal">
+            <li class="timeline-item">
               <span class="tl-logo" style="--logo-bg:#1673ff"><img src="images/logo-embibe.png" alt="" /></span>
               <div class="tl-body">
                 <p class="tl-role">
@@ -519,6 +529,7 @@
       </div>
 
       <!-- What drives me strip -->
+      <div class="drives-track">
       <div class="drives sp-reveal">
         <div class="drives-title">
           <h3>WHAT DRIVES ME</h3>
@@ -554,6 +565,7 @@
           </li>
         </ul>
       </div>
+      </div>
     </section>
   </main>
 
@@ -562,7 +574,7 @@
     <div class="torn-edge tear-d paper-tear" aria-hidden="true"></div>
 
     <!-- Oversized background word + comic bubble. Desktop hover only. -->
-    <p class="footer-giant" aria-hidden="true"></p>
+    <p class="footer-giant" aria-hidden="true" data-parallax="-10"></p>
     <p class="sp-egg" style="left: var(--gutter); top: 20px;">YOU REALLY MADE IT THIS FAR?</p>
 
     <div class="footer-body">
@@ -576,7 +588,7 @@
         </p>
 
         <h2 class="footer-title">
-          THE NEXT STORY<br />COULD BE <span class="sp-word accent underlined">YOURS.</span>
+          THE NEXT STORY<br /><span class="footer-grow">COULD BE <span class="sp-word accent underlined">YOURS.</span></span>
         </h2>
 
         <p class="footer-lede">
@@ -618,7 +630,7 @@
         <p class="footer-legal">&copy; 2026 Swati Priya &middot; Drawn, written &amp; designed in Figma.</p>
       </div>
 
-      <div class="footer-cover sp-settle">
+      <div class="footer-cover sp-settle" data-parallax="12">
         <div class="footer-bubble" aria-hidden="true">SO&hellip; WHAT ARE WE BUILDING?</div>
         <div class="cover-card">
           <span class="cover-tape" aria-hidden="true"></span>
@@ -628,6 +640,14 @@
           <p class="cover-note">Thanks for scrolling this far! &#9825;</p>
         </div>
         <p class="cover-caption">Next story loading&hellip;<br />Maybe with you?</p>
+        <div class="footer-garden" aria-hidden="true" data-parallax="6">
+          <span></span><span></span><span></span>
+        </div>
+        <button class="footer-water" type="button" aria-label="Water the idea" data-cursor="GROW IT">
+          <svg viewBox="0 0 54 38" aria-hidden="true">
+            <path d="M8 16h25v17H8zM14 16V9h13v7M33 20c7-1 11-5 15-10M46 8l4 2-2 4M8 21C2 21 2 32 8 32" />
+          </svg>
+        </button>
       </div>
     </div>
   </footer>
@@ -640,6 +660,6 @@
   </button>
 
   <script src="script.js?v=13"></script>
-  <script src="motion.js?v=13"></script>
+  <script src="motion.js?v=15"></script>
 </body>
 </html>

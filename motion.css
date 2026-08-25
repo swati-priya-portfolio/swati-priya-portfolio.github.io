@@ -331,12 +331,29 @@
   71%  { translate: -1.5px -3px; rotate: 0.15deg; }
   100% { translate: 0 0;      rotate: -0.7deg; }
 }
-.sp-js .hero-art { animation: sp-paper-float 6.5s ease-in-out infinite; }
+/* The Hero cutout no longer floats by itself. Pointer + scroll depth own the motion,
+   so the interaction reads as intentional rather than permanently animated. */
+.sp-js .hero-art { animation: none; }
 
-/* Parallax layers — JS writes the offsets, max 5px */
-.sp-js .hero-art       { will-change: transform; transform: translate3d(var(--px, 0px), var(--py, 0px), 0); }
+/* Hero mouse depth. The wrapper makes the character visibly responsive;
+   the art inside travels further, while speech/sketch live on shallower planes. */
+.sp-js .hero-character.is-in {
+  translate: var(--hero-shell-x, 0px) var(--hero-shell-y, 0px);
+  will-change: translate;
+}
+.sp-js .hero-art {
+  will-change: transform;
+  transform: translate3d(var(--px, 0px), var(--py, 0px), 0)
+             rotate(var(--hero-tilt, 0deg)) scale(var(--hero-scale, 1));
+  transform-origin: center 58%;
+}
 .sp-js .hero-character .speech { will-change: transform; }
-.sp-js .hero-sketch    { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0); }
+.sp-js .hero-sketch { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0); }
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .hero-character.is-in { translate: 0 0 !important; }
+  .sp-js .hero-art { transform: none !important; }
+}
 
 /* ============================================================
    4b. HEADLINE, CHARACTER BY CHARACTER
@@ -608,8 +625,8 @@
   transition: transform 260ms var(--ep),
               background-color 260ms var(--ep), color 260ms var(--ep);
 }
-.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-4px); box-shadow: none; }
-.sp-js .btn:active { transform: translateY(-1px); }
+.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-2px); box-shadow: none; }
+.sp-js .btn:active { transform: translateY(0) scale(.98); }
 
 /* ============================================================
    8. PICK AN EPISODE — one cover becomes three
@@ -836,9 +853,36 @@
 .sp-js .sticky-note { transition: transform 460ms var(--ep); }
 .sp-js .sticky-note:hover { transform: rotate(2.4deg) translateY(-4px); }
 .sp-js .timeline-item { transition: transform 380ms var(--ep); }
-.sp-js .timeline-item:hover { transform: translateX(5px); }
+.sp-js .timeline-item:hover { transform: none; }
 .sp-js .tl-logo { transition: transform 380ms var(--ep); }
-.sp-js .timeline-item:hover .tl-logo { transform: scale(1.06) rotate(-2deg); }
+.sp-js .timeline-item:hover .tl-logo { transform: none; }
+
+/* Career uses the individual translate property so its subtle cursor depth
+   composes with the existing row hover and logo scale/rotation instead of
+   overwriting them. Final/resting layout remains unchanged. */
+.sp-js .timeline-item .tl-logo,
+.sp-js .timeline-item .tl-body,
+.sp-js .timeline-item .tl-date {
+  translate: var(--career-x, 0px) var(--career-y, 0px);
+  will-change: translate;
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .timeline-item .tl-logo,
+  .sp-js .timeline-item .tl-body,
+  .sp-js .timeline-item .tl-date { translate: 0 0 !important; }
+}
+
+
+/* About mouse depth composes with data-parallax instead of replacing it. */
+.sp-js .about [data-parallax] {
+  translate: var(--about-x, 0px) calc(var(--parallax-y, 0px) + var(--about-y, 0px));
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .about [data-parallax] { --about-x: 0px !important; --about-y: 0px !important; }
+}
+
+
+/* Company logos stay still at rest. Their only movement is subtle pointer depth. */
 
 /* Hand-drawn squiggles draw themselves in when the section arrives */
 .sp-js .squiggle path { stroke-dasharray: 220; stroke-dashoffset: 220; }
@@ -874,6 +918,11 @@
 .sp-js .link-arrow { display: inline-block; transition: transform 280ms var(--ep); }
 .sp-js a:hover > .link-arrow { transform: translate(3px, -3px); }
 
+
+/* Career company names stay clean: no hover underline / marker stroke. */
+.sp-js .tl-role a { text-decoration: none !important; }
+.sp-js .tl-role a::after { content: none !important; display: none !important; }
+
 /* ============================================================
    13. FOOTER — the last surprise
    ============================================================ */
@@ -881,6 +930,7 @@
 .sp-js .footer-body { position: relative; z-index: 2; }
 
 .footer-giant {
+  display: none !important;
   position: absolute;
   left: 50%;
   bottom: -0.14em;
@@ -900,8 +950,7 @@
 .sp-js .site-footer.is-shouting .footer-giant { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media (max-width: 899px) { .footer-giant { display: none; } }
 
-/* Comic speech bubble. It grows behind the final cover card, so the
-   character ends up peeking over its edge — and no copy is covered. */
+/* Handwritten invitation. It is deliberately plain text, not a bubble. */
 .sp-js .footer-cover { position: relative; }
 .sp-js .footer-cover .cover-card,
 .sp-js .footer-cover .cover-caption { position: relative; z-index: 1; }
@@ -909,14 +958,13 @@
 .footer-bubble {
   position: absolute;
   left: 50%;
-  top: -64px;
-  z-index: 0;
-  width: min(500px, 112%);
-  height: calc(100% + 94px);
-  padding: 15px 24px 0;
-  border: 2px solid rgba(255, 197, 61, 0.5);
-  border-radius: 38px;
-  background: rgba(23, 18, 11, 0.94);
+  top: -48px;
+  z-index: 2;
+  width: max-content;
+  max-width: 112%;
+  padding: 0;
+  border: 0;
+  background: transparent;
   font-family: var(--font-hand);
   font-weight: 700;
   font-size: clamp(17px, 1.6vw, 21px);
@@ -925,29 +973,30 @@
   text-align: center;
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, 20px) scale(0.85);
+  transform: translate(-50%, 8px) rotate(-2deg);
   transform-origin: center top;
-  transition: opacity 320ms var(--ep), transform 460ms var(--ep);
+  transition: opacity 280ms linear, transform 380ms var(--ep);
 }
-.footer-bubble::after {
-  content: "";
-  position: absolute;
-  left: 58px; bottom: -16px;
-  width: 32px; height: 32px;
-  background: rgba(23, 18, 11, 0.94);
-  border-right: 2px solid rgba(255, 197, 61, 0.5);
-  border-bottom: 2px solid rgba(255, 197, 61, 0.5);
-  transform: rotate(45deg);
-  border-radius: 0 0 6px 0;
-}
+.footer-bubble::after { content: none; }
 .sp-js .site-footer.is-talking .footer-bubble {
   opacity: 1;
-  transform: translate(-50%, 0) scale(1);
+  transform: translate(-50%, 0) rotate(-1deg);
 }
-@media (max-width: 1079px) { .footer-bubble { display: none; } }
+
+
+/* Footer cover gets a quieter mouse-depth response beneath the dancing title. */
+.sp-js .footer-cover .cover-card,
+.sp-js .footer-cover .cover-caption {
+  translate: var(--footer-depth-x, 0px) var(--footer-depth-y, 0px);
+  will-change: translate;
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .footer-cover .cover-card,
+  .sp-js .footer-cover .cover-caption,
+  .sp-js .footer-cover .footer-water { translate: 0 0 !important; animation: none !important; }
+}
 
 /* The cover card peeks over the bubble */
-.sp-js .site-footer.is-talking .cover-card { transform: translateY(-8px) rotate(-1deg); }
 .sp-js .cover-card { transition: transform 520ms var(--ep), box-shadow 520ms var(--ep); }
 @media (pointer: fine) {
   .sp-js .cover-card:hover { transform: translateY(-8px) rotate(0.8deg); box-shadow: 0 26px 34px rgba(0,0,0,.62); }
@@ -1286,6 +1335,11 @@
   transform: translate3d(0, calc(var(--lap) * var(--slide)), 0);
 }
 .sp-js .paper-sheet { will-change: transform; }
+.behind.paper-sheet {
+  --slide: 0;
+  transform: none;
+  will-change: auto;
+}
 
 /* The sheet carries its own contact shadow along the whole top edge, so the
    overlap reads as thickness rather than as a card floating above a card. */
@@ -1308,3 +1362,666 @@
   }
 }
 
+/* ============================================================
+   18. CHOREOGRAPHY REFINEMENT
+   This pass keeps the approved composition intact and improves only
+   sequencing, tactile behaviour and scroll narrative.
+   ============================================================ */
+
+/* Loader remains the same playful scene. READY is a one-beat pause before
+   the existing simple fade, so the last bite and the Hero do not collide. */
+.sp-loader.is-ready .sp-loader-mask { animation-play-state: paused; }
+.sp-loader.is-ready .sp-loader-sub { color: var(--accent); }
+
+/* The Hero's existing elements enter in a deliberate order after the loader.
+   The primed class is applied by motion.js; without JS the original CSS reveal
+   remains in charge, so nothing can be left invisible. */
+.sp-js .hero.motion-primed .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: none;
+}
+.sp-js .hero.motion-primed .reveal.is-stage-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 500ms linear, transform 650ms var(--ep);
+}
+.sp-js .hero.motion-primed .hero-title.reveal { transform: none; }
+
+@keyframes sp-portrait-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Pointer depth and scroll depth share variables rather than fighting over
+   transform. The values remain intentionally small. */
+.sp-js .hero-art {
+  transform: translate3d(var(--px, 0px), calc(var(--py, 0px) + var(--scroll-art, 0px)), 0);
+}
+.sp-js .hero-sketch {
+  transform: translate3d(var(--bx, 0px), calc(var(--by, 0px) + var(--scroll-sketch, 0px)), 0);
+}
+.sp-js .hero-character .speech {
+  transform: rotate(var(--speech-rot, 0deg))
+             translate3d(var(--speech-x, 0px), calc(var(--speech-y, 0px) + var(--scroll-speech, 0px)), 0);
+}
+
+/* Organic character response: JS supplies a different lift, scale and tiny
+   rotation per glyph. Words remain unbroken and the line never reflows. */
+.hero-title .ch {
+  transform: translateY(var(--c-y, 0px)) scale(var(--c-s, 1)) rotate(var(--c-r, 0deg));
+}
+
+/* Thinking is a quiet local reveal, not a bright circular spotlight. */
+.hero-sketch {
+  opacity: 0;
+  filter: saturate(0.92);
+  -webkit-mask-image: radial-gradient(circle var(--sk-r, 184px) at var(--sk-x, -999px) var(--sk-y, -999px),
+                       #000 0%, rgba(0,0,0,0.56) 44%, transparent 76%);
+          mask-image: radial-gradient(circle var(--sk-r, 184px) at var(--sk-x, -999px) var(--sk-y, -999px),
+                       #000 0%, rgba(0,0,0,0.56) 44%, transparent 76%);
+}
+.sp-js .hero.is-exploring .hero-sketch { opacity: 0.78; }
+
+/* Metrics are the deliberate calm beat after the Hero. */
+.sp-js .proof-strip.is-metrics-ready .proof-item {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.sp-js .proof-strip.is-metrics-ready.is-visible .proof-item {
+  opacity: 1;
+  transform: none;
+  transition: opacity 440ms linear, transform 560ms var(--ep);
+}
+.sp-js .proof-strip.is-visible .proof-item:nth-child(2) { transition-delay: 70ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(3) { transition-delay: 140ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(4) { transition-delay: 210ms; }
+.sp-js .proof-item span { transition: opacity 380ms linear 100ms; }
+
+/* Two-dimensional issue sleeves: no 3D camera, no whole-card tilt. */
+.sp-js .case-grid { perspective: none; }
+.case-flag { display: block; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.32); }
+.sp-js .case-card:hover .case-cover,
+.sp-js .case-card:focus-visible .case-cover {
+  transform: translateY(-16px) rotate(-0.8deg) scale(1.008);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.46), 0 5px 12px rgba(0, 0, 0, 0.3);
+}
+.sp-js .case-card:nth-child(even):hover .case-cover,
+.sp-js .case-card:nth-child(even):focus-visible .case-cover {
+  transform: translateY(-16px) rotate(0.8deg) scale(1.008);
+}
+
+/* The section boards stay calm; the physical objects inside provide the
+   interaction. This avoids four identical floating website cards. */
+@media (pointer: fine) {
+  .sp-js .board:hover {
+    transform: none;
+    border-color: rgba(255, 197, 61, 0.26);
+    box-shadow: inset 0 0 10px 1px rgba(255, 217, 140, 0.07);
+  }
+}
+.sp-js .book-1.is-picked { transform: translateY(-14px) rotate(3.7deg) scale(1.02); }
+.sp-js .book-2.is-picked { transform: translateY(-14px) rotate(3.7deg) scale(1.02); }
+.sp-js .book-3.is-picked { transform: translateY(-14px) rotate(1.2deg) scale(1.02); }
+.sp-js .book-1.is-nudge-l { transform: translateX(-4px) rotate(4.6deg); }
+.sp-js .book-2.is-nudge-l { transform: translateX(-4px) rotate(4.5deg); }
+.sp-js .book-3.is-nudge-l { transform: translateX(-4px) rotate(7deg); }
+.sp-js .book-1.is-nudge-r { transform: translateX(4px) rotate(4.6deg); }
+.sp-js .book-2.is-nudge-r { transform: translateX(4px) rotate(4.5deg); }
+.sp-js .book-3.is-nudge-r { transform: translateX(4px) rotate(7deg); }
+
+/* The album becomes the desk's small record: it turns only after a deliberate
+   Play press and keeps its angle when paused. */
+.sp-js .player-art {
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px rgba(14, 14, 12, 0.52), 0 6px 12px rgba(0,0,0,.34);
+  transform: rotate(var(--record-angle, 0deg));
+  will-change: transform;
+}
+.sp-js .player-progress span {
+  width: 100%;
+  transform: scaleX(var(--music-progress, .42));
+  transform-origin: left center;
+  transition: none;
+}
+
+/* Pinned note and reminders receive one local notebook gesture each. */
+.sp-js .sticky { transition: transform 480ms var(--ep), box-shadow 480ms var(--ep); }
+.sp-js .sticky::before {
+  content: "";
+  position: absolute;
+  right: 0; top: 0;
+  width: 24px; height: 24px;
+  background: linear-gradient(225deg, var(--card) 0 49%, rgba(245,239,227,.25) 50% 53%, #eab62f 54%);
+  transform-origin: top right;
+  transition: transform 460ms var(--ep);
+}
+.sp-js .sticky::after {
+  content: "";
+  position: absolute;
+  left: 20px; bottom: 28px;
+  width: 62%; height: 2px;
+  border-radius: 2px;
+  background: #1f1721;
+  transform: scaleX(0) rotate(-1deg);
+  transform-origin: left center;
+  transition: transform 520ms var(--ep);
+}
+.sp-js .sticky-wrap:hover .sticky { transform: rotate(4.6deg) translateY(-2px); }
+.sp-js .sticky-wrap:hover .sticky::before { transform: translate(-3px, 3px) rotate(-2deg); }
+.sp-js .sticky-wrap:hover .sticky::after { transform: scaleX(1) rotate(-1deg); }
+
+.sp-js .reminder { position: relative; transition: transform 360ms var(--ep); }
+.sp-js .reminder::after {
+  position: absolute;
+  right: 9px; top: 4px;
+  font-family: var(--font-hand);
+  font-size: 18px;
+  color: #1f1c17;
+  opacity: 0;
+  transform: translateY(4px) rotate(-5deg);
+  transition: opacity 220ms linear, transform 360ms var(--ep);
+}
+.sp-js .reminder:nth-child(1)::after { content: "★"; }
+.sp-js .reminder:nth-child(2)::after { content: "↗"; }
+.sp-js .reminder:nth-child(3)::after { content: "○"; }
+.sp-js .reminder:hover::after { opacity: .72; transform: none; }
+
+/* Behind the Screens is read as one desk being assembled, not four cards
+   arriving on a timer. JS advances these beats only as the page is scrolled. */
+.sp-js .behind.is-behind-ready .behind-head.sp-reveal {
+  opacity: 1;
+  transform: none;
+}
+.sp-js .behind.is-behind-ready .behind-head .eyebrow,
+.sp-js .behind.is-behind-ready .behind-line,
+.sp-js .behind.is-behind-ready .behind-intro {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 430ms linear, transform 590ms var(--ep);
+}
+.sp-js .behind.is-behind-ready.is-eyebrow-reached .behind-head .eyebrow,
+.sp-js .behind.is-behind-ready.is-line-one-reached .behind-line:first-child,
+.sp-js .behind.is-behind-ready.is-accent-reached .behind-accent,
+.sp-js .behind.is-behind-ready.is-work-reached .behind-work,
+.sp-js .behind.is-behind-ready.is-intro-reached .behind-intro {
+  opacity: 1;
+  transform: none;
+}
+.behind-accent { position: relative; display: inline-block; }
+.behind-accent::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: scaleX(0) rotate(-1deg);
+  transform-origin: left center;
+  transition: transform 520ms var(--ep) 70ms;
+}
+.sp-js .behind.is-accent-reached .behind-accent::after { transform: scaleX(1) rotate(-1deg); }
+
+.sp-js .behind.is-behind-ready .board.sp-settle {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 440ms linear, transform 680ms var(--ep), border-color 260ms var(--ep), box-shadow 260ms var(--ep);
+}
+.sp-js .behind.is-behind-ready .board:nth-child(1) { transform: translateY(34px) rotate(-1deg) scale(.98); }
+.sp-js .behind.is-behind-ready .board:nth-child(2) { transform: translateY(34px) rotate(1deg) scale(.98); }
+.sp-js .behind.is-behind-ready .board:nth-child(3) { transform: translateY(30px) rotate(-1deg) scale(.98); }
+.sp-js .behind.is-behind-ready .board:nth-child(4) { transform: translateY(30px) rotate(1deg) scale(.98); }
+.sp-js .behind.is-behind-ready .board.is-beat-reached {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+.sp-js .behind.is-behind-ready .board:not(.is-beat-reached) [data-parallax] { --parallax-y: 0px !important; }
+.sp-js .behind.is-behind-ready .reminder {
+  opacity: 0;
+  transition: opacity 360ms linear, transform 540ms var(--ep);
+}
+.sp-js .behind.is-behind-ready .reminder:nth-child(1) { transform: translateY(18px) rotate(-1.5deg) scale(.975); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(2) { transform: translateY(18px) rotate(.8deg) scale(.975); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(3) { transform: translateY(18px) rotate(-.6deg) scale(.975); }
+.sp-js .behind.is-behind-ready .reminder.is-beat-reached { opacity: 1; }
+.sp-js .behind.is-behind-ready .reminder:nth-child(1).is-beat-reached { transform: rotate(1.2deg); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(2).is-beat-reached { transform: rotate(-.7deg); }
+.sp-js .behind.is-behind-ready .reminder:nth-child(3).is-beat-reached { transform: rotate(.8deg); }
+
+/* What Drives Me draws its shell, then reveals one principle per scroll beat. */
+.sp-js .drives.is-drives-ready.sp-reveal { position: relative; opacity: 1; transform: none; border-color: transparent; }
+.sp-js .drives.is-drives-ready::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px dashed #f5efe2;
+  border-radius: inherit;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 650ms var(--ep);
+  pointer-events: none;
+}
+.sp-js .drives.is-drives-ready.is-border-reached::before { clip-path: inset(0); }
+.sp-js .drives.is-drives-ready .drives-title {
+  opacity: 0;
+  transform: translateY(9px);
+  transition: opacity 390ms linear, transform 540ms var(--ep);
+}
+.sp-js .drives.is-drives-ready.is-title-reached .drives-title,
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached { opacity: 1; transform: none; }
+.sp-js .drives.is-drives-ready .drives-list li svg,
+.sp-js .drives.is-drives-ready .drives-list li p {
+  opacity: 0;
+  transition: opacity 360ms linear, transform 500ms var(--ep);
+}
+.sp-js .drives.is-drives-ready .drives-list li svg { transform: scale(.82); }
+.sp-js .drives.is-drives-ready .drives-list li p { transform: translateY(8px); }
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached svg { opacity: 1; transform: scale(1); }
+.sp-js .drives.is-drives-ready .drives-list li.is-beat-reached p { opacity: 1; transform: none; transition-delay: 90ms; }
+.sp-js .drives.is-drives-ready:not(.is-title-reached) .squiggle path { stroke-dashoffset: 220 !important; }
+
+
+/* What Drives Me stays a calm strip, but its copy responds when explored. */
+@media (pointer: fine) {
+  .sp-js .drives.is-drives-ready .drives-list li.is-beat-reached:hover p {
+    transition-delay: 0ms;
+    transform: translateY(-2.5px) scale(1.01);
+  }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(1).is-beat-reached:hover p { transform: translate(-1px, -2.5px) rotate(-.12deg) scale(1.01); }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(2).is-beat-reached:hover p { transform: translate(1px, -2.5px) rotate(.10deg) scale(1.01); }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(3).is-beat-reached:hover p { transform: translate(-1px, -2.5px) rotate(-.10deg) scale(1.01); }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(4).is-beat-reached:hover p { transform: translate(1px, -2.5px) rotate(.12deg) scale(1.01); }
+}
+
+/* Final chapter: scale the complete title, then let the contact details and
+   cover arrive. The watering control remains a click-only easter egg. */
+.sp-js .site-footer.is-footer-story-ready .footer-story.sp-reveal { opacity: 1; transform: none; }
+.sp-js .site-footer.is-footer-story-ready .footer-kicker,
+.sp-js .site-footer.is-footer-story-ready .footer-title,
+.sp-js .site-footer.is-footer-story-ready .footer-lede,
+.sp-js .site-footer.is-footer-story-ready .footer-actions,
+.sp-js .site-footer.is-footer-story-ready .footer-social,
+.sp-js .site-footer.is-footer-story-ready .footer-legal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 420ms linear, transform 570ms var(--ep);
+}
+.sp-js .site-footer.is-footer-story-ready .footer-title {
+  transform: translateY(calc(12px + var(--footer-title-lift, 0px))) scale(var(--footer-title-scale, .74));
+  transform-origin: left center;
+  will-change: transform;
+}
+.sp-js .site-footer.is-kicker-reached .footer-kicker,
+.sp-js .site-footer.is-lede-reached .footer-lede,
+.sp-js .site-footer.is-actions-reached .footer-actions,
+.sp-js .site-footer.is-social-reached .footer-social,
+.sp-js .site-footer.is-social-reached .footer-legal { opacity: 1; transform: none; }
+.sp-js .site-footer.is-title-reached .footer-title {
+  opacity: 1;
+  transform: translateY(var(--footer-title-lift, 0px)) scale(var(--footer-title-scale, 1));
+}
+.sp-js .site-footer.is-footer-story-ready .footer-grow { transform: none; }
+.sp-js .site-footer.is-footer-story-ready .footer-title .underlined {
+  background-size: 0 3px, 0 2px;
+  transition: background-size 620ms var(--ep);
+}
+.sp-js .site-footer.is-title-max .footer-title .underlined { background-size: 100% 3px, 88% 2px; }
+.sp-js .site-footer.is-footer-story-ready .footer-actions,
+.sp-js .site-footer.is-footer-story-ready .footer-social { visibility: hidden; pointer-events: none; }
+.sp-js .site-footer.is-actions-reached .footer-actions,
+.sp-js .site-footer.is-social-reached .footer-social { visibility: visible; pointer-events: auto; }
+.sp-js .site-footer.is-footer-story-ready .footer-cover.sp-settle {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(70px) rotate(4deg) scale(.94);
+  transition: opacity 460ms linear, transform 760ms var(--ep);
+}
+.sp-js .site-footer.is-footer-story-ready.is-cover-reached .footer-cover.sp-settle {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.sp-js .site-footer.is-footer-story-ready .footer-bubble {
+  opacity: 0;
+  transform: translate(-50%, 8px) rotate(-2deg);
+  transition: opacity 280ms linear, transform 380ms var(--ep);
+}
+.sp-js .site-footer.is-talking .footer-bubble { opacity: 1; transform: translate(-50%, 0) rotate(-1deg); }
+
+/* Desktop gets real story runway: the visual remains present while normalized
+   section progress advances. Short laptops and stacked layouts stay natural. */
+@media (min-width: 1024px) {
+  .behind { min-height: 155vh; }
+  .behind-stage {
+    position: sticky;
+    top: 88px;
+    min-height: 630px;
+  }
+
+  /* Footer keeps its approved layout but no longer manufactures an extra
+     160vh scroll tail. Its motion runs while the real footer enters. */
+  .site-footer { min-height: 0; }
+  .site-footer .footer-body {
+    position: relative;
+    top: auto;
+  }
+}
+
+.footer-title .footer-word { display: inline-block; white-space: nowrap; }
+.footer-title .footer-letter {
+  display: inline-block;
+  transform: translateY(var(--fc-y, 0)) scale(var(--fc-s, 1)) rotate(var(--fc-r, 0deg));
+  transform-origin: center 72%;
+  transition: transform 360ms var(--ep);
+  will-change: transform;
+}
+
+/* Reusable scroll depth. Individual translate composes with the site's
+   existing rotate/scale transforms, so hover, records and paper sheets keep
+   their own motion systems. */
+.sp-js [data-parallax] {
+  translate: 0 var(--parallax-y, 0px);
+  will-change: translate;
+}
+
+/* Origin Story: the thinking sequence stays local to the speech bubble. The
+   career line below is the only long connector in this section. */
+.origin-title-line, .origin-step { display: inline-block; }
+.origin-step { display: block; }
+.origin-arrow {
+  display: block;
+  width: 12px;
+  height: 15px;
+  margin: 1px 0 1px 10px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.origin-arrow path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.story-head, .story-body, .timeline { position: relative; z-index: 1; }
+.sp-js .story-col.is-origin-ready .origin-design,
+.sp-js .story-col.is-origin-ready .story-head .eyebrow,
+.sp-js .story-col.is-origin-ready .origin-curiosity,
+.sp-js .story-col.is-origin-ready .story-body,
+.sp-js .story-col.is-origin-ready .origin-step,
+.sp-js .story-col.is-origin-ready .timeline-item {
+  opacity: 0;
+  transform: translateY(9px);
+}
+.sp-js .story-col.is-origin-ready .origin-arrow {
+  opacity: 0;
+  transform: translateY(3px);
+}
+.sp-js .story-col.is-origin-ready .origin-arrow path { stroke-dashoffset: 1; }
+.sp-js .story-col.is-origin-ready .origin-design,
+.sp-js .story-col.is-origin-ready .story-head .eyebrow,
+.sp-js .story-col.is-origin-ready .origin-curiosity,
+.sp-js .story-col.is-origin-ready .story-body,
+.sp-js .story-col.is-origin-ready .origin-step,
+.sp-js .story-col.is-origin-ready .timeline-item {
+  transition: opacity 420ms linear, transform 560ms var(--ep);
+}
+.sp-js .story-col.is-origin-ready .origin-arrow {
+  transition: opacity 280ms linear, transform 420ms var(--ep);
+}
+.sp-js .story-col.is-origin-ready .origin-arrow path {
+  transition: stroke-dashoffset 380ms var(--ep);
+}
+.sp-js .story-col.is-origin-ready .is-reached {
+  opacity: 1;
+  transform: none;
+}
+.sp-js .story-col.is-origin-ready .story-head .eyebrow.is-reached {
+  opacity: 1;
+  transform: none;
+}
+.sp-js .story-col.is-origin-ready .origin-arrow.is-reached path { stroke-dashoffset: 0; }
+
+/* One scroll event starts the Origin reading beat; these delays make the
+   existing lines arrive automatically one-by-one without extra scrolling. */
+.sp-js .story-col.is-origin-ready .story-head .eyebrow.is-reached { transition-delay: 0ms; }
+.sp-js .story-col.is-origin-ready .origin-curiosity.is-reached { transition-delay: 60ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(1).is-reached { transition-delay: 150ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(1).is-reached { transition-delay: 235ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(2).is-reached { transition-delay: 320ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(2).is-reached { transition-delay: 405ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(3).is-reached { transition-delay: 490ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(3).is-reached { transition-delay: 575ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(4).is-reached { transition-delay: 660ms; }
+.sp-js .story-col.is-origin-ready .origin-design.is-reached { transition-delay: 790ms; }
+.sp-js .story-col.is-origin-ready .story-body.is-reached { transition-delay: 920ms; }
+
+.sp-js .story-col.is-origin-ready .origin-design .underlined {
+  background-size: 0 3px, 0 2px;
+  transition: background-size 500ms var(--ep) 80ms;
+}
+.sp-js .story-col.is-origin-ready .origin-design.is-reached .underlined {
+  background-size: 100% 3px, 88% 2px;
+}
+.sp-js .story-col.is-origin-ready .timeline::before {
+  transform: scaleY(var(--timeline-draw, 0));
+  transform-origin: top center;
+}
+.sp-js .story-col.is-origin-ready .timeline-item .tl-logo { transform: scale(.82); }
+.sp-js .story-col.is-origin-ready .timeline-item.is-reached .tl-logo {
+  transform: scale(1);
+  transition: transform 320ms var(--ep);
+}
+
+/* Button feedback stays crisp and useful, not magnetic. */
+.sp-js .btn:hover, .sp-js .btn:focus-visible { transform: translateY(-2px); }
+.sp-js .btn:active { transform: translateY(0) scale(.98); }
+
+/* The existing footer line grows as the final sheet enters. Copy and layout
+   are unchanged. The tiny watering control is an optional, finite easter egg. */
+.footer-grow {
+  display: inline-block;
+  transform: scale(var(--footer-scale, 1));
+  transform-origin: left bottom;
+  will-change: transform;
+}
+.footer-cover { position: relative; }
+.footer-water {
+  position: absolute;
+  right: 4px;
+  bottom: 2px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 48px; height: 42px;
+  padding: 5px;
+  border: 1px solid rgba(255, 197, 61, .36);
+  border-radius: 10px;
+  background: rgba(23, 18, 11, .88);
+  color: var(--accent);
+  cursor: pointer;
+  transition: transform 260ms var(--ep), border-color 260ms var(--ep);
+}
+.footer-water svg { width: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.footer-water:hover, .footer-water:focus-visible { transform: rotate(-4deg) translateY(-2px); border-color: var(--accent); }
+.footer-water:active { transform: rotate(-4deg) scale(.96); }
+.footer-garden {
+  position: absolute;
+  right: 60px;
+  bottom: 3px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 42px;
+  pointer-events: none;
+}
+.footer-garden span {
+  position: relative;
+  display: block;
+  width: 4px; height: 28px;
+  border-radius: 4px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 520ms var(--ep);
+}
+.footer-garden span::before,
+.footer-garden span::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  width: 11px; height: 6px;
+  border: 2px solid var(--accent);
+  border-radius: 10px 10px 2px 10px;
+  opacity: 0;
+  transition: opacity 300ms linear 220ms;
+}
+.footer-garden span::before { right: 2px; transform: rotate(25deg); }
+.footer-garden span::after { left: 2px; transform: scaleX(-1) rotate(25deg); }
+.footer-garden span:nth-child(2) { height: 36px; transition-delay: 80ms; }
+.footer-garden span:nth-child(3) { height: 23px; transition-delay: 150ms; }
+.site-footer[data-growth="1"] .footer-garden span:nth-child(1),
+.site-footer[data-growth="2"] .footer-garden span:nth-child(-n+2),
+.site-footer[data-growth="3"] .footer-garden span { transform: scaleY(1); }
+.site-footer[data-growth="2"] .footer-garden span:nth-child(-n+2)::before,
+.site-footer[data-growth="2"] .footer-garden span:nth-child(-n+2)::after,
+.site-footer[data-growth="3"] .footer-garden span::before,
+.site-footer[data-growth="3"] .footer-garden span::after { opacity: 1; }
+
+/* Let the incoming surface finish its physical movement before its primary
+   heading takes focus. */
+.sp-js .paper-sheet:not(.is-sheet-settled) > .behind-head.sp-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+@media (max-width: 1079px) {
+  .footer-water { right: 0; }
+  .footer-garden { right: 56px; }
+}
+
+@media (max-width: 767px) {
+  .sp-js [data-parallax] {
+    --parallax-y: 0px !important;
+    translate: none;
+    will-change: auto;
+  }
+}
+
+@media (max-width: 599px) {
+  .footer-water { width: 44px; height: 40px; bottom: -4px; }
+  .footer-garden { bottom: -4px; }
+  .sp-js .player-art { border-radius: 12px; transform: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-js .hero.motion-primed .reveal,
+  .sp-js .proof-strip.is-metrics-ready .proof-item,
+  .sp-js .story-col.is-origin-ready .origin-design,
+  .sp-js .story-col.is-origin-ready .story-head .eyebrow,
+  .sp-js .story-col.is-origin-ready .origin-curiosity,
+  .sp-js .story-col.is-origin-ready .story-body,
+  .sp-js .story-col.is-origin-ready .origin-step,
+  .sp-js .story-col.is-origin-ready .timeline-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sp-js .story-col.is-origin-ready .origin-arrow {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sp-js .story-col.is-origin-ready .origin-arrow path { stroke-dashoffset: 0 !important; }
+  .sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 100% 3px, 88% 2px !important; }
+  .sp-js [data-parallax] { translate: none !important; will-change: auto; }
+  .sp-js .player-art, .footer-grow { transform: none !important; }
+  .sp-js .behind.is-behind-ready .behind-head .eyebrow,
+  .sp-js .behind.is-behind-ready .behind-line,
+  .sp-js .behind.is-behind-ready .behind-intro,
+  .sp-js .behind.is-behind-ready .board.sp-settle,
+  .sp-js .behind.is-behind-ready .reminder,
+  .sp-js .drives.is-drives-ready .drives-title,
+  .sp-js .drives.is-drives-ready .drives-list li,
+  .sp-js .drives.is-drives-ready .drives-list li svg,
+  .sp-js .drives.is-drives-ready .drives-list li p,
+  .sp-js .site-footer.is-footer-story-ready .footer-kicker,
+  .sp-js .site-footer.is-footer-story-ready .footer-title,
+  .sp-js .site-footer.is-footer-story-ready .footer-lede,
+  .sp-js .site-footer.is-footer-story-ready .footer-actions,
+  .sp-js .site-footer.is-footer-story-ready .footer-social,
+  .sp-js .site-footer.is-footer-story-ready .footer-legal,
+  .sp-js .site-footer.is-footer-story-ready .footer-cover.sp-settle,
+  .footer-title .footer-letter {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+  .sp-js .site-footer.is-footer-story-ready .footer-bubble { opacity: 0 !important; }
+  .sp-js .drives.is-drives-ready::before { clip-path: inset(0) !important; }
+  .behind, .drives-track, .site-footer { min-height: 0 !important; }
+  .behind-stage, .drives-track .drives, .site-footer .footer-body { position: static !important; }
+  .footer-water, .footer-garden { display: none !important; }
+}
+
+
+/* ============================================================
+   19. SIGNATURE MOTION PASS — strong moments, no design changes
+   ============================================================ */
+
+/* COMPLEXITY and CLARITY zoom as complete ideas. Their letters stay locked,
+   while I TURN / INTO retain the playful character-by-character response. */
+.sp-js .hero-title .hero-focus-word {
+  transform: scale(var(--focus-s, 1)) !important;
+  transform-origin: center 68%;
+  will-change: transform;
+}
+.sp-js .hero-title .hero-focus-word .ch {
+  transform: none !important;
+}
+
+/* Torn edges carry only a few pixels of scroll-velocity lag. Clip-path reveal
+   and settle animations still own their original transform independently. */
+.sp-js .paper-tear {
+  translate: 0 var(--tear-drift, 0px);
+}
+
+/* One small object wakes up after each Behind board lands. Nothing loops. */
+@keyframes sp-board-object-wake {
+  0%   { transform: translateY(6px) scale(.992); }
+  72%  { transform: translateY(-1px) scale(1.002); }
+  100% { transform: none; }
+}
+.sp-js .behind .board:nth-child(1).is-beat-reached .board-books {
+  animation: sp-board-object-wake 620ms var(--ep) 150ms both;
+}
+.sp-js .behind .board:nth-child(2).is-beat-reached .player {
+  animation: sp-board-object-wake 650ms var(--ep) 170ms both;
+}
+.sp-js .behind .board:nth-child(3).is-beat-reached .sticky-wrap {
+  animation: sp-board-object-wake 620ms var(--ep) 170ms both;
+}
+
+/* The career line is a journey: reached rows stay readable, but the current
+   stop carries full focus while earlier stops soften slightly. */
+.sp-js .story-col.is-origin-ready .timeline-item.is-reached {
+  opacity: .76;
+  transition: opacity 460ms var(--ep), transform 560ms var(--ep);
+}
+.sp-js .story-col.is-origin-ready .timeline-item.is-current {
+  opacity: 1;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .hero-title .hero-focus-word { transform: none !important; }
+  .sp-js .paper-tear { translate: 0 0 !important; }
+  .sp-js .behind .board.is-beat-reached .board-books,
+  .sp-js .behind .board.is-beat-reached .player,
+  .sp-js .behind .board.is-beat-reached .sticky-wrap { animation: none !important; }
+  .sp-js .story-col.is-origin-ready .timeline-item.is-reached { opacity: 1 !important; }
+}
