@@ -1582,6 +1582,40 @@
      for paper, rotation, hover and record playback remain untouched.
      ========================================================== */
   function scrollParallax() {
+    /* Add depth to every major page chapter. These are inner content layers,
+       never the sections themselves, so parallax cannot create blank space,
+       alter document height or detach the torn-paper transitions. */
+    var presets = [
+      [".hero-copy", -22],
+      [".section-head", -18],
+      [".case-card:nth-child(1)", 22],
+      [".case-card:nth-child(2)", 38],
+      [".case-card:nth-child(3)", 54],
+      [".behind-head", -18],
+      [".board:nth-child(1)", 18],
+      [".board:nth-child(2)", 32],
+      [".board:nth-child(3)", 24],
+      [".board:nth-child(4)", 40],
+      [".about-grid > .polaroid-col", 26],
+      [".about-grid > .story-col", -18],
+      [".timeline-item:nth-child(1)", 8],
+      [".timeline-item:nth-child(2)", 16],
+      [".timeline-item:nth-child(3)", 12],
+      [".timeline-item:nth-child(4)", 20],
+      [".drives-title", -12],
+      [".drives-list", 18],
+      [".footer-story", -24]
+    ];
+
+    presets.forEach(function (preset) {
+      [].slice.call(document.querySelectorAll(preset[0])).forEach(function (el) {
+        if (!el.hasAttribute("data-parallax")) {
+          el.setAttribute("data-parallax", String(preset[1]));
+          el.setAttribute("data-parallax-layer", "");
+        }
+      });
+    });
+
     var elements = [].slice.call(document.querySelectorAll("[data-parallax]"));
     if (!elements.length) { return; }
 
@@ -1593,37 +1627,39 @@
     var geometry = [];
     var dirty = true;
     var knownHeight = 0;
-    var queued = false;
-
-    function pageTop(el) {
-      var rect = el.getBoundingClientRect();
-      return rect.top + window.scrollY;
-    }
+    var targetQueued = false;
+    var rendering = false;
 
     function strength() {
       if (window.innerWidth < 768) { return 0; }
-      if (window.innerWidth < 1080) { return 0.5; }
+      if (window.innerWidth < 1080) { return 0.58; }
       return 1;
     }
 
     function measure() {
       var scale = strength();
+      var previous = new Map();
+      geometry.forEach(function (item) { previous.set(item.el, item); });
+
       geometry = elements.map(function (el) {
         var rect = el.getBoundingClientRect();
+        var old = previous.get(el);
         return {
           el: el,
-          top: pageTop(el),
+          top: rect.top + window.scrollY,
           height: rect.height || el.offsetHeight || 1,
-          depth: (parseFloat(el.getAttribute("data-parallax")) || 0) * scale,
-          last: null
+          depth: clamp((parseFloat(el.getAttribute("data-parallax")) || 0) * scale, -64, 64),
+          current: old ? old.current : 0,
+          target: old ? old.target : 0,
+          last: old ? old.last : null
         };
       });
       knownHeight = document.documentElement.scrollHeight;
       dirty = false;
     }
 
-    function draw() {
-      queued = false;
+    function updateTargets() {
+      targetQueued = false;
       if (dirty || document.documentElement.scrollHeight !== knownHeight) { measure(); }
 
       var y = window.scrollY;
@@ -1631,39 +1667,77 @@
       for (var i = 0; i < geometry.length; i++) {
         var g = geometry[i];
         if (g.depth === 0) {
-          if (g.last !== 0) { g.el.style.setProperty("--parallax-y", "0px"); g.last = 0; }
+          g.target = 0;
           continue;
         }
 
-        var bottom = g.top + g.height;
-        if (bottom < y - vh * 0.35 || g.top > y + vh * 1.35) { continue; }
-
         var centre = g.top + g.height * 0.5;
         var range = vh * 0.5 + g.height * 0.5;
-        var p = clamp((y + vh * 0.5 - centre) / Math.max(range, 1), -1, 1);
-        /* data-parallax describes total travel, so the element only moves
-           half that value to either side of its resting position. */
-        var offset = p * g.depth * 0.5;
-        if (g.last !== null && Math.abs(offset - g.last) < 0.04) { continue; }
-        g.last = offset;
-        g.el.style.setProperty("--parallax-y", offset.toFixed(2) + "px");
+        var progress = clamp((y + vh * 0.5 - centre) / Math.max(range, 1), -1, 1);
+
+        /* The declared depth is the complete top-to-bottom travel. Keeping
+           half on either side preserves the original composition at centre. */
+        g.target = progress * g.depth * 0.5;
+      }
+      startRender();
+    }
+
+    function render() {
+      var moving = false;
+      for (var i = 0; i < geometry.length; i++) {
+        var g = geometry[i];
+        g.current = lerp(g.current, g.target, 0.14);
+        if (Math.abs(g.target - g.current) < 0.025) {
+          g.current = g.target;
+        } else {
+          moving = true;
+        }
+
+        if (g.last === null || Math.abs(g.current - g.last) >= 0.02) {
+          g.last = g.current;
+          g.el.style.setProperty("--parallax-y", g.current.toFixed(2) + "px");
+        }
+      }
+
+      if (moving) {
+        requestAnimationFrame(render);
+      } else {
+        rendering = false;
       }
     }
 
+    function startRender() {
+      if (rendering) { return; }
+      rendering = true;
+      requestAnimationFrame(render);
+    }
+
     function schedule() {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(draw);
+      if (targetQueued) { return; }
+      targetQueued = true;
+      requestAnimationFrame(updateTargets);
     }
 
     window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", function () { dirty = true; schedule(); }, { passive: true });
-    window.addEventListener("load", function () { dirty = true; schedule(); });
+    window.addEventListener("resize", function () {
+      dirty = true;
+      schedule();
+    }, { passive: true });
+    window.addEventListener("load", function () {
+      dirty = true;
+      schedule();
+    });
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () { dirty = true; schedule(); });
+      document.fonts.ready.then(function () {
+        dirty = true;
+        schedule();
+      });
     }
     if ("MutationObserver" in window) {
-      var sheetObserver = new MutationObserver(function () { dirty = true; schedule(); });
+      var sheetObserver = new MutationObserver(function () {
+        dirty = true;
+        schedule();
+      });
       [].slice.call(document.querySelectorAll(".paper-sheet")).forEach(function (sheet) {
         sheetObserver.observe(sheet, { attributes: true, attributeFilter: ["class"] });
       });
