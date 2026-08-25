@@ -1164,7 +1164,7 @@ h1, h2, h3, p { margin: 0; }
 /* ============================================================
    10. FOOTER
    ============================================================ */
-.site-footer { position: relative; background: var(--void); }
+.site-footer { position: relative; background: var(--void-deep); }
 
 .torn-edge {
   height: 38px;
