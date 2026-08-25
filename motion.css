@@ -840,6 +840,21 @@
 .sp-js .tl-logo { transition: transform 380ms var(--ep); }
 .sp-js .timeline-item:hover .tl-logo { transform: scale(1.06) rotate(-2deg); }
 
+/* Career uses the individual translate property so its subtle cursor depth
+   composes with the existing row hover and logo scale/rotation instead of
+   overwriting them. Final/resting layout remains unchanged. */
+.sp-js .timeline-item .tl-logo,
+.sp-js .timeline-item .tl-body,
+.sp-js .timeline-item .tl-date {
+  translate: var(--career-x, 0px) var(--career-y, 0px);
+  will-change: translate;
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .timeline-item .tl-logo,
+  .sp-js .timeline-item .tl-body,
+  .sp-js .timeline-item .tl-date { translate: 0 0 !important; }
+}
+
 /* Hand-drawn squiggles draw themselves in when the section arrives */
 .sp-js .squiggle path { stroke-dasharray: 220; stroke-dashoffset: 220; }
 .sp-js .squiggle.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--ep); }

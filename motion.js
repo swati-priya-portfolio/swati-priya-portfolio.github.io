@@ -1371,27 +1371,33 @@
         var end = sectionTop + sectionHeight - vh * .62;
         if (end <= start) { end = start + Math.max(vh * .72, 520); }
         var p = clamp((y - start) / Math.max(end - start, 1), 0, 1);
-        reached(eyebrow, p >= .03);
-        reached(curiosity, p >= .07);
-        var points = [.14,.22,.30,.38];
-        steps.forEach(function (step, i) { reached(step, p >= (points[i] || .38)); });
-        arrows.forEach(function (arrow, i) { reached(arrow, p >= (points[i + 1] || .38)); });
-        reached(design, p >= .44);
-        reached(body, p >= .50);
+        /* Reading beat: the Origin copy should be understood in one natural
+           scroll gesture, not rationed out line by line. */
+        var readingOn = p >= .055;
+        reached(eyebrow, readingOn);
+        reached(curiosity, readingOn);
+        steps.forEach(function (step) { reached(step, readingOn); });
+        arrows.forEach(function (arrow) { reached(arrow, readingOn); });
+        reached(design, p >= .095);
+        reached(body, p >= .135);
 
-        var line = ease(span(p, .52, .91));
+        /* The professional journey is the sequential part. The line follows
+           scroll continuously in both directions; each role gets its own beat. */
+        var line = ease(span(p, .24, .92));
         furthestLine = line;
         story.style.setProperty("--timeline-draw", line.toFixed(4));
-        var itemPoints = [.60,.70,.80,.89];
-        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .89)); });
-        if (p >= .95) { showAll(); }
+        var itemPoints = [.34,.50,.67,.84];
+        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .84)); });
+        if (p >= .96) { showAll(); }
       } else {
-        reached(eyebrow, y >= eyebrowThreshold);
-        reached(curiosity, y >= curiosityThreshold);
-        steps.forEach(function (step, i) { reached(step, y >= stepThresholds[i]); });
-        arrows.forEach(function (arrow, i) { reached(arrow, y >= (stepThresholds[i + 1] || designThreshold)); });
-        reached(design, y >= designThreshold);
-        reached(body, y >= bodyThreshold);
+        var readingThreshold = Math.min(eyebrowThreshold, curiosityThreshold);
+        var readingOn = y >= readingThreshold;
+        reached(eyebrow, readingOn);
+        reached(curiosity, readingOn);
+        steps.forEach(function (step) { reached(step, readingOn); });
+        arrows.forEach(function (arrow) { reached(arrow, readingOn); });
+        reached(design, y >= readingThreshold + 26);
+        reached(body, y >= readingThreshold + 58);
 
         var playhead = y + vh * .68;
         var lineRaw = clamp((playhead - lineStart) / lineLength, 0, 1);
@@ -1415,6 +1421,87 @@
     window.addEventListener("load", measure);
     if (document.fonts && document.fonts.ready) { document.fonts.ready.then(measure); }
     measure();
+  }
+
+  /* ==========================================================
+     11c. CAREER DEPTH — subtle pointer response, never a second Hero
+     The Hero is playful; career stays readable. Only existing children move:
+     logo + body drift toward the pointer, date drifts slightly away.
+     ========================================================== */
+  function careerDepth() {
+    var timeline = document.querySelector(".timeline");
+    if (!timeline || reduced || !finePointer) { return; }
+
+    var items = [].slice.call(timeline.querySelectorAll(".timeline-item"));
+    if (!items.length) { return; }
+
+    var active = false;
+    var current = items.map(function () { return { v: 0, x: 0, y: 0 }; });
+
+    timeline.addEventListener("pointerenter", function () { active = true; });
+    timeline.addEventListener("pointerleave", function () { active = false; });
+
+    function write(item, state) {
+      var logo = item.querySelector(".tl-logo");
+      var body = item.querySelector(".tl-body");
+      var date = item.querySelector(".tl-date");
+
+      var lx = state.x * 4.2 * state.v;
+      var ly = state.y * 3.6 * state.v;
+      var bx = state.x * 2.3 * state.v;
+      var by = state.y * 2.1 * state.v;
+      var dx = state.x * -1.4 * state.v;
+      var dy = state.y * -1.2 * state.v;
+
+      if (logo) {
+        logo.style.setProperty("--career-x", lx.toFixed(2) + "px");
+        logo.style.setProperty("--career-y", ly.toFixed(2) + "px");
+      }
+      if (body) {
+        body.style.setProperty("--career-x", bx.toFixed(2) + "px");
+        body.style.setProperty("--career-y", by.toFixed(2) + "px");
+      }
+      if (date) {
+        date.style.setProperty("--career-x", dx.toFixed(2) + "px");
+        date.style.setProperty("--career-y", dy.toFixed(2) + "px");
+      }
+    }
+
+    addJob(function () {
+      if (!ptr.has) { return; }
+
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var state = current[i];
+        var targetV = 0;
+        var targetX = 0;
+        var targetY = 0;
+
+        /* Do not animate unrevealed career rows. */
+        if (active && item.classList.contains("is-reached")) {
+          var r = item.getBoundingClientRect();
+          if (r.bottom > -80 && r.top < window.innerHeight + 80) {
+            var cx = r.left + r.width * 0.5;
+            var cy = r.top + r.height * 0.5;
+            var dx = ptr.x - cx;
+            var dy = ptr.y - cy;
+            var d = Math.sqrt(dx * dx * 0.28 + dy * dy);
+            var radius = Math.max(145, Math.min(230, r.height * 1.9));
+            var t = d < radius ? 1 - d / radius : 0;
+            t = t * t * (3 - 2 * t);
+            targetV = t;
+            targetX = clamp(dx / Math.max(r.width * 0.5, 1), -1, 1);
+            targetY = clamp(dy / Math.max(r.height * 0.72, 1), -1, 1);
+          }
+        }
+
+        state.v = lerp(state.v, targetV, active ? 0.16 : 0.12);
+        state.x = lerp(state.x, targetX, 0.16);
+        state.y = lerp(state.y, targetY, 0.16);
+        if (state.v < 0.002) { state.v = 0; }
+        write(item, state);
+      }
+    });
   }
 
   /* ==========================================================
@@ -1600,6 +1687,7 @@
     try { music(); } catch (e) {}
     try { sectionStories(); } catch (e) {}
     try { originStory(); } catch (e) {}
+    try { careerDepth(); } catch (e) {}
     try { scrollParallax(); } catch (e) {}
     try { footer(); } catch (e) {}
     try { easterEggs(); } catch (e) {}
