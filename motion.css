@@ -2905,11 +2905,10 @@
    and rises over it. Tall pages still scroll naturally because a sticky
    element taller than the viewport cannot trap its own content.
    ============================================================ */
-.paper-sheet,
-.sp-js.is-stable-flow .paper-sheet {
+.paper-sheet {
   margin-top: 0 !important;
-  min-height: 100vh !important;
-  min-height: 100svh !important;
+  min-height: 100vh;
+  min-height: 100svh;
   isolation: isolate;
   transform: none !important;
 }
@@ -2939,14 +2938,12 @@
 }
 
 @supports (position: sticky) {
-  .hero,
-  .sp-js.is-stable-flow .hero {
-    position: sticky !important;
-    top: 0 !important;
+  .hero {
+    position: sticky;
+    top: 0;
     z-index: 1;
   }
-  .paper-sheet,
-  .sp-js.is-stable-flow .paper-sheet {
+  .paper-sheet {
     position: sticky !important;
     top: 0 !important;
     inset-block-start: 0 !important;
@@ -2970,9 +2967,7 @@
    the same full-height pages remain in safe normal flow. */
 @supports not (position: sticky) {
   .hero,
-  .sp-js.is-stable-flow .hero,
-  .paper-sheet,
-  .sp-js.is-stable-flow .paper-sheet {
+  .paper-sheet {
     position: relative !important;
     top: auto !important;
   }
