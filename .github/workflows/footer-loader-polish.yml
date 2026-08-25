@@ -1,0 +1,26 @@
+name: Footer Loader Polish
+on:
+  push:
+    branches:
+      - fix/origin-story-motion-20260825
+    paths:
+      - tools/footer_loader_polish.py
+      - .github/workflows/footer-loader-polish.yml
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/footer_loader_polish.py
+      - run: |
+          git config user.name "ChatGPT Motion Repair"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html motion.js motion.css
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Polish footer focus CTA and loader visibility"
+            git push
+          fi
