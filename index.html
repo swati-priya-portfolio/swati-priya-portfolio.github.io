@@ -35,9 +35,9 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="stylesheet" href="styles.css?v=21" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=20" />
+  <link rel="stylesheet" href="motion.css?v=21" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -231,12 +231,14 @@
         </div>
       </div>
 
-      <!-- Proof strip: 4 metrics -->
+      <!-- Proof strip: 4 metrics. Each carries its own parallax depth, so the
+           row drifts apart and back together as the page moves rather than
+           sliding as one block. -->
       <ul class="proof-strip">
-        <li class="proof-item"><strong>4+ YRS</strong><span>Years in product design</span></li>
-        <li class="proof-item"><strong>2M+</strong><span>Parent ecosystem</span></li>
-        <li class="proof-item"><strong>6,500+</strong><span>Institution network</span></li>
-        <li class="proof-item"><strong>0&#8594;1</strong><span>Category launched</span></li>
+        <li class="proof-item" data-parallax="5"><strong>4+ YRS</strong><span>Years in product design</span></li>
+        <li class="proof-item" data-parallax="12"><strong>2M+</strong><span>Parent ecosystem</span></li>
+        <li class="proof-item" data-parallax="8"><strong>6,500+</strong><span>Institution network</span></li>
+        <li class="proof-item" data-parallax="15"><strong>0&#8594;1</strong><span>Category launched</span></li>
       </ul>
     </section>
 
@@ -693,7 +695,7 @@
     <span class="sp-top-label">PAGE ONE</span>
   </button>
 
-  <script src="script.js?v=20"></script>
-  <script src="motion.js?v=20"></script>
+  <script src="script.js?v=21"></script>
+  <script src="motion.js?v=21"></script>
 </body>
 </html>

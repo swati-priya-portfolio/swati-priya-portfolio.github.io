@@ -49,6 +49,12 @@
      1. LOADER — comic spider-hero snack loop (once per session)
      ========================================================== */
   function primeHero() {
+    // Staged before the loader lifts. metrics() used to add this at boot,
+    // which left a beat where the loader had already faded and the strip was
+    // sitting there at full opacity before blinking off to animate in.
+    var strip = document.querySelector(".proof-strip");
+    if (strip && !reduced) { strip.classList.add("is-metrics-ready"); }
+
     var hero = document.querySelector(".hero");
     if (!hero) { return; }
     hero.classList.add("motion-primed");
@@ -904,7 +910,7 @@
   function metrics() {
     var strip = document.querySelector(".proof-strip");
     if (!strip) { return; }
-    strip.classList.add("is-metrics-ready");
+    strip.classList.add("is-metrics-ready");   // no-op if primeHero got there first
 
     if (reduced || !("IntersectionObserver" in window)) {
       strip.classList.add("is-visible");

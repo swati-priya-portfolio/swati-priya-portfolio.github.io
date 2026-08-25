@@ -1098,10 +1098,14 @@
   -webkit-mask-repeat: no-repeat;
           mask-repeat: no-repeat;
 }
+/* The lip is the same silhouette lifted and painted cream, so what shows is a
+   band of exposed paper core following the tear exactly. It was 1px at 13%
+   alpha -- a hairline nobody could see against the black -- which is why the
+   seams read as a thin scribble instead of a page being torn away. */
 .paper-tear::before {
-  background: rgba(245, 239, 227, 0.13);
-  transform: translateY(-1px);
-  filter: drop-shadow(0 -2px 3px rgba(0, 0, 0, 0.25));
+  background: rgba(245, 239, 227, 0.9);
+  transform: translateY(-13px);
+  filter: drop-shadow(0 -4px 7px rgba(0, 0, 0, 0.6));
 }
 .paper-tear::after {
   background: var(--tear-surface);
@@ -1109,8 +1113,12 @@
 }
 
 .tear.paper-tear {
-  top: -42px;
-  height: 50px;
+  /* 50px could not hold the old silhouette, let alone one that actually
+     ranges. The masks are drawn on a 120-unit band; this is the room for it.
+     The overhang is what decides how far the tear reaches back into the
+     section above, so it is kept short enough to clear that section's text. */
+  top: -44px;
+  height: 88px;
   left: 0;
   right: 0;
   z-index: 3;
@@ -1122,27 +1130,27 @@
 
 .tear-a {
   --tear-surface: var(--void);
-  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 22C52 19 91 24 138 21C177 19 215 22 258 21L286 22 297 30 309 21C356 18 401 25 448 21C490 19 526 23 572 20L603 21 611 16 620 22C666 25 713 19 760 21C806 23 850 19 897 22L929 22 942 31 955 21C1002 18 1047 24 1095 22C1143 19 1190 23 1237 21L1261 20 1270 16 1279 22C1326 25 1376 19 1423 21C1472 23 1530 19 1600 21L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 120' preserveAspectRatio='none'%3E%3Cpath d='M0 29.76 L10.67 32.73 L21.33 34.69 L32 35.7 L42.67 36.26 L53.33 36.19 L64 37.81 L74.67 36.99 L85.33 33.57 L96 34.62 L106.7 30.88 L117.3 31.93 L128 35.11 L138.7 33.99 L149.3 33.12 L160 32.54 L170.7 35.88 L181.3 37.3 L192 38.31 L202.7 23.99 L213.3 41.35 L224 46.06 L234.7 48.53 L245.3 51.94 L256 50.77 L266.7 63.19 L277.3 80.06 L288 67.36 L298.7 57.32 L309.3 56.01 L320 55.84 L330.7 60.96 L341.3 61 L352 62.53 L362.7 51.53 L373.3 66.85 L384 61.32 L394.7 52.14 L405.3 63.22 L416 72.34 L426.7 71.59 L437.3 72.81 L448 72.72 L458.7 71.3 L469.3 71.06 L480 67.14 L490.7 63.09 L501.3 54.9 L512 43.88 L522.7 49.28 L533.3 55.38 L544 55.54 L554.7 53.71 L565.3 52.16 L576 49.68 L586.7 48.73 L597.3 56.87 L608 69.93 L618.7 59.85 L629.3 49.75 L640 50.4 L650.7 48.01 L661.3 45.94 L672 47.84 L682.7 44.36 L693.3 47.23 L704 46.29 L714.7 42 L725.3 41.89 L736 44.92 L746.7 47.63 L757.3 47.14 L768 48.27 L778.7 46.59 L789.3 46.8 L800 45.9 L810.7 47.89 L821.3 44.75 L832 48.18 L842.7 48.7 L853.3 35.77 L864 57.29 L874.7 59.78 L885.3 63.17 L896 58.14 L906.7 56.21 L917.3 54.05 L928 52.76 L938.7 53.27 L949.3 50.9 L960 47.22 L970.7 46.54 L981.3 42.67 L992 40.93 L1003 40.88 L1013 40.87 L1024 41.14 L1035 43.53 L1045 46.22 L1056 46.86 L1067 50 L1077 51.5 L1088 62.47 L1099 73.28 L1109 65.34 L1120 57.81 L1131 58.66 L1141 56.32 L1152 59.1 L1163 61.1 L1173 59.95 L1184 58.46 L1195 58.16 L1205 55.62 L1216 52.58 L1227 52.12 L1237 49.12 L1248 49.02 L1259 45.71 L1269 44.05 L1280 47 L1291 47.64 L1301 44.75 L1312 45.23 L1323 44.58 L1333 44.21 L1344 43.96 L1355 42.38 L1365 42.39 L1376 44.43 L1387 43.95 L1397 42.47 L1408 44.96 L1419 44.67 L1429 35.89 L1440 25.05 L1451 36.69 L1461 46.31 L1472 47.34 L1483 50.93 L1493 50.64 L1504 52.71 L1515 52.99 L1525 53.72 L1536 53.57 L1547 58.19 L1557 61.09 L1568 63.89 L1579 65.54 L1589 63.23 L1600 65.78 L1600 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
 }
 .tear.tear-a.paper-tear { top: 0; }
-.tear-a.paper-tear::before { background: rgba(245, 239, 227, 0.24); }
+.tear-a.paper-tear::before { background: rgba(245, 239, 227, 0.94); }
 .tear-b {
   --tear-surface: var(--void-warm);
-  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 20C44 23 83 18 126 21L173 21 184 28 196 20C241 18 279 24 324 22C368 19 409 23 454 21L486 20 495 15 503 22C550 26 595 19 640 21C688 23 736 19 781 22L809 22 821 30 833 21C880 18 923 24 970 21C1014 19 1058 23 1105 21L1144 20 1153 16 1162 22C1208 25 1253 19 1300 21L1332 22 1343 28 1355 21C1404 18 1452 24 1498 21C1532 20 1566 22 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 120' preserveAspectRatio='none'%3E%3Cpath d='M0 65.8 L10.67 66.83 L21.33 65.1 L32 62.73 L42.67 60.73 L53.33 58.13 L64 57.96 L74.67 56.42 L85.33 57.98 L96 56.74 L106.7 54.84 L117.3 53.13 L128 51.58 L138.7 42.63 L149.3 29.12 L160 43.28 L170.7 54.01 L181.3 53.03 L192 52.77 L202.7 52.27 L213.3 56.08 L224 56.17 L234.7 56.05 L245.3 43.56 L256 56.65 L266.7 58.4 L277.3 55.57 L288 56.03 L298.7 53.36 L309.3 55.85 L320 53.68 L330.7 53.13 L341.3 50.96 L352 52.33 L362.7 55.15 L373.3 55.22 L384 54.64 L394.7 54.96 L405.3 54.65 L416 55.27 L426.7 54.77 L437.3 56 L448 56.12 L458.7 56.42 L469.3 56.64 L480 54.73 L490.7 53.71 L501.3 50.29 L512 49.82 L522.7 47.93 L533.3 44.17 L544 46.08 L554.7 44.12 L565.3 43.22 L576 42.58 L586.7 44.5 L597.3 40.45 L608 42.13 L618.7 50.34 L629.3 60.5 L640 52.01 L650.7 47.55 L661.3 46.45 L672 50.42 L682.7 51.54 L693.3 53.97 L704 53.78 L714.7 53.74 L725.3 53.69 L736 53.85 L746.7 52.05 L757.3 50.84 L768 48.77 L778.7 50.38 L789.3 48.93 L800 20.63 L810.7 48.54 L821.3 44.9 L832 43.04 L842.7 43.8 L853.3 43.09 L864 45.92 L874.7 46.65 L885.3 45.85 L896 47.08 L906.7 37.51 L917.3 50.69 L928 49.61 L938.7 51.8 L949.3 59.08 L960 69.13 L970.7 63.62 L981.3 61.58 L992 66.86 L1003 68.36 L1013 67.07 L1024 70.18 L1035 69.71 L1045 65.88 L1056 65.3 L1067 62.67 L1077 64.68 L1088 61.47 L1099 58.94 L1109 58.06 L1120 56.33 L1131 55.21 L1141 53.13 L1152 63.46 L1163 79.19 L1173 69.24 L1184 58.06 L1195 56.31 L1205 57.9 L1216 60.16 L1227 62.36 L1237 61.58 L1248 62.08 L1259 63.36 L1269 63.59 L1280 63.61 L1291 65.43 L1301 64.11 L1312 62.58 L1323 62.13 L1333 61.56 L1344 60.42 L1355 61.7 L1365 63.66 L1376 59.31 L1387 78.83 L1397 72.99 L1408 72.24 L1419 75.58 L1429 75.73 L1440 73.97 L1451 73.33 L1461 74.15 L1472 71.43 L1483 72.48 L1493 72.91 L1504 76.7 L1515 79.66 L1525 80.64 L1536 82.35 L1547 83.7 L1557 83.3 L1568 87.25 L1579 87.69 L1589 83.75 L1600 84.42 L1600 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
 }
 .tear-c {
   --tear-surface: var(--void-deep);
-  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 22C50 18 96 24 143 21C188 19 231 23 276 22L309 22 321 31 334 21C380 18 424 23 471 20L503 19 512 15 521 22C568 26 612 20 659 22C705 24 750 19 797 21L836 21 846 27 857 21C904 18 948 24 994 21C1041 19 1087 23 1134 22L1162 21 1172 15 1181 22C1229 27 1274 19 1321 21L1354 22 1365 30 1378 21C1424 18 1470 23 1516 21C1544 20 1572 22 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 120' preserveAspectRatio='none'%3E%3Cpath d='M0 61.27 L10.67 60.99 L21.33 62.08 L32 64.34 L42.67 68.6 L53.33 69.07 L64 70.94 L74.67 68.48 L85.33 69.44 L96 64.72 L106.7 52.19 L117.3 40.33 L128 39.74 L138.7 65.26 L149.3 66.98 L160 63.47 L170.7 56.82 L181.3 64.74 L192 69.11 L202.7 76.79 L213.3 86.98 L224 75.21 L234.7 64.71 L245.3 64.99 L256 62.63 L266.7 60.26 L277.3 58.29 L288 52.82 L298.7 52.98 L309.3 56.11 L320 49.42 L330.7 59.6 L341.3 50.82 L352 46.06 L362.7 55.88 L373.3 62.34 L384 48.68 L394.7 67.07 L405.3 67.44 L416 67.66 L426.7 68.8 L437.3 66.88 L448 66.03 L458.7 64.82 L469.3 66.15 L480 64.67 L490.7 63.47 L501.3 68.42 L512 76.6 L522.7 70.15 L533.3 64.16 L544 65.67 L554.7 68.56 L565.3 73.66 L576 75.13 L586.7 79.2 L597.3 74.58 L608 72.56 L618.7 68.95 L629.3 67.08 L640 65.23 L650.7 62.47 L661.3 60.25 L672 58.3 L682.7 57.6 L693.3 57.81 L704 42.47 L714.7 64.16 L725.3 76.23 L736 61.67 L746.7 51.51 L757.3 52.37 L768 53.12 L778.7 53.6 L789.3 51.53 L800 54.71 L810.7 55.38 L821.3 56.43 L832 57.44 L842.7 55.3 L853.3 51.57 L864 51.64 L874.7 50.05 L885.3 48.07 L896 48.92 L906.7 49.1 L917.3 54.21 L928 56.43 L938.7 58.03 L949.3 58.34 L960 59.21 L970.7 59.43 L981.3 55.97 L992 50.34 L1003 51.8 L1013 54.81 L1024 52.67 L1035 55.54 L1045 44.62 L1056 56.43 L1067 59.33 L1077 60.92 L1088 61.71 L1099 64.46 L1109 66.68 L1120 70.42 L1131 71.97 L1141 72.64 L1152 73.39 L1163 73.23 L1173 72.77 L1184 73.78 L1195 73.84 L1205 71.46 L1216 70.24 L1227 64.61 L1237 60.99 L1248 62.82 L1259 60.85 L1269 62.72 L1280 62.88 L1291 67.33 L1301 68.69 L1312 67.33 L1323 67.59 L1333 63.36 L1344 60.13 L1355 58.18 L1365 59.24 L1376 62.39 L1387 62.44 L1397 64.08 L1408 62.41 L1419 65.19 L1429 56.2 L1440 46.62 L1451 58.43 L1461 67.36 L1472 67.43 L1483 67.37 L1493 64.24 L1504 64.31 L1515 64.76 L1525 61.54 L1536 61.52 L1547 60.37 L1557 60.94 L1568 64.38 L1579 64.61 L1589 66.51 L1600 68.49 L1600 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
 }
 .tear-d {
   --tear-surface: var(--void-deep);
-  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 56' preserveAspectRatio='none'%3E%3Cpath d='M0 20C46 24 89 18 135 21L168 22 179 29 191 20C238 18 281 23 327 21C372 19 414 24 460 22L493 21 502 16 511 22C559 26 605 19 652 21L689 22 701 30 714 21C760 18 803 24 850 22C897 19 943 23 990 21L1022 20 1031 15 1040 22C1087 27 1131 19 1179 21C1225 23 1269 19 1316 22L1352 22 1363 28 1375 21C1422 18 1466 24 1512 21C1541 20 1571 22 1600 20L1600 56 0 56Z' fill='black'/%3E%3C/svg%3E");
+  --tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 120' preserveAspectRatio='none'%3E%3Cpath d='M0 38.84 L10.67 37.93 L21.33 39.95 L32 42.02 L42.67 46.62 L53.33 47.1 L64 47.71 L74.67 59.98 L85.33 72.01 L96 58.46 L106.7 49.61 L117.3 48.47 L128 49.19 L138.7 48.66 L149.3 48.64 L160 49.57 L170.7 45.83 L181.3 45.31 L192 45.04 L202.7 45.54 L213.3 45.81 L224 44.73 L234.7 43.62 L245.3 40.25 L256 40.81 L266.7 37.28 L277.3 37.77 L288 34.42 L298.7 35.36 L309.3 32.43 L320 33.33 L330.7 33.7 L341.3 35.31 L352 20.59 L362.7 33.68 L373.3 37.75 L384 36.22 L394.7 36.66 L405.3 37.06 L416 39.97 L426.7 39.68 L437.3 38.94 L448 40.27 L458.7 40.68 L469.3 39.42 L480 38.59 L490.7 46.94 L501.3 60.02 L512 50.56 L522.7 43.24 L533.3 45.57 L544 45.79 L554.7 45.02 L565.3 43.81 L576 46.45 L586.7 48.29 L597.3 47.25 L608 45.99 L618.7 45.62 L629.3 34.71 L640 41.9 L650.7 41.19 L661.3 40.29 L672 42.87 L682.7 43.21 L693.3 45.14 L704 47.35 L714.7 47.82 L725.3 46.91 L736 48.72 L746.7 51.36 L757.3 53.93 L768 47.29 L778.7 36.54 L789.3 47.89 L800 58.97 L810.7 59.5 L821.3 59.81 L832 59.03 L842.7 62.06 L853.3 62.75 L864 62.88 L874.7 60.69 L885.3 60.14 L896 65.09 L906.7 64.72 L917.3 63.31 L928 63.03 L938.7 65.58 L949.3 66.66 L960 63.58 L970.7 62.85 L981.3 59.53 L992 57.71 L1003 57.65 L1013 57.49 L1024 56.43 L1035 55.23 L1045 56.4 L1056 57.19 L1067 56.07 L1077 58.68 L1088 59.78 L1099 62.96 L1109 64.41 L1120 68.29 L1131 70.21 L1141 81.44 L1152 92.37 L1163 80.36 L1173 69.73 L1184 69.29 L1195 69.75 L1205 64.61 L1216 61.41 L1227 61.44 L1237 59.87 L1248 59.23 L1259 56.83 L1269 57.28 L1280 54.41 L1291 52.45 L1301 62.01 L1312 73.09 L1323 63.77 L1333 60.02 L1344 61.89 L1355 65.23 L1365 70.83 L1376 71.86 L1387 59.84 L1397 74.22 L1408 76.89 L1419 76.83 L1429 79.02 L1440 81.56 L1451 78.52 L1461 77.17 L1472 78.1 L1483 77.41 L1493 75.09 L1504 76.94 L1515 74.86 L1525 72.59 L1536 69.02 L1547 69.83 L1557 66.75 L1568 64.09 L1579 63.64 L1589 63.8 L1600 63.82 L1600 120 L0 120 Z' fill='black'/%3E%3C/svg%3E");
 }
 
 /* Footer keeps its existing 38px flow space, but now uses the same vector
    construction and reveal behaviour as the three section overlaps. */
 .torn-edge.paper-tear {
-  height: 38px;
+  height: 74px;
   background: none;
   -webkit-mask-image: none;
           mask-image: none;
@@ -1166,8 +1174,8 @@
 }
 
 @media (max-width: 700px) {
-  .tear.paper-tear { top: -28px; height: 34px; }
-  .torn-edge.paper-tear { height: 30px; }
+  .tear.paper-tear { top: -32px; height: 62px; }
+  .torn-edge.paper-tear { height: 52px; }
 }
 
 
@@ -1437,20 +1445,38 @@
 }
 .sp-js .hero.is-exploring .hero-sketch { opacity: 0.78; }
 
-/* Metrics are the deliberate calm beat after the Hero. */
+/* Metrics are the deliberate calm beat after the Hero. They arrive one at a
+   time -- the stagger used to be 70ms apart, which read as one block with a
+   soft edge -- each from its own distance, number first and description
+   behind it. The sideways drift as you scroll is data-parallax on each item. */
 .sp-js .proof-strip.is-metrics-ready .proof-item {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(var(--m-in, 22px)) scale(0.975);
 }
 .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item {
   opacity: 1;
   transform: none;
-  transition: opacity 440ms linear, transform 560ms var(--ep);
+  transition: opacity 500ms linear, transform 720ms var(--ep);
 }
-.sp-js .proof-strip.is-visible .proof-item:nth-child(2) { transition-delay: 70ms; }
-.sp-js .proof-strip.is-visible .proof-item:nth-child(3) { transition-delay: 140ms; }
-.sp-js .proof-strip.is-visible .proof-item:nth-child(4) { transition-delay: 210ms; }
-.sp-js .proof-item span { transition: opacity 380ms linear 100ms; }
+.sp-js .proof-strip .proof-item:nth-child(1) { --m-in: 18px; }
+.sp-js .proof-strip .proof-item:nth-child(2) { --m-in: 27px; }
+.sp-js .proof-strip .proof-item:nth-child(3) { --m-in: 21px; }
+.sp-js .proof-strip .proof-item:nth-child(4) { --m-in: 31px; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(2) { transition-delay: 140ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(3) { transition-delay: 280ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(4) { transition-delay: 420ms; }
+
+/* The number lands, then its description catches up. */
+.sp-js .proof-strip.is-metrics-ready .proof-item span {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 420ms linear, transform 520ms var(--ep);
+}
+.sp-js .proof-strip.is-metrics-ready.is-visible .proof-item span { opacity: 1; transform: none; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(1) span { transition-delay: 230ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(2) span { transition-delay: 370ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(3) span { transition-delay: 510ms; }
+.sp-js .proof-strip.is-visible .proof-item:nth-child(4) span { transition-delay: 650ms; }
 
 /* Two-dimensional issue sleeves: no 3D camera, no whole-card tilt. */
 .sp-js .case-grid { perspective: none; }
@@ -1933,6 +1959,7 @@
 @media (prefers-reduced-motion: reduce) {
   .sp-js .hero.motion-primed .reveal,
   .sp-js .proof-strip.is-metrics-ready .proof-item,
+  .sp-js .proof-strip.is-metrics-ready .proof-item span,
   .sp-js .story-col.is-origin-ready .origin-design,
   .sp-js .story-col.is-origin-ready .story-head .eyebrow,
   .sp-js .story-col.is-origin-ready .origin-curiosity,
@@ -1947,7 +1974,7 @@
     transform: none !important;
   }
   .sp-js .story-col.is-origin-ready .origin-arrow path { stroke-dashoffset: 0 !important; }
-  .sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 100% 3px, 88% 2px !important; }
+  .sp-js .story-col.is-origin-ready .origin-design .underlined { background-size: 100% 2.5px, 84% 2px !important; }
   .sp-js [data-parallax] { translate: none !important; will-change: auto; }
   .sp-js .player-art, .footer-grow { transform: none !important; }
   .sp-js .behind.is-behind-ready .behind-head .eyebrow,
@@ -2705,3 +2732,7 @@
 @media (pointer: coarse) {
   .sp-js .polaroid.sp-settle.is-visible:hover { transform: rotate(-2.2deg); }
 }
+
+/* The tear now reaches further back into the board above it, so the two
+   notes move up out of its way. */
+.board-notes-glyph { bottom: 34px; }
