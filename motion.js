@@ -194,26 +194,26 @@
       var ny = rawNy * current.on;
 
       if (character) {
-        character.style.setProperty("--hero-shell-x", (nx * 3.5).toFixed(2) + "px");
-        character.style.setProperty("--hero-shell-y", (ny * 2.5).toFixed(2) + "px");
+        character.style.setProperty("--hero-shell-x", (nx * 5.5).toFixed(2) + "px");
+        character.style.setProperty("--hero-shell-y", (ny * 4.0).toFixed(2) + "px");
       }
       if (art) {
-        art.style.setProperty("--px", (nx * 12).toFixed(2) + "px");
-        art.style.setProperty("--py", (ny * 9).toFixed(2) + "px");
-        art.style.setProperty("--hero-tilt", (nx * 0.65).toFixed(3) + "deg");
-        art.style.setProperty("--hero-scale", (1 + current.on * 0.006).toFixed(4));
+        art.style.setProperty("--px", (nx * 18).toFixed(2) + "px");
+        art.style.setProperty("--py", (ny * 13).toFixed(2) + "px");
+        art.style.setProperty("--hero-tilt", (nx * 1.0).toFixed(3) + "deg");
+        art.style.setProperty("--hero-scale", (1 + current.on * 0.009).toFixed(4));
       }
       if (sketch) {
-        sketch.style.setProperty("--bx", (nx * -4).toFixed(2) + "px");
-        sketch.style.setProperty("--by", (ny * -3).toFixed(2) + "px");
+        sketch.style.setProperty("--bx", (nx * -6).toFixed(2) + "px");
+        sketch.style.setProperty("--by", (ny * -4.5).toFixed(2) + "px");
       }
       for (var i = 0; i < speeches.length; i++) {
         var s = speeches[i];
         var rot = s.getAttribute("data-rot") || "0";
         s.style.setProperty("--speech-rot", rot + "deg");
         /* Speech sits in a shallower plane, moving opposite the character. */
-        s.style.setProperty("--speech-x", (nx * -8).toFixed(2) + "px");
-        s.style.setProperty("--speech-y", (ny * -6).toFixed(2) + "px");
+        s.style.setProperty("--speech-x", (nx * -10).toFixed(2) + "px");
+        s.style.setProperty("--speech-y", (ny * -8).toFixed(2) + "px");
       }
     });
   }
@@ -1384,26 +1384,24 @@
         var travel = clamp(vh * .92, 640, 920);
         var p = clamp((y - start) / travel, 0, 1);
 
-        reached(eyebrow, p >= .025);
-        reached(curiosity, p >= .045);
-        var readingPoints = [.070,.105,.140,.175];
-        var arrowPoints = [.090,.125,.160];
-        steps.forEach(function (step, i) {
-          reached(step, p >= (readingPoints[i] || .175));
-        });
-        arrows.forEach(function (arrow, i) {
-          reached(arrow, p >= (arrowPoints[i] || .160));
-        });
-        reached(design, p >= .205);
-        reached(body, p >= .235);
+        /* One scroll trigger starts the reading choreography. The individual
+           thoughts then stagger automatically in CSS: WHY -> LISTEN -> OBSERVE
+           -> THEN I DESIGN -> DESIGN FOLLOWED -> body. No extra wheel gestures. */
+        var readingOn = p >= .045;
+        reached(eyebrow, readingOn);
+        reached(curiosity, readingOn);
+        steps.forEach(function (step) { reached(step, readingOn); });
+        arrows.forEach(function (arrow) { reached(arrow, readingOn); });
+        reached(design, readingOn);
+        reached(body, readingOn);
 
-        /* Professional journey: still one-by-one, but all within the same
-           continuous scroll sequence rather than one wheel gesture per role. */
-        var line = ease(span(p, .285, .94));
+        /* Career still arrives in order, but the four roles are compressed into
+           one continuous scroll passage instead of one scroll per company. */
+        var line = ease(span(p, .20, .68));
         furthestLine = line;
         story.style.setProperty("--timeline-draw", line.toFixed(4));
-        var itemPoints = [.375,.525,.675,.825];
-        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .825)); });
+        var itemPoints = [.30,.40,.50,.60];
+        items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .60)); });
         if (p >= .96) { showAll(); }
       } else {
         var readingThreshold = Math.min(eyebrowThreshold, curiosityThreshold);
@@ -1412,8 +1410,8 @@
         reached(curiosity, readingOn);
         steps.forEach(function (step) { reached(step, readingOn); });
         arrows.forEach(function (arrow) { reached(arrow, readingOn); });
-        reached(design, y >= readingThreshold + 26);
-        reached(body, y >= readingThreshold + 58);
+        reached(design, readingOn);
+        reached(body, readingOn);
 
         var playhead = y + vh * .68;
         var lineRaw = clamp((playhead - lineStart) / lineLength, 0, 1);
@@ -1516,6 +1514,97 @@
         state.y = lerp(state.y, targetY, 0.16);
         if (state.v < 0.002) { state.v = 0; }
         write(item, state);
+      }
+    });
+  }
+
+  /* ==========================================================
+     11d. ABOUT POINTER DEPTH — the "That's me!" cluster responds to mouse
+     Existing scroll parallax remains; this only adds a small x/y depth layer.
+     ========================================================== */
+  function aboutPointerDepth() {
+    var section = document.querySelector(".about");
+    if (!section || reduced || !finePointer) { return; }
+
+    var targets = [
+      { el: section.querySelector(".thats-me"), x: 11, y: 8 },
+      { el: section.querySelector(".thats-me-arrow"), x: 8, y: 6 },
+      { el: section.querySelector(".polaroid"), x: 6, y: 5 },
+      { el: section.querySelector(".sticky-note"), x: -8, y: -6 },
+      { el: section.querySelector(".tools"), x: 4, y: 3 }
+    ].filter(function (t) { return !!t.el; });
+    if (!targets.length) { return; }
+
+    var active = false;
+    var rect = null;
+    var tx = 0, ty = 0, cx = 0, cy = 0;
+
+    function measure() { rect = section.getBoundingClientRect(); }
+    section.addEventListener("pointerenter", function () { active = true; measure(); });
+    section.addEventListener("pointerleave", function () { active = false; tx = 0; ty = 0; });
+    section.addEventListener("pointermove", function (e) {
+      if (!rect) { measure(); }
+      tx = clamp(((e.clientX - rect.left) / Math.max(rect.width, 1) - .5) * 2, -1, 1);
+      ty = clamp(((e.clientY - rect.top) / Math.max(rect.height, 1) - .5) * 2, -1, 1);
+    }, { passive: true });
+    window.addEventListener("resize", function () { rect = null; }, { passive: true });
+    window.addEventListener("scroll", function () { rect = null; }, { passive: true });
+
+    addJob(function () {
+      var gx = active ? tx : 0;
+      var gy = active ? ty : 0;
+      cx = lerp(cx, gx, .13);
+      cy = lerp(cy, gy, .13);
+      targets.forEach(function (t) {
+        t.el.style.setProperty("--about-x", (cx * t.x).toFixed(2) + "px");
+        t.el.style.setProperty("--about-y", (cy * t.y).toFixed(2) + "px");
+      });
+    });
+  }
+
+  /* ==========================================================
+     11e. FOOTER POINTER DEPTH — headline still dances like Hero; the existing
+     cover gets a quieter physical response so the final page also feels alive.
+     ========================================================== */
+  function footerPointerDepth() {
+    var foot = document.querySelector(".site-footer");
+    var cover = foot && foot.querySelector(".footer-cover");
+    if (!foot || !cover || reduced || !finePointer) { return; }
+
+    var card = cover.querySelector(".cover-card");
+    var caption = cover.querySelector(".cover-caption");
+    var water = cover.querySelector(".footer-water");
+    var active = false;
+    var rect = null;
+    var tx = 0, ty = 0, cx = 0, cy = 0;
+
+    function measure() { rect = cover.getBoundingClientRect(); }
+    cover.addEventListener("pointerenter", function () { active = true; measure(); });
+    cover.addEventListener("pointerleave", function () { active = false; tx = 0; ty = 0; });
+    cover.addEventListener("pointermove", function (e) {
+      if (!rect) { measure(); }
+      tx = clamp(((e.clientX - rect.left) / Math.max(rect.width, 1) - .5) * 2, -1, 1);
+      ty = clamp(((e.clientY - rect.top) / Math.max(rect.height, 1) - .5) * 2, -1, 1);
+    }, { passive: true });
+    window.addEventListener("resize", function () { rect = null; }, { passive: true });
+    window.addEventListener("scroll", function () { rect = null; }, { passive: true });
+
+    addJob(function () {
+      var gx = active ? tx : 0;
+      var gy = active ? ty : 0;
+      cx = lerp(cx, gx, .14);
+      cy = lerp(cy, gy, .14);
+      if (card) {
+        card.style.setProperty("--footer-depth-x", (cx * 10).toFixed(2) + "px");
+        card.style.setProperty("--footer-depth-y", (cy * 7).toFixed(2) + "px");
+      }
+      if (caption) {
+        caption.style.setProperty("--footer-depth-x", (cx * -4).toFixed(2) + "px");
+        caption.style.setProperty("--footer-depth-y", (cy * -3).toFixed(2) + "px");
+      }
+      if (water) {
+        water.style.setProperty("--footer-depth-x", (cx * 5).toFixed(2) + "px");
+        water.style.setProperty("--footer-depth-y", (cy * 4).toFixed(2) + "px");
       }
     });
   }
@@ -1704,8 +1793,10 @@
     try { sectionStories(); } catch (e) {}
     try { originStory(); } catch (e) {}
     try { careerDepth(); } catch (e) {}
+    try { aboutPointerDepth(); } catch (e) {}
     try { scrollParallax(); } catch (e) {}
     try { footer(); } catch (e) {}
+    try { footerPointerDepth(); } catch (e) {}
     try { easterEggs(); } catch (e) {}
     try { wayfinding(); } catch (e) {}
   }

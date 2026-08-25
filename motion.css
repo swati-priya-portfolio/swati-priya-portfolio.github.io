@@ -870,6 +870,31 @@
   .sp-js .timeline-item .tl-date { translate: 0 0 !important; }
 }
 
+
+/* About mouse depth composes with data-parallax instead of replacing it. */
+.sp-js .about [data-parallax] {
+  translate: var(--about-x, 0px) calc(var(--parallax-y, 0px) + var(--about-y, 0px));
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .about [data-parallax] { --about-x: 0px !important; --about-y: 0px !important; }
+}
+
+
+/* Company icons breathe very slowly after reveal. This is autonomous motion,
+   not tied to scrolling, and stays intentionally tiny. */
+@keyframes sp-career-logo-drift {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  38% { transform: translateY(-2.5px) rotate(-0.7deg); }
+  70% { transform: translateY(1px) rotate(0.55deg); }
+}
+.sp-js .timeline-item.is-reached .tl-logo img {
+  animation: sp-career-logo-drift 5.2s ease-in-out infinite;
+  transform-origin: center center;
+}
+.sp-js .timeline-item:nth-child(2).is-reached .tl-logo img { animation-delay: -1.25s; animation-duration: 5.8s; }
+.sp-js .timeline-item:nth-child(3).is-reached .tl-logo img { animation-delay: -2.4s; animation-duration: 6.2s; }
+.sp-js .timeline-item:nth-child(4).is-reached .tl-logo img { animation-delay: -3.1s; animation-duration: 5.6s; }
+
 /* Hand-drawn squiggles draw themselves in when the section arrives */
 .sp-js .squiggle path { stroke-dasharray: 220; stroke-dashoffset: 220; }
 .sp-js .squiggle.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 900ms var(--ep); }
@@ -903,6 +928,11 @@
 .sp-js .tl-role a:hover::after { transform: scaleX(1); }
 .sp-js .link-arrow { display: inline-block; transition: transform 280ms var(--ep); }
 .sp-js a:hover > .link-arrow { transform: translate(3px, -3px); }
+
+
+/* Career company names stay clean: no hover underline / marker stroke. */
+.sp-js .tl-role a { text-decoration: none !important; }
+.sp-js .tl-role a::after { content: none !important; display: none !important; }
 
 /* ============================================================
    13. FOOTER — the last surprise
@@ -961,6 +991,21 @@
 .sp-js .site-footer.is-talking .footer-bubble {
   opacity: 1;
   transform: translate(-50%, 0) rotate(-1deg);
+}
+
+
+/* Footer cover gets a quieter mouse-depth response beneath the dancing title. */
+.sp-js .footer-cover .cover-card,
+.sp-js .footer-cover .cover-caption,
+.sp-js .footer-cover .footer-water {
+  translate: var(--footer-depth-x, 0px) var(--footer-depth-y, 0px);
+  will-change: translate;
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .footer-cover .cover-card,
+  .sp-js .footer-cover .cover-caption,
+  .sp-js .footer-cover .footer-water { translate: 0 0 !important; animation: none !important; }
+  .sp-js .timeline-item .tl-logo img { animation: none !important; }
 }
 
 /* The cover card peeks over the bubble */
@@ -1591,6 +1636,21 @@
 .sp-js .drives.is-drives-ready .drives-list li.is-beat-reached p { opacity: 1; transform: none; transition-delay: 90ms; }
 .sp-js .drives.is-drives-ready:not(.is-title-reached) .squiggle path { stroke-dashoffset: 220 !important; }
 
+
+/* What Drives Me stays a calm strip, but its copy responds when explored. */
+@media (pointer: fine) {
+  .sp-js .drives.is-drives-ready .drives-list li.is-beat-reached:hover p {
+    transition-delay: 0ms;
+    transform: translateY(-5px) scale(1.025);
+  }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(1).is-beat-reached:hover p { transform: translate(-2px, -5px) rotate(-.45deg) scale(1.025); }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(2).is-beat-reached:hover p { transform: translate(2px, -5px) rotate(.35deg) scale(1.025); }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(3).is-beat-reached:hover p { transform: translate(-1px, -5px) rotate(-.3deg) scale(1.025); }
+  .sp-js .drives.is-drives-ready .drives-list li:nth-child(4).is-beat-reached:hover p { transform: translate(2px, -5px) rotate(.45deg) scale(1.025); }
+  .sp-js .drives.is-drives-ready.is-title-reached .drives-title:hover h3 { transform: translateY(-2px) rotate(-.25deg); }
+  .sp-js .drives.is-drives-ready .drives-title h3 { transition: transform 320ms var(--ep); }
+}
+
 /* Final chapter: scale the complete title, then let the contact details and
    cover arrive. The watering control remains a click-only easter egg. */
 .sp-js .site-footer.is-footer-story-ready .footer-story.sp-reveal { opacity: 1; transform: none; }
@@ -1740,6 +1800,21 @@
   transform: none;
 }
 .sp-js .story-col.is-origin-ready .origin-arrow.is-reached path { stroke-dashoffset: 0; }
+
+/* One scroll event starts the Origin reading beat; these delays make the
+   existing lines arrive automatically one-by-one without extra scrolling. */
+.sp-js .story-col.is-origin-ready .story-head .eyebrow.is-reached { transition-delay: 0ms; }
+.sp-js .story-col.is-origin-ready .origin-curiosity.is-reached { transition-delay: 60ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(1).is-reached { transition-delay: 150ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(1).is-reached { transition-delay: 235ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(2).is-reached { transition-delay: 320ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(2).is-reached { transition-delay: 405ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(3).is-reached { transition-delay: 490ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(3).is-reached { transition-delay: 575ms; }
+.sp-js .story-col.is-origin-ready .origin-step:nth-of-type(4).is-reached { transition-delay: 660ms; }
+.sp-js .story-col.is-origin-ready .origin-design.is-reached { transition-delay: 790ms; }
+.sp-js .story-col.is-origin-ready .story-body.is-reached { transition-delay: 920ms; }
+
 .sp-js .story-col.is-origin-ready .origin-design .underlined {
   background-size: 0 3px, 0 2px;
   transition: background-size 500ms var(--ep) 80ms;
