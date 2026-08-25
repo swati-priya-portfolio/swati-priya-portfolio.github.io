@@ -2035,12 +2035,12 @@
    changes: only the existing Origin elements change timing and motion. */
 .sp-js .story-col.is-origin-ready .origin-curiosity {
   opacity: 0;
-  transform: translate3d(-10px, 7px, 0) rotate(-0.7deg) scale(.992);
+  transform: translate3d(-4px, 3px, 0) rotate(-0.28deg) scale(.996);
   transform-origin: left center;
-  filter: blur(.45px);
-  transition: opacity 420ms linear,
-              transform 760ms cubic-bezier(.22,1,.36,1),
-              filter 520ms ease;
+  filter: blur(.18px);
+  transition: opacity 380ms linear,
+              transform 650ms cubic-bezier(.22,1,.36,1),
+              filter 420ms ease;
 }
 .sp-js .story-col.is-origin-ready .origin-curiosity.is-reached {
   opacity: 1;
@@ -2055,20 +2055,20 @@
   transition: opacity 340ms linear, transform 620ms cubic-bezier(.22,1,.36,1);
 }
 .sp-js .story-col.is-origin-ready .origin-step:nth-of-type(1) {
-  transform: translate3d(-7px, 8px, 0) rotate(-.35deg);
-  transition-delay: 120ms;
+  transform: translate3d(-4px, 5px, 0) rotate(-.18deg);
+  transition-delay: 140ms;
 }
 .sp-js .story-col.is-origin-ready .origin-step:nth-of-type(2) {
-  transform: translate3d(6px, 8px, 0) rotate(.24deg);
-  transition-delay: 330ms;
+  transform: translate3d(4px, 5px, 0) rotate(.14deg);
+  transition-delay: 300ms;
 }
 .sp-js .story-col.is-origin-ready .origin-step:nth-of-type(3) {
-  transform: translate3d(-5px, 8px, 0) rotate(-.2deg);
-  transition-delay: 540ms;
+  transform: translate3d(-3px, 5px, 0) rotate(-.12deg);
+  transition-delay: 460ms;
 }
 .sp-js .story-col.is-origin-ready .origin-step:nth-of-type(4) {
-  transform: translate3d(4px, 7px, 0) rotate(.14deg);
-  transition-delay: 760ms;
+  transform: translate3d(3px, 4px, 0) rotate(.08deg);
+  transition-delay: 620ms;
 }
 .sp-js .story-col.is-origin-ready .origin-step.is-reached {
   opacity: 1;
@@ -2080,13 +2080,13 @@
   transform: translateY(4px) scale(.94);
   transition: opacity 260ms linear, transform 440ms cubic-bezier(.22,1,.36,1);
 }
-.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(1) { transition-delay: 250ms; }
-.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(2) { transition-delay: 460ms; }
-.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(3) { transition-delay: 670ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(1) { transition-delay: 220ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(2) { transition-delay: 380ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(3) { transition-delay: 540ms; }
 .sp-js .story-col.is-origin-ready .origin-arrow.is-reached { opacity: 1; transform: none; }
-.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(1) path { transition-delay: 250ms; }
-.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(2) path { transition-delay: 460ms; }
-.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(3) path { transition-delay: 670ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(1) path { transition-delay: 220ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(2) path { transition-delay: 380ms; }
+.sp-js .story-col.is-origin-ready .origin-arrow:nth-of-type(3) path { transition-delay: 540ms; }
 
 /* After the final thought, hold briefly, then DESIGN FOLLOWED lands as the
    clarity payoff: straight, sharp and stable. */
@@ -2094,9 +2094,9 @@
   opacity: 0;
   transform: translate3d(0, 10px, 0) scale(.985);
   filter: blur(.35px);
-  transition: opacity 380ms linear 980ms,
-              transform 700ms cubic-bezier(.22,1,.36,1) 980ms,
-              filter 460ms ease 980ms;
+  transition: opacity 360ms linear 820ms,
+              transform 620ms cubic-bezier(.22,1,.36,1) 820ms,
+              filter 400ms ease 820ms;
 }
 .sp-js .story-col.is-origin-ready .origin-design.is-reached {
   opacity: 1;
@@ -2106,8 +2106,8 @@
 .sp-js .story-col.is-origin-ready .story-body {
   opacity: 0;
   transform: translateY(7px);
-  transition: opacity 420ms linear 1160ms,
-              transform 650ms cubic-bezier(.22,1,.36,1) 1160ms;
+  transition: opacity 400ms linear 980ms,
+              transform 600ms cubic-bezier(.22,1,.36,1) 980ms;
 }
 .sp-js .story-col.is-origin-ready .story-body.is-reached { opacity: 1; transform: none; }
 
