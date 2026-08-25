@@ -37,7 +37,7 @@
 
   <link rel="stylesheet" href="styles.css?v=22" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=28" />
+  <link rel="stylesheet" href="motion.css?v=25" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -53,10 +53,6 @@
       /* Failsafe: if motion.js never runs, nothing stays hidden. */
       setTimeout(function () {
         d.classList.remove("sp-loading");
-        d.classList.add("is-stable-flow");
-        document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll").forEach(function (el) {
-          el.classList.add("is-visible");
-        });
         var t = document.querySelector(".hero-title");
         var c = document.querySelector(".hero-character");
         if (t) { t.classList.add("is-in"); }
@@ -700,6 +696,6 @@
   </button>
 
   <script src="script.js?v=21"></script>
-  <script src="motion.js?v=28"></script>
+  <script src="motion.js?v=26"></script>
 </body>
 </html>

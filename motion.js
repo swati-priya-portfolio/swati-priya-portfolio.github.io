@@ -2192,7 +2192,141 @@
      more slowly, so it stays visible behind until the new page has covered it.
      This is scroll-scrubbed and therefore reverses naturally when scrolling up.
      ========================================================== */
+  function pageOverlap() {
+    var selectors = [
+      ["#home", "#case-studies"],
+      ["#case-studies", "#behind"],
+      ["#behind", "#about"],
+      ["#about", "#contact"]
+    ];
+    var pairs = selectors.map(function (pair) {
+      return {
+        previous: document.querySelector(pair[0]),
+        next: document.querySelector(pair[1]),
+        top: 0,
+        current: 0,
+        target: 0,
+        last: null
+      };
+    }).filter(function (pair) {
+      return pair.previous && pair.next;
+    });
+    if (!pairs.length) { return; }
 
+    pairs.forEach(function (pair) {
+      pair.previous.classList.add("fold-underlay");
+    });
+
+    if (reduced) {
+      pairs.forEach(function (pair) {
+        pair.previous.style.setProperty("--fold-underlay-y", "0px");
+      });
+      return;
+    }
+
+    var dirty = true;
+    var knownHeight = 0;
+    var queued = false;
+
+    function pageTop(el) {
+      var top = 0, node = el;
+      while (node) { top += node.offsetTop; node = node.offsetParent; }
+      return top;
+    }
+
+    function strength() {
+      if (window.innerWidth < 768) { return 0.36; }
+      if (window.innerWidth < 1080) { return 0.56; }
+      return 0.76;
+    }
+
+    function measure() {
+      pairs.forEach(function (pair) {
+        pair.top = pageTop(pair.next);
+      });
+      knownHeight = document.documentElement.scrollHeight;
+      dirty = false;
+    }
+
+    function updateTargets() {
+      queued = false;
+      if (dirty || document.documentElement.scrollHeight !== knownHeight) {
+        measure();
+      }
+
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+      var hold = strength();
+
+      pairs.forEach(function (pair) {
+        var nextTop = pair.top - y;
+        var enterAt = vh * 0.92;
+        var coverAt = vh * 0.16;
+        var releaseAt = -vh * 0.04;
+        var maxHold = (enterAt - coverAt) * hold;
+
+        if (nextTop >= enterAt || nextTop <= releaseAt) {
+          /* Before its own fold and after it has been fully covered, a page
+             returns to normal flow. This prevents several old pages remaining
+             visible as stacked horizontal bands. */
+          pair.target = 0;
+        } else if (nextTop > coverAt) {
+          /* Only the immediately incoming page overlaps the previous one. */
+          pair.target = (enterAt - nextTop) * hold;
+        } else {
+          /* Once the new page covers almost the whole viewport, release the
+             old page behind it before the following fold can begin. */
+          var releaseProgress = clamp(
+            (coverAt - nextTop) / Math.max(coverAt - releaseAt, 1),
+            0,
+            1
+          );
+          var easedRelease = releaseProgress * releaseProgress * (3 - 2 * releaseProgress);
+          pair.target = maxHold * (1 - easedRelease);
+        }
+      });
+    }
+
+    addJob(function () {
+      for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i];
+        pair.current = lerp(pair.current, pair.target, 0.28);
+        if (Math.abs(pair.target - pair.current) < 0.04) {
+          pair.current = pair.target;
+        }
+        if (pair.last === null || Math.abs(pair.current - pair.last) >= 0.03) {
+          pair.last = pair.current;
+          pair.previous.style.setProperty(
+            "--fold-underlay-y",
+            pair.current.toFixed(2) + "px"
+          );
+        }
+      }
+    });
+
+    function schedule() {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(updateTargets);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", function () {
+      dirty = true;
+      schedule();
+    }, { passive: true });
+    window.addEventListener("load", function () {
+      dirty = true;
+      schedule();
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        dirty = true;
+        schedule();
+      });
+    }
+    schedule();
+  }
 
   /* ==========================================================
      13. WAYFINDING
@@ -2240,103 +2374,6 @@
   }
 
   /* ==========================================================
-     STABLE RESPONSIVE FLOW
-     Core content must never depend on a narrow scroll milestone. The torn
-     dividers and optional depth effects remain, but every chapter is laid out
-     in normal document flow and starts in its complete, readable state.
-     ========================================================== */
-  function stablePageFlow() {
-    root.classList.add("is-stable-flow");
-
-    [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll")).forEach(function (el) {
-      el.classList.add("is-visible");
-    });
-    [].slice.call(document.querySelectorAll(".squiggle")).forEach(function (el) {
-      el.classList.add("is-drawn");
-    });
-
-    var track = document.querySelector(".case-track");
-    var stage = document.querySelector(".case-stage");
-    var grid = document.querySelector(".case-grid");
-    if (track) { track.style.height = ""; }
-    if (stage) {
-      stage.style.position = "";
-      stage.style.top = "";
-      stage.style.height = "";
-    }
-    if (grid) {
-      grid.classList.remove("is-staging");
-      grid.style.transform = "";
-      grid.style.pointerEvents = "";
-    }
-    [].slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
-      ["--sx", "--sy", "--ss", "--sr", "--so"].forEach(function (name) {
-        card.style.removeProperty(name);
-      });
-      card.style.zIndex = "";
-      card.style.boxShadow = "";
-      card.style.pointerEvents = "";
-      card.classList.remove("settle-in");
-      card.classList.add("is-visible");
-    });
-
-    var behind = document.querySelector(".behind");
-    if (behind) {
-      behind.classList.add(
-        "is-behind-ready",
-        "is-eyebrow-reached",
-        "is-line-one-reached",
-        "is-accent-reached",
-        "is-work-reached",
-        "is-intro-reached"
-      );
-      [].slice.call(behind.querySelectorAll(".board, .reminder")).forEach(function (el) {
-        el.classList.add("is-visible", "is-beat-reached");
-      });
-    }
-
-    var drives = document.querySelector(".drives");
-    if (drives) {
-      drives.classList.add("is-visible", "is-drives-ready", "is-border-reached", "is-title-reached");
-      [].slice.call(drives.querySelectorAll(".drives-list li")).forEach(function (item) {
-        item.classList.add("is-beat-reached");
-      });
-    }
-
-    var story = document.querySelector(".story-col");
-    if (story) {
-      story.classList.add("is-origin-ready", "is-origin-transform", "is-clarity-locked");
-      story.style.setProperty("--timeline-draw", "1");
-      [].slice.call(story.querySelectorAll(
-        ".eyebrow, .origin-curiosity, .origin-step, .origin-arrow, .origin-design, .story-body, .timeline-item"
-      )).forEach(function (el) {
-        el.classList.add("is-reached", "is-visible");
-        el.style.removeProperty("opacity");
-        el.style.removeProperty("transform");
-      });
-    }
-
-    var foot = document.querySelector(".site-footer");
-    if (foot) {
-      foot.classList.add(
-        "is-footer-story-ready",
-        "is-kicker-reached",
-        "is-title-reached",
-        "is-title-max",
-        "is-lede-reached",
-        "is-actions-reached",
-        "is-cover-reached",
-        "is-social-reached"
-      );
-      foot.style.setProperty("--footer-title-scale", "1");
-      foot.style.setProperty("--footer-title-lift", "0px");
-      [].slice.call(foot.querySelectorAll(".footer-story, .footer-cover")).forEach(function (el) {
-        el.classList.add("is-visible");
-      });
-    }
-  }
-
-  /* ==========================================================
      Boot
      ========================================================== */
   function boot() {
@@ -2344,7 +2381,9 @@
     try { reveals(); } catch (e) {}
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
-    try { stablePageFlow(); } catch (e) {}
+    try { paperSheets(); } catch (e) {}
+    try { pageOverlap(); } catch (e) {}
+    try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
     try { heroScrollDepth(); } catch (e) {}
     try { customCursor(); } catch (e) {}
@@ -2354,8 +2393,8 @@
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
     try { stickyNote(); } catch (e) {}
-    /* Scroll-milestone stories are intentionally retired: stablePageFlow owns visibility. */
-    /* Origin content stays complete at every viewport height. */
+    try { sectionStories(); } catch (e) {}
+    try { originStory(); } catch (e) {}
     /* Career motion is hover-owned in CSS; no ambient proximity drift. */
     try { aboutPointerDepth(); } catch (e) {}
     try { scrollParallax(); } catch (e) {}
