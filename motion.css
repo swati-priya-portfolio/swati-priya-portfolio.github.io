@@ -1357,11 +1357,9 @@
 /* The band had no surface of its own, and a sheet with no surface cannot
    lie over anything. */
 .cases.paper-sheet { background: var(--void); }
-.behind.paper-sheet {
-  --slide: 0;
-  transform: none;
-  will-change: auto;
-}
+/* Behind uses the same incoming-sheet motion as every other fold. Its
+   transform is removed by is-sheet-settled before the pinned board engages. */
+.behind.paper-sheet {}
 
 /* The sheet carries its own contact shadow along the whole top edge, so the
    overlap reads as thickness rather than as a card floating above a card. */
@@ -2025,7 +2023,7 @@
 /* Torn edges carry only a few pixels of scroll-velocity lag. Clip-path reveal
    and settle animations still own their original transform independently. */
 .sp-js .paper-tear {
-  translate: 0 calc(var(--tear-fold-y, 0px) + var(--tear-drift, 0px));
+  translate: 0 0;
 }
 
 /* One small object wakes up after each Behind board lands. Nothing loops. */

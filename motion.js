@@ -931,139 +931,17 @@
      complete it is locked in place and receives one restrained settle.
      ========================================================== */
   function paperTear() {
+    /* The torn silhouette is part of the page design, not an animation.
+       Every edge stays fully drawn while the complete sheet below it owns
+       the scroll movement. */
     var tears = [].slice.call(document.querySelectorAll(".paper-tear"));
-    if (!tears.length) { return; }
-
-    if (reduced) {
-      tears.forEach(function (t) {
-        t.style.setProperty("--tear-reveal", "100%");
-        t.style.setProperty("--tear-fold-y", "0px");
-        t.classList.add("is-torn");
-      });
-      return;
-    }
-
-    var geo = [];
-    var dirty = true;
-    var knownHeight = 0;
-    var targetQueued = false;
-    var rendering = false;
-
-    function measure() {
-      var previous = new Map();
-      geo.forEach(function (item) { previous.set(item.el, item); });
-
-      geo = tears.map(function (t) {
-        var top = 0, el = t;
-        while (el) { top += el.offsetTop; el = el.offsetParent; }
-        var old = previous.get(t);
-        return {
-          el: t,
-          top: top,
-          current: old ? old.current : 0,
-          target: old ? old.target : 0,
-          lastReveal: old ? old.lastReveal : -1,
-          lastFold: old ? old.lastFold : null
-        };
-      });
-      knownHeight = document.documentElement.scrollHeight;
-      dirty = false;
-    }
-
-    function updateTargets() {
-      targetQueued = false;
-      if (dirty || document.documentElement.scrollHeight !== knownHeight) {
-        measure();
-      }
-
-      var y = window.scrollY;
-      var vh = window.innerHeight;
-      for (var i = 0; i < geo.length; i++) {
-        var g = geo[i];
-        var fromTop = g.top - y;
-
-        /* The rip now occupies almost half a viewport. It starts as the fold
-           approaches the bottom and finishes near the viewport centre. Since
-           target is recalculated on every scroll, moving upward reverses the
-           tear instead of leaving it permanently completed. */
-        var p = clamp((vh * 0.98 - fromTop) / (vh * 0.48), 0, 1);
-        g.target = p * p * (3 - 2 * p);
-      }
-      startRender();
-    }
-
-    function render() {
-      var moving = false;
-
-      for (var i = 0; i < geo.length; i++) {
-        var g = geo[i];
-        g.current = lerp(g.current, g.target, 0.115);
-        if (Math.abs(g.target - g.current) < 0.001) {
-          g.current = g.target;
-        } else {
-          moving = true;
-        }
-
-        var reveal = g.current * 100;
-        var foldY = (1 - g.current) * 12;
-
-        if (Math.abs(reveal - g.lastReveal) >= 0.05) {
-          g.lastReveal = reveal;
-          g.el.style.setProperty("--tear-reveal", reveal.toFixed(2) + "%");
-        }
-        if (g.lastFold === null || Math.abs(foldY - g.lastFold) >= 0.02) {
-          g.lastFold = foldY;
-          g.el.style.setProperty("--tear-fold-y", foldY.toFixed(2) + "px");
-        }
-
-        /* is-torn is now only a performance hint at the exact endpoint.
-           It is removed as soon as the user scrolls back, so every fold can
-           rebuild smoothly in reverse. */
-        g.el.classList.toggle("is-torn", g.current >= 0.999);
-        g.el.classList.remove("is-settled");
-      }
-
-      if (moving) {
-        requestAnimationFrame(render);
-      } else {
-        rendering = false;
-      }
-    }
-
-    function startRender() {
-      if (rendering) { return; }
-      rendering = true;
-      requestAnimationFrame(render);
-    }
-
-    function schedule() {
-      if (targetQueued) { return; }
-      targetQueued = true;
-      requestAnimationFrame(updateTargets);
-    }
-
-    window.addEventListener("scroll", schedule, { passive: true });
-
-    var resizeTimer;
-    window.addEventListener("resize", function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () {
-        dirty = true;
-        schedule();
-      }, 120);
-    }, { passive: true });
-
-    window.addEventListener("load", function () {
-      dirty = true;
-      schedule();
+    tears.forEach(function (tear) {
+      tear.style.setProperty("--tear-reveal", "100%");
+      tear.style.setProperty("--tear-fold-y", "0px");
+      tear.style.setProperty("--tear-drift", "0px");
+      tear.classList.add("is-torn");
+      tear.classList.remove("is-settled");
     });
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () {
-        dirty = true;
-        schedule();
-      });
-    }
-    schedule();
   }
 
   /* ==========================================================
@@ -2219,7 +2097,7 @@
      nothing here reads layout while scrolling.
      ========================================================== */
   function paperSheets() {
-    var sheets = [].slice.call(document.querySelectorAll(".paper-sheet:not(.behind)"));
+    var sheets = [].slice.call(document.querySelectorAll(".paper-sheet"));
     if (!sheets.length) { return; }
 
     if (reduced) {
@@ -2233,74 +2111,79 @@
     var geo = [];
     var dirty = true;
     var knownHeight = 0;
+    var queued = false;
 
     function measure() {
       geo = sheets.map(function (el) {
         var top = 0, node = el;
         while (node) { top += node.offsetTop; node = node.offsetParent; }
-        return {
-          el: el,
-          top: top,
-          last: -1,
-          done: el.classList.contains("is-sheet-settled")
-        };
+        return { el: el, top: top, last: null };
       });
       knownHeight = document.documentElement.scrollHeight;
       dirty = false;
     }
 
     function draw() {
-      // Measuring once is not enough. The page grows after boot — images
-      // arrive, fonts swap, and the case-study track is given its pinned
-      // height by script — and a stale offset fires the sheet hundreds of
-      // pixels early. One cheap property read per frame catches all of it.
+      queued = false;
       if (dirty || document.documentElement.scrollHeight !== knownHeight) {
         measure();
       }
+
       var y = window.scrollY;
       var vh = window.innerHeight;
 
       for (var i = 0; i < geo.length; i++) {
         var g = geo[i];
-        if (g.done) { continue; }
         var fromTop = g.top - y;
 
-        // Begins as the sheet's edge reaches the floor of the screen and is
-        // done once it has climbed to around the middle. A longer window than
-        // the rest of the page's motion, so the sheet reads as having weight.
-        var p = clamp((vh - fromTop) / (vh * 0.55), 0, 1);
+        /* Like Paper Animator, the edge itself never changes. The full sheet
+           begins just below the viewport and climbs over the previous page.
+           A broad scroll range gives the paper weight; recalculating on every
+           scroll also makes the layering reverse naturally on the way up. */
+        var p = clamp((vh * 1.02 - fromTop) / (vh * 0.58), 0, 1);
         var eased = p * p * (3 - 2 * p);
-        var slide = (1 - eased) * 0.22;
+        var slide = (1 - eased) * 0.72;
 
-        // Skip the write when nothing has changed; most frames of a scroll
-        // leave at least one sheet exactly where it was.
-        if (Math.abs(slide - g.last) < 0.0015) { continue; }
-        g.last = slide;
-        g.el.style.setProperty("--slide", slide.toFixed(4));
-
-        if (p >= 0.999) {
-          g.done = true;
-          g.el.style.setProperty("--slide", "0");
-          g.el.classList.add("is-sheet-settled");
+        if (g.last === null || Math.abs(slide - g.last) >= 0.001) {
+          g.last = slide;
+          g.el.style.setProperty("--slide", slide.toFixed(4));
         }
+
+        /* Drop the transform once a sheet has landed so long sticky content
+           inside it keeps its native viewport behaviour. Restore it only when
+           the user scrolls back into the fold transition. */
+        g.el.classList.toggle("is-sheet-settled", p >= 0.998);
       }
     }
 
-    var queued = false;
-    window.addEventListener("scroll", function () {
+    function schedule() {
       if (queued) { return; }
       queued = true;
-      requestAnimationFrame(function () { queued = false; draw(); });
-    }, { passive: true });
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
 
     var resizeTimer;
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () { dirty = true; draw(); }, 160);
+      resizeTimer = setTimeout(function () {
+        dirty = true;
+        schedule();
+      }, 120);
     }, { passive: true });
 
-    window.addEventListener("load", function () { dirty = true; draw(); });
-    draw();
+    window.addEventListener("load", function () {
+      dirty = true;
+      schedule();
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        dirty = true;
+        schedule();
+      });
+    }
+    schedule();
   }
 
   /* ==========================================================
@@ -2356,7 +2239,6 @@
     try { reveals(); } catch (e) {}
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
-    try { tearVelocity(); } catch (e) {}
     try { paperSheets(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
