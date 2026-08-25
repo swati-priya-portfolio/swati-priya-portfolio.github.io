@@ -2187,6 +2187,129 @@
   }
 
   /* ==========================================================
+     12c. PAGE-OVER-PAGE FOLDS
+     The incoming torn sheet owns the foreground. The page underneath moves
+     more slowly, so it stays visible behind until the new page has covered it.
+     This is scroll-scrubbed and therefore reverses naturally when scrolling up.
+     ========================================================== */
+  function pageOverlap() {
+    var selectors = [
+      ["#home", "#case-studies"],
+      ["#case-studies", "#behind"],
+      ["#behind", "#about"],
+      ["#about", "#contact"]
+    ];
+    var pairs = selectors.map(function (pair) {
+      return {
+        previous: document.querySelector(pair[0]),
+        next: document.querySelector(pair[1]),
+        top: 0,
+        current: 0,
+        target: 0,
+        last: null
+      };
+    }).filter(function (pair) {
+      return pair.previous && pair.next;
+    });
+    if (!pairs.length) { return; }
+
+    pairs.forEach(function (pair) {
+      pair.previous.classList.add("fold-underlay");
+    });
+
+    if (reduced) {
+      pairs.forEach(function (pair) {
+        pair.previous.style.setProperty("--fold-underlay-y", "0px");
+      });
+      return;
+    }
+
+    var dirty = true;
+    var knownHeight = 0;
+    var queued = false;
+
+    function pageTop(el) {
+      var top = 0, node = el;
+      while (node) { top += node.offsetTop; node = node.offsetParent; }
+      return top;
+    }
+
+    function strength() {
+      if (window.innerWidth < 768) { return 0.46; }
+      if (window.innerWidth < 1080) { return 0.66; }
+      return 0.84;
+    }
+
+    function measure() {
+      pairs.forEach(function (pair) {
+        pair.top = pageTop(pair.next);
+      });
+      knownHeight = document.documentElement.scrollHeight;
+      dirty = false;
+    }
+
+    function updateTargets() {
+      queued = false;
+      if (dirty || document.documentElement.scrollHeight !== knownHeight) {
+        measure();
+      }
+
+      var y = window.scrollY;
+      var vh = window.innerHeight;
+      var hold = strength();
+
+      pairs.forEach(function (pair) {
+        /* Begin when the torn edge reaches the lower viewport and hold the
+           previous page until the incoming sheet covers almost the full view. */
+        var start = pair.top - vh * 0.92;
+        var end = pair.top - vh * 0.10;
+        var travel = clamp(y - start, 0, Math.max(end - start, 1));
+        pair.target = travel * hold;
+      });
+    }
+
+    addJob(function () {
+      for (var i = 0; i < pairs.length; i++) {
+        var pair = pairs[i];
+        pair.current = lerp(pair.current, pair.target, 0.20);
+        if (Math.abs(pair.target - pair.current) < 0.04) {
+          pair.current = pair.target;
+        }
+        if (pair.last === null || Math.abs(pair.current - pair.last) >= 0.03) {
+          pair.last = pair.current;
+          pair.previous.style.setProperty(
+            "--fold-underlay-y",
+            pair.current.toFixed(2) + "px"
+          );
+        }
+      }
+    });
+
+    function schedule() {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(updateTargets);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", function () {
+      dirty = true;
+      schedule();
+    }, { passive: true });
+    window.addEventListener("load", function () {
+      dirty = true;
+      schedule();
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        dirty = true;
+        schedule();
+      });
+    }
+    schedule();
+  }
+
+  /* ==========================================================
      13. WAYFINDING
      How far through the issue you are, and a way back to page one.
      Both ride the same throttled scroll handler.
@@ -2240,6 +2363,7 @@
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
     try { paperSheets(); } catch (e) {}
+    try { pageOverlap(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
     try { heroScrollDepth(); } catch (e) {}

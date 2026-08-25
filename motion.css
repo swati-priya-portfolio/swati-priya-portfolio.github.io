@@ -1344,6 +1344,15 @@
 }
 .sp-js .paper-sheet { will-change: transform; }
 
+/* Real page stacking: the outgoing page is held behind while the next torn
+   sheet moves over it. Individual translate composes with the sheet's own
+   incoming transform, so the layout and sticky stages keep their geometry. */
+.sp-js .fold-underlay {
+  position: relative;
+  translate: 0 var(--fold-underlay-y, 0px);
+  will-change: translate;
+}
+
 /* A settled sheet drops its transform rather than holding it at zero. A
    transformed ancestor is a containing block for sticky positioning, and the
    case studies band contains the pinned card stage — the climb is long
@@ -1378,6 +1387,10 @@
   .paper-sheet {
     margin-top: 0 !important;
     transform: none !important;
+    will-change: auto !important;
+  }
+  .sp-js .fold-underlay {
+    translate: 0 0 !important;
     will-change: auto !important;
   }
 }
