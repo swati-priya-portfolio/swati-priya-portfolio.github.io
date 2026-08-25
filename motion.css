@@ -3000,3 +3000,45 @@
     will-change: auto;
   }
 }
+
+/* ============================================================
+   2026-08-26 — clean whole-card case-study hover
+   Keep the Figma card intact: the complete card tilts as one object.
+   No lifted inner cover, rear duplicate layer, or hover shadow.
+   ============================================================ */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .sp-js .case-card {
+    translate: 0 0;
+    rotate: 0deg;
+    scale: 1;
+    transition:
+      --hy 420ms var(--ep),
+      opacity 320ms linear,
+      translate 480ms var(--ep),
+      rotate 480ms var(--ep),
+      scale 480ms var(--ep),
+      box-shadow 180ms linear;
+  }
+
+  .sp-js .case-card:hover,
+  .sp-js .case-card:focus-visible {
+    translate: 0 -8px;
+    rotate: -3deg;
+    scale: 1.01;
+    z-index: 4 !important;
+    box-shadow: none !important;
+  }
+
+  .sp-js .case-card:nth-child(even):hover,
+  .sp-js .case-card:nth-child(even):focus-visible {
+    rotate: 3deg;
+  }
+
+  .sp-js .case-card:hover .case-cover,
+  .sp-js .case-card:focus-visible .case-cover,
+  .sp-js .case-card:nth-child(even):hover .case-cover,
+  .sp-js .case-card:nth-child(even):focus-visible .case-cover {
+    transform: none;
+    box-shadow: none;
+  }
+}
