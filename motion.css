@@ -2187,7 +2187,7 @@
 
 
 /* ============================================================
-   22. FOOTER FOCUS + AVAILABILITY + LOADER VISIBILITY
+   22. FOOTER FOCUS + LOADER VISIBILITY
    ============================================================ */
 
 /* YOURS. behaves like COMPLEXITY / CLARITY in the Hero: one complete idea,
@@ -2199,33 +2199,89 @@
   will-change: transform;
 }
 
-/* Availability sits with the existing footer CTA; no new card or section. */
-.footer-available-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .9px;
-  color: var(--cream);
-  white-space: nowrap;
-}
-.footer-available-dot {
-  width: 8px;
-  height: 8px;
-  flex: 0 0 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px rgba(255, 197, 61, .12);
-}
-
-@media (max-width: 599px) {
-  .footer-available-status { font-size: 10px; }
-}
 
 @media (prefers-reduced-motion: reduce), (pointer: coarse) {
   .sp-js .footer-title .footer-focus-word {
     transform: none !important;
+  }
+}
+
+
+/* ============================================================
+   23. NAV MINI CTA + BEHIND REFERENCE LAYOUT
+   ============================================================ */
+
+/* The compact scrolling nav keeps the exact availability identity from the
+   approved mini pill, but now also keeps the existing Let's talk action.
+   Full desktop nav and mobile nav are unchanged. */
+@media (min-width: 1080px) {
+  .sp-js .site-header.is-mini .nav-pill {
+    max-width: 430px;
+    gap: 10px;
+    padding: 5px 8px 5px 6px;
+    justify-content: center;
+  }
+
+  .sp-js .site-header.is-mini .nav-cta {
+    opacity: 1;
+    max-width: 138px;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 9px 10px 9px 16px;
+    border-width: 1.5px;
+    transform: none;
+    pointer-events: auto;
+    overflow: visible;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+  .sp-js .site-header.is-mini .nav-cta .btn-arrow {
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+  }
+}
+
+/* Match the supplied 1440px Behind the Screens reference exactly in its
+   resting composition: 1280px content width, 80px outer gutters, four equal
+   420px boards and an editorial header above. The section no longer creates
+   a 155vh sticky runway. Existing reveal, book, music, sticky-note and hover
+   motion systems still target the same DOM nodes and remain intact. */
+@media (min-width: 1080px) {
+  .sp-js .behind {
+    min-height: 0 !important;
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  .sp-js .behind-stage {
+    position: relative !important;
+    top: auto !important;
+    min-height: 0 !important;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .sp-js .behind-head {
+    max-width: none;
+    grid-template-columns: minmax(0, 1fr) 430px;
+    align-items: center;
+    gap: 24px;
+    margin: 0 0 54px;
+  }
+
+  .sp-js .board-grid {
+    max-width: none;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .sp-js .board {
+    height: 420px;
+    min-height: 420px;
+    padding: 20px 22px;
   }
 }
