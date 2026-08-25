@@ -35,9 +35,9 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="stylesheet" href="styles.css?v=20" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=19" />
+  <link rel="stylesheet" href="motion.css?v=20" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -443,6 +443,24 @@
           <div class="polaroid sp-settle" data-cursor="HELLO &#128075;" data-parallax="12">
             <!-- Replace with your portrait export -->
             <img src="images/polaroid-portrait.png" alt="Portrait of Swati Priya" />
+            <!-- The pen marks from the Figma frame, drawn over the yellow
+                 rather than baked into the export. -->
+            <svg class="polaroid-doodles" viewBox="0 0 283 320" preserveAspectRatio="none" aria-hidden="true">
+              <g class="pd-strokes">
+                <path d="M20 52 L41 34" /><path d="M12 76 L36 62" /><path d="M32 32 L48 19" />
+              </g>
+              <g class="pd-dots">
+                <circle cx="222" cy="30" r="2.4" /><circle cx="240" cy="24" r="2.4" />
+                <circle cx="258" cy="31" r="2.4" /><circle cx="231" cy="47" r="2.4" />
+                <circle cx="249" cy="41" r="2.4" /><circle cx="264" cy="49" r="2.4" />
+              </g>
+              <g class="pd-spark">
+                <path d="M248 84 v26 M235 97 h26 M239 88 l18 18 M257 88 l-18 18" />
+              </g>
+              <g class="pd-rays">
+                <path d="M246 146 l22 -7" /><path d="M248 164 l22 3" /><path d="M244 181 l20 11" />
+              </g>
+            </svg>
             <p class="polaroid-signature">Swati Priya</p>
           </div>
 
@@ -473,13 +491,13 @@
               </h2>
             </div>
             <div class="thought-bubble" data-parallax="-6">
+              <!-- Four stacked lines, no arrows between them: the Figma
+                   frame reads as one thought, and the arrows were making the
+                   bubble tall enough to push the whole column down a screen. -->
               <p class="origin-thoughts">
                 <span class="origin-step">I ask why.</span>
-                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c-.4 3.5.6 6.2 0 10M3 8l3 3 3-3" /></svg>
                 <span class="origin-step">I listen.</span>
-                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c.5 3.4-.7 6.3 0 10M3 8l3 3 3-3" /></svg>
                 <span class="origin-step">I observe.</span>
-                <svg class="origin-arrow" viewBox="0 0 12 15" aria-hidden="true"><path pathLength="1" d="M6 1c-.5 3.5.7 6.2 0 10M3 8l3 3 3-3" /></svg>
                 <span class="origin-step accent">Then I design.</span>
               </p>
             </div>
@@ -675,7 +693,7 @@
     <span class="sp-top-label">PAGE ONE</span>
   </button>
 
-  <script src="script.js?v=19"></script>
-  <script src="motion.js?v=19"></script>
+  <script src="script.js?v=20"></script>
+  <script src="motion.js?v=20"></script>
 </body>
 </html>

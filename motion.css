@@ -2586,3 +2586,122 @@
   .sp-js .board.is-track-playing .board-notes-glyph span { animation: none; }
   .sp-js .waveform i { transition: none !important; }
 }
+
+
+/* ============================================================
+   THE ORIGIN STORY — compacted to the Figma frame
+   The section was a screen and a half tall, so the career line only
+   arrived once the heading had scrolled away. Everything below closes
+   that gap; the timings in motion.js were pulled in to match.
+   ============================================================ */
+
+/* The bubble was the culprit: four lines plus three arrows plus a wrapped
+   "Then I design." made it 288px tall, and it sets the height of the whole
+   head row. Wider and arrow-free, it is about half that. */
+.thought-bubble {
+  padding: 14px 18px;
+  line-height: 1.42;
+  border-radius: 20px;
+}
+.origin-thoughts { display: grid; gap: 2px; }
+.origin-step { display: block; white-space: nowrap; }
+
+@media (min-width: 1280px) {
+  .about { padding-top: 80px; padding-bottom: 84px; }
+  .about-grid { height: 648px; gap: 28px; }
+  .story-col { height: 648px; padding-top: 30px; }
+  .story-head { grid-template-columns: minmax(0, 1fr) 196px; gap: 32px; }
+  .thought-bubble { width: 196px; padding: 14px 18px; }
+
+  .story-title { margin-top: 12px; font-size: clamp(38px, 3.05vw, 43px); }
+  .story-body { margin-top: 20px; font-size: 17px; }
+  .timeline { margin-top: 18px; gap: 6px; }
+  .timeline-item { height: 72px; padding: 12px 0; }
+
+  .polaroid-col { height: 620px; }
+  /* A little inset so the tilt does not run the white border into the
+     column's clipped edge. */
+  .polaroid { max-width: 296px; margin-top: 18px; margin-left: 8px; }
+  /* Clear of the signature, over the polaroid's bottom corner, as in the
+     frame -- it used to sit across the middle of the photo and cut the name. */
+  .sticky-note { left: 250px; top: 392px; width: 132px; }
+  .tools { top: 486px; }
+  .tools-grid img { width: 52px; height: 52px; }
+}
+
+/* Two strokes, clearly apart, rather than one thick bar. The second one was
+   positioned at calc(100% + 5px) -- past the bottom of the padding box, where
+   a background is simply clipped -- so only ever one line was drawn. Both sit
+   inside the box now, with the padding opened up to hold them. */
+.underlined {
+  background-size: 100% 2.5px, 84% 2px;
+  background-position: 0 calc(100% - 7px), 9% 100%;
+  padding-bottom: 13px;
+}
+.sp-js .story-col.is-origin-ready .origin-design.is-reached .underlined {
+  background-size: 100% 2.5px, 84% 2px;
+}
+
+/* ---------- The pen marks on the polaroid ---------- */
+.polaroid { position: relative; }
+.polaroid-doodles {
+  position: absolute;
+  left: 13px; top: 13px;
+  width: calc(100% - 26px);
+  height: auto;
+  aspect-ratio: 283 / 320;
+  pointer-events: none;
+  fill: none;
+  stroke: #1c1710;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  opacity: 0.82;
+}
+.polaroid-doodles .pd-dots { fill: #1c1710; stroke: none; }
+.sp-js .polaroid-doodles g {
+  opacity: 0;
+  transform: scale(.86);
+  transform-origin: 50% 50%;
+  transition: opacity 380ms linear, transform 620ms var(--ep);
+}
+.sp-js .polaroid.is-visible .polaroid-doodles g { opacity: 1; transform: none; }
+.sp-js .polaroid-doodles .pd-dots   { transition-delay: 110ms; }
+.sp-js .polaroid-doodles .pd-spark  { transition-delay: 220ms; }
+.sp-js .polaroid-doodles .pd-rays   { transition-delay: 330ms; }
+
+/* The sparkle keeps a slow twinkle once it has arrived. */
+.sp-js .polaroid.is-visible .pd-spark { animation: sp-twinkle 3.6s ease-in-out 900ms infinite; }
+@keyframes sp-twinkle {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .45; }
+}
+@media (pointer: fine) {
+  .sp-js .polaroid:hover .pd-spark { transform: rotate(28deg) scale(1.12); }
+  .sp-js .polaroid:hover .pd-rays  { transform: translateX(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-js .polaroid-doodles g { opacity: 1; transform: none; transition: none; animation: none; }
+  .sp-js .polaroid.is-visible .pd-spark { animation: none; }
+}
+
+/* The settled state clears every transform, which was also flattening the
+   polaroid's tilt. It keeps its own angle, on the desk and under the pointer. */
+.sp-js .polaroid.sp-settle.is-visible { transform: rotate(-2.2deg); }
+@media (pointer: fine) {
+  .sp-js .polaroid.sp-settle.is-visible:hover {
+    transform: rotate(-0.6deg) translateY(-6px) scale(1.012);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.58);
+  }
+}
+/* The blanket reduced-motion rule clears transform on every .sp-settle, which
+   also flattened the polaroid. Its angle is part of the design, not motion, so
+   it is restored here -- with !important, to answer the one it is undoing. */
+@media (prefers-reduced-motion: reduce) {
+  .sp-js .polaroid.sp-settle,
+  .sp-js .polaroid.sp-settle.is-visible,
+  .sp-js .polaroid.sp-settle.is-visible:hover { transform: rotate(-2.2deg) !important; }
+}
+@media (pointer: coarse) {
+  .sp-js .polaroid.sp-settle.is-visible:hover { transform: rotate(-2.2deg); }
+}

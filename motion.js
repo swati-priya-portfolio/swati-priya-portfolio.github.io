@@ -1759,19 +1759,23 @@
         /* ONE STORY TRANSFORMATION, not a chain of fades.
            Curiosity begins slightly scattered, the thoughts drift together,
            THEN I DESIGN triggers the final lock, and only then the career line starts. */
+        // The sequence used to run over a screen and a bit, so the career
+        // line only began once the heading had left the top of the window --
+        // you never saw the roles and the title together. It now finishes
+        // while the section is still framed, as the Figma frame has it.
         var start = sectionTop - vh * .72;
-        var travel = clamp(vh * 1.12, 720, 1040);
+        var travel = clamp(vh * .78, 560, 760);
         var p = clamp((y - start) / travel, 0, 1);
 
-        var eyebrowP = ease(span(p, .01, .07));
-        var curiosityP = ease(span(p, .03, .12));
-        var thoughtsIn = ease(span(p, .07, .13));
-        var driftP = ease(span(p, .10, .28));
-        var snapP = ease(span(p, .28, .36));
+        var eyebrowP = ease(span(p, .01, .06));
+        var curiosityP = ease(span(p, .03, .10));
+        var thoughtsIn = ease(span(p, .06, .11));
+        var driftP = ease(span(p, .08, .23));
+        var snapP = ease(span(p, .23, .30));
         var orderedP = clamp(driftP * .78 + snapP * .22, 0, 1);
-        var thenP = ease(span(p, .30, .37));
-        var designP = ease(span(p, .40, .50));
-        var bodyP = ease(span(p, .48, .56));
+        var thenP = ease(span(p, .25, .31));
+        var designP = ease(span(p, .32, .41));
+        var bodyP = ease(span(p, .40, .47));
 
         reached(eyebrow, eyebrowP > .001);
         reached(curiosity, curiosityP > .001);
@@ -1823,10 +1827,10 @@
 
         /* The career begins only after DESIGN FOLLOWED has locked into place.
            All reached companies remain at 100% opacity. */
-        var line = ease(span(p, .56, .94));
+        var line = ease(span(p, .47, .80));
         furthestLine = line;
         story.style.setProperty('--timeline-draw', line.toFixed(4));
-        var itemPoints = [.63, .72, .81, .90];
+        var itemPoints = [.53, .60, .67, .74];
         items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .90)); });
         focusItem(-1);
 
