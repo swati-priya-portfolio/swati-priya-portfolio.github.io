@@ -115,10 +115,10 @@
 .spider-snack::after {
   inset: 3px 1px;
   background:
-    linear-gradient(30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 0 / 50% 50%,
-    linear-gradient(-30deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 0 / 50% 50%,
-    linear-gradient(150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 0 100% / 50% 50%,
-    linear-gradient(-150deg, transparent 44%, var(--ink) 45% 54%, transparent 55%) 100% 100% / 50% 50%;
+    linear-gradient(30deg, transparent 44%, var(--accent) 45% 54%, transparent 55%) 0 0 / 50% 50%,
+    linear-gradient(-30deg, transparent 44%, var(--accent) 45% 54%, transparent 55%) 100% 0 / 50% 50%,
+    linear-gradient(150deg, transparent 44%, var(--accent) 45% 54%, transparent 55%) 0 100% / 50% 50%,
+    linear-gradient(-150deg, transparent 44%, var(--accent) 45% 54%, transparent 55%) 100% 100% / 50% 50%;
   background-repeat: no-repeat;
 }
 .spider-snack::after { transform: rotate(90deg) scale(0.86); }
