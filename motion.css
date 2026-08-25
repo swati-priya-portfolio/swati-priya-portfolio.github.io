@@ -1,4 +1,4 @@
-@import url("./motion-base.css?v=verified-2");
+@import url("./motion-base.css?v=verified-3");
 
 /* VERIFIED TORN-PAGE REPAIR
    Base = 4e6f921 (approved motion). This layer fixes the torn boundary
@@ -61,9 +61,8 @@
   pointer-events: none;
 }
 
-/* More reading runway before the next sheet arrives. This is what makes the
-   page-over-page motion feel less rushed without changing the card design or
-   the approved parallax choreography. */
+/* More reading runway before the next sheet arrives. This is what keeps the
+   last card / What Drives Me on screen long enough before the next fold. */
 @media (min-width: 1080px) {
   .behind.paper-sheet {
     padding-bottom: clamp(190px, 22vh, 250px) !important;
@@ -71,6 +70,19 @@
 
   .about.paper-sheet {
     padding-bottom: clamp(280px, 30vh, 360px) !important;
+  }
+}
+
+/* The fold remains scroll-scrubbed by the original motion.js. A short visual
+   chase gives the paper weight so one wheel/trackpad gesture cannot make the
+   sheet feel like it snaps through the transition. */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .sp-js .paper-sheet {
+    transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .sp-js .fold-underlay {
+    transition: translate 180ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
