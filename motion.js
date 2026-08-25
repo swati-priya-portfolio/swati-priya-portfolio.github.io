@@ -334,7 +334,8 @@
      outer title keeps scroll scale; only these inner spans own hover motion. */
   function footerTitleChars() {
     var title = document.querySelector(".footer-title");
-    if (!title || reduced || !finePointer) { return; }
+    var footer = title && title.closest(".site-footer");
+    if (!title || !footer || reduced || !finePointer) { return; }
 
     function wrapText(node) {
       if (node.nodeType === 3) {
@@ -383,9 +384,10 @@
         var b = boxes[i];
         var dx = ptr.x - b.x;
         var dy = (ptr.y - b.y) * 1.2;
-        var t = active ? clamp(1 - Math.sqrt(dx * dx + dy * dy) / 105, 0, 1) : 0;
+        var enabled = active && footer.classList.contains("is-lede-reached");
+        var t = enabled ? clamp(1 - Math.sqrt(dx * dx + dy * dy) / 105, 0, 1) : 0;
         t = t * t * (3 - 2 * t);
-        b.v = lerp(b.v, t, active ? .24 : .16);
+        b.v = lerp(b.v, t, enabled ? .24 : .16);
         if (b.v < .002) { b.v = 0; }
         var yours = !!b.el.closest(".accent");
         var sign = b.i % 2 ? 1 : -1;
@@ -643,7 +645,7 @@
         })
       };
 
-      travel = Math.round(Math.min(window.innerHeight * 1.34, 1040));
+      travel = Math.round(Math.min(window.innerHeight * 1.45, 1120));
       track.style.height = Math.round(stageH * fit + travel) + "px";
       grid.style.transformOrigin = "top center";
       stage.style.height = Math.round(stageH * fit) + "px";
@@ -664,14 +666,17 @@
 
       // Final order stays Guardian | GrayQuest | Embibe. All three sheets
       // begin at the middle slot with Guardian physically on top.
-      var guardianP = ease(span(p, 0.18, 0.50));
-      var embibeP = ease(span(p, 0.56, 0.84));
-      var settleP = ease(span(p, 0.84, 1));
+      // A longer hold makes the single-issue opening register before the stack spreads.
+      // The rear issues are slightly compressed/rotated while hidden, like real paper sheets.
+      var guardianP = ease(span(p, 0.22, 0.54));
+      var grayP = ease(span(p, 0.26, 0.54));
+      var embibeP = ease(span(p, 0.60, 0.88));
+      var settleP = ease(span(p, 0.88, 1));
       grid.style.transform = "scale(" + lerp(geo.fit, 1, settleP).toFixed(4) + ")";
 
-      setCard(cards[0], lerp(geo.offsets[0], 0, guardianP), lerp(.97, 1, guardianP), 0, 1);
-      setCard(cards[1], 0, 1, 0, 1);
-      setCard(cards[2], lerp(geo.offsets[2], 0, embibeP), lerp(.97, 1, embibeP), 0, 1);
+      setCard(cards[0], lerp(geo.offsets[0], 0, guardianP), lerp(.985, 1, guardianP), lerp(-.35, 0, guardianP), 1);
+      setCard(cards[1], 0, lerp(.965, 1, grayP), lerp(.45, 0, grayP), 1);
+      setCard(cards[2], lerp(geo.offsets[2], 0, embibeP), lerp(.95, 1, embibeP), lerp(-.45, 0, embibeP), 1);
 
       var settled = p > 0.97;
       grid.classList.toggle("is-staging", !settled);
@@ -724,7 +729,7 @@
      ========================================================== */
   function reveals() {
     var targets = [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll")).filter(function (el) {
-      return !el.matches(".behind .board, .behind .reminder, .drives, .footer-story, .footer-cover");
+      return !el.matches(".behind .board, .behind .reminder, .drives, .footer-story, .footer-cover") && !el.closest(".story-col");
     });
     var squiggles = [].slice.call(document.querySelectorAll(".squiggle"));
 
@@ -1460,12 +1465,12 @@
       var body = item.querySelector(".tl-body");
       var date = item.querySelector(".tl-date");
 
-      var lx = state.x * 6.5 * state.v;
-      var ly = state.y * 5.2 * state.v;
-      var bx = state.x * 3.8 * state.v;
-      var by = state.y * 3.2 * state.v;
-      var dx = state.x * -2.2 * state.v;
-      var dy = state.y * -1.8 * state.v;
+      var lx = state.x * 5.0 * state.v;
+      var ly = state.y * 4.0 * state.v;
+      var bx = state.x * 2.6 * state.v;
+      var by = state.y * 2.2 * state.v;
+      var dx = state.x * -1.4 * state.v;
+      var dy = state.y * -1.2 * state.v;
 
       if (logo) {
         logo.style.setProperty("--career-x", lx.toFixed(2) + "px");
@@ -1500,7 +1505,7 @@
             var dx = ptr.x - cx;
             var dy = ptr.y - cy;
             var d = Math.sqrt(dx * dx * 0.28 + dy * dy);
-            var radius = Math.max(220, Math.min(320, r.height * 3.2));
+            var radius = Math.max(280, Math.min(380, r.height * 4.0));
             var t = d < radius ? 1 - d / radius : 0;
             t = t * t * (3 - 2 * t);
             targetV = t;
@@ -1509,9 +1514,9 @@
           }
         }
 
-        state.v = lerp(state.v, targetV, active ? 0.16 : 0.12);
-        state.x = lerp(state.x, targetX, 0.16);
-        state.y = lerp(state.y, targetY, 0.16);
+        state.v = lerp(state.v, targetV, active ? 0.12 : 0.10);
+        state.x = lerp(state.x, targetX, 0.12);
+        state.y = lerp(state.y, targetY, 0.12);
         if (state.v < 0.002) { state.v = 0; }
         write(item, state);
       }
@@ -1527,11 +1532,11 @@
     if (!section || reduced || !finePointer) { return; }
 
     var targets = [
-      { el: section.querySelector(".thats-me"), x: 11, y: 8 },
-      { el: section.querySelector(".thats-me-arrow"), x: 8, y: 6 },
-      { el: section.querySelector(".polaroid"), x: 6, y: 5 },
-      { el: section.querySelector(".sticky-note"), x: -8, y: -6 },
-      { el: section.querySelector(".tools"), x: 4, y: 3 }
+      { el: section.querySelector(".thats-me"), x: 12, y: 8 },
+      { el: section.querySelector(".thats-me-arrow"), x: 8, y: 5 },
+      { el: section.querySelector(".polaroid"), x: 2.5, y: 2.0 },
+      { el: section.querySelector(".sticky-note"), x: -2.5, y: -2.0 },
+      { el: section.querySelector(".tools"), x: 1.5, y: 1.2 }
     ].filter(function (t) { return !!t.el; });
     if (!targets.length) { return; }
 
@@ -1573,7 +1578,6 @@
 
     var card = cover.querySelector(".cover-card");
     var caption = cover.querySelector(".cover-caption");
-    var water = cover.querySelector(".footer-water");
     var active = false;
     var rect = null;
     var tx = 0, ty = 0, cx = 0, cy = 0;
@@ -1601,10 +1605,6 @@
       if (caption) {
         caption.style.setProperty("--footer-depth-x", (cx * -4).toFixed(2) + "px");
         caption.style.setProperty("--footer-depth-y", (cy * -3).toFixed(2) + "px");
-      }
-      if (water) {
-        water.style.setProperty("--footer-depth-x", (cx * 5).toFixed(2) + "px");
-        water.style.setProperty("--footer-depth-y", (cy * 4).toFixed(2) + "px");
       }
     });
   }
@@ -1694,7 +1694,7 @@
         // the rest of the page's motion, so the sheet reads as having weight.
         var p = clamp((vh - fromTop) / (vh * 0.55), 0, 1);
         var eased = p * p * (3 - 2 * p);
-        var slide = 1 - eased;
+        var slide = (1 - eased) * 0.22;
 
         // Skip the write when nothing has changed; most frames of a scroll
         // leave at least one sheet exactly where it was.
