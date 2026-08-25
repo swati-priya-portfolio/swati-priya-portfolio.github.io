@@ -2149,3 +2149,38 @@
     transition-delay: 0ms !important;
   }
 }
+
+
+/* ============================================================
+   21. ORIGIN STORY — MESSY THOUGHTS TO CLARITY
+   ============================================================ */
+
+/* Desktop Origin is now driven continuously by scroll position. The final
+   visual state is unchanged; only how the existing elements reach it changes. */
+@media (min-width: 1024px) {
+  .sp-js .story-col.is-origin-transform .story-head .eyebrow,
+  .sp-js .story-col.is-origin-transform .origin-curiosity,
+  .sp-js .story-col.is-origin-transform .origin-step,
+  .sp-js .story-col.is-origin-transform .origin-arrow,
+  .sp-js .story-col.is-origin-transform .origin-design,
+  .sp-js .story-col.is-origin-transform .story-body {
+    transition: none !important;
+    filter: none !important;
+    will-change: transform, opacity;
+  }
+
+  /* Do not let the previous reveal system draw DESIGN's marker early. */
+  .sp-js .story-col.is-origin-transform:not(.is-clarity-locked) .origin-design .underlined {
+    background-size: 0 3px, 0 2px !important;
+  }
+  .sp-js .story-col.is-origin-transform.is-clarity-locked .origin-design .underlined {
+    background-size: 100% 3px, 88% 2px !important;
+    transition: background-size 430ms var(--ep) !important;
+  }
+
+  /* Career is cumulative: reached roles never dim and no active-stop focus is used. */
+  .sp-js .story-col.is-origin-transform .timeline-item.is-reached,
+  .sp-js .story-col.is-origin-transform .timeline-item.is-current {
+    opacity: 1 !important;
+  }
+}
