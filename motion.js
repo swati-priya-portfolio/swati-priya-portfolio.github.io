@@ -387,63 +387,122 @@
     var footer = title && title.closest(".site-footer");
     if (!title || !footer || reduced || !finePointer) { return; }
 
-    function wrapText(node) {
-      if (node.nodeType === 3) {
-        if (!node.nodeValue.trim()) { return; }
-        var frag = document.createDocumentFragment();
-        node.nodeValue.split(/(\s+)/).forEach(function (part) {
-          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-          var word = document.createElement("span");
-          word.className = "footer-word";
-          [].slice.call(part).forEach(function (char, i) {
-            var letter = document.createElement("span");
-            letter.className = "footer-letter";
-            letter.textContent = char;
-            letter.setAttribute("data-letter-seed", String(i));
-            word.appendChild(letter);
-          });
-          frag.appendChild(word);
-        });
-        node.parentNode.replaceChild(frag, node);
-        return;
-      }
-      if (node.nodeType !== 1 || node.classList.contains("footer-letter")) { return; }
-      [].slice.call(node.childNodes).forEach(wrapText);
-    }
-    wrapText(title);
+    var focus = title.querySelector(".sp-word.accent.underlined");
+    if (focus) { focus.classList.add("footer-focus-word"); }
 
+    function wrapNode(node) {
+      if (!node || node === focus || (focus && focus.contains(node))) { return; }
+      var children = [].slice.call(node.childNodes);
+      children.forEach(function (child) {
+        if (child.nodeType === 3) {
+          var text = child.nodeValue;
+          if (!text || !text.trim()) { return; }
+          var frag = document.createDocumentFragment();
+          var parts = text.split(/(\s+)/);
+          parts.forEach(function (part) {
+            if (!part) { return; }
+            if (/^\s+$/.test(part)) {
+              frag.appendChild(document.createTextNode(part));
+              return;
+            }
+            var word = document.createElement("span");
+            word.className = "footer-word";
+            Array.from(part).forEach(function (char) {
+              var letter = document.createElement("span");
+              letter.className = "footer-letter";
+              letter.textContent = char;
+              word.appendChild(letter);
+            });
+            frag.appendChild(word);
+          });
+          child.parentNode.replaceChild(frag, child);
+        } else if (child.nodeType === 1 && child.tagName !== "BR") {
+          wrapNode(child);
+        }
+      });
+    }
+
+    wrapNode(title);
     var letters = [].slice.call(title.querySelectorAll(".footer-letter"));
     var boxes = [];
-    var active = false;
+    var focusBox = null;
     var dirty = true;
+    var radius = 108;
+    var focusRadius = 170;
+
     function measure() {
-      boxes = letters.map(function (letter, i) {
-        var r = letter.getBoundingClientRect();
-        return { el: letter, x: r.left + r.width / 2, y: r.top + r.height / 2, v: 0, i: i };
+      var sx = window.scrollX, sy = window.scrollY;
+      boxes = letters.map(function (el, i) {
+        var r = el.getBoundingClientRect();
+        return {
+          el: el,
+          px: r.left + r.width / 2 + sx,
+          py: r.top + r.height / 2 + sy,
+          v: 0,
+          dir: i % 2 ? 1 : -1
+        };
       });
+      if (focus) {
+        var fr = focus.getBoundingClientRect();
+        focusBox = {
+          px: fr.left + fr.width / 2 + sx,
+          py: fr.top + fr.height / 2 + sy,
+          v: 0
+        };
+      }
       dirty = false;
     }
-    title.addEventListener("pointerenter", function () { active = true; dirty = true; });
-    title.addEventListener("pointerleave", function () { active = false; });
+
+    function reset() {
+      boxes.forEach(function (b) {
+        b.v = lerp(b.v, 0, .20);
+        b.el.style.setProperty("--fc-y", (-8 * b.v).toFixed(2) + "px");
+        b.el.style.setProperty("--fc-s", (1 + .055 * b.v).toFixed(4));
+        b.el.style.setProperty("--fc-r", (b.dir * .9 * b.v).toFixed(3) + "deg");
+      });
+      if (focus && focusBox) {
+        focusBox.v = lerp(focusBox.v, 0, .20);
+        focus.style.setProperty("--footer-focus-s", (1 + .09 * focusBox.v).toFixed(4));
+      }
+    }
+
     window.addEventListener("resize", function () { dirty = true; }, { passive: true });
-    window.addEventListener("scroll", function () { if (active) { dirty = true; } }, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { dirty = true; });
+    }
 
     addJob(function () {
-      if (active && dirty) { measure(); }
-      for (var i = 0; i < boxes.length; i++) {
-        var b = boxes[i];
-        var dx = ptr.x - b.x;
-        var dy = (ptr.y - b.y) * 1.2;
-        var enabled = active && footer.classList.contains("is-lede-reached");
-        var t = enabled ? clamp(1 - Math.sqrt(dx * dx + dy * dy) / 105, 0, 1) : 0;
-        t = t * t * (3 - 2 * t);
-        b.v = lerp(b.v, t, enabled ? .24 : .16);
-        if (b.v < .002) { b.v = 0; }
-        var yours = !!b.el.closest(".accent");
-        var sign = b.i % 2 ? 1 : -1;
-        b.el.style.setProperty("--fc-y", ((yours ? -9 : -7) * b.v).toFixed(2) + "px");
-        b.el.style.setProperty("--fc-s", (1 + (yours ? .085 : .05) * b.v).toFixed(3));
-        b.el.style.setProperty("--fc-r", (sign * (0.45 + (b.i % 3) * .35) * b.v).toFixed(2) + "deg");
+      if (!ptr.has) { return; }
+      if (dirty) { measure(); }
+
+      /* Wait until the footer title has completed its scroll-growth settle.
+         Then other words dance while YOURS. remains one zooming idea. */
+      if (!footer.classList.contains("is-lede-reached")) {
+        reset();
+        return;
+      }
+
+      var sx = window.scrollX, sy = window.scrollY;
+      boxes.forEach(function (b) {
+        var dx = ptr.x - (b.px - sx);
+        var dy = ptr.y - (b.py - sy);
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var target = clamp(1 - dist / radius, 0, 1);
+        target = target * target * (3 - 2 * target);
+        b.v = lerp(b.v, target, .22);
+        b.el.style.setProperty("--fc-y", (-8 * b.v).toFixed(2) + "px");
+        b.el.style.setProperty("--fc-s", (1 + .055 * b.v).toFixed(4));
+        b.el.style.setProperty("--fc-r", (b.dir * .9 * b.v).toFixed(3) + "deg");
+      });
+
+      if (focus && focusBox) {
+        var fdx = ptr.x - (focusBox.px - sx);
+        var fdy = ptr.y - (focusBox.py - sy);
+        var fdist = Math.sqrt(fdx * fdx + fdy * fdy);
+        var ft = clamp(1 - fdist / focusRadius, 0, 1);
+        ft = ft * ft * (3 - 2 * ft);
+        focusBox.v = lerp(focusBox.v, ft, .18);
+        focus.style.setProperty("--footer-focus-s", (1 + .09 * focusBox.v).toFixed(4));
       }
     });
   }
