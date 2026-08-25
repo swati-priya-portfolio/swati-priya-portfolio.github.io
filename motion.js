@@ -2344,48 +2344,99 @@
      remains stable while parallax uses the independent translate property.
      ========================================================== */
   function stackRunway() {
+    var hero = document.querySelector(".hero");
     var sheets = [].slice.call(document.querySelectorAll(".paper-sheet"));
+    var pages = (hero ? [hero] : []).concat(sheets);
     if (!sheets.length) { return; }
 
     var queued = false;
     var last = new Map();
 
-    function safeBottom(sheet) {
+    function safeBottom() {
+      var vw = window.innerWidth;
       var vh = window.innerHeight;
-      if (sheet.classList.contains("cases")) {
-        return clamp(vh * .18, 160, 220);
+
+      /* This space is scroll timing, not visible padding: the current sticky
+         page remains in view while the next torn edge approaches. */
+      var runway;
+      if (vw >= 1400) {
+        runway = clamp(vh * .18, 180, 260);
+      } else if (vw >= 768) {
+        runway = clamp(vh * .16, 140, 200);
+      } else {
+        runway = clamp(vh * .12, 88, 128);
       }
-      if (sheet.classList.contains("behind")) {
-        return clamp(vh * .14, 128, 180);
-      }
-      return clamp(vh * .12, 112, 160);
+
+      /* Protect the final 10–30px of hover lift, tilt and scroll parallax. */
+      var motionSafety = vw >= 768
+        ? clamp(vh * .035, 24, 30)
+        : clamp(vh * .025, 16, 24);
+
+      return runway + motionSafety;
     }
 
-    function contentBottom(sheet) {
+    function layoutBottomWithin(el, page) {
+      var bottom = el.offsetHeight;
+      var node = el;
+
+      while (node && node !== page) {
+        bottom += node.offsetTop || 0;
+        node = node.offsetParent;
+      }
+
+      if (node === page) { return bottom; }
+
+      /* Rare fallback for descendants whose offset-parent chain leaves the
+         page. Rects are only used to recover layout ownership here. */
+      var pageRect = page.getBoundingClientRect();
+      var elRect = el.getBoundingClientRect();
+      return elRect.bottom - pageRect.top;
+    }
+
+    function isMeaningful(el, page) {
+      if (el === page || el.closest(".paper-sheet, .hero") !== page) { return false; }
+      if (el.matches(".paper-tear, .paper-tear *, .hero-sketch, .footer-giant")) { return false; }
+
+      var style = window.getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden" || style.position === "fixed") {
+        return false;
+      }
+
+      /* Bottom-anchored absolute marginalia move when the page runway grows.
+         They stay inside the page by definition, so letting them determine
+         page height would create a self-expanding measurement loop. */
+      if (style.position === "absolute" && style.bottom !== "auto") {
+        return false;
+      }
+
+      return el.offsetWidth > 0 && el.offsetHeight > 0;
+    }
+
+    function contentBottom(page) {
       var bottom = 0;
-      [].slice.call(sheet.children).forEach(function (child) {
-        var position = window.getComputedStyle(child).position;
-        if (position === "absolute" || position === "fixed") { return; }
-        bottom = Math.max(bottom, child.offsetTop + child.offsetHeight);
+
+      [].slice.call(page.querySelectorAll("*")).forEach(function (el) {
+        if (!isMeaningful(el, page)) { return; }
+        bottom = Math.max(bottom, layoutBottomWithin(el, page));
       });
+
       return bottom;
     }
 
     function measure() {
       queued = false;
 
-      // Measure against the CSS fallback rather than a previous measurement.
-      sheets.forEach(function (sheet) {
-        sheet.style.removeProperty("--stack-min-height");
-      });
+      pages.forEach(function (page) {
+        var content = contentBottom(page);
+        var runway = safeBottom();
+        var minimum = Math.ceil(Math.max(window.innerHeight, content + runway));
+        var stickyTop = Math.min(0, window.innerHeight - minimum);
+        var next = minimum + ":" + stickyTop;
 
-      sheets.forEach(function (sheet) {
-        var minimum = Math.ceil(Math.max(window.innerHeight, contentBottom(sheet) + safeBottom(sheet)));
-        if (last.get(sheet) !== minimum) {
-          last.set(sheet, minimum);
-          sheet.style.setProperty("--stack-min-height", minimum + "px");
-        } else {
-          sheet.style.setProperty("--stack-min-height", minimum + "px");
+        if (last.get(page) !== next) {
+          last.set(page, next);
+          page.style.setProperty("--stack-min-height", minimum + "px");
+          page.style.setProperty("--stack-sticky-top", stickyTop + "px");
         }
       });
     }
@@ -2405,11 +2456,10 @@
 
     if ("ResizeObserver" in window) {
       var observer = new ResizeObserver(schedule);
-      sheets.forEach(function (sheet) {
-        [].slice.call(sheet.children).forEach(function (child) {
-          var position = window.getComputedStyle(child).position;
-          if (position !== "absolute" && position !== "fixed") {
-            observer.observe(child);
+      pages.forEach(function (page) {
+        [].slice.call(page.children).forEach(function (el) {
+          if (isMeaningful(el, page)) {
+            observer.observe(el);
           }
         });
       });
