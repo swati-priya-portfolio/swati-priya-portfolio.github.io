@@ -110,8 +110,8 @@ s = s.replace(anchor, career_fn + anchor, 1)
 
 # 4) Boot career depth after Origin is initialized. Hero + Footer systems stay
 # exactly as they are, preserving the intended hierarchy.
-old = '''    try { originStory(); } catch (e) {}\n    try { easterEggs(); } catch (e) {}'''
-new = '''    try { originStory(); } catch (e) {}\n    try { careerDepth(); } catch (e) {}\n    try { easterEggs(); } catch (e) {}'''
+old = '''    try { sectionStories(); } catch (e) {}\n    try { originStory(); } catch (e) {}\n    try { scrollParallax(); } catch (e) {}\n    try { footer(); } catch (e) {}\n    try { easterEggs(); } catch (e) {}'''
+new = '''    try { sectionStories(); } catch (e) {}\n    try { originStory(); } catch (e) {}\n    try { careerDepth(); } catch (e) {}\n    try { scrollParallax(); } catch (e) {}\n    try { footer(); } catch (e) {}\n    try { easterEggs(); } catch (e) {}'''
 if old not in s:
     raise SystemExit('boot insertion point not found')
 s = s.replace(old, new, 1)
