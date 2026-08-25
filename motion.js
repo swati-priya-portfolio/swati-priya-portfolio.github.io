@@ -2235,9 +2235,9 @@
     }
 
     function strength() {
-      if (window.innerWidth < 768) { return 0.46; }
-      if (window.innerWidth < 1080) { return 0.66; }
-      return 0.84;
+      if (window.innerWidth < 768) { return 0.36; }
+      if (window.innerWidth < 1080) { return 0.56; }
+      return 0.76;
     }
 
     function measure() {
@@ -2259,19 +2259,38 @@
       var hold = strength();
 
       pairs.forEach(function (pair) {
-        /* Begin when the torn edge reaches the lower viewport and hold the
-           previous page until the incoming sheet covers almost the full view. */
-        var start = pair.top - vh * 0.92;
-        var end = pair.top - vh * 0.10;
-        var travel = clamp(y - start, 0, Math.max(end - start, 1));
-        pair.target = travel * hold;
+        var nextTop = pair.top - y;
+        var enterAt = vh * 0.92;
+        var coverAt = vh * 0.16;
+        var releaseAt = -vh * 0.04;
+        var maxHold = (enterAt - coverAt) * hold;
+
+        if (nextTop >= enterAt || nextTop <= releaseAt) {
+          /* Before its own fold and after it has been fully covered, a page
+             returns to normal flow. This prevents several old pages remaining
+             visible as stacked horizontal bands. */
+          pair.target = 0;
+        } else if (nextTop > coverAt) {
+          /* Only the immediately incoming page overlaps the previous one. */
+          pair.target = (enterAt - nextTop) * hold;
+        } else {
+          /* Once the new page covers almost the whole viewport, release the
+             old page behind it before the following fold can begin. */
+          var releaseProgress = clamp(
+            (coverAt - nextTop) / Math.max(coverAt - releaseAt, 1),
+            0,
+            1
+          );
+          var easedRelease = releaseProgress * releaseProgress * (3 - 2 * releaseProgress);
+          pair.target = maxHold * (1 - easedRelease);
+        }
       });
     }
 
     addJob(function () {
       for (var i = 0; i < pairs.length; i++) {
         var pair = pairs[i];
-        pair.current = lerp(pair.current, pair.target, 0.20);
+        pair.current = lerp(pair.current, pair.target, 0.28);
         if (Math.abs(pair.target - pair.current) < 0.04) {
           pair.current = pair.target;
         }
