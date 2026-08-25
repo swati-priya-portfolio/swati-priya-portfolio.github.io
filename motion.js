@@ -937,6 +937,7 @@
     if (reduced) {
       tears.forEach(function (t) {
         t.style.setProperty("--tear-reveal", "100%");
+        t.style.setProperty("--tear-fold-y", "0px");
         t.classList.add("is-torn");
       });
       return;
@@ -945,63 +946,124 @@
     var geo = [];
     var dirty = true;
     var knownHeight = 0;
+    var targetQueued = false;
+    var rendering = false;
 
     function measure() {
+      var previous = new Map();
+      geo.forEach(function (item) { previous.set(item.el, item); });
+
       geo = tears.map(function (t) {
         var top = 0, el = t;
         while (el) { top += el.offsetTop; el = el.offsetParent; }
-        return { el: t, top: top, done: t.classList.contains("is-torn") };
+        var old = previous.get(t);
+        return {
+          el: t,
+          top: top,
+          current: old ? old.current : 0,
+          target: old ? old.target : 0,
+          lastReveal: old ? old.lastReveal : -1,
+          lastFold: old ? old.lastFold : null
+        };
       });
       knownHeight = document.documentElement.scrollHeight;
       dirty = false;
     }
 
-    function draw() {
-      // Same guard as the sheets: the page is taller after boot than during
-      // it, and a stale offset tears the edge at the wrong moment.
+    function updateTargets() {
+      targetQueued = false;
       if (dirty || document.documentElement.scrollHeight !== knownHeight) {
         measure();
       }
+
       var y = window.scrollY;
       var vh = window.innerHeight;
+      for (var i = 0; i < geo.length; i++) {
+        var g = geo[i];
+        var fromTop = g.top - y;
+
+        /* The rip now occupies almost half a viewport. It starts as the fold
+           approaches the bottom and finishes near the viewport centre. Since
+           target is recalculated on every scroll, moving upward reverses the
+           tear instead of leaving it permanently completed. */
+        var p = clamp((vh * 0.98 - fromTop) / (vh * 0.48), 0, 1);
+        g.target = p * p * (3 - 2 * p);
+      }
+      startRender();
+    }
+
+    function render() {
+      var moving = false;
 
       for (var i = 0; i < geo.length; i++) {
         var g = geo[i];
-        if (g.done) { continue; }
-
-        var fromTop = g.top - y;
-        /* A short 24vh window: hidden near the viewport floor, complete well
-           before the section heading becomes the focus. Only clipping moves. */
-        var p = clamp((vh * 0.98 - fromTop) / (vh * 0.24), 0, 1);
-        var eased = p * p * (3 - 2 * p);
-        g.el.style.setProperty("--tear-reveal", (eased * 100).toFixed(1) + "%");
-
-        if (p >= 0.999) {
-          g.done = true;
-          g.el.style.setProperty("--tear-reveal", "100%");
-          g.el.classList.add("is-torn");
-          requestAnimationFrame(function (edge) {
-            edge.classList.add("is-settled");
-          }.bind(null, g.el));
+        g.current = lerp(g.current, g.target, 0.115);
+        if (Math.abs(g.target - g.current) < 0.001) {
+          g.current = g.target;
+        } else {
+          moving = true;
         }
+
+        var reveal = g.current * 100;
+        var foldY = (1 - g.current) * 12;
+
+        if (Math.abs(reveal - g.lastReveal) >= 0.05) {
+          g.lastReveal = reveal;
+          g.el.style.setProperty("--tear-reveal", reveal.toFixed(2) + "%");
+        }
+        if (g.lastFold === null || Math.abs(foldY - g.lastFold) >= 0.02) {
+          g.lastFold = foldY;
+          g.el.style.setProperty("--tear-fold-y", foldY.toFixed(2) + "px");
+        }
+
+        /* is-torn is now only a performance hint at the exact endpoint.
+           It is removed as soon as the user scrolls back, so every fold can
+           rebuild smoothly in reverse. */
+        g.el.classList.toggle("is-torn", g.current >= 0.999);
+        g.el.classList.remove("is-settled");
+      }
+
+      if (moving) {
+        requestAnimationFrame(render);
+      } else {
+        rendering = false;
       }
     }
 
-    var queued = false;
-    window.addEventListener("scroll", function () {
-      if (queued) { return; }
-      queued = true;
-      requestAnimationFrame(function () { queued = false; draw(); });
-    }, { passive: true });
+    function startRender() {
+      if (rendering) { return; }
+      rendering = true;
+      requestAnimationFrame(render);
+    }
+
+    function schedule() {
+      if (targetQueued) { return; }
+      targetQueued = true;
+      requestAnimationFrame(updateTargets);
+    }
+
+    window.addEventListener("scroll", schedule, { passive: true });
 
     var resizeTimer;
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function () { dirty = true; draw(); }, 160);
+      resizeTimer = setTimeout(function () {
+        dirty = true;
+        schedule();
+      }, 120);
     }, { passive: true });
 
-    window.addEventListener("load", function () { dirty = true; draw(); });
-    draw();
+    window.addEventListener("load", function () {
+      dirty = true;
+      schedule();
+    });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () {
+        dirty = true;
+        schedule();
+      });
+    }
+    schedule();
   }
 
   /* ==========================================================

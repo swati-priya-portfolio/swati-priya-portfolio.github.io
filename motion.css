@@ -2025,7 +2025,7 @@
 /* Torn edges carry only a few pixels of scroll-velocity lag. Clip-path reveal
    and settle animations still own their original transform independently. */
 .sp-js .paper-tear {
-  translate: 0 var(--tear-drift, 0px);
+  translate: 0 calc(var(--tear-fold-y, 0px) + var(--tear-drift, 0px));
 }
 
 /* One small object wakes up after each Behind board lands. Nothing loops. */
