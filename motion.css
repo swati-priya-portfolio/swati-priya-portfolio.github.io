@@ -2942,14 +2942,14 @@
   .hero,
   .sp-js.is-stable-flow .hero {
     position: sticky !important;
-    top: 0 !important;
+    top: var(--stack-sticky-top, 0px) !important;
     z-index: 1;
   }
   .paper-sheet,
   .sp-js.is-stable-flow .paper-sheet {
     position: sticky !important;
-    top: 0 !important;
-    inset-block-start: 0 !important;
+    top: var(--stack-sticky-top, 0px) !important;
+    inset-block-start: var(--stack-sticky-top, 0px) !important;
   }
 }
 
@@ -2985,6 +2985,8 @@
    responsive layout settle. The extra clearance protects card metadata,
    hover lift and parallax translate from the incoming torn sheet.
    ============================================================ */
+.hero,
+.sp-js.is-stable-flow .hero,
 .paper-sheet,
 .sp-js.is-stable-flow .paper-sheet {
   min-height: var(--stack-min-height, 100svh) !important;
