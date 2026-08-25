@@ -677,7 +677,12 @@
     var cards = [].slice.call(grid.querySelectorAll(".case-card"));
     if (cards.length < 3) { return; }
 
-    var PIN_TOP = 104;
+    // The highest the pinned stage may sit, and the lowest gap kept under it.
+    // A raised cover travels 34px, so the stage also stays clear of the bar.
+    var TOP_MIN = 104;
+    var TOP_FLOOR = 140;
+    var FOOT = 40;
+    var pinTop = TOP_MIN;
     var pinned = false;
     var geo = null;
     var travel = 0;
@@ -737,8 +742,18 @@
         c.style.removeProperty("--so");
       });
       var stageH = stage.offsetHeight;
-      var room = window.innerHeight - PIN_TOP - 40;
+      var room = window.innerHeight - TOP_MIN - FOOT;
       var fit = Math.max(.72, Math.min(1, room / Math.max(stageH, 1)));
+
+      // Sit the covers in the middle of the viewport rather than jammed up
+      // under the bar: on a tall screen that was leaving a field of empty
+      // black below them, and a picked-up cover had nowhere to rise into.
+      // Never above the floor that keeps a lifted cover clear of the bar,
+      // and never so low that the bottom of a cover runs off the screen.
+      var fitted = stageH * fit;
+      var lowest = window.innerHeight - fitted - FOOT;
+      var centred = (window.innerHeight - fitted) / 2;
+      pinTop = Math.round(clamp(Math.max(centred, TOP_FLOOR), TOP_MIN, Math.max(lowest, TOP_MIN)));
 
       cards.forEach(function (c) { c.classList.remove("settle-in", "is-visible"); });
       if (settleObserver) { settleObserver.disconnect(); settleObserver = null; }
@@ -756,11 +771,11 @@
       };
 
       travel = Math.round(Math.min(window.innerHeight * 1.45, 1120));
-      track.style.height = Math.round(stageH * fit + travel) + "px";
+      track.style.height = Math.round(fitted + travel) + "px";
       grid.style.transformOrigin = "top center";
-      stage.style.height = Math.round(stageH * fit) + "px";
+      stage.style.height = Math.round(fitted) + "px";
       stage.style.position = "sticky";
-      stage.style.top = PIN_TOP + "px";
+      stage.style.top = pinTop + "px";
       pinned = true;
       cards[0].style.zIndex = "3";   // Guardian One opens the story
       cards[1].style.zIndex = "2";
@@ -772,7 +787,7 @@
       if (!pinned || !geo) { return; }
 
       var top = track.getBoundingClientRect().top;   // relative to viewport
-      var p = clamp((PIN_TOP - top) / travel, 0, 1);
+      var p = clamp((pinTop - top) / travel, 0, 1);
 
       // Final order stays Guardian | GrayQuest | Embibe. All three sheets
       // begin at the middle slot with Guardian physically on top.
