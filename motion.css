@@ -2977,3 +2977,26 @@
     top: auto !important;
   }
 }
+
+
+/* ============================================================
+   27. MOTION-SAFE PAGE RUNWAY
+   --stack-min-height is measured from the real content after fonts and
+   responsive layout settle. The extra clearance protects card metadata,
+   hover lift and parallax translate from the incoming torn sheet.
+   ============================================================ */
+.paper-sheet,
+.sp-js.is-stable-flow .paper-sheet {
+  min-height: var(--stack-min-height, 100svh) !important;
+}
+.cases.paper-sheet {
+  overflow: visible !important;
+}
+.sp-js.is-stable-flow [data-parallax] {
+  will-change: translate;
+}
+@media (max-width: 767px) {
+  .sp-js.is-stable-flow [data-parallax] {
+    will-change: auto;
+  }
+}

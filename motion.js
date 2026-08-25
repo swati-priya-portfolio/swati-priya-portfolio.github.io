@@ -2337,6 +2337,88 @@
   }
 
   /* ==========================================================
+     STACK RUNWAY — reserve space for content and parallax
+     Sticky page overlap is visual only: the next torn sheet may not enter
+     until every real child on the current sheet, plus its motion range, has
+     cleared the viewport. This is measured from layout coordinates so it
+     remains stable while parallax uses the independent translate property.
+     ========================================================== */
+  function stackRunway() {
+    var sheets = [].slice.call(document.querySelectorAll(".paper-sheet"));
+    if (!sheets.length) { return; }
+
+    var queued = false;
+    var last = new Map();
+
+    function safeBottom(sheet) {
+      var vh = window.innerHeight;
+      if (sheet.classList.contains("cases")) {
+        return clamp(vh * .18, 160, 220);
+      }
+      if (sheet.classList.contains("behind")) {
+        return clamp(vh * .14, 128, 180);
+      }
+      return clamp(vh * .12, 112, 160);
+    }
+
+    function contentBottom(sheet) {
+      var bottom = 0;
+      [].slice.call(sheet.children).forEach(function (child) {
+        var position = window.getComputedStyle(child).position;
+        if (position === "absolute" || position === "fixed") { return; }
+        bottom = Math.max(bottom, child.offsetTop + child.offsetHeight);
+      });
+      return bottom;
+    }
+
+    function measure() {
+      queued = false;
+
+      // Measure against the CSS fallback rather than a previous measurement.
+      sheets.forEach(function (sheet) {
+        sheet.style.removeProperty("--stack-min-height");
+      });
+
+      sheets.forEach(function (sheet) {
+        var minimum = Math.ceil(Math.max(window.innerHeight, contentBottom(sheet) + safeBottom(sheet)));
+        if (last.get(sheet) !== minimum) {
+          last.set(sheet, minimum);
+          sheet.style.setProperty("--stack-min-height", minimum + "px");
+        } else {
+          sheet.style.setProperty("--stack-min-height", minimum + "px");
+        }
+      });
+    }
+
+    function schedule() {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(measure);
+    }
+
+    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("orientationchange", schedule, { passive: true });
+    window.addEventListener("load", schedule);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(schedule);
+    }
+
+    if ("ResizeObserver" in window) {
+      var observer = new ResizeObserver(schedule);
+      sheets.forEach(function (sheet) {
+        [].slice.call(sheet.children).forEach(function (child) {
+          var position = window.getComputedStyle(child).position;
+          if (position !== "absolute" && position !== "fixed") {
+            observer.observe(child);
+          }
+        });
+      });
+    }
+
+    schedule();
+  }
+
+  /* ==========================================================
      Boot
      ========================================================== */
   function boot() {
@@ -2345,6 +2427,7 @@
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
     try { stablePageFlow(); } catch (e) {}
+    try { stackRunway(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
     try { heroScrollDepth(); } catch (e) {}
     try { customCursor(); } catch (e) {}
