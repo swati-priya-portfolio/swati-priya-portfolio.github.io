@@ -691,6 +691,7 @@
         c.style.removeProperty("--so");
         c.style.zIndex = "";
         c.style.boxShadow = "";
+        c.style.pointerEvents = "";
       });
       grid.classList.remove("is-staging");
       grid.style.pointerEvents = "";
@@ -798,7 +799,10 @@
         cards.forEach(function (card) { card.style.boxShadow = ""; });
       }
       grid.classList.toggle("is-staging", !settled);
-      grid.style.pointerEvents = settled ? "" : "none";
+      // Pointer events used to be switched off across the whole grid until the
+      // spread finished, which meant no hover and no click for the entire
+      // sequence. Each cover now answers as soon as it is visible; setCard
+      // holds off only the ones that have not faded in yet.
 
       // While the covers are still arriving they overlap, so the stack order
       // matters. Once they are settled it is dropped, or that inline order
@@ -817,6 +821,9 @@
       card.style.setProperty("--ss", scale.toFixed(4));
       card.style.setProperty("--sr", rot.toFixed(2) + "deg");
       card.style.setProperty("--so", opacity.toFixed(3));
+      // A cover that has not faded in yet must not be hoverable or clickable;
+      // one that has is live straight away, part way through the sequence.
+      card.style.pointerEvents = opacity < 0.06 ? "none" : "";
     }
 
     var queued = false;
