@@ -1899,7 +1899,7 @@
     try { music(); } catch (e) {}
     try { sectionStories(); } catch (e) {}
     try { originStory(); } catch (e) {}
-    try { careerDepth(); } catch (e) {}
+    /* Career motion is hover-owned in CSS; no ambient proximity drift. */
     try { aboutPointerDepth(); } catch (e) {}
     try { scrollParallax(); } catch (e) {}
     try { footer(); } catch (e) {}
