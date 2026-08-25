@@ -2738,3 +2738,161 @@
 /* The tear now reaches further back into the board above it, so the two
    notes move up out of its way. */
 .board-notes-glyph { bottom: 34px; }
+
+
+/* ============================================================
+   25. STABLE RESPONSIVE FLOW
+   The torn sheets stay visual dividers, but every chapter now participates
+   in ordinary document flow. Nothing can remain pinned, clipped or hidden
+   because a device did not cross an exact scroll milestone.
+   ============================================================ */
+.sp-js.is-stable-flow .sp-reveal,
+.sp-js.is-stable-flow .sp-settle,
+.sp-js.is-stable-flow .reveal-on-scroll {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.sp-js.is-stable-flow .story-col {
+  --timeline-draw: 1;
+}
+.sp-js.is-stable-flow .site-footer .footer-title .underlined {
+  background-size: 100% 3px, 88% 2px;
+}
+
+.sp-js.is-stable-flow .case-track {
+  height: auto !important;
+}
+.sp-js.is-stable-flow .case-stage {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+.sp-js.is-stable-flow .case-grid {
+  transform: none !important;
+  pointer-events: auto !important;
+}
+.sp-js.is-stable-flow .case-card,
+.sp-js.is-stable-flow .case-card.settle-in {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+.sp-js.is-stable-flow .case-card.settle-in {
+  transform: none !important;
+}
+
+.sp-js.is-stable-flow .behind,
+.sp-js.is-stable-flow .drives-track,
+.sp-js.is-stable-flow .site-footer {
+  min-height: 0 !important;
+}
+.sp-js.is-stable-flow .behind-stage,
+.sp-js.is-stable-flow .drives-track .drives,
+.sp-js.is-stable-flow .site-footer .footer-body {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+}
+.sp-js.is-stable-flow .paper-sheet > .behind-head.sp-reveal,
+.sp-js.is-stable-flow .behind .behind-head .eyebrow,
+.sp-js.is-stable-flow .behind .behind-line,
+.sp-js.is-stable-flow .behind .behind-intro,
+.sp-js.is-stable-flow .behind .board.sp-settle,
+.sp-js.is-stable-flow .behind .reminder,
+.sp-js.is-stable-flow .drives .drives-title,
+.sp-js.is-stable-flow .drives .drives-list li,
+.sp-js.is-stable-flow .drives .drives-list li svg,
+.sp-js.is-stable-flow .drives .drives-list li p,
+.sp-js.is-stable-flow .story-col .eyebrow,
+.sp-js.is-stable-flow .story-col .origin-curiosity,
+.sp-js.is-stable-flow .story-col .origin-step,
+.sp-js.is-stable-flow .story-col .origin-arrow,
+.sp-js.is-stable-flow .story-col .origin-design,
+.sp-js.is-stable-flow .story-col .story-body,
+.sp-js.is-stable-flow .story-col .timeline-item,
+.sp-js.is-stable-flow .site-footer .footer-kicker,
+.sp-js.is-stable-flow .site-footer .footer-title,
+.sp-js.is-stable-flow .site-footer .footer-lede,
+.sp-js.is-stable-flow .site-footer .footer-actions,
+.sp-js.is-stable-flow .site-footer .footer-social,
+.sp-js.is-stable-flow .site-footer .footer-legal,
+.sp-js.is-stable-flow .site-footer .footer-cover.sp-settle {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto;
+}
+.sp-js.is-stable-flow .paper-sheet > .behind-head.sp-reveal,
+.sp-js.is-stable-flow .behind .behind-head .eyebrow,
+.sp-js.is-stable-flow .behind .behind-line,
+.sp-js.is-stable-flow .behind .behind-intro,
+.sp-js.is-stable-flow .behind .board.sp-settle,
+.sp-js.is-stable-flow .drives .drives-title,
+.sp-js.is-stable-flow .drives .drives-list li,
+.sp-js.is-stable-flow .drives .drives-list li svg,
+.sp-js.is-stable-flow .drives .drives-list li p,
+.sp-js.is-stable-flow .story-col .eyebrow,
+.sp-js.is-stable-flow .story-col .origin-curiosity,
+.sp-js.is-stable-flow .story-col .origin-step,
+.sp-js.is-stable-flow .story-col .origin-arrow,
+.sp-js.is-stable-flow .story-col .origin-design,
+.sp-js.is-stable-flow .story-col .story-body,
+.sp-js.is-stable-flow .story-col .timeline-item,
+.sp-js.is-stable-flow .site-footer .footer-kicker,
+.sp-js.is-stable-flow .site-footer .footer-title,
+.sp-js.is-stable-flow .site-footer .footer-lede,
+.sp-js.is-stable-flow .site-footer .footer-actions,
+.sp-js.is-stable-flow .site-footer .footer-social,
+.sp-js.is-stable-flow .site-footer .footer-legal,
+.sp-js.is-stable-flow .site-footer .footer-cover.sp-settle {
+  transform: none !important;
+}
+.sp-js.is-stable-flow .behind .reminder:nth-child(1) { transform: rotate(1.2deg) !important; }
+.sp-js.is-stable-flow .behind .reminder:nth-child(2) { transform: rotate(-.7deg) !important; }
+.sp-js.is-stable-flow .behind .reminder:nth-child(3) { transform: rotate(.8deg) !important; }
+.sp-js.is-stable-flow .drives::before {
+  clip-path: inset(0) !important;
+}
+.sp-js.is-stable-flow .story-col .origin-arrow path {
+  stroke-dashoffset: 0 !important;
+}
+.sp-js.is-stable-flow .site-footer .footer-actions,
+.sp-js.is-stable-flow .site-footer .footer-social {
+  pointer-events: auto !important;
+}
+.sp-js.is-stable-flow .site-footer .footer-bubble {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.sp-js.is-stable-flow .site-footer.is-talking .footer-bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (min-width: 1080px) {
+  .sp-js.is-stable-flow .behind .board {
+    height: auto !important;
+    min-height: 420px;
+  }
+}
+@media (min-width: 1280px) {
+  .sp-js.is-stable-flow .about-grid,
+  .sp-js.is-stable-flow .story-col,
+  .sp-js.is-stable-flow .polaroid-col {
+    height: auto !important;
+  }
+  .sp-js.is-stable-flow .about-grid,
+  .sp-js.is-stable-flow .story-col {
+    min-height: 648px;
+  }
+  .sp-js.is-stable-flow .polaroid-col {
+    min-height: 620px;
+  }
+}
+@media (max-width: 767px) {
+  .sp-js.is-stable-flow .paper-sheet {
+    --lap: clamp(34px, 8vw, 58px);
+  }
+}

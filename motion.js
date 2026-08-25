@@ -2240,6 +2240,103 @@
   }
 
   /* ==========================================================
+     STABLE RESPONSIVE FLOW
+     Core content must never depend on a narrow scroll milestone. The torn
+     dividers and optional depth effects remain, but every chapter is laid out
+     in normal document flow and starts in its complete, readable state.
+     ========================================================== */
+  function stablePageFlow() {
+    root.classList.add("is-stable-flow");
+
+    [].slice.call(document.querySelectorAll(".sp-reveal, .sp-settle, .reveal-on-scroll")).forEach(function (el) {
+      el.classList.add("is-visible");
+    });
+    [].slice.call(document.querySelectorAll(".squiggle")).forEach(function (el) {
+      el.classList.add("is-drawn");
+    });
+
+    var track = document.querySelector(".case-track");
+    var stage = document.querySelector(".case-stage");
+    var grid = document.querySelector(".case-grid");
+    if (track) { track.style.height = ""; }
+    if (stage) {
+      stage.style.position = "";
+      stage.style.top = "";
+      stage.style.height = "";
+    }
+    if (grid) {
+      grid.classList.remove("is-staging");
+      grid.style.transform = "";
+      grid.style.pointerEvents = "";
+    }
+    [].slice.call(document.querySelectorAll(".case-card")).forEach(function (card) {
+      ["--sx", "--sy", "--ss", "--sr", "--so"].forEach(function (name) {
+        card.style.removeProperty(name);
+      });
+      card.style.zIndex = "";
+      card.style.boxShadow = "";
+      card.style.pointerEvents = "";
+      card.classList.remove("settle-in");
+      card.classList.add("is-visible");
+    });
+
+    var behind = document.querySelector(".behind");
+    if (behind) {
+      behind.classList.add(
+        "is-behind-ready",
+        "is-eyebrow-reached",
+        "is-line-one-reached",
+        "is-accent-reached",
+        "is-work-reached",
+        "is-intro-reached"
+      );
+      [].slice.call(behind.querySelectorAll(".board, .reminder")).forEach(function (el) {
+        el.classList.add("is-visible", "is-beat-reached");
+      });
+    }
+
+    var drives = document.querySelector(".drives");
+    if (drives) {
+      drives.classList.add("is-visible", "is-drives-ready", "is-border-reached", "is-title-reached");
+      [].slice.call(drives.querySelectorAll(".drives-list li")).forEach(function (item) {
+        item.classList.add("is-beat-reached");
+      });
+    }
+
+    var story = document.querySelector(".story-col");
+    if (story) {
+      story.classList.add("is-origin-ready", "is-origin-transform", "is-clarity-locked");
+      story.style.setProperty("--timeline-draw", "1");
+      [].slice.call(story.querySelectorAll(
+        ".eyebrow, .origin-curiosity, .origin-step, .origin-arrow, .origin-design, .story-body, .timeline-item"
+      )).forEach(function (el) {
+        el.classList.add("is-reached", "is-visible");
+        el.style.removeProperty("opacity");
+        el.style.removeProperty("transform");
+      });
+    }
+
+    var foot = document.querySelector(".site-footer");
+    if (foot) {
+      foot.classList.add(
+        "is-footer-story-ready",
+        "is-kicker-reached",
+        "is-title-reached",
+        "is-title-max",
+        "is-lede-reached",
+        "is-actions-reached",
+        "is-cover-reached",
+        "is-social-reached"
+      );
+      foot.style.setProperty("--footer-title-scale", "1");
+      foot.style.setProperty("--footer-title-lift", "0px");
+      [].slice.call(foot.querySelectorAll(".footer-story, .footer-cover")).forEach(function (el) {
+        el.classList.add("is-visible");
+      });
+    }
+  }
+
+  /* ==========================================================
      Boot
      ========================================================== */
   function boot() {
@@ -2247,7 +2344,7 @@
     try { reveals(); } catch (e) {}
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
-    try { caseStudies(); } catch (e) {}
+    try { stablePageFlow(); } catch (e) {}
     try { heroInteractions(); } catch (e) {}
     try { heroScrollDepth(); } catch (e) {}
     try { customCursor(); } catch (e) {}
@@ -2257,8 +2354,8 @@
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
     try { stickyNote(); } catch (e) {}
-    try { sectionStories(); } catch (e) {}
-    try { originStory(); } catch (e) {}
+    /* Scroll-milestone stories are intentionally retired: stablePageFlow owns visibility. */
+    /* Origin content stays complete at every viewport height. */
     /* Career motion is hover-owned in CSS; no ambient proximity drift. */
     try { aboutPointerDepth(); } catch (e) {}
     try { scrollParallax(); } catch (e) {}
