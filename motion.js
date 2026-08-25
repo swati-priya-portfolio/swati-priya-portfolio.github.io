@@ -1076,6 +1076,38 @@
   /* ==========================================================
      10. MUSIC — never autoplays, remembers the session choice
      ========================================================== */
+  /* ==========================================================
+     STICKY NOTE — it leans toward whoever is reading it.
+     The sway is CSS; this only supplies the lean, eased so the note
+     settles back rather than snapping when the pointer leaves.
+     ========================================================== */
+  function stickyNote() {
+    var wrap = document.querySelector(".sticky-wrap");
+    if (!wrap || reduced || !finePointer) { return; }
+
+    var target = 0;
+    var current = 0;
+    var live = false;
+
+    wrap.addEventListener("pointermove", function (e) {
+      var r = wrap.getBoundingClientRect();
+      if (!r.width) { return; }
+      target = clamp(((e.clientX - r.left) / r.width - 0.5) * 2, -1, 1);
+      live = true;
+    });
+    wrap.addEventListener("pointerleave", function () { target = 0; });
+
+    addJob(function () {
+      if (!live) { return; }
+      current += (target - current) * 0.14;
+      if (Math.abs(current - target) < 0.002) {
+        current = target;
+        if (target === 0) { live = false; }
+      }
+      wrap.style.setProperty("--tilt", current.toFixed(3));
+    });
+  }
+
   function music() {
     var player = document.querySelector(".player");
     var button = document.querySelector(".ctrl-main");
@@ -1083,13 +1115,16 @@
     if (!player || !button || !state) { return; }
 
     var stateText = state.querySelector(".music-label");
-    var bar = document.querySelector(".player-progress span");
+    var audio = player.querySelector(".player-audio");
     var playing = false;
+    var audible = false;   // true once a real file is actually running
     var pos = 0.42;
     var angle = 0;
     var last = 0;
     var art = player.querySelector(".player-art");
     var inView = true;
+
+    if (audio) { audio.volume = 0.55; }
 
     function paint() {
       player.classList.toggle("is-playing", playing);
@@ -1097,17 +1132,48 @@
       button.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
       button.setAttribute("aria-pressed", String(playing));
       button.setAttribute("aria-label", playing ? "Pause the focus track" : "Play the focus track");
-      button.setAttribute("data-cursor", playing ? "PAUSE ♪" : "PLAY ♪");
-      if (stateText) { stateText.textContent = playing ? "MUSIC ON" : "MUSIC OFF"; }
+      button.setAttribute("data-cursor", playing ? "PAUSE \u266A" : "PLAY \u266A");
+      if (stateText) {
+        stateText.textContent = !playing ? "MUSIC OFF" : (audible ? "MUSIC ON" : "TRACK UNAVAILABLE");
+      }
     }
 
-    function toggle() {
-      playing = !playing;
-      try { sessionStorage.setItem("sp-music-choice", playing ? "on" : "off"); } catch (e) {}
+    // No file, a 404, or a codec the browser will not take: the widget keeps
+    // its animation so the board never looks broken, it just makes no sound.
+    function silentFallback() {
+      audible = false;
       paint();
     }
 
+    function start() {
+      playing = true;
+      paint();
+      if (!audio) { return silentFallback(); }
+      var attempt = audio.play();
+      if (!attempt || !attempt.then) { audible = true; return paint(); }
+      attempt.then(function () { audible = true; paint(); }, silentFallback);
+    }
+
+    function stop() {
+      playing = false;
+      if (audio) { try { audio.pause(); } catch (e) {} }
+      paint();
+    }
+
+    function toggle() {
+      if (playing) { stop(); } else { start(); }
+      try { sessionStorage.setItem("sp-music-choice", playing ? "on" : "off"); } catch (e) {}
+    }
+
     button.addEventListener("click", function (e) { e.preventDefault(); toggle(); });
+    if (audio) {
+      audio.addEventListener("error", silentFallback);
+      // Something outside this button paused it: a media key, another tab.
+      // A file that will not load also fires `pause` as its play() rejects,
+      // and treating that as a stop knocked the button a press out of step,
+      // so only real playback is allowed to switch it back off.
+      audio.addEventListener("pause", function () { if (playing && audible) { stop(); } });
+    }
 
     // A stored preference may describe the last choice, but audible/active
     // playback still requires a fresh user gesture after every page load.
@@ -1125,11 +1191,21 @@
       if (!last) { last = now; return; }
       var dt = Math.min(now - last, 64);
       last = now;
-      if (!playing || reduced || !inView) { return; }
-      angle = (angle + dt * 0.012) % 360;
-      pos += dt * 0.000018;
-      if (pos > 1) { pos = 0; }
-      if (art) { art.style.setProperty("--record-angle", angle.toFixed(2) + "deg"); }
+      if (!playing) { return; }
+
+      // A real track owns the playhead. Without one the bar keeps its old
+      // simulated crawl, which only runs while the board is on screen.
+      if (audible && audio && audio.duration) {
+        pos = clamp(audio.currentTime / audio.duration, 0, 1);
+      } else {
+        if (reduced || !inView) { return; }
+        pos += dt * 0.000018;
+        if (pos > 1) { pos = 0; }
+      }
+      if (!reduced && inView) {
+        angle = (angle + dt * 0.012) % 360;
+        if (art) { art.style.setProperty("--record-angle", angle.toFixed(2) + "deg"); }
+      }
       player.style.setProperty("--music-progress", pos.toFixed(3));
     });
   }
@@ -1286,7 +1362,10 @@
           [.24,.43,.62,.80].forEach(function (point, i) {
             reveal(boards[i], bp >= point);
           });
-          [.90,.95,.985].forEach(function (point, i) {
+          // These used to sit at .90/.95/.985, which meant the second and
+          // third notes only arrived as the section was scrolling away --
+          // you never saw all three on the board at once.
+          [.82,.86,.90].forEach(function (point, i) {
             reveal(reminders[i], bp >= point);
           });
         } else {
@@ -2029,6 +2108,7 @@
     try { footerTitleChars(); } catch (e) {}
     try { books(); } catch (e) {}
     try { music(); } catch (e) {}
+    try { stickyNote(); } catch (e) {}
     try { sectionStories(); } catch (e) {}
     try { originStory(); } catch (e) {}
     /* Career motion is hover-owned in CSS; no ambient proximity drift. */

@@ -35,9 +35,9 @@
     href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=17" />
+  <link rel="stylesheet" href="motion.css?v=18" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -329,20 +329,31 @@
         <!-- Board 2 — Music -->
         <article class="board sp-settle">
           <h3 class="board-title">MUSIC WHILE DESIGNING</h3>
-          <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true" data-parallax="-6">
-            <path d="M7 26v-6a14 14 0 0 1 28 0v6" />
-            <rect x="3" y="24" width="8" height="13" rx="4" />
-            <rect x="31" y="24" width="8" height="13" rx="4" />
-          </svg>
 
           <div class="player" data-parallax="9">
+            <!-- Headphones hang off the player's corner, so they stay put
+                 whether or not the board title wraps to a second line. -->
+            <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true">
+              <path d="M7 26v-6a14 14 0 0 1 28 0v6" />
+              <rect x="3" y="24" width="8" height="13" rx="4" />
+              <rect x="31" y="24" width="8" height="13" rx="4" />
+            </svg>
+
+            <!-- Drop your own file at audio/bye-bye-bye.mp3 and the button
+                 plays it. With no file there the widget still animates,
+                 silently, rather than throwing or looking broken. -->
+            <audio class="player-audio" preload="none" loop
+              src="audio/bye-bye-bye.mp3"></audio>
+
             <img class="player-art" src="images/album-art.png" alt="" />
             <div class="player-meta">
               <p class="player-track">Bye Bye Bye</p>
               <p class="player-mode">Focus Mode</p>
               <div class="waveform" aria-hidden="true"></div>
             </div>
-            <div class="player-progress" aria-hidden="true"><span></span></div>
+            <div class="player-progress" aria-hidden="true">
+              <span></span><i class="player-knob"></i>
+            </div>
             <div class="player-controls">
               <span class="ctrl" aria-hidden="true">&#9198;</span>
               <!-- Real control. Never autoplays; remembers the session choice. -->
@@ -350,10 +361,10 @@
                 aria-label="Play the focus track" data-cursor="PLAY &#9834;">&#9654;</button>
               <span class="ctrl" aria-hidden="true">&#9197;</span>
             </div>
-            <p class="music-state">
-              <span aria-hidden="true">&#9834;</span>
+            <!-- The Figma frame has no status line under the controls, so it
+                 is spoken rather than shown. -->
+            <p class="music-state sp-sr" role="status">
               <span class="music-label">MUSIC OFF</span>
-              <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             </p>
           </div>
 
@@ -657,7 +668,7 @@
     <span class="sp-top-label">PAGE ONE</span>
   </button>
 
-  <script src="script.js?v=17"></script>
-  <script src="motion.js?v=17"></script>
+  <script src="script.js?v=18"></script>
+  <script src="motion.js?v=18"></script>
 </body>
 </html>
