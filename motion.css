@@ -234,14 +234,12 @@
 }
 
 /* ============================================================
-   MOBILE MOTION PASS — <= 767px ONLY
-   Desktop/tablet remain exactly as before.
+   MOBILE MOTION V2 — <= 767px ONLY
+   Compact reading rhythm + one comic issue per scroll beat.
+   Desktop/tablet remain untouched.
    ============================================================ */
 @media (max-width: 767px) {
-  /* ---------- Stable floating navigation ----------
-     The top pill no longer grows vertically when the menu opens. The links
-     float below it, so opening navigation never pushes the page or changes
-     the current scroll position. */
+  /* Stable floating nav: opening the menu never changes page height. */
   .site-header,
   .sp-js .site-header.is-compact {
     padding: max(8px, env(safe-area-inset-top)) 12px 0 !important;
@@ -258,15 +256,8 @@
     overflow: visible;
   }
 
-  .identity-group {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .identity {
-    min-width: 0;
-    gap: 10px;
-  }
+  .identity-group { flex: 1 1 auto; min-width: 0; }
+  .identity { min-width: 0; gap: 10px; }
 
   .identity-name,
   .sp-js .site-header.is-compact .identity-name {
@@ -277,7 +268,6 @@
     font-size: 12px !important;
   }
 
-  /* Keep the approved avatar size stable instead of shrinking it on scroll. */
   .sp-js .site-header.is-compact .identity-avatar {
     width: 64px;
     height: 64px;
@@ -292,7 +282,6 @@
     border-radius: 50%;
     background: rgba(255, 197, 61, 0.04);
   }
-
   .nav-toggle[aria-expanded="true"] {
     background: rgba(255, 197, 61, 0.10);
     border-color: rgba(255, 197, 61, 0.62);
@@ -320,14 +309,9 @@
     transform: translateY(-8px) scale(0.985);
     transform-origin: top center;
     overflow: hidden;
-    transition:
-      max-height 360ms var(--ep),
-      padding 360ms var(--ep),
-      opacity 220ms linear,
-      transform 360ms var(--ep),
-      visibility 0s linear 360ms;
+    transition: max-height 360ms var(--ep), padding 360ms var(--ep), opacity 220ms linear,
+                transform 360ms var(--ep), visibility 0s linear 360ms;
   }
-
   .nav-links.is-open {
     max-height: 320px;
     padding: 8px 10px;
@@ -337,81 +321,132 @@
     transform: none;
     transition-delay: 0s;
   }
-
   .nav-link,
   .sp-js .site-header.is-compact .nav-link {
     padding: 13px 12px;
     border-radius: 12px;
     font-size: 12px;
   }
-
-  .nav-links li + li {
-    border-top: 1px solid rgba(245, 239, 227, 0.07);
-  }
-
-  .nav-link::after {
-    left: 12px;
-    right: auto;
-    width: 34px;
-    bottom: 7px;
-  }
-
+  .nav-links li + li { border-top: 1px solid rgba(245, 239, 227, 0.07); }
+  .nav-link::after { left: 12px; right: auto; width: 34px; bottom: 7px; }
   .nav-cta,
-  .nav-available {
-    display: none !important;
+  .nav-available { display: none !important; }
+
+  /* Hero: keep the text, speech notes and laptop on one clean centre axis. */
+  .hero {
+    padding-top: 32px !important;
+    padding-bottom: 48px !important;
+  }
+  .hero-inner { gap: 26px !important; }
+  .hero-copy { gap: 16px; }
+  .hero-character {
+    display: grid !important;
+    gap: 10px !important;
+    justify-items: center;
+    align-items: center;
+    padding-top: 2px !important;
+  }
+  .hero-character .speech,
+  .hero-character .speech-left,
+  .hero-character .speech-right {
+    position: relative !important;
+    inset: auto !important;
+    justify-self: center !important;
+    max-width: calc(100% - 26px);
+    margin: 0 auto;
+    padding: 10px 16px;
+    font-size: 17px;
+    text-align: center;
+  }
+  .hero-character .speech-left { transform: rotate(1.4deg); }
+  .hero-character .speech-right { transform: rotate(-1.4deg); }
+  .hero-art {
+    width: min(100%, 350px) !important;
+    max-width: 350px !important;
+    margin: 2px auto 0 !important;
   }
 
-  /* ---------- Pick an episode: scroll-stacked comic issues ---------- */
-  .case-track.mobile-episode-stack {
+  /* About: remove the large empty mobile beat. Content reads continuously. */
+  .about { padding-top: 58px !important; padding-bottom: 72px !important; }
+  .about-grid { gap: 30px !important; }
+  .polaroid-col { padding-top: 18px !important; }
+  .tools { margin-top: 24px !important; }
+  .story-head { gap: 14px !important; }
+  .story-title { margin-top: 10px !important; }
+  .thought-bubble {
+    width: 100% !important;
+    max-width: 258px;
+    padding: 10px 18px;
+    font-size: 18px;
+  }
+  .story-body { margin-top: 18px !important; }
+  .timeline { margin-top: 18px !important; }
+  .timeline-item { padding: 10px 0 !important; }
+
+  /* Mobile should never reserve a blank viewport for staged About content. */
+  .sp-js .story-col,
+  .sp-js .story-head,
+  .sp-js .story-body,
+  .sp-js .timeline,
+  .sp-js .timeline-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sp-js .timeline-item .tl-logo,
+  .sp-js .timeline-item .tl-body,
+  .sp-js .timeline-item .tl-date {
+    translate: 0 0 !important;
+  }
+
+  /* Pick an episode: one full issue at a time. */
+  .case-track.mobile-episode-v2 {
     position: relative;
-    overflow: visible;
+    height: var(--mobile-v2-track-h, auto) !important;
+    overflow: visible !important;
   }
-
-  .case-track.mobile-episode-stack .case-stage {
+  .case-track.mobile-episode-v2 .case-stage {
     position: sticky !important;
-    top: var(--mobile-stack-top, 82px) !important;
-    height: var(--mobile-card-h, 480px) !important;
-    overflow: visible;
+    top: var(--mobile-v2-top, 78px) !important;
+    height: var(--mobile-v2-card-h, 480px) !important;
+    overflow: visible !important;
   }
-
-  .case-track.mobile-episode-stack .case-grid {
+  .case-track.mobile-episode-v2 .case-grid {
     position: relative;
     display: block;
-    width: 100%;
-    max-width: 406px;
-    height: var(--mobile-card-h, 480px);
+    width: min(92vw, 372px);
+    max-width: 372px;
+    height: var(--mobile-v2-card-h, 480px);
     margin: 0 auto;
     perspective: 1200px;
-    overflow: visible;
+    overflow: visible !important;
   }
-
-  .case-track.mobile-episode-stack .case-card,
-  .sp-js .case-track.mobile-episode-stack .case-card.settle-in,
-  .sp-js .case-track.mobile-episode-stack .case-card.settle-in.is-visible {
+  .case-track.mobile-episode-v2 .case-card,
+  .sp-js .case-track.mobile-episode-v2 .case-card.settle-in,
+  .sp-js .case-track.mobile-episode-v2 .case-card.settle-in.is-visible {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     max-width: none;
     margin: 0 !important;
-    opacity: 1 !important;
+    opacity: var(--m-o, 1) !important;
+    transform: translate3d(0, var(--m-y, 0px), 0) rotate(var(--m-r, 0deg)) scale(var(--m-s, 1)) !important;
     transform-origin: 50% 8%;
     transition: none !important;
-    will-change: transform;
+    will-change: transform, opacity;
+    pointer-events: none !important;
   }
+  .case-track.mobile-episode-v2 .case-card:nth-child(1) { z-index: 1 !important; }
+  .case-track.mobile-episode-v2 .case-card:nth-child(2) { z-index: 2 !important; }
+  .case-track.mobile-episode-v2 .case-card:nth-child(3) { z-index: 3 !important; }
+  .case-track.mobile-episode-v2 .case-card.is-mobile-active { pointer-events: auto !important; }
 
-  /* Later issues physically sit above earlier issues as they arrive. */
-  .case-track.mobile-episode-stack .case-card:nth-child(1) { z-index: 1; }
-  .case-track.mobile-episode-stack .case-card:nth-child(2) { z-index: 2; }
-  .case-track.mobile-episode-stack .case-card:nth-child(3) { z-index: 3; }
-
-  /* The next cover can peek in from below without being clipped by the page. */
+  /* Nothing else gets clipped before the final issue finishes its hold. */
   .cases,
   .cases .case-track,
   .cases .case-stage,
-  .cases .case-grid {
-    overflow: visible;
-  }
+  .cases .case-grid { overflow: visible !important; }
+  .cases { padding-bottom: 72px !important; }
 }
 
 @media (max-width: 360px) {
@@ -419,5 +454,9 @@
   .sp-js .site-header.is-compact .identity-name {
     max-width: 92px;
     font-size: 11px !important;
+  }
+
+  .case-track.mobile-episode-v2 .case-grid {
+    width: min(91vw, 338px);
   }
 }
