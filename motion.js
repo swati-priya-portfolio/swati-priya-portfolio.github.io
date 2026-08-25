@@ -229,7 +229,7 @@
     }
 
     window.addEventListener("scroll", function () {
-      if (queued || window.scrollY > height + window.innerHeight) { return; }
+      if (queued) { return; }
       queued = true;
       requestAnimationFrame(draw);
     }, { passive: true });
@@ -1024,8 +1024,12 @@
       return top;
     }
 
-    function reveal(el) {
-      if (el) { el.classList.add("is-beat-reached"); }
+    function reveal(el, yes) {
+      if (el) { el.classList.toggle("is-beat-reached", reduced || !!yes); }
+    }
+
+    function setState(el, name, yes) {
+      if (el) { el.classList.toggle(name, reduced || !!yes); }
     }
 
     function measure() {
@@ -1086,25 +1090,25 @@
           var bp = stagedProgress(bh, y, vh, .78);
           [[.02,"is-eyebrow-reached"],[.05,"is-line-one-reached"],[.08,"is-accent-reached"],
            [.11,"is-work-reached"],[.14,"is-intro-reached"]].forEach(function (beat) {
-            if (reduced || bp >= beat[0]) { behind.classList.add(beat[1]); }
+            setState(behind, beat[1], bp >= beat[0]);
           });
           [.24,.43,.62,.80].forEach(function (point, i) {
-            if (reduced || bp >= point) { reveal(boards[i]); }
+            reveal(boards[i], bp >= point);
           });
           [.90,.95,.985].forEach(function (point, i) {
-            if (reduced || bp >= point) { reveal(reminders[i]); }
+            reveal(reminders[i], bp >= point);
           });
         } else {
           var introStart = bh.top - vh * .78;
           [[0,"is-eyebrow-reached"],[28,"is-line-one-reached"],[56,"is-accent-reached"],
            [84,"is-work-reached"],[112,"is-intro-reached"]].forEach(function (beat) {
-            if (reduced || y >= introStart + beat[0]) { behind.classList.add(beat[1]); }
+            setState(behind, beat[1], y >= introStart + beat[0]);
           });
           boards.forEach(function (board, i) {
-            if (reduced || y >= bh.board[i]) { reveal(board); }
+            reveal(board, y >= bh.board[i]);
           });
           reminders.forEach(function (item, i) {
-            if (reduced || y >= bh.reminder[i]) { reveal(item); }
+            reveal(item, y >= bh.reminder[i]);
           });
         }
       }
@@ -1114,16 +1118,16 @@
         if (dg.staged) {
           var dStart = dg.top - vh * .76;
           var dp = clamp((y - dStart) / Math.max(vh * .62, 420), 0, 1);
-          if (reduced || dp >= .04) { drives.classList.add("is-border-reached"); }
-          if (reduced || dp >= .14) { drives.classList.add("is-title-reached"); }
+          setState(drives, "is-border-reached", dp >= .04);
+          setState(drives, "is-title-reached", dp >= .14);
           [.30,.48,.66,.84].forEach(function (point, i) {
-            if (reduced || dp >= point) { reveal(principles[i]); }
+            reveal(principles[i], dp >= point);
           });
         } else {
-          if (reduced || y >= dg.top - vh * .79) { drives.classList.add("is-border-reached"); }
-          if (reduced || y >= dg.top - vh * .70) { drives.classList.add("is-title-reached"); }
+          setState(drives, "is-border-reached", y >= dg.top - vh * .79);
+          setState(drives, "is-title-reached", y >= dg.top - vh * .70);
           principles.forEach(function (item, i) {
-            if (reduced || y >= dg.items[i]) { reveal(item); }
+            reveal(item, y >= dg.items[i]);
           });
         }
       }
@@ -1151,7 +1155,7 @@
         [[.04,"is-kicker-reached"],[.10,"is-title-reached"],[.44,"is-title-max"],
          [.55,"is-lede-reached"],[.64,"is-actions-reached"],[.72,"is-cover-reached"],
          [.82,"is-social-reached"]].forEach(function (beat) {
-          if (reduced || p >= beat[0]) { footerEl.classList.add(beat[1]); }
+          setState(footerEl, beat[1], p >= beat[0]);
         });
         if (p >= .985 || nearBottom) { finishFooter(); }
       }
@@ -1353,7 +1357,7 @@
     }
 
     function reached(el, yes) {
-      if (el && yes && !el.classList.contains("is-reached")) { el.classList.add("is-reached"); }
+      if (el) { el.classList.toggle("is-reached", reduced || !!yes); }
     }
 
     function draw() {
@@ -1376,8 +1380,8 @@
         reached(body, p >= .50);
 
         var line = ease(span(p, .52, .91));
-        furthestLine = Math.max(furthestLine, line);
-        story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
+        furthestLine = line;
+        story.style.setProperty("--timeline-draw", line.toFixed(4));
         var itemPoints = [.60,.70,.80,.89];
         items.forEach(function (item, i) { reached(item, p >= (itemPoints[i] || .89)); });
         if (p >= .95) { showAll(); }
@@ -1392,9 +1396,9 @@
         var playhead = y + vh * .68;
         var lineRaw = clamp((playhead - lineStart) / lineLength, 0, 1);
         var mobileLine = lineRaw * lineRaw * (3 - 2 * lineRaw);
-        furthestLine = Math.max(furthestLine, mobileLine);
-        story.style.setProperty("--timeline-draw", furthestLine.toFixed(4));
-        items.forEach(function (item, i) { reached(item, y >= itemThresholds[i] && furthestLine > 0); });
+        furthestLine = mobileLine;
+        story.style.setProperty("--timeline-draw", mobileLine.toFixed(4));
+        items.forEach(function (item, i) { reached(item, y >= itemThresholds[i] && mobileLine > 0); });
       }
 
       if (y + vh >= sectionTop + sectionHeight - 8) { showAll(); }
