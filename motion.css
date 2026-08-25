@@ -112,3 +112,32 @@
       var(--void-deep) 52px 100%) !important;
   }
 }
+
+/* ============================================================
+   FINAL MOTION POLISH
+   Keep the paper transition as the dominant motion and quiet the supporting
+   flourishes around it.
+   ============================================================ */
+
+/* The quick first-visit handoff in script.js starts the hero behind the loader.
+   Finish the loader fade within that shorter window instead of carrying the
+   old 420ms exit into the page. */
+.sp-loader.is-done {
+  animation-duration: 220ms !important;
+}
+.sp-loader.is-done .sp-loader-scene,
+.sp-loader.is-done .sp-loader-sub,
+.sp-loader.is-done .sp-loader-caption {
+  transition-duration: 120ms !important;
+}
+
+/* The case-study spread already communicates the stack. Remove the extra
+   scale/rotation drama while it is staging and keep only a restrained depth
+   shadow. Hover behaviour after the spread is unchanged. */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .sp-js .case-grid.is-staging .case-card {
+    --ss: 1 !important;
+    --sr: 0deg !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24) !important;
+  }
+}
