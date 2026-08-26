@@ -37,10 +37,10 @@
     var presets = phone ? [
       [".hero-copy", -4], [".section-head", -4],
       [".case-card:nth-child(1)", 0], [".case-card:nth-child(2)", 0], [".case-card:nth-child(3)", 0],
-      [".behind-head", -4], [".board:nth-child(1)", 3], [".board:nth-child(2)", 4],
-      [".board:nth-child(3)", 3], [".board:nth-child(4)", 4],
+      [".behind-head", -4], [".board:nth-child(1)", 2], [".board:nth-child(2)", 2],
+      [".board:nth-child(3)", 2], [".board:nth-child(4)", 2],
       [".about-grid > .polaroid-col", 0], [".about-grid > .story-col", 0],
-      [".drives-title", -2], [".drives-list", 3], [".footer-story", -3]
+      [".drives-title", -2], [".drives-list", 2], [".footer-story", -3]
     ] : [
       [".hero-copy", -18], [".section-head", -14],
       [".case-card:nth-child(1)", 16], [".case-card:nth-child(2)", 24], [".case-card:nth-child(3)", 30],
@@ -175,20 +175,21 @@
           el.style.setProperty(property, value, priority || "");
         });
       }
-      set("#case-studies .section-head", "margin-bottom", "24px", "important");
-      set("#behind .behind-head", "margin-bottom", "26px", "important");
-      set("#behind .board-grid", "gap", "26px", "important");
-      set("#about .about-grid", "gap", "36px", "important");
-      set("#about .story-head", "gap", "18px", "important");
-      set("#about .story-body", "margin-top", "20px", "important");
-      set("#about .timeline", "margin-top", "20px", "important");
+      set("#case-studies .section-head", "margin-bottom", "28px", "important");
+      set("#behind .behind-head", "margin-bottom", "34px", "important");
+      set("#behind .board-grid", "gap", "42px", "important");
+      set("#about .about-grid", "gap", "52px", "important");
+      set("#about .tools", "margin-top", "30px", "important");
+      set("#about .story-head", "gap", "24px", "important");
+      set("#about .story-body", "margin-top", "28px", "important");
+      set("#about .timeline", "margin-top", "32px", "important");
       set("#about .timeline", "display", "grid", "important");
-      set("#about .timeline", "gap", "8px", "important");
-      set("#about .timeline-item", "padding-top", "12px", "important");
-      set("#about .timeline-item", "padding-bottom", "12px", "important");
-      set("#about .drives", "margin-top", "30px", "important");
-      set(".site-footer .footer-body", "gap", "38px", "important");
-      set(".site-footer .footer-story", "gap", "17px", "important");
+      set("#about .timeline", "gap", "14px", "important");
+      set("#about .timeline-item", "padding-top", "15px", "important");
+      set("#about .timeline-item", "padding-bottom", "15px", "important");
+      set("#about .drives", "margin-top", "40px", "important");
+      set(".site-footer .footer-body", "gap", "42px", "important");
+      set(".site-footer .footer-story", "gap", "19px", "important");
     }
 
     function mobileFocusReveals() {
@@ -198,6 +199,7 @@
         "#behind .behind-head",
         "#behind .board",
         "#about .polaroid-col",
+        "#about .tools",
         "#about .story-head",
         "#about .story-body",
         "#about .timeline-item",
@@ -216,8 +218,8 @@
       function hidden(el) {
         el.classList.add("mobile-focus-ready");
         el.style.setProperty("opacity", "0", "important");
-        el.style.setProperty("transform", "translateY(16px)", "important");
-        el.style.setProperty("transition", "opacity 420ms linear, transform 560ms cubic-bezier(0.22,1,0.36,1)", "important");
+        el.style.setProperty("transform", "translateY(22px)", "important");
+        el.style.setProperty("transition", "opacity 500ms linear, transform 700ms cubic-bezier(0.22,1,0.36,1)", "important");
       }
       function show(el) {
         el.classList.add("mobile-focus-in");
@@ -236,7 +238,7 @@
           show(entry.target);
           io.unobserve(entry.target);
         });
-      }, { threshold: 0.14, rootMargin: "0px 0px -16% 0px" });
+      }, { threshold: 0.10, rootMargin: "0px 0px -44% 0px" });
       targets.forEach(function (el) { io.observe(el); });
     }
 
