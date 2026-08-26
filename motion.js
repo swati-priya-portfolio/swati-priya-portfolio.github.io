@@ -1354,6 +1354,13 @@
       if (el) { el.classList.toggle("is-beat-reached", reduced || !!yes); }
     }
 
+    /* Principles are content, not a reversible decoration. Once a principle
+       has entered, keep it readable while the torn footer overlaps and while
+       the visitor scrolls back upward. */
+    function revealPrinciple(el, yes) {
+      if (el && (reduced || !!yes)) { el.classList.add("is-beat-reached"); }
+    }
+
     function setState(el, name, yes) {
       if (el) { el.classList.toggle(name, reduced || !!yes); }
     }
@@ -1449,16 +1456,25 @@
           var dp = clamp((y - dStart) / Math.max(vh * .62, 420), 0, 1);
           setState(drives, "is-border-reached", dp >= .04);
           setState(drives, "is-title-reached", dp >= .14);
-          [.30,.48,.66,.84].forEach(function (point, i) {
-            reveal(principles[i], dp >= point);
+          [.08,.16,.24,.32].forEach(function (point, i) {
+            revealPrinciple(principles[i], dp >= point);
           });
         } else {
           setState(drives, "is-border-reached", y >= dg.top - vh * .79);
           setState(drives, "is-title-reached", y >= dg.top - vh * .70);
           principles.forEach(function (item, i) {
-            reveal(item, y >= dg.items[i]);
+            revealPrinciple(item, y >= dg.items[i]);
           });
         }
+      }
+
+      /* The complete principle strip must be visible before the final paper
+         edge enters. This guard also covers unusually short or wide screens
+         where percentage staging alone has too little runway. */
+      if (drives && geometry.footer && geometry.footer.top - y <= vh * 1.08) {
+        principles.forEach(function (item) { revealPrinciple(item, true); });
+        setState(drives, "is-border-reached", true);
+        setState(drives, "is-title-reached", true);
       }
 
       if (footerEl) {
@@ -2140,9 +2156,12 @@
            begins just below the viewport and climbs over the previous page.
            A broad scroll range gives the paper weight; recalculating on every
            scroll also makes the layering reverse naturally on the way up. */
-        var p = clamp((vh * 1.02 - fromTop) / (vh * 0.58), 0, 1);
+        var p = clamp((vh * 1.02 - fromTop) / (vh * 0.70), 0, 1);
         var eased = p * p * (3 - 2 * p);
-        var slide = (1 - eased) * 0.72;
+        /* --slide is defined as 1 = flush and 0 = fully overlapped. The
+           previous 0.72 multiplier meant every page began 28% overlapped,
+           so the next tear arrived before the outgoing page was readable. */
+        var slide = 1 - eased;
 
         if (g.last === null || Math.abs(slide - g.last) >= 0.001) {
           g.last = slide;
@@ -2381,6 +2400,7 @@
     try { reveals(); } catch (e) {}
     try { metrics(); } catch (e) {}
     try { paperTear(); } catch (e) {}
+    try { tearVelocity(); } catch (e) {}
     try { paperSheets(); } catch (e) {}
     try { pageOverlap(); } catch (e) {}
     try { caseStudies(); } catch (e) {}
