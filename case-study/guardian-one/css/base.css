@@ -1,0 +1,1032 @@
+/* ============================================================
+   CASE STUDY READER
+   A scene-based story: fourteen fixed 1440x700 frames you step
+   through with the arrow keys, a click, or a swipe. The chrome
+   (top bar, progress, up-next) is hoisted out of the scenes so
+   the progress fill can travel continuously between them.
+
+   Loads after styles.css and reuses its tokens, so the header,
+   the yellow, the type scale and the paper cream all match the
+   homepage rather than being redefined here.
+   ============================================================ */
+
+:root {
+  --cs-ink:        #f5efe3;
+  --cs-dim:        rgba(245, 239, 227, 0.58);
+  --cs-faint:      rgba(245, 239, 227, 0.34);
+  --cs-line:       rgba(245, 239, 227, 0.10);
+  --cs-panel:      rgba(9, 13, 28, 0.62);
+  --cs-panel-2:    rgba(6, 9, 20, 0.78);
+  --cs-paper:      #efe7d6;
+  --cs-blue:       #7ba5ff;
+  --cs-green:      #4bd6a4;
+  --cs-purple:     #ab8cfa;
+  --cs-red:        #f4776f;
+  --cs-ease:       cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* The frame the design is drawn on. The reader scales to it. */
+  --cs-w: 1440;
+  --cs-h: 700;
+}
+
+/* ---------- Page shell ---------- */
+.cs-page {
+  min-height: 100vh;
+  margin: 0;
+  /* The frame is near-black with ONE soft blue bloom over it. In the design
+     that bloom is a single 2561x1226 ellipse across a 1440x700 frame — a
+     plain colour-to-transparent falloff, which is why the corners read black
+     and the middle reads navy. My earlier version stacked hard colour stops
+     inside an oversized radial, and the whole page came out as a blue wash.
+     The warm ellipse at the bottom left is the light on the narrator. */
+  background:
+    radial-gradient(70% 60% at 50% 46%, rgba(26, 44, 88, 0.55) 0%, rgba(10, 12, 22, 0) 100%),
+    #07070b;
+  color: var(--cs-ink);
+  font-family: var(--font-body, Inter, system-ui, sans-serif);
+  overflow: hidden;                     /* the reader owns the viewport */
+}
+.cs-page.is-flow { overflow: auto; }    /* narrow screens read as a document */
+
+/* The header keeps its homepage look; it just never folds here, because
+   this page does not scroll. */
+.cs-page .site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 40;
+  padding: 14px var(--gutter, 24px);
+  pointer-events: none;
+}
+.cs-page .site-header > * { pointer-events: auto; }
+.cs-page .nav-pill {
+  max-width: var(--max, 1280px);
+  margin: 0 auto;
+  flex-wrap: nowrap;
+}
+/* On the homepage motion.css makes this a flex row. That file is not loaded
+   here, so without this the identity and the HOME button stack and the bar
+   grows tall enough to sit on top of the reader's rail. */
+.cs-page .identity-group { display: flex; flex-wrap: nowrap; align-items: center; gap: 12px; }
+.cs-page .identity-name { white-space: nowrap; }
+
+/* The way back. Sits with the identity so it reads as part of the bar. */
+.cs-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  padding: 8px 14px 8px 11px;
+  border: 1px solid rgba(255, 197, 61, 0.42);
+  border-radius: 100px;
+  background: rgba(255, 197, 61, 0.06);
+  color: var(--accent, #ffc53d);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 260ms var(--cs-ease), border-color 260ms var(--cs-ease),
+              transform 260ms var(--cs-ease);
+}
+.cs-home:hover,
+.cs-home:focus-visible {
+  background: rgba(255, 197, 61, 0.14);
+  border-color: var(--accent, #ffc53d);
+  transform: translateY(-1px);
+}
+.cs-home span[aria-hidden] { font-size: 13px; line-height: 1; }
+
+/* ---------- Reader ---------- */
+.cs-reader {
+  position: relative;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  /* Measured from the real header rather than assumed: with the display font
+     loaded the bar is taller than it is in a fallback, which is what put the
+     scene's own top rail underneath it. */
+  padding-top: calc(var(--cs-head, 86px) + 76px);
+  padding-bottom: 12px;
+  /* The stage still occupies its full 1440px in layout even when scaled
+     down, so the reader clips rather than letting the page report a
+     scrollable width it can never actually scroll. */
+  overflow: hidden;
+}
+
+/* The stage is the design's own 1440x700 canvas, scaled to fit whatever
+   room is left. Scaling the whole frame is what keeps every scene true to
+   the layout instead of reflowing it into something else. */
+.cs-stage {
+  position: relative;
+  width: calc(var(--cs-w) * 1px);
+  height: calc(var(--cs-h) * 1px);
+  flex: none;
+  transform: scale(var(--cs-scale, 1));
+  transform-origin: center center;
+  /* The glow is the frame's, not the window's. In the design it is one soft
+     2561x1226 ellipse centred on a 1440x700 frame — colour to transparent,
+     nothing else — which is why the corners read black. Painting it on the
+     page instead made it stretch with the viewport and wash the whole thing
+     blue. The warm ellipse at the bottom left is the light on the narrator. */
+  background:
+    radial-gradient(35% 62% at 11% 86%, rgba(126, 76, 30, 0.34) 0%, rgba(40, 24, 10, 0) 70%),
+    radial-gradient(89% 88% at 50% 50%, rgba(46, 82, 158, 0.92) 0%, rgba(30, 53, 106, 0.52) 44%,
+                    rgba(17, 29, 60, 0.18) 74%, rgba(9, 11, 20, 0) 100%);
+}
+
+.cs-scene {
+  position: absolute;
+  inset: 0;
+  padding: 30px 50px 26px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(var(--cs-enter, 26px));
+  transition: opacity 420ms linear, transform 620ms var(--cs-ease),
+              visibility 0s linear 660ms;
+}
+/* show() moves focus into the current scene so a screen reader follows the
+   story. The scene is a container, not a control, so the browser's focus ring
+   around the whole slide was just a gold box nobody asked for. */
+.cs-scene:focus { outline: none; }
+.cs-scene.is-current {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition: opacity 420ms linear, transform 620ms var(--cs-ease),
+              visibility 0s linear 0s;
+}
+/* Stepping back should feel like stepping back. */
+.cs-reader.is-reversing .cs-scene { --cs-enter: -26px; }
+
+/* ---------- Chrome: top bar ---------- */
+.cs-topbar {
+  /* Fixed to the viewport, not to the reader. Positioning it inside the
+     reader made its offset depend on that box's own geometry, which put it
+     14px higher than asked and back under the bar. */
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  top: calc(var(--cs-head, 86px) + 22px);
+  width: var(--cs-bar, 1340px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 11.5px;
+  letter-spacing: 1.1px;
+  color: var(--cs-dim);
+  text-transform: uppercase;
+}
+.cs-crumb { margin-right: auto; }
+.cs-crumb b { font-weight: 500; color: var(--accent, #ffc53d); }
+.cs-count { color: var(--cs-dim); white-space: nowrap; }
+.cs-track {
+  width: 180px;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(245, 239, 227, 0.16);
+  overflow: hidden;
+}
+.cs-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent, #ffc53d), #ffe0a0);
+  transform: scaleX(var(--cs-progress, 0.07));
+  transform-origin: left center;
+  transition: transform 560ms var(--cs-ease);
+}
+.cs-view-design {
+  color: var(--cs-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms linear;
+}
+.cs-view-design.is-on { opacity: 0.9; pointer-events: auto; }
+
+/* ---------- Chrome: up next ---------- */
+.cs-upnext {
+  position: absolute;
+  z-index: 6;
+  right: 56px; bottom: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px 9px 16px;
+  border: 1px solid rgba(255, 197, 61, 0.5);
+  border-radius: 10px;
+  background: rgba(12, 16, 32, 0.78);
+  color: var(--cs-ink);
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 260ms var(--cs-ease), transform 260ms var(--cs-ease),
+              opacity 300ms linear;
+}
+.cs-upnext:hover { border-color: var(--accent, #ffc53d); transform: translateY(-1px); }
+.cs-upnext .lab {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--accent, #ffc53d);
+  text-transform: uppercase;
+}
+.cs-upnext .sep { width: 1px; height: 14px; background: rgba(245, 239, 227, 0.22); }
+.cs-upnext .arw { color: var(--accent, #ffc53d); }
+.cs-upnext[hidden] { display: none; }
+
+/* The on-screen control is the keycap cluster from the design, not a pair of
+   floating circles. Those were mine, and they are gone. */
+
+/* ---------- Narrator note ---------- */
+.cs-note {
+  position: absolute;
+  left: 50px; bottom: 63px;
+  max-width: 340px;
+  padding: 13px 17px;
+  border-radius: 4px;
+  background: var(--cs-paper);
+  color: #221c12;
+  font-family: var(--font-hand, Caveat, cursive);
+  font-size: 19px;
+  line-height: 1.32;
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.42);
+}
+.cs-note::before {
+  content: "";
+  position: absolute;
+  left: -9px; top: 26px;
+  border: 9px solid transparent;
+  border-right-color: var(--cs-paper);
+  border-left: 0;
+}
+
+/* ============================================================
+   SCENE FURNITURE — the pieces every scene draws from
+   ============================================================ */
+.cs-eyebrow {
+  display: inline-block;
+  padding: 9px 20px;
+  border: 1px solid rgba(245, 239, 227, 0.18);
+  border-radius: 100px;
+  background: rgba(10, 14, 30, 0.6);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 11.5px;
+  letter-spacing: 1.4px;
+  color: var(--cs-ink);
+  text-transform: uppercase;
+}
+.cs-h1 {
+  margin: 0;
+  font-family: var(--font-display, "Archivo Black", sans-serif);
+  font-weight: 400;
+  font-size: 84px;
+  line-height: 1.06;
+  letter-spacing: -1.5px;
+  color: var(--cs-ink);
+}
+.cs-h2 {
+  margin: 0;
+  font-family: var(--font-display, "Archivo Black", sans-serif);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -0.4px;
+  color: var(--cs-ink);
+  text-align: center;
+}
+.cs-h2 .hl { color: var(--accent, #ffc53d); }
+.cs-sub {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--cs-dim);
+  text-align: center;
+}
+.cs-card {
+  border: 1px solid var(--cs-line);
+  border-radius: 14px;
+  background: var(--cs-panel);
+}
+.cs-tag {
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 10px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+.cs-num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 197, 61, 0.12);
+  color: var(--accent, #ffc53d);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 12px;
+  font-weight: 500;
+}
+.cs-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px; height: 38px;
+  border-radius: 11px;
+  border: 1px solid var(--cs-line);
+  background: rgba(255, 255, 255, 0.04);
+}
+.cs-ico svg { width: 19px; height: 19px; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.tone-blue   .cs-ico,
+.cs-ico.tone-blue { border-color: rgba(123, 165, 255, 0.32); background: rgba(123, 165, 255, 0.10); }
+.tone-blue   .cs-ico svg,
+.cs-ico.tone-blue svg { stroke: var(--cs-blue); }
+.tone-green  .cs-ico,
+.cs-ico.tone-green { border-color: rgba(75, 214, 164, 0.32); background: rgba(75, 214, 164, 0.10); }
+.tone-green  .cs-ico svg,
+.cs-ico.tone-green svg { stroke: var(--cs-green); }
+.tone-purple .cs-ico,
+.cs-ico.tone-purple { border-color: rgba(171, 140, 250, 0.32); background: rgba(171, 140, 250, 0.10); }
+.tone-purple .cs-ico svg,
+.cs-ico.tone-purple svg { stroke: var(--cs-purple); }
+.tone-amber  .cs-ico,
+.cs-ico.tone-amber { border-color: rgba(255, 197, 61, 0.32); background: rgba(255, 197, 61, 0.10); }
+.tone-amber  .cs-ico svg,
+.cs-ico.tone-amber svg { stroke: var(--accent, #ffc53d); }
+
+/* ============================================================
+   SCENE 01 — Title
+   Laid out on the frame's own coordinates rather than approximated in
+   flow, which is what put the rhythm out: eyebrow 268x37 at (586,105),
+   title 766x113 at (337,162), lede 936 wide at (252,295), duration at
+   (641,369), chips 443x52 at (498,441), hint at (611,650).
+   ============================================================ */
+.sc-title { padding: 0; text-align: center; }
+.sc-title .abs { position: absolute; }
+.sc-title .cs-eyebrow { left: 586px; top: 105px; width: 268px; height: 37px; padding: 10px 20px; }
+.sc-title .cs-h1 {
+  left: 252px; top: 162px; width: 936px;
+  margin: 0;
+  font-size: 92px;
+  line-height: 1.15;
+}
+.sc-title .lede {
+  left: 252px; top: 295px; width: 936px;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--accent, #ffc53d);
+}
+.sc-title .dur {
+  left: 252px; top: 366px; width: 936px;
+  margin: 0;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 12.5px;
+  letter-spacing: 1.6px;
+  color: rgba(245, 239, 227, 0.5);
+  text-transform: uppercase;
+}
+.sc-title .chips {
+  left: 498px; top: 441px; width: 444px; height: 52px;
+  display: flex;
+  gap: 12px;
+}
+.sc-title .chip {
+  flex: none;
+  height: 52px;
+  padding: 9px 14px 0;
+  border: 1px solid var(--cs-line);
+  border-radius: 10px;
+  background: var(--cs-panel-2);
+  text-align: left;
+}
+.sc-title .chip-live { width: 142px; }
+.sc-title .chip-zero { width: 153px; }
+.sc-title .chip-reach { width: 124px; }
+.sc-title .chip b {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 18px;
+  color: var(--cs-ink);
+}
+.sc-title .chip b .dot { color: var(--cs-green); }
+.sc-title .chip .arrow { display: inline; color: var(--accent, #ffc53d); }
+.sc-title .chip .dot { display: inline; }
+.sc-title .chip > span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 9px;
+  line-height: 12px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  color: var(--cs-faint);
+}
+/* The URL is set as typed, not shouted. Only the two label chips are caps. */
+.sc-title .chip-zero > span,
+.sc-title .chip-reach > span { text-transform: uppercase; }
+.sc-title .hint {
+  left: 0; right: 0; top: 646px;
+  margin: 0;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--cs-faint);
+  text-transform: uppercase;
+}
+
+/* The keycap hint, bottom right of the opening scene only. */
+.cs-keys {
+  position: absolute;
+  left: 1168px; top: 424px;
+  width: 217px;
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+.cs-keys .row { display: flex; gap: 6px; }
+.cs-keys .cap {
+  display: grid;
+  place-items: center;
+  width: 48px; height: 48px;
+  padding: 0;
+  /* The caps read as keys in the design — a warm edge on a dark tile, not
+     the near-invisible plates I had. */
+  border: 1px solid rgba(255, 197, 61, 0.30);
+  border-radius: 11px;
+  background: rgba(24, 20, 14, 0.82);
+  color: rgba(255, 197, 61, 0.82);
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 220ms var(--cs-ease), background 220ms var(--cs-ease),
+              color 220ms var(--cs-ease), transform 220ms var(--cs-ease);
+}
+.cs-keys .cap:hover,
+.cs-keys .cap:focus-visible {
+  border-color: var(--accent, #ffc53d);
+  color: var(--accent, #ffc53d);
+  background: rgba(255, 197, 61, 0.10);
+}
+.cs-keys .cap:active { transform: translateY(2px); }
+.cs-keys .cap[disabled] { opacity: 0.35; cursor: default; }
+.cs-keys .cap[disabled]:hover {
+  border-color: rgba(255, 197, 61, 0.30);
+  color: rgba(255, 197, 61, 0.82);
+  background: rgba(24, 20, 14, 0.82);
+}
+.cs-keys .cap.is-live:hover,
+.cs-keys .cap.is-live:focus-visible {
+  background: #ffd76a;
+  color: #16120a;
+  border-color: #ffd76a;
+}
+.cs-keys .cap.is-live {
+  border-color: var(--accent, #ffc53d);
+  background: var(--accent, #ffc53d);
+  color: #16120a;
+  animation: cs-tap 1.9s var(--cs-ease) infinite;
+}
+@keyframes cs-tap {
+  0%, 72%, 100% { transform: translateY(0); }
+  80%           { transform: translateY(3px); }
+}
+.cs-keys .say {
+  width: 213px;
+  margin: 5px 0 0;
+  padding: 10px 14px;
+  border-radius: 4px;
+  background: var(--cs-paper);
+  color: #221c12;
+  text-align: center;
+  line-height: 1.25;
+}
+.cs-keys .say b { display: block; font-size: 12.5px; white-space: nowrap; }
+.cs-keys .say i {
+  font-family: var(--font-hand, Caveat, cursive);
+  font-size: 15px;
+  font-style: normal;
+  color: #5a4a2c;
+}
+
+/* ============================================================
+   SCENE 02 — Meet Priya
+   Positioned on the frame's own coordinates. Everything below is
+   read straight off the Figma node: the column is 406 wide at x=56,
+   the divider is at x=496, the avatars are 116px circles, and the
+   two speaker columns sit at x=536 and x=965.
+   ============================================================ */
+.sc-audience { padding: 0; }
+.sc-audience .abs { position: absolute; }
+
+.sc-audience .portrait { left: 56px; top: 154px; width: 144px; height: 193px; }
+.sc-audience .thought {
+  left: 157px; top: 82px; width: 286px;
+  padding: 10px 22px;
+  border-radius: 14px;
+  background: #fbf7ee;
+  color: #221c12;
+  font-family: var(--font-hand, Caveat, cursive);
+  font-size: 17px;
+  line-height: 1.3;
+}
+/* The three dots that trail from the bubble down to her head. */
+.sc-audience .thought::after {
+  content: "";
+  position: absolute;
+  left: 26px; bottom: -26px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #fbf7ee;
+  box-shadow: -7px -8px 0 -1.5px #fbf7ee, -12px -15px 0 -3px #fbf7ee;
+}
+
+.sc-audience .who-title {
+  left: 56px; top: 370px; width: 406px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.32;
+  color: var(--cs-ink);
+}
+.sc-audience .who-lede {
+  left: 56px; top: 446px; width: 406px;
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--cs-dim);
+}
+.sc-audience .facts { left: 56px; top: 500px; width: 406px; }
+.sc-audience .facts span {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  margin: 0 10px 10px 0;
+  padding: 0 16px;
+  border: 1px solid var(--cs-line);
+  border-radius: 100px;
+  background: var(--cs-panel-2);
+  font-size: 13px;
+  color: rgba(245, 239, 227, 0.86);
+}
+.sc-audience .wants { left: 56px; top: 599px; width: 390px; }
+.sc-audience .wants b { display: block; font-size: 13px; font-weight: 600; color: var(--accent, #ffc53d); }
+.sc-audience .wants p { margin: 6px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--cs-dim); }
+
+.sc-audience .divider { left: 496px; top: 104px; width: 1px; height: 572px; background: var(--cs-line); }
+
+/* Speaker rows. The avatar is a 116px disc with the character standing a
+   little proud of the top, which is how the frame draws it. */
+.sc-audience .who-label {
+  font-size: 15px;
+  color: rgba(245, 239, 227, 0.72);
+}
+.sc-audience .av {
+  width: 116px; height: 116px;
+  border-radius: 50%;
+  background: radial-gradient(70% 70% at 50% 40%, rgba(255,255,255,.07), rgba(6,9,20,.85));
+  box-shadow: inset 0 0 0 1px rgba(245, 239, 227, 0.10);
+}
+.sc-audience .bub {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.sc-audience .bub-parent { background: #241c11; color: rgba(245, 239, 227, 0.92); }
+.sc-audience .bub-design { background: #f3efe6; color: #23201a; padding: 16px 18px; }
+/* Only the design side is drawn with a tail, pointing back at the speaker. */
+.sc-audience .bub-design::before {
+  content: "";
+  position: absolute;
+  left: -11px; top: 58px;
+  border: 12px solid transparent;
+  border-right-color: #f3efe6;
+  border-left: 0;
+}
+
+.sc-audience .verdict {
+  left: 973px; top: 490px; width: 411px; height: 100px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px 0 26px;
+  border: 1px solid rgba(255, 197, 61, 0.62);
+  border-radius: 12px;
+  background: rgba(12, 16, 32, 0.82);
+}
+.sc-audience .verdict p { margin: 0; width: 300px; font-size: 13.5px; line-height: 1.45; font-weight: 700; color: var(--cs-ink); }
+.sc-audience .verdict p + p { margin-top: 4px; font-weight: 400; color: var(--accent, #ffc53d); }
+
+/* ============================================================
+   SCENE 03 — Two sides
+   Frame coordinates: title 644 wide at y=60, lede at y=176, the two
+   534px panels at y=212, the sweet spot column 77px wide between them.
+   ============================================================ */
+.sc-tension { padding: 0; }
+.sc-tension .abs { position: absolute; }
+.sc-tension .cs-h2 { left: 398px; top: 56px; width: 644px; font-size: 40px; line-height: 1.2; }
+.sc-tension .lede { left: 109px; top: 176px; width: 600px; margin: 0; font-size: 13px; color: var(--cs-dim); }
+
+.sc-tension .side { top: 212px; width: 534px; height: 373px; padding: 27px; border-radius: 18px; }
+.sc-tension .side-biz { left: 109px;  border: 1px solid rgba(123, 165, 255, 0.22); background: rgba(13, 21, 46, 0.55); }
+.sc-tension .side-par { left: 798px;  border: 1px solid rgba(75, 214, 164, 0.22); background: rgba(8, 28, 24, 0.45); }
+
+.sc-tension .head { display: flex; gap: 15px; align-items: center; height: 55px; }
+.sc-tension .head .cs-ico { width: 55px; height: 55px; border-radius: 14px; }
+.sc-tension .head .cs-ico svg { width: 22px; height: 22px; }
+.sc-tension .head b { display: block; font-size: 17px; font-weight: 600; letter-spacing: 0.2px; }
+.sc-tension .side-biz .head b { color: var(--cs-blue); }
+.sc-tension .side-par .head b { color: var(--cs-green); }
+.sc-tension .head span { display: block; margin-top: 4px; font-size: 13px; line-height: 1.35; color: var(--cs-dim); }
+
+.sc-tension .rows { margin-top: 30px; }
+.sc-tension .row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  height: 73px;
+  margin-bottom: 13px;
+  padding: 0 17px;
+  border: 1px solid var(--cs-line);
+  border-radius: 13px;
+  background: rgba(6, 9, 20, 0.62);
+}
+.sc-tension .row:last-child { margin-bottom: 0; }
+.sc-tension .row .cs-ico { width: 42px; height: 42px; border-radius: 11px; }
+.sc-tension .row .cs-ico svg { width: 22px; height: 22px; }
+.sc-tension .row .txt { flex: 1 1 auto; min-width: 0; }
+.sc-tension .row b { display: block; font-size: 14.5px; font-weight: 600; color: var(--cs-ink); }
+.sc-tension .row span { display: block; margin-top: 3px; font-size: 12.5px; color: var(--cs-dim); }
+.sc-tension .row .idx {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px; height: 42px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 13px;
+}
+.sc-tension .side-biz .idx { color: var(--cs-blue); background: rgba(123, 165, 255, 0.10); }
+.sc-tension .side-par .idx { color: var(--cs-green); background: rgba(75, 214, 164, 0.10); }
+
+/* The sweet spot: a disc with the mark inside, not a hexagon. */
+.sc-tension .sweet { left: 682px; top: 318px; width: 77px; text-align: center; }
+.sc-tension .sweet .badge {
+  display: grid;
+  place-items: center;
+  width: 77px; height: 77px;
+  border-radius: 50%;
+  border: 2px solid var(--accent, #ffc53d);
+  background: #0b0f1e;
+}
+.sc-tension .sweet b {
+  display: block;
+  margin-top: 11px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--cs-dim);
+}
+.sc-tension .sweet b em { display: block; font-style: normal; white-space: nowrap; color: var(--accent, #ffc53d); }
+.sc-tension .sweet i {
+  display: block;
+  margin-top: 11px;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--cs-faint);
+}
+
+/* The narrator stands at the bottom left, lit by a soft ellipse. */
+.cs-narrator { position: absolute; left: 36px; bottom: -3px; width: 126px; height: 129px; }
+.cs-narrator::before {
+  content: "";
+  position: absolute;
+  left: -172px; bottom: -40px;
+  width: 461px; height: 292px;
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 197, 61, 0.16), rgba(255, 197, 61, 0) 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+.sc-tension .cs-note { left: 158px; bottom: 25px; max-width: 218px; padding: 9px 14px; font-size: 17px; }
+.sc-tension .cs-note::before { top: 14px; }
+
+/* ============================================================
+   SCENE 04 — Decision matrix
+   ============================================================ */
+.sc-matrix .heads,
+.sc-matrix .band {
+  display: grid;
+  grid-template-columns: 1fr 26px 1fr 26px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.sc-matrix .heads { margin-top: 20px; }
+.sc-matrix .band { margin-top: 10px; }
+.sc-matrix .colhead {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--cs-line);
+}
+.sc-matrix .colhead.tone-blue   { background: rgba(20, 32, 66, 0.6); }
+.sc-matrix .colhead.tone-green  { background: rgba(10, 32, 28, 0.55); }
+.sc-matrix .colhead.tone-purple { background: rgba(28, 20, 56, 0.55); }
+.sc-matrix .colhead b { display: block; font-size: 13px; font-weight: 600; }
+.sc-matrix .colhead.tone-blue b   { color: var(--cs-blue); }
+.sc-matrix .colhead.tone-green b  { color: var(--cs-green); }
+.sc-matrix .colhead.tone-purple b { color: var(--cs-purple); }
+.sc-matrix .colhead span { display: block; margin-top: 1px; font-size: 11px; color: var(--cs-dim); }
+.sc-matrix .cell {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  min-height: 62px;
+  padding: 11px 14px;
+  border: 1px solid var(--cs-line);
+  border-radius: 12px;
+  background: var(--cs-panel-2);
+}
+.sc-matrix .cell .txt { min-width: 0; }
+.sc-matrix .cell b { display: block; font-size: 13px; font-weight: 600; color: var(--cs-ink); }
+.sc-matrix .cell.tone-purple b { color: var(--cs-purple); }
+.sc-matrix .cell span { display: block; margin-top: 2px; font-size: 11px; line-height: 1.4; color: var(--cs-dim); }
+.sc-matrix .cell .rule {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 8.5px;
+  letter-spacing: 0.8px;
+  color: var(--cs-faint);
+  text-transform: uppercase;
+}
+.sc-matrix .cell .rule em { font-style: normal; color: rgba(245, 239, 227, 0.7); }
+.sc-matrix .arrow { display: grid; place-items: center; color: var(--cs-faint); font-size: 15px; }
+.sc-matrix .guards {
+  display: grid;
+  grid-template-columns: 218px repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+.sc-matrix .guard {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 11px 13px;
+  border: 1px solid var(--cs-line);
+  border-radius: 11px;
+  background: var(--cs-panel-2);
+}
+.sc-matrix .guard b {
+  display: block;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.9px;
+  color: var(--accent, #ffc53d);
+  text-transform: uppercase;
+}
+.sc-matrix .guard span { display: block; margin-top: 4px; font-size: 11px; line-height: 1.4; color: var(--cs-dim); }
+/* Scene 04 rounds its column and cell icons all the way to a disc — only the
+   guardrail chips along the bottom keep the square tile. */
+.sc-matrix .colhead .cs-ico { width: 34px; height: 34px; border-radius: 50%; }
+.sc-matrix .colhead .cs-ico svg { width: 17px; height: 17px; }
+.sc-matrix .cell .cs-ico { width: 42px; height: 42px; border-radius: 50%; }
+.sc-matrix .cell .cs-ico svg { width: 20px; height: 20px; }
+.sc-matrix .guard .cs-ico { width: 30px; height: 30px; border-radius: 9px; }
+.sc-matrix .guard .cs-ico svg { width: 15px; height: 15px; }
+
+
+/* Scene 04 is the densest frame in the story: three columns, three bands and
+   a guardrail row all inside 700px. These trims keep the last row clear of
+   the narrator's note instead of running underneath it. */
+.sc-matrix .cs-h2 { font-size: 31px; }
+.sc-matrix .cs-sub { margin-top: 7px; font-size: 13px; }
+.sc-matrix .heads { margin-top: 14px; }
+.sc-matrix .band { margin-top: 8px; }
+.sc-matrix .cell { min-height: 54px; padding: 9px 12px; }
+.sc-matrix .cell span { font-size: 10.5px; }
+.sc-matrix .colhead { padding: 9px 12px; }
+.sc-matrix .guards { margin-top: 10px; }
+.sc-matrix .guard { padding: 9px 11px; }
+/* The note sits clear of the narrator, the way scene 03 does it, rather than
+   printing across her. */
+.sc-matrix .cs-note { left: 172px; bottom: 18px; max-width: 372px; padding: 10px 15px; font-size: 17.5px; }
+.sc-matrix .cs-note::before { top: 16px; }
+
+/* ============================================================
+   Reading mode — anything too narrow for the 1440 frame
+   The stage stops pretending to be a slide and becomes a document,
+   so the story is still readable on a phone.
+   ============================================================ */
+@media (max-width: 899px) {
+  .cs-page { overflow: auto; }
+  /* place-items has to go with the grid: Chromium honours justify-items on a
+     block container too, which was shrink-wrapping the stage to its widest
+     line and centring the overflow off both edges. */
+  .cs-reader {
+    height: auto;
+    display: block;
+    place-items: initial;
+    padding: calc(var(--cs-head, 86px) + 20px) 0 60px;
+  }
+  .cs-stage {
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+  .cs-scene {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    padding: 26px 20px 34px;
+    border-bottom: 1px solid var(--cs-line);
+  }
+  .cs-topbar, .cs-upnext, .cs-keys, .sc-title .hint { display: none; }
+  .cs-note,
+  .sc-title .cs-note, .sc-tension .cs-note, .sc-matrix .cs-note {
+    position: static;
+    width: auto;
+    max-width: none;
+    margin: 20px 0 0;
+  }
+  .cs-note::before { display: none; }
+  .cs-h1, .sc-title .cs-h1 { font-size: 40px; line-height: 1.06; }
+  .cs-h2, .sc-tension .cs-h2 { font-size: 25px; text-align: left; }
+  .cs-sub { text-align: left; }
+  .sc-title { display: block; text-align: left; }
+  .sc-title .chips { flex-wrap: wrap; justify-content: flex-start; height: auto !important; }
+  .sc-title .chip { width: auto !important; }
+  .sc-title .hint { position: static !important; margin: 18px 0 0; }
+  .sc-matrix .heads,
+  .sc-matrix .band,
+  .sc-matrix .guards { grid-template-columns: 1fr; }
+  .sc-matrix .arrow, .sc-matrix .heads { display: none; }
+  /* The coordinate-positioned scenes stack instead. */
+  .sc-title .abs, .sc-audience .abs, .sc-tension .abs, .cs-narrator {
+    position: static !important;
+    width: auto !important; height: auto !important;
+    margin-bottom: 16px;
+  }
+  .sc-audience .divider, .cs-narrator { display: none; }
+  /* The character art is painted as a background, so it has no intrinsic size.
+     Reading mode has to hand each figure a box or she disappears entirely. */
+  /* These two stay positioned — their character art is a pseudo-element that
+     anchors to them — but the frame offsets have to go or they fly off. */
+  .sc-audience .portrait,
+  .sc-audience .av {
+    position: relative !important;
+    left: auto !important; top: auto !important;
+  }
+  .sc-audience .portrait { width: 144px !important; height: 193px !important; margin: 0 0 18px; }
+  .sc-audience .av { width: 116px !important; height: 116px !important; margin: 16px 0 18px; }
+  /* The opening scene keeps its narrator — she is the welcome. */
+  .sc-title .cs-narrator {
+    display: block;
+    width: 200px !important; height: 200px !important;
+    margin: 20px 0 -6px -14px;
+  }
+  .sc-title .cs-narrator::before { display: none; }
+  /* A deep link still lands below the fixed bar. */
+  .cs-scene { scroll-margin-top: calc(var(--cs-head, 86px) + 14px); }
+  /* The verdict is a fixed 411x100 plate on the frame; here it wraps. */
+  .sc-audience .verdict { display: block; padding: 16px; }
+  .sc-audience .verdict p { width: auto; }
+  .sc-audience .verdict .g1-mark { margin-bottom: 10px; }
+  /* The tail is drawn against a positioned bubble, and nothing is positioned
+     here, so it would float loose. */
+  .sc-audience .bub-design::before { display: none; }
+  .sc-tension .side { padding: 18px; }
+  .sc-tension .row { height: auto; padding: 12px 14px; }
+  .cs-mobile-note { display: block; }
+}
+.cs-mobile-note {
+  display: none;
+  margin: 0 20px 18px;
+  padding: 12px 14px;
+  border: 1px dashed rgba(255, 197, 61, 0.4);
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--cs-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-scene { transition: opacity 200ms linear, visibility 0s; transform: none !important; }
+  .cs-fill { transition: none; }
+  .cs-keys .cap.is-live { animation: none; }
+  .cs-home:hover, .cs-upnext:hover { transform: none; }
+}
+
+@media (max-width: 899px) { .cs-mobile-note { display: block; } }
+
+/* ------------------------------------------------------------
+   Character art. Painted as backgrounds rather than <img> so a file that
+   is not there yet leaves a clean frame instead of a broken-image icon.
+
+   Every crop below is computed from the export's real alpha box against the
+   slot the frame gives it, rather than eyeballed:
+
+     priya_with_skate  870x870, figure at (194,139) 513x723
+     priya_as_teacher  626x932, figure at (119,82)  355x786
+     priya_as_smiling  398x398, figure at (49,69)   286x329
+     priya_as_design   398x398, figure at (76,74)   252x310
+
+   Who is who follows the frame: the parent speaking is the same woman as
+   the portrait — the teacher — not the pink-jacket bust. That mix-up made
+   both columns look like the same person.
+   ------------------------------------------------------------ */
+
+/* SCENE 02 — the portrait is a figure standing over a light plate, not a
+   figure sitting inside one. Plate 138x138 at (56,209); figure 144x193 at
+   (56,154), cropped head-to-hip. */
+.sc-audience .portrait {
+  left: 56px; top: 154px; width: 144px; height: 193px;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.sc-audience .portrait::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 55px;
+  width: 138px; height: 138px;
+  border-radius: 14px;
+  background: #e7edf7;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.42);
+}
+.sc-audience .portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../../../images/priya_as_teacher.png") no-repeat -29px -18px / 213px auto;
+}
+
+/* The busts stand proud of their disc rather than being clipped into it —
+   116x132 over a 116 disc for the parent, 96x124 for the design side. */
+.sc-audience .av {
+  width: 116px; height: 116px;
+  border-radius: 50%;
+  background: radial-gradient(66% 66% at 50% 42%, rgba(255, 255, 255, 0.05), rgba(6, 9, 20, 0.8));
+  box-shadow: none;
+}
+.sc-audience .av::after {
+  content: "";
+  position: absolute;
+  background-repeat: no-repeat;
+}
+.sc-audience .av-parent::after {
+  left: 0; top: -16px; width: 116px; height: 132px;
+  background-image: url("../../../images/priya_as_teacher.png");
+  background-size: 194px auto;
+  background-position: -34px -17px;
+}
+.sc-audience .av-design::after {
+  left: 8px; top: -8px; width: 96px; height: 124px;
+  background-image: url("../../../images/priya_as_design.png");
+  background-size: 159px auto;
+  background-position: -33px -26px;
+}
+
+/* The narrator. The skate export is a square canvas with the figure filling
+   about 59% x 83% of it, so the box is sized past the 231x273 slot to land
+   the figure itself at that size. */
+.cs-narrator {
+  background-repeat: no-repeat;
+  background-image: url("../../../images/priya_as_smiling.png");
+  background-size: contain;
+  background-position: bottom center;
+}
+.sc-title .cs-narrator {
+  left: -45px; top: 380px;
+  width: 313px; height: 313px;
+  background-image: url("../../../images/priya_with_skate.png");
+  background-size: contain;
+  background-position: bottom center;
+}
+.sc-title .cs-narrator::before { left: -120px; bottom: 0; }
+/* Note 271x120 at (207,517) on the frame. */
+.sc-title .cs-note { left: 207px; top: 517px; bottom: auto; width: 271px; max-width: 271px; }
+
+/* The Guardian One mark. Drawn rather than exported — swap in a real PNG by
+   pointing .g1-mark at it if you would rather use the original. */
+.g1-mark { display: block; }
+.g1-mark svg { width: 100%; height: 100%; display: block; }
+.sc-audience .verdict .g1-mark { width: 55px; height: 66px; flex: none; }
+.sc-tension .sweet .badge .g1-mark { width: 40px; height: 48px; }
+
+
+
