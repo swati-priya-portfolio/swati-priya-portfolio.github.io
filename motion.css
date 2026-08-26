@@ -770,3 +770,36 @@
     gap: 16px;
   }
 }
+
+/* ============================================================
+   REVERSIBLE FOLD RUNWAY
+   The outgoing chapter gets a complete reading beat before the next torn
+   sheet enters. The seam also carries a tiny velocity lag so its direction
+   reads clearly when scrolling down or back up.
+   ============================================================ */
+
+@media (min-width: 1024px) {
+  .about.paper-sheet {
+    padding-bottom: clamp(380px, 42vh, 500px) !important;
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .sp-js .paper-tear {
+    translate: 0 var(--tear-drift, 0px);
+    will-change: translate;
+  }
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .sp-js .paper-tear {
+    translate: 0 0 !important;
+    will-change: auto;
+  }
+}
+
+/* Never let a compact principle column disappear because its reveal beat
+   coincides with the incoming footer fold. */
+.drives-list li {
+  min-width: 0;
+}
