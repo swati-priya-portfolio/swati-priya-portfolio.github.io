@@ -17,67 +17,7 @@ jobs:
           ref: main
       - name: Apply desktop-only interaction fixes
         run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          index_path = Path('index.html')
-          index = index_path.read_text()
-          old_music = '<article class="board sp-settle">\n          <h3 class="board-title">MUSIC WHILE DESIGNING</h3>'
-          new_music = '<article class="board sp-settle music-board" data-cursor="PLAY">\n          <h3 class="board-title">MUSIC WHILE DESIGNING</h3>'
-          if old_music in index:
-              index = index.replace(old_music, new_music, 1)
-          elif new_music not in index:
-              raise SystemExit('Music board target not found')
-
-          if 'motion.css?v=27' in index:
-              index = index.replace('motion.css?v=27', 'motion.css?v=28', 1)
-          elif 'motion.css?v=28' not in index:
-              raise SystemExit('Expected motion.css cache version not found')
-          index_path.write_text(index)
-
-          motion_path = Path('motion.css')
-          motion = motion_path.read_text()
-          marker = 'DESKTOP MUSIC HOVER + MINI NAV TIGHTEN'
-          if marker not in motion:
-              motion += r'''
-
-/* ============================================================
-   DESKTOP MUSIC HOVER + MINI NAV TIGHTEN
-   Desktop-only polish. Mobile <= 767px remains untouched.
-   ============================================================ */
-@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-  .sp-js #behind .music-board {
-    transition: transform 320ms var(--ep), border-color 320ms var(--ep),
-                box-shadow 320ms var(--ep);
-  }
-
-  .sp-js #behind .music-board:hover {
-    transform: translateY(-4px) scale(1.008) !important;
-    border-color: rgba(255, 197, 61, 0.40);
-    box-shadow: inset 0 0 12px 1px rgba(255, 217, 140, 0.08);
-  }
-}
-
-@media (min-width: 1080px) {
-  /* 430px left a large dead zone around the actual mini-nav content. */
-  .sp-js .site-header.is-mini .nav-pill {
-    max-width: 360px;
-    gap: 8px;
-    padding: 5px 8px 5px 6px;
-  }
-
-  .sp-js .site-header.is-mini .identity-group {
-    gap: 6px;
-  }
-
-  .sp-js .site-header.is-mini .nav-available {
-    margin-left: 0;
-  }
-}
-'''
-          motion_path.write_text(motion)
-          PY
-
+          echo 'CmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aAoKaW5kZXhfcGF0aCA9IFBhdGgoImluZGV4Lmh0bWwiKQppbmRleCA9IGluZGV4X3BhdGgucmVhZF90ZXh0KCkKb2xkID0gJzwhLS0gQm9hcmQgMiDigJQgTXVzaWMgLS0+XG4gICAgICAgIDxhcnRpY2xlIGNsYXNzPSJib2FyZCBzcC1zZXR0bGUiPicKbmV3ID0gJzwhLS0gQm9hcmQgMiDigJQgTXVzaWMgLS0+XG4gICAgICAgIDxhcnRpY2xlIGNsYXNzPSJib2FyZCBzcC1zZXR0bGUgbXVzaWMtYm9hcmQiIGRhdGEtY3Vyc29yPSJQTEFZIj4nCmlmIG9sZCBpbiBpbmRleDoKICAgIGluZGV4ID0gaW5kZXgucmVwbGFjZShvbGQsIG5ldywqKDEpCmVsaWYgbmV3IG5vdCBpbiBpbmRleDoKICAgIHJhaXNlIFN5c3RlbUV4aXQoIk11c2ljIGJvYXJkIHRhcmdldCBub3QgZm91bmQiKQppZiAibW90aW9uLmNzcz92PTI3IiBpbiBpbmRleDoKICAgIGluZGV4ID0gaW5kZXgucmVwbGFjZSgibW90aW9uLmNzcz92PTI3IiwgIm1vdGlvbi5jc3M/dj0yOCIsIDEpCmVsaWYgIm1vdGlvbi5jc3M/dj0yOCIgbm90IGluIGluZGV4OgogICAgcmFpc2UgU3lzdGVtRXhpdCgiRXhwZWN0ZWQgbW90aW9uLmNzcyBjYWNoZSB2ZXJzaW9uIG5vdCBmb3VuZCIpCmluZGV4X3BhdGgud3JpdGVfdGV4dChpbmRleCkKCm1vdGlvbl9wYXRoID0gUGF0aCgibW90aW9uLmNzcyIpCm1vdGlvbiA9IG1vdGlvbl9wYXRoLnJlYWRfdGV4dCgpCm1hcmtlciA9ICJERVNLVE9QIE1VU0lDIEhPVkVSICsgTUlOSSBOQVYgVElHSFRFTiIKaWYgbWFya2VyIG5vdCBpbiBtb3Rpb246CiAgICBtb3Rpb24gKz0gIiIiCgovKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgIERFU0tUT1AgTVVTSUMgSE9WRVIgKyBNSU5JIE5BViBUSUdIVEVOCiAgIERlc2t0b3Atb25seSBwb2xpc2guIE1vYmlsZSA8PSA3NjdweCByZW1haW5zIHVudG91Y2hlZC4KICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KQG1lZGlhIChtaW4td2lkdGg6IDEwMjRweCkgYW5kIChob3ZlcjogaG92ZXIpIGFuZCAocG9pbnRlcjogZmluZSkgewogIC5zcC1qcyAjYmVoaW5kIC5tdXNpYy1ib2FyZCB7CiAgICB0cmFuc2l0aW9uOiB0cmFuc2Zvcm0gMzIwbXMgdmFyKC0tZXApLCBib3JkZXItY29sb3IgMzIwbXMgdmFyKC0tZXApLAogICAgICAgICAgICAgICAgYm94LXNoYWRvdyAzMjBtcyB2YXIoLS1lcCk7CiAgfQoKICAuc3AtanMgI2JlaGluZCAubXVzaWMtYm9hcmQ6aG92ZXIgewogICAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKC00cHgpIHNjYWxlKDEuMDA4KSAhaW1wb3J0YW50OwogICAgYm9yZGVyLWNvbG9yOiByZ2JhKDI1NSwgMTk3LCA2MSwgMC40MCk7CiAgICBib3gtc2hhZG93OiBpbnNldCAwIDAgMTJweCAxcHggcmdiYSgyNTUsIDIxNywgMTQwLCAwLjA4KTsKICB9Cn0KCkBtZWRpYSAobWluLXdpZHRoOiAxMDgwcHgpIHsKICAvKiA0MzBweCBsZWZ0IGEgbGFyZ2UgZGVhZCB6b25lIGFyb3VuZCB0aGUgYWN0dWFsIG1pbmktbmF2IGNvbnRlbnQuICovCiAgLnNwLWpzIC5zaXRlLWhlYWRlci5pcy1taW5pIC5uYXYtcGlsbCB7CiAgICBtYXgtd2lkdGg6IDM2MHB4OwogICAgZ2FwOiA4cHg7CiAgICBwYWRkaW5nOiA1cHggOHB4IDVweCA2cHg7CiAgfQoKICAuc3AtanMgLnNpdGUtaGVhZGVyLmlzLW1pbmkgLmlkZW50aXR5LWdyb3VwIHsKICAgIGdhcDogNnB4OwogIH0KCiAgLnNwLWpzIC5zaXRlLWhlYWRlci5pcy1taW5pIC5uYXYtYXZhaWxhYmxlIHsKICAgIG1hcmdpbi1sZWZ0OiAwOwogIH0KfQoiIiIKbW90aW9uX3BhdGgud3JpdGVfdGV4dChtb3Rpb24pCg==' | base64 --decode | python3
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html motion.css
