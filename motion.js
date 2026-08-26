@@ -912,7 +912,14 @@
     if (!strip) { return; }
     strip.classList.add("is-metrics-ready");   // no-op if primeHero got there first
 
-    if (reduced || !("IntersectionObserver" in window)) {
+    var wideShortViewport = window.innerWidth >= 1440 &&
+      (window.innerHeight <= 920 ||
+       window.innerWidth / Math.max(window.innerHeight, 1) >= 1.9);
+
+    /* On extended monitors the proof strip can sit below the initial viewport.
+       Start its entrance immediately so the incoming paper can never cover an
+       intentionally transparent metrics row. */
+    if (wideShortViewport || reduced || !("IntersectionObserver" in window)) {
       strip.classList.add("is-visible");
       return;
     }
@@ -2213,16 +2220,19 @@
      ========================================================== */
   function pageOverlap() {
     var selectors = [
-      ["#home", "#case-studies"],
-      ["#case-studies", "#behind"],
-      ["#behind", "#about"],
-      ["#about", "#contact"]
+      ["#home", "#case-studies", ".proof-strip"],
+      ["#case-studies", "#behind", ".case-track"],
+      ["#behind", "#about", ".board-grid"],
+      ["#about", "#contact", ".drives-track"]
     ];
     var pairs = selectors.map(function (pair) {
+      var previous = document.querySelector(pair[0]);
       return {
-        previous: document.querySelector(pair[0]),
+        previous: previous,
         next: document.querySelector(pair[1]),
+        contentEnd: previous && previous.querySelector(pair[2]),
         top: 0,
+        clearance: Number.POSITIVE_INFINITY,
         current: 0,
         target: 0,
         last: null
@@ -2262,6 +2272,10 @@
     function measure() {
       pairs.forEach(function (pair) {
         pair.top = pageTop(pair.next);
+        if (pair.contentEnd) {
+          var contentBottom = pageTop(pair.contentEnd) + pair.contentEnd.offsetHeight;
+          pair.clearance = Math.max(0, pair.top - contentBottom - 28);
+        }
       });
       knownHeight = document.documentElement.scrollHeight;
       dirty = false;
@@ -2276,6 +2290,8 @@
       var y = window.scrollY;
       var vh = window.innerHeight;
       var hold = strength();
+      var wideShortViewport = window.innerWidth >= 1440 &&
+        (vh <= 920 || window.innerWidth / Math.max(vh, 1) >= 1.9);
 
       pairs.forEach(function (pair) {
         var nextTop = pair.top - y;
@@ -2284,6 +2300,13 @@
         var releaseAt = -vh * 0.04;
         var maxHold = (enterAt - coverAt) * hold;
 
+        /* The hero's last meaningful row must stay above the incoming paper.
+           On wide/short windows, cap the depth move to the measured runway
+           between the metrics and the next sheet. */
+        if (wideShortViewport && pair.previous.id === "home") {
+          maxHold = Math.min(maxHold, pair.clearance);
+        }
+
         if (nextTop >= enterAt || nextTop <= releaseAt) {
           /* Before its own fold and after it has been fully covered, a page
              returns to normal flow. This prevents several old pages remaining
@@ -2291,7 +2314,7 @@
           pair.target = 0;
         } else if (nextTop > coverAt) {
           /* Only the immediately incoming page overlaps the previous one. */
-          pair.target = (enterAt - nextTop) * hold;
+          pair.target = Math.min((enterAt - nextTop) * hold, maxHold);
         } else {
           /* Once the new page covers almost the whole viewport, release the
              old page behind it before the following fold can begin. */
