@@ -541,37 +541,104 @@
   }
 }
 
-
 /* ============================================================
-   DESKTOP MUSIC HOVER + MINI NAV TIGHTEN
-   Desktop-only polish. Mobile <= 767px remains untouched.
+   DESKTOP MUSIC PLAYER + MINI NAV BALANCE
+   Fixes from desktop review:
+   - the persistent yellow reading-progress line is removed on desktop
+   - only the inner music player lifts on hover, never the whole board
+   - the compact availability nav sizes to its content instead of a forced box
+   Mobile <= 767px remains untouched.
    ============================================================ */
+
+/* The 3px reading-progress stripe was reading like a stuck yellow border once
+   the visitor left the hero. Keep mobile behaviour unchanged, remove it on
+   tablet/desktop where the sticky nav already provides orientation. */
+@media (min-width: 768px) {
+  .sp-js .sp-progress {
+    display: none !important;
+  }
+}
+
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-  .sp-js #behind .music-board {
-    transition: transform 320ms var(--ep), border-color 320ms var(--ep),
-                box-shadow 320ms var(--ep);
+  /* Cancel the generic board hover for the music column specifically. */
+  .sp-js #behind .music-board:hover {
+    transform: none !important;
+    border-color: rgba(64, 59, 48, 0.95) !important;
+    box-shadow: inset 0 0 10px 1px rgba(255, 217, 140, 0.06) !important;
   }
 
-  .sp-js #behind .music-board:hover {
-    transform: translateY(-4px) scale(1.008) !important;
-    border-color: rgba(255, 197, 61, 0.40);
-    box-shadow: inset 0 0 12px 1px rgba(255, 217, 140, 0.08);
+  /* The actual player is the interactive object. */
+  .sp-js #behind .music-board .player {
+    transition:
+      transform 280ms var(--ep),
+      border-color 280ms var(--ep),
+      box-shadow 280ms var(--ep);
+    transform-origin: center center;
+  }
+
+  .sp-js #behind .music-board .player:hover {
+    transform: translateY(-4px) scale(1.018);
+    border-color: rgba(255, 197, 61, 0.44);
+    box-shadow:
+      0 14px 26px rgba(0, 0, 0, 0.34),
+      inset 0 0 12px 1px rgba(255, 217, 140, 0.08);
   }
 }
 
 @media (min-width: 1080px) {
-  /* 430px left a large dead zone around the actual mini-nav content. */
+  /* Content-sized instead of 360/430px: no dead zone, but enough separation
+     between avatar, availability and CTA to avoid the cramped look. */
   .sp-js .site-header.is-mini .nav-pill {
-    max-width: 360px;
-    gap: 8px;
-    padding: 5px 8px 5px 6px;
+    width: fit-content;
+    max-width: none;
+    gap: 12px;
+    padding: 6px 7px 6px 7px;
+    justify-content: center;
+  }
+
+  /* The hidden identity name used to leave its flex gap behind. */
+  .sp-js .site-header.is-mini .identity {
+    gap: 0;
   }
 
   .sp-js .site-header.is-mini .identity-group {
-    gap: 6px;
+    gap: 8px;
   }
 
   .sp-js .site-header.is-mini .nav-available {
     margin-left: 0;
+    gap: 6px;
+    padding: 0 2px 0 0;
+    font-size: 11px;
+    letter-spacing: 0.55px;
+    white-space: nowrap;
+  }
+
+  .sp-js .site-header.is-mini .nav-available .nav-dot {
+    width: 6px;
+    height: 6px;
+    margin-left: 2px;
+    box-shadow:
+      0 0 0 3px rgba(74, 222, 128, 0.16),
+      0 0 7px rgba(74, 222, 128, 0.78);
+  }
+
+  .sp-js .site-header.is-mini .nav-cta {
+    max-width: 124px;
+    padding: 8px 9px 8px 13px;
+    gap: 8px;
+    font-size: 12.5px;
+  }
+
+  .sp-js .site-header.is-mini .nav-cta .btn-arrow {
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+
+  /* Preserve the existing keyboard-accessible full-nav expansion. */
+  .sp-js .site-header.is-mini .nav-pill:has(:focus-visible) {
+    width: auto;
+    max-width: var(--max);
   }
 }

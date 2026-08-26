@@ -37,7 +37,7 @@
 
   <link rel="stylesheet" href="styles.css?v=22" />
   <!-- Motion layer. Purely additive: it never changes the design. -->
-  <link rel="stylesheet" href="motion.css?v=28" />
+  <link rel="stylesheet" href="motion.css?v=29" />
 
   <script>
     /* Runs before paint so the page never flashes an un-styled state. */
@@ -329,10 +329,10 @@
         </article>
 
         <!-- Board 2 — Music -->
-        <article class="board sp-settle music-board" data-cursor="PLAY">
+        <article class="board sp-settle music-board">
           <h3 class="board-title">MUSIC WHILE DESIGNING</h3>
 
-          <div class="player" data-parallax="9">
+          <div class="player" data-parallax="9" data-cursor="PLAY">
             <!-- Headphones hang off the player's corner, so they stay put
                  whether or not the board title wraps to a second line. -->
             <svg class="headphone" viewBox="0 0 42 42" aria-hidden="true">
@@ -347,10 +347,10 @@
             <audio class="player-audio" preload="none" loop
               src="audio/bye-bye-bye.mp3"></audio>
 
-            <!-- A record, not a thumbnail: images/album-art.png becomes the
-                 label in the middle of the vinyl and the whole disc turns. -->
+            <!-- Deadpool sits on the record label to visually connect the player
+                 with the Bye Bye Bye track while the vinyl itself still turns. -->
             <div class="record" aria-hidden="true">
-              <img class="player-art" src="images/album-art.png" alt="" />
+              <img class="player-art" src="images/deadpool-mask.svg" alt="" />
               <span class="record-spindle"></span>
             </div>
             <div class="player-meta">
