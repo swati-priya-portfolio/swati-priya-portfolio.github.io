@@ -659,6 +659,7 @@
    viewport edge, which made the tear look broken. */
 .site-footer.paper-sheet {
   background: var(--void-deep) !important;
+  overflow: visible !important;
 }
 
 .site-footer.paper-sheet > .torn-edge.paper-tear {
