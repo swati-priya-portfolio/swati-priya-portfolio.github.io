@@ -99,15 +99,15 @@
     bottom: -5px !important;
   }
 
-  /* The laptop was visually swallowing the entire mobile hero. Keep it strong,
-     but smaller, and keep a real 10px grid gap instead of pulling it under the
-     speech bubbles with a large negative margin. */
+  /* The source PNG carries transparent headroom. Pull the artwork upward enough
+     to create a visible relationship with the speech bubbles without changing
+     the rest of the hero spacing. */
   .hero-art {
     grid-column: 1 / -1 !important;
     z-index: 1 !important;
     width: min(90vw, 330px) !important;
     max-width: 330px !important;
-    margin: -4px auto 0 !important;
+    margin: -18px auto 0 !important;
     justify-self: center !important;
   }
 
@@ -242,7 +242,7 @@
   .hero-art {
     width: min(90vw, 320px) !important;
     max-width: 320px !important;
-    margin-top: -4px !important;
+    margin-top: -18px !important;
   }
 }
 
