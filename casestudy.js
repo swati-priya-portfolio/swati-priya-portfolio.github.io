@@ -77,6 +77,7 @@
     });
 
     var scene = scenes[index];
+    reader.classList.toggle("is-figma-scene", scene.classList.contains("sc-figma"));
 
     if (crumb) {
       crumb.innerHTML = "Case study &middot; <b>Guardian One</b> &middot; " +
