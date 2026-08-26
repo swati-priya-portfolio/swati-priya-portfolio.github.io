@@ -870,3 +870,24 @@
     padding-bottom: clamp(240px, 30vh, 320px) !important;
   }
 }
+
+
+/* ============================================================
+   DESKTOP TOOLS LABEL CLEARANCE
+   The icon labels extend a few pixels beyond the fixed polaroid column.
+   Keep that intended text visible and reserve room for font descenders.
+   ============================================================ */
+@media (min-width: 1280px) {
+  .about .polaroid-col {
+    overflow: visible !important;
+  }
+
+  .about .tools-grid {
+    padding-bottom: 10px;
+  }
+
+  .about .tools-grid span {
+    display: block;
+    line-height: 1.35;
+  }
+}
