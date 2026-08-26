@@ -39,7 +39,9 @@
   function fit() {
     var head = document.querySelector(".site-header");
     if (head) {
-      reader.style.setProperty("--cs-head", Math.ceil(head.getBoundingClientRect().height) + "px");
+      // On the root, so the fixed top rail and the reader both read the same
+      // number regardless of where they sit in the tree.
+      root.style.setProperty("--cs-head", Math.ceil(head.getBoundingClientRect().height) + "px");
     }
     if (flowMedia.matches) {
       stage.style.removeProperty("--cs-scale");
@@ -55,7 +57,7 @@
     stage.style.setProperty("--cs-scale", scale.toFixed(4));
     // The top rail lives outside the scaled frame, so it has to be told how
     // wide the frame ended up or it stops lining up with the scene edges.
-    reader.style.setProperty("--cs-bar", Math.round((w - 100) * scale) + "px");
+    root.style.setProperty("--cs-bar", Math.round((w - 100) * scale) + "px");
   }
 
   /* ---------- Which scene is showing ---------- */

@@ -136,6 +136,10 @@
   transition: opacity 420ms linear, transform 620ms var(--cs-ease),
               visibility 0s linear 660ms;
 }
+/* show() moves focus into the current scene so a screen reader follows the
+   story. The scene is a container, not a control, so the browser's focus ring
+   around the whole slide was just a gold box nobody asked for. */
+.cs-scene:focus { outline: none; }
 .cs-scene.is-current {
   opacity: 1;
   visibility: visible;
@@ -149,9 +153,13 @@
 
 /* ---------- Chrome: top bar ---------- */
 .cs-topbar {
-  position: absolute;
+  /* Fixed to the viewport, not to the reader. Positioning it inside the
+     reader made its offset depend on that box's own geometry, which put it
+     14px higher than asked and back under the bar. */
+  position: fixed;
+  z-index: 30;
   left: 50%;
-  top: calc(var(--cs-head, 86px) + 20px);
+  top: calc(var(--cs-head, 86px) + 22px);
   width: var(--cs-bar, 1340px);
   transform: translateX(-50%);
   display: flex;
@@ -196,7 +204,7 @@
 /* ---------- Chrome: up next ---------- */
 .cs-upnext {
   position: absolute;
-  right: 50px; bottom: 26px;
+  right: 44px; bottom: 35px;
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -468,150 +476,208 @@
 
 /* ============================================================
    SCENE 02 — Meet Priya
+   Positioned on the frame's own coordinates. Everything below is
+   read straight off the Figma node: the column is 406 wide at x=56,
+   the divider is at x=496, the avatars are 116px circles, and the
+   two speaker columns sit at x=536 and x=965.
    ============================================================ */
-.sc-audience .grid {
-  display: grid;
-  grid-template-columns: 300px 1px minmax(0, 1fr);
-  gap: 28px;
-  height: 100%;
-  padding-top: 34px;
-}
-.sc-audience .rule { background: var(--cs-line); }
-.sc-audience .who h2 {
-  margin: 18px 0 0;
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1.28;
-  color: var(--cs-ink);
-}
-.sc-audience .who p.lede { margin: 10px 0 0; font-size: 13px; line-height: 1.5; color: var(--cs-dim); }
-.sc-audience .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.sc-audience .facts span {
-  padding: 7px 12px;
-  border: 1px solid var(--cs-line);
-  border-radius: 100px;
-  background: var(--cs-panel-2);
-  font-size: 12px;
-  color: rgba(245, 239, 227, 0.82);
-}
-.sc-audience .wants { margin-top: 20px; }
-.sc-audience .wants b {
-  display: block;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--accent, #ffc53d);
-}
-.sc-audience .wants p { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: var(--cs-dim); }
+.sc-audience { padding: 0; }
+.sc-audience .abs { position: absolute; }
+
+.sc-audience .portrait { left: 56px; top: 154px; width: 144px; height: 193px; }
 .sc-audience .thought {
-  position: relative;
-  padding: 12px 16px;
-  border-radius: 12px;
+  left: 157px; top: 82px; width: 286px;
+  padding: 10px 22px;
+  border-radius: 14px;
   background: #fbf7ee;
   color: #221c12;
   font-family: var(--font-hand, Caveat, cursive);
   font-size: 17px;
   line-height: 1.3;
 }
+/* The three dots that trail from the bubble down to her head. */
+.sc-audience .thought::after {
+  content: "";
+  position: absolute;
+  left: 26px; bottom: -26px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #fbf7ee;
+  box-shadow: -7px -8px 0 -1.5px #fbf7ee, -12px -15px 0 -3px #fbf7ee;
+}
 
-.sc-audience .talk { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 26px; align-content: start; }
-.sc-audience .col > .cs-tag { color: var(--cs-dim); }
-.sc-audience .line { display: flex; gap: 12px; margin-top: 9px; }
-.sc-audience .line + .cs-tag { margin-top: 20px; display: block; }
-.sc-audience .face {
-  flex: none;
-  width: 58px; height: 58px;
-  border-radius: 12px;
-  object-fit: cover;
-  background: rgba(255, 255, 255, 0.05);
+.sc-audience .who-title {
+  left: 56px; top: 370px; width: 406px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.32;
+  color: var(--cs-ink);
+}
+.sc-audience .who-lede {
+  left: 56px; top: 446px; width: 406px;
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--cs-dim);
+}
+.sc-audience .facts { left: 56px; top: 500px; width: 406px; }
+.sc-audience .facts span {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  margin: 0 10px 10px 0;
+  padding: 0 16px;
   border: 1px solid var(--cs-line);
+  border-radius: 100px;
+  background: var(--cs-panel-2);
+  font-size: 13px;
+  color: rgba(245, 239, 227, 0.86);
 }
-.sc-audience .bubble {
-  padding: 11px 14px;
+.sc-audience .wants { left: 56px; top: 599px; width: 390px; }
+.sc-audience .wants b { display: block; font-size: 13px; font-weight: 600; color: var(--accent, #ffc53d); }
+.sc-audience .wants p { margin: 6px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--cs-dim); }
+
+.sc-audience .divider { left: 496px; top: 104px; width: 1px; height: 572px; background: var(--cs-line); }
+
+/* Speaker rows. The avatar is a 116px disc with the character standing a
+   little proud of the top, which is how the frame draws it. */
+.sc-audience .who-label {
+  font-size: 15px;
+  color: rgba(245, 239, 227, 0.72);
+}
+.sc-audience .av {
+  width: 116px; height: 116px;
+  border-radius: 50%;
+  background: radial-gradient(70% 70% at 50% 40%, rgba(255,255,255,.07), rgba(6,9,20,.85));
+  box-shadow: inset 0 0 0 1px rgba(245, 239, 227, 0.10);
+}
+.sc-audience .bub {
+  padding: 10px 14px;
   border-radius: 10px;
-  font-size: 12.5px;
-  line-height: 1.45;
+  font-size: 13px;
+  line-height: 1.5;
 }
-.sc-audience .from-parent { background: rgba(38, 30, 18, 0.92); color: rgba(245, 239, 227, 0.9); }
-.sc-audience .from-design { background: #f3efe6; color: #23201a; }
+.sc-audience .bub-parent { background: #241c11; color: rgba(245, 239, 227, 0.92); }
+.sc-audience .bub-design { background: #f3efe6; color: #23201a; padding: 16px 18px; }
+/* Only the design side is drawn with a tail, pointing back at the speaker. */
+.sc-audience .bub-design::before {
+  content: "";
+  position: absolute;
+  left: -11px; top: 58px;
+  border: 12px solid transparent;
+  border-right-color: #f3efe6;
+  border-left: 0;
+}
+
 .sc-audience .verdict {
-  grid-column: 1 / -1;
+  left: 973px; top: 490px; width: 411px; height: 100px;
   display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 14px 16px;
-  border: 1px solid rgba(255, 197, 61, 0.5);
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px 0 26px;
+  border: 1px solid rgba(255, 197, 61, 0.62);
   border-radius: 12px;
-  background: rgba(12, 16, 32, 0.8);
+  background: rgba(12, 16, 32, 0.82);
 }
-.sc-audience .verdict p { margin: 0; font-size: 13px; line-height: 1.45; font-weight: 600; color: var(--cs-ink); }
-.sc-audience .verdict p + p { margin-top: 6px; font-weight: 400; color: var(--accent, #ffc53d); }
+.sc-audience .verdict p { margin: 0; width: 300px; font-size: 13.5px; line-height: 1.45; font-weight: 700; color: var(--cs-ink); }
+.sc-audience .verdict p + p { margin-top: 4px; font-weight: 400; color: var(--accent, #ffc53d); }
 
 /* ============================================================
    SCENE 03 — Two sides
+   Frame coordinates: title 644 wide at y=60, lede at y=176, the two
+   534px panels at y=212, the sweet spot column 77px wide between them.
    ============================================================ */
-.sc-tension .lede { margin: 16px 0 0; font-size: 12.5px; color: var(--cs-dim); }
-.sc-tension .cols {
-  display: grid;
-  grid-template-columns: 1fr 150px 1fr;
-  align-items: center;
-  gap: 0;
-  margin-top: 18px;
-}
-.sc-tension .side { padding: 16px; border-radius: 16px; }
-.sc-tension .side-biz { border: 1px solid rgba(123, 165, 255, 0.24); background: rgba(14, 22, 48, 0.6); }
-.sc-tension .side-par { border: 1px solid rgba(75, 214, 164, 0.24); background: rgba(10, 30, 26, 0.5); }
-.sc-tension .head { display: flex; gap: 12px; align-items: center; padding-bottom: 14px; }
-.sc-tension .head b { display: block; font-size: 15px; font-weight: 600; }
+.sc-tension { padding: 0; }
+.sc-tension .abs { position: absolute; }
+.sc-tension .cs-h2 { left: 398px; top: 56px; width: 644px; font-size: 40px; line-height: 1.2; }
+.sc-tension .lede { left: 109px; top: 176px; width: 600px; margin: 0; font-size: 13px; color: var(--cs-dim); }
+
+.sc-tension .side { top: 212px; width: 534px; height: 373px; padding: 27px; border-radius: 18px; }
+.sc-tension .side-biz { left: 109px;  border: 1px solid rgba(123, 165, 255, 0.22); background: rgba(13, 21, 46, 0.55); }
+.sc-tension .side-par { left: 798px;  border: 1px solid rgba(75, 214, 164, 0.22); background: rgba(8, 28, 24, 0.45); }
+
+.sc-tension .head { display: flex; gap: 15px; align-items: center; height: 55px; }
+.sc-tension .head .cs-ico { width: 55px; height: 55px; border-radius: 14px; }
+.sc-tension .head .cs-ico svg { width: 22px; height: 22px; }
+.sc-tension .head b { display: block; font-size: 17px; font-weight: 600; letter-spacing: 0.2px; }
 .sc-tension .side-biz .head b { color: var(--cs-blue); }
 .sc-tension .side-par .head b { color: var(--cs-green); }
-.sc-tension .head span { display: block; margin-top: 2px; font-size: 11.5px; color: var(--cs-dim); }
+.sc-tension .head span { display: block; margin-top: 4px; font-size: 13px; line-height: 1.35; color: var(--cs-dim); }
+
+.sc-tension .rows { margin-top: 30px; }
 .sc-tension .row {
   display: flex;
-  gap: 12px;
+  gap: 15px;
   align-items: center;
-  margin-top: 9px;
-  padding: 12px 14px;
+  height: 73px;
+  margin-bottom: 13px;
+  padding: 0 19px;
   border: 1px solid var(--cs-line);
-  border-radius: 12px;
-  background: rgba(7, 10, 22, 0.66);
+  border-radius: 13px;
+  background: rgba(6, 9, 20, 0.62);
 }
+.sc-tension .row:last-child { margin-bottom: 0; }
+.sc-tension .row .cs-ico { width: 42px; height: 42px; border-radius: 11px; }
+.sc-tension .row .cs-ico svg { width: 22px; height: 22px; }
 .sc-tension .row .txt { flex: 1 1 auto; min-width: 0; }
-.sc-tension .row b { display: block; font-size: 13.5px; font-weight: 600; color: var(--cs-ink); }
-.sc-tension .row span { display: block; margin-top: 2px; font-size: 11.5px; color: var(--cs-dim); }
+.sc-tension .row b { display: block; font-size: 15px; font-weight: 600; color: var(--cs-ink); }
+.sc-tension .row span { display: block; margin-top: 3px; font-size: 12.5px; color: var(--cs-dim); }
 .sc-tension .row .idx {
+  display: grid;
+  place-items: center;
   flex: none;
-  font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 12px;
-  padding: 5px 8px;
-  border-radius: 7px;
+  width: 42px; height: 42px;
+  border-radius: 11px;
   background: rgba(255, 255, 255, 0.05);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 13px;
 }
-.sc-tension .side-biz .idx { color: var(--cs-blue); }
-.sc-tension .side-par .idx { color: var(--cs-green); }
-.sc-tension .sweet { display: grid; justify-items: center; text-align: center; gap: 8px; }
+.sc-tension .side-biz .idx { color: var(--cs-blue); background: rgba(123, 165, 255, 0.10); }
+.sc-tension .side-par .idx { color: var(--cs-green); background: rgba(75, 214, 164, 0.10); }
+
+/* The sweet spot: a disc with the mark inside, not a hexagon. */
+.sc-tension .sweet { left: 682px; top: 318px; width: 77px; text-align: center; }
 .sc-tension .sweet .badge {
   display: grid;
   place-items: center;
-  width: 66px; height: 74px;
-  border-radius: 12px;
+  width: 77px; height: 77px;
+  border-radius: 50%;
   border: 2px solid var(--accent, #ffc53d);
-  background: rgba(10, 14, 28, 0.9);
-  clip-path: polygon(50% 0, 100% 16%, 100% 68%, 50% 100%, 0 68%, 0 16%);
+  background: #0b0f1e;
 }
-.sc-tension .sweet .badge svg { width: 30px; height: 30px; stroke: var(--accent, #ffc53d); fill: none; stroke-width: 1.6; }
 .sc-tension .sweet b {
+  display: block;
+  margin-top: 11px;
   font-family: var(--font-mono, "IBM Plex Mono", monospace);
-  font-size: 10.5px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--cs-dim);
 }
-.sc-tension .sweet b em { display: block; font-style: normal; color: var(--accent, #ffc53d); }
+.sc-tension .sweet b em { display: block; font-style: normal; white-space: nowrap; color: var(--accent, #ffc53d); }
 .sc-tension .sweet i {
+  display: block;
+  margin-top: 11px;
   font-style: normal;
-  font-size: 11px;
-  line-height: 1.35;
+  font-size: 12px;
+  line-height: 1.3;
   color: var(--cs-faint);
 }
+
+/* The narrator stands at the bottom left, lit by a soft ellipse. */
+.cs-narrator { position: absolute; left: 36px; bottom: -3px; width: 126px; height: 129px; }
+.cs-narrator::before {
+  content: "";
+  position: absolute;
+  left: -172px; bottom: -40px;
+  width: 461px; height: 292px;
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 197, 61, 0.16), rgba(255, 197, 61, 0) 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+.sc-tension .cs-note { left: 158px; bottom: 25px; max-width: 218px; padding: 9px 14px; font-size: 17px; }
+.sc-tension .cs-note::before { top: 14px; }
 
 /* ============================================================
    SCENE 04 — Decision matrix
@@ -740,13 +806,19 @@
   .sc-title .wrap { width: auto; margin: 0; }
   .sc-title .chips { flex-wrap: wrap; justify-content: flex-start; }
   .sc-title .lede { margin-left: 0; }
-  .sc-audience .grid,
-  .sc-audience .talk,
-  .sc-tension .cols,
   .sc-matrix .heads,
   .sc-matrix .band,
   .sc-matrix .guards { grid-template-columns: 1fr; }
-  .sc-audience .rule, .sc-matrix .arrow, .sc-matrix .heads { display: none; }
+  .sc-matrix .arrow, .sc-matrix .heads { display: none; }
+  /* The coordinate-positioned scenes stack instead. */
+  .sc-audience .abs, .sc-tension .abs, .cs-narrator {
+    position: static !important;
+    width: auto !important; height: auto !important;
+    margin-bottom: 16px;
+  }
+  .sc-audience .divider, .cs-narrator { display: none; }
+  .sc-tension .side { padding: 18px; }
+  .sc-tension .row { height: auto; padding: 12px 14px; }
   .cs-mobile-note { display: block; }
 }
 .cs-mobile-note {
@@ -768,3 +840,31 @@
 }
 
 @media (max-width: 899px) { .cs-mobile-note { display: block; } }
+
+/* ------------------------------------------------------------
+   Character art. These are painted as backgrounds rather than <img>
+   so a file that has not been exported yet leaves a clean empty
+   frame instead of a broken-image icon and its alt text. Drop the
+   five PNGs into images/ and every one of these fills in.
+   ------------------------------------------------------------ */
+.sc-audience .portrait,
+.sc-audience .av,
+.cs-narrator,
+.g1-mark {
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+}
+.sc-audience .portrait {
+  background-image: url("images/g1-priya-portrait.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  box-shadow: 0 0 0 5px #f7f2e6, 0 16px 30px rgba(0, 0, 0, 0.45);
+}
+.sc-audience .av-parent { background-image: url("images/g1-parent.png"); }
+.sc-audience .av-design { background-image: url("images/g1-design.png"); }
+.cs-narrator            { background-image: url("images/g1-priya.png"); }
+.g1-mark                { background-image: url("images/g1-shield.png"); display: block; }
+.sc-audience .verdict .g1-mark { width: 55px; height: 66px; flex: none; }
+.sc-tension .sweet .badge .g1-mark { width: 40px; height: 48px; background-position: center; }
