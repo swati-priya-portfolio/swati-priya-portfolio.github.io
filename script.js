@@ -41,21 +41,21 @@
 
     var phone = window.matchMedia("(max-width: 767px)").matches;
     var presets = phone ? [
-      [".hero-copy", -6],
-      [".section-head", -6],
+      [".hero-copy", -4],
+      [".section-head", -4],
       [".case-card:nth-child(1)", 0],
       [".case-card:nth-child(2)", 0],
       [".case-card:nth-child(3)", 0],
-      [".behind-head", -6],
-      [".board:nth-child(1)", 6],
-      [".board:nth-child(2)", 8],
-      [".board:nth-child(3)", 6],
-      [".board:nth-child(4)", 8],
+      [".behind-head", -4],
+      [".board:nth-child(1)", 3],
+      [".board:nth-child(2)", 4],
+      [".board:nth-child(3)", 3],
+      [".board:nth-child(4)", 4],
       [".about-grid > .polaroid-col", 0],
       [".about-grid > .story-col", 0],
-      [".drives-title", -4],
-      [".drives-list", 6],
-      [".footer-story", -6]
+      [".drives-title", -2],
+      [".drives-list", 3],
+      [".footer-story", -3]
     ] : [
       [".hero-copy", -18],
       [".section-head", -14],
@@ -194,8 +194,9 @@
         var headerH = header ? header.getBoundingClientRect().height : 58;
         top = Math.max(74, Math.round(headerH + 10));
         cardH = Math.round(cards[0].getBoundingClientRect().height || cards[0].offsetHeight || 480);
-        travel = Math.round(Math.max(window.innerHeight * 2.05, 1120));
-        var finalHold = Math.round(Math.min(100, window.innerHeight * 0.14));
+        /* Two clear scroll beats, but no long empty runway. */
+        travel = Math.round(Math.max(window.innerHeight * 1.62, 900));
+        var finalHold = Math.round(Math.min(66, window.innerHeight * 0.10));
 
         track.style.setProperty("--mobile-v2-card-h", cardH + "px");
         track.style.setProperty("--mobile-v2-top", top + "px");
@@ -210,33 +211,33 @@
 
         var rect = track.getBoundingClientRect();
         var p = clamp((top - rect.top) / Math.max(travel, 1), 0, 1);
-        var incomingY = Math.min(window.innerHeight * 0.66, Math.max(260, cardH * 0.68));
+        var incomingY = Math.min(window.innerHeight * 0.62, Math.max(240, cardH * 0.64));
 
-        /* One issue per beat. Nothing peeks in before its chapter begins. */
-        var gray = smooth(span(p, 0.18, 0.43));
-        var embibe = smooth(span(p, 0.50, 0.75));
-        var grayOpacity = smooth(span(p, 0.18, 0.25));
-        var embibeOpacity = smooth(span(p, 0.50, 0.57));
+        /* One issue per beat. The next issue is completely absent until its beat. */
+        var gray = smooth(span(p, 0.12, 0.38));
+        var embibe = smooth(span(p, 0.45, 0.71));
+        var grayOpacity = smooth(span(p, 0.12, 0.20));
+        var embibeOpacity = smooth(span(p, 0.45, 0.53));
 
         setCard(cards[0],
-          -8 * gray - 7 * embibe,
-          1 - 0.018 * gray - 0.018 * embibe,
-          -0.25 * gray - 0.18 * embibe,
+          -7 * gray - 6 * embibe,
+          1 - 0.016 * gray - 0.016 * embibe,
+          -0.22 * gray - 0.16 * embibe,
           1);
 
         setCard(cards[1],
-          lerp(incomingY, 0, gray) - 7 * embibe,
-          lerp(0.985, 1, gray) - 0.018 * embibe,
-          lerp(0.8, 0, gray) - 0.28 * embibe,
+          lerp(incomingY, 0, gray) - 6 * embibe,
+          lerp(0.988, 1, gray) - 0.016 * embibe,
+          lerp(0.65, 0, gray) - 0.22 * embibe,
           grayOpacity);
 
         setCard(cards[2],
           lerp(incomingY, 0, embibe),
-          lerp(0.985, 1, embibe),
-          lerp(-0.8, 0, embibe),
+          lerp(0.988, 1, embibe),
+          lerp(-0.65, 0, embibe),
           embibeOpacity);
 
-        var active = p < 0.34 ? 0 : (p < 0.64 ? 1 : 2);
+        var active = p < 0.30 ? 0 : (p < 0.62 ? 1 : 2);
         cards.forEach(function (card, index) {
           card.classList.toggle("is-mobile-active", index === active);
         });
@@ -260,6 +261,55 @@
       }
 
       measure();
+    }
+
+    function mobileFocusReveals() {
+      if (!mobile.matches) { return; }
+
+      var selectors = [
+        "#case-studies .section-head",
+        "#behind .behind-head",
+        "#behind .board",
+        "#about .polaroid-col",
+        "#about .story-head",
+        "#about .story-body",
+        "#about .timeline-item",
+        "#about .drives",
+        ".site-footer .footer-story",
+        ".site-footer .footer-cover"
+      ];
+
+      var seen = new Set();
+      var targets = [];
+      selectors.forEach(function (selector) {
+        document.querySelectorAll(selector).forEach(function (el) {
+          if (seen.has(el)) { return; }
+          seen.add(el);
+          targets.push(el);
+        });
+      });
+
+      if (!targets.length) { return; }
+
+      targets.forEach(function (el) { el.classList.add("mobile-focus-ready"); });
+
+      if (reduced.matches || !("IntersectionObserver" in window)) {
+        targets.forEach(function (el) { el.classList.add("mobile-focus-in"); });
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) { return; }
+          entry.target.classList.add("mobile-focus-in");
+          io.unobserve(entry.target);
+        });
+      }, {
+        threshold: 0.14,
+        rootMargin: "0px 0px -14% 0px"
+      });
+
+      targets.forEach(function (el) { io.observe(el); });
     }
 
     function mobileNav() {
@@ -295,6 +345,7 @@
 
     function boot() {
       mobileEpisodeSequence();
+      mobileFocusReveals();
       mobileNav();
     }
 
