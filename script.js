@@ -6,6 +6,15 @@
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Mobile preview stylesheet is loaded from JS so a commit-specific preview
+     always picks up the exact mobile pass, independent of stale branch CSS. */
+  if (window.matchMedia("(max-width: 767px)").matches) {
+    var mobileStyle = document.createElement("link");
+    mobileStyle.rel = "stylesheet";
+    mobileStyle.href = "mobile-preview.css?v=5";
+    document.head.appendChild(mobileStyle);
+  }
+
   (function quickLoaderHandoff() {
     var root = document.documentElement;
     var loader = document.querySelector(".sp-loader");
@@ -37,8 +46,8 @@
     var presets = phone ? [
       [".hero-copy", -4], [".section-head", -4],
       [".case-card:nth-child(1)", 0], [".case-card:nth-child(2)", 0], [".case-card:nth-child(3)", 0],
-      [".behind-head", -4], [".board:nth-child(1)", 2], [".board:nth-child(2)", 2],
-      [".board:nth-child(3)", 2], [".board:nth-child(4)", 2],
+      [".behind-head", -3], [".board:nth-child(1)", 1], [".board:nth-child(2)", 1],
+      [".board:nth-child(3)", 1], [".board:nth-child(4)", 1],
       [".about-grid > .polaroid-col", 0], [".about-grid > .story-col", 0],
       [".drives-title", -2], [".drives-list", 2], [".footer-story", -3]
     ] : [
@@ -131,8 +140,8 @@
         var headerH = header ? header.getBoundingClientRect().height : 58;
         top = Math.max(74, Math.round(headerH + 10));
         cardH = Math.round(cards[0].getBoundingClientRect().height || cards[0].offsetHeight || 480);
-        travel = Math.round(Math.max(window.innerHeight * 1.62, 900));
-        var finalHold = Math.round(Math.min(66, window.innerHeight * 0.10));
+        travel = Math.round(Math.max(window.innerHeight * 1.58, 860));
+        var finalHold = Math.round(Math.min(62, window.innerHeight * 0.09));
         track.style.setProperty("--mobile-v2-card-h", cardH + "px");
         track.style.setProperty("--mobile-v2-top", top + "px");
         track.style.setProperty("--mobile-v2-track-h", (cardH + travel + finalHold) + "px");
@@ -143,7 +152,7 @@
         if (!enabled) { return; }
         var rect = track.getBoundingClientRect();
         var p = clamp((top - rect.top) / Math.max(travel, 1), 0, 1);
-        var incomingY = Math.min(window.innerHeight * 0.62, Math.max(240, cardH * 0.64));
+        var incomingY = Math.min(window.innerHeight * 0.60, Math.max(230, cardH * 0.62));
         var gray = smooth(span(p, 0.12, 0.38));
         var embibe = smooth(span(p, 0.45, 0.71));
         var grayOpacity = smooth(span(p, 0.12, 0.20));
@@ -175,21 +184,20 @@
           el.style.setProperty(property, value, priority || "");
         });
       }
-      set("#case-studies .section-head", "margin-bottom", "28px", "important");
+      set("#case-studies .section-head", "margin-bottom", "26px", "important");
       set("#behind .behind-head", "margin-bottom", "34px", "important");
       set("#behind .board-grid", "gap", "42px", "important");
-      set("#about .about-grid", "gap", "52px", "important");
-      set("#about .tools", "margin-top", "30px", "important");
+      set("#about .about-grid", "gap", "44px", "important");
       set("#about .story-head", "gap", "24px", "important");
-      set("#about .story-body", "margin-top", "28px", "important");
-      set("#about .timeline", "margin-top", "32px", "important");
+      set("#about .story-body", "margin-top", "32px", "important");
+      set("#about .timeline", "margin-top", "34px", "important");
       set("#about .timeline", "display", "grid", "important");
-      set("#about .timeline", "gap", "14px", "important");
-      set("#about .timeline-item", "padding-top", "15px", "important");
-      set("#about .timeline-item", "padding-bottom", "15px", "important");
-      set("#about .drives", "margin-top", "40px", "important");
-      set(".site-footer .footer-body", "gap", "42px", "important");
-      set(".site-footer .footer-story", "gap", "19px", "important");
+      set("#about .timeline", "gap", "18px", "important");
+      set("#about .timeline-item", "padding-top", "14px", "important");
+      set("#about .timeline-item", "padding-bottom", "14px", "important");
+      set("#about .drives", "margin-top", "42px", "important");
+      set(".site-footer .footer-body", "gap", "38px", "important");
+      set(".site-footer .footer-story", "gap", "17px", "important");
     }
 
     function mobileFocusReveals() {
@@ -198,7 +206,8 @@
         "#case-studies .section-head",
         "#behind .behind-head",
         "#behind .board",
-        "#about .polaroid-col",
+        "#about .polaroid",
+        "#about .sticky-note",
         "#about .tools",
         "#about .story-head",
         "#about .story-body",
@@ -218,8 +227,8 @@
       function hidden(el) {
         el.classList.add("mobile-focus-ready");
         el.style.setProperty("opacity", "0", "important");
-        el.style.setProperty("transform", "translateY(22px)", "important");
-        el.style.setProperty("transition", "opacity 500ms linear, transform 700ms cubic-bezier(0.22,1,0.36,1)", "important");
+        el.style.setProperty("transform", "translateY(24px)", "important");
+        el.style.setProperty("transition", "opacity 520ms linear, transform 680ms cubic-bezier(0.22,1,0.36,1)", "important");
       }
       function show(el) {
         el.classList.add("mobile-focus-in");
@@ -238,7 +247,7 @@
           show(entry.target);
           io.unobserve(entry.target);
         });
-      }, { threshold: 0.10, rootMargin: "0px 0px -44% 0px" });
+      }, { threshold: 0.12, rootMargin: "0px 0px -30% 0px" });
       targets.forEach(function (el) { io.observe(el); });
     }
 
