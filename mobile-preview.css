@@ -1,13 +1,11 @@
 /* Mobile preview pass — intentionally scoped to phones only. */
 @media (max-width: 767px) {
-  /* 1) HERO — one-line role strip, one-row CTAs, tighter illustration story. */
+  /* 1) HERO — one-line role strip, one-row CTAs, cleaner illustration story. */
   .hero {
     padding-top: 28px !important;
     padding-bottom: 46px !important;
   }
 
-  /* The CTA → illustration rhythm is intentionally shared between the grid gap
-     and character margin so the space feels designed instead of accidental. */
   .hero-inner {
     gap: 16px !important;
   }
@@ -56,17 +54,16 @@
     font-size: 12px !important;
   }
 
-  /* Keep a deliberate pause after the CTA row, while still letting the speech
-     bubbles + Bitmoji read as one illustration cluster. */
+  /* Give the CTA and illustration story a little more room to separate. */
   .hero-character {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
     column-gap: 10px !important;
-    row-gap: 0 !important;
+    row-gap: 10px !important;
     align-items: end !important;
     justify-items: stretch !important;
-    padding-top: 4px !important;
-    margin-top: 40px !important;
+    padding-top: 0 !important;
+    margin-top: 50px !important;
   }
 
   .hero-character .speech,
@@ -88,12 +85,12 @@
 
   .hero-character .speech-left {
     grid-column: 1 !important;
-    transform: translateY(4px) rotate(1.2deg) !important;
+    transform: rotate(1.2deg) !important;
   }
 
   .hero-character .speech-right {
     grid-column: 2 !important;
-    transform: translateY(4px) rotate(-1.2deg) !important;
+    transform: rotate(-1.2deg) !important;
   }
 
   .hero-character .speech::after {
@@ -102,15 +99,21 @@
     bottom: -5px !important;
   }
 
-  /* Leave a little air between the speech boxes and the Bitmoji; enough to read
-     clearly, but not enough for the two pieces to feel detached. */
+  /* The laptop was visually swallowing the entire mobile hero. Keep it strong,
+     but smaller, and keep a real 10px grid gap instead of pulling it under the
+     speech bubbles with a large negative margin. */
   .hero-art {
     grid-column: 1 / -1 !important;
     z-index: 1 !important;
-    width: min(94vw, 344px) !important;
-    max-width: 344px !important;
-    margin: -64px auto 0 !important;
+    width: min(90vw, 330px) !important;
+    max-width: 330px !important;
+    margin: 0 auto !important;
     justify-self: center !important;
+  }
+
+  /* A little more air before proof starts so the laptop gets its own beat. */
+  .proof-strip {
+    margin-top: 58px !important;
   }
 
   /* 2) BEHIND THE SCREENS — one board should feel like one scroll chapter. */
@@ -209,7 +212,6 @@
     margin-top: 42px !important;
   }
 
-  /* Mobile focus-reveal visual language: quiet, clear, not bouncy. */
   .mobile-focus-ready {
     will-change: opacity, transform;
   }
@@ -227,7 +229,7 @@
   }
 
   .hero-character {
-    margin-top: 38px !important;
+    margin-top: 48px !important;
   }
 
   .hero-character .speech,
@@ -238,19 +240,21 @@
   }
 
   .hero-art {
-    margin-top: -62px !important;
+    width: min(90vw, 320px) !important;
+    max-width: 320px !important;
+    margin-top: 0 !important;
   }
 }
 
 /* ============================================================
    MOBILE SCROLL STORY
-   Keep the major page-fold motion as the hero interaction, then let meaningful
-   content groups arrive only when the reader scrolls into their chapter.
+   Paper overlap remains the dominant interaction. Supporting reveals stay
+   quieter so each chapter reads before the next motion asks for attention.
    ============================================================ */
 @keyframes mobile-story-rise {
   from {
     opacity: 0;
-    translate: 0 22px;
+    translate: 0 14px;
   }
   to {
     opacity: 1;
@@ -260,39 +264,50 @@
 
 @supports (animation-timeline: view()) {
   @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-    /* Hero copy + CTAs remain readable first. The illustration is the next beat. */
+    /* Hero copy + CTAs read first. The character arrives only as its own
+       composition enters the viewport. */
     .hero-character {
       animation-name: mobile-story-rise;
       animation-duration: 1s;
       animation-fill-mode: both;
       animation-timing-function: linear;
       animation-timeline: view();
-      animation-range: entry 4% cover 30%;
+      animation-range: entry 12% cover 34%;
     }
+  }
+}
 
-    /* Metrics arrive one-by-one after the illustration, without count-up or bounce. */
-    .proof-strip .proof-item {
-      animation-name: mobile-story-rise;
-      animation-duration: 1s;
-      animation-fill-mode: both;
-      animation-timing-function: linear;
-      animation-timeline: view();
-    }
+/* The existing IntersectionObserver already reveals the proof strip reliably
+   across mobile browsers. On phones, remove the number pop/bounce and keep one
+   simple staggered rise so it does not compete with the torn-page motion. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .sp-js .proof-strip.is-metrics-ready {
+    transform: translateY(10px);
+    transition: opacity 360ms linear, transform 460ms var(--ep);
+  }
 
-    .proof-strip .proof-item:nth-child(1) {
-      animation-range: entry 3% cover 20%;
-    }
+  .sp-js .proof-strip.is-metrics-ready .proof-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 340ms linear, transform 460ms var(--ep);
+  }
 
-    .proof-strip .proof-item:nth-child(2) {
-      animation-range: entry 11% cover 28%;
-    }
+  .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item {
+    opacity: 1;
+    transform: none;
+  }
 
-    .proof-strip .proof-item:nth-child(3) {
-      animation-range: entry 21% cover 38%;
-    }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(1) { transition-delay: 0ms !important; }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(2) { transition-delay: 100ms !important; }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(3) { transition-delay: 200ms !important; }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(4) { transition-delay: 300ms !important; }
 
-    .proof-strip .proof-item:nth-child(4) {
-      animation-range: entry 29% cover 46%;
-    }
+  .sp-js .proof-strip.is-metrics-ready .proof-item strong,
+  .sp-js .proof-strip.is-metrics-ready .proof-item span,
+  .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item strong,
+  .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item span {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
 }
