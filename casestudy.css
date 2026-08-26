@@ -33,9 +33,14 @@
 .cs-page {
   min-height: 100vh;
   margin: 0;
+  /* The frame is a warm near-black with a blue glow low and centred, not a
+     blue wash from the top. Two soft ellipses sit over it in the design: the
+     large blue one through the middle-lower half, and a warmer one at the
+     bottom left behind the narrator. */
   background:
-    radial-gradient(120% 92% at 50% 12%, #1d2555 0%, #141c3c 40%, #0a0e1e 72%, #06080f 100%),
-    #06080f;
+    radial-gradient(56% 80% at 12% 94%, rgba(78, 50, 22, 0.40) 0%, rgba(28, 18, 9, 0) 66%),
+    radial-gradient(128% 82% at 50% 70%, #2f4d99 0%, #24397a 26%, #182a5c 48%, rgba(15, 13, 18, 0) 82%),
+    linear-gradient(180deg, #160f09 0%, #140f0a 24%, #110d10 52%, #0b0907 100%);
   color: var(--cs-ink);
   font-family: var(--font-body, Inter, system-ui, sans-serif);
   overflow: hidden;                     /* the reader owns the viewport */
@@ -97,7 +102,10 @@
   height: 100vh;
   display: grid;
   place-items: center;
-  padding-top: 144px;                   /* clears the fixed bar and the top rail */
+  /* Measured from the real header rather than assumed: with the display font
+     loaded the bar is taller than it is in a fallback, which is what put the
+     scene's own top rail underneath it. */
+  padding-top: calc(var(--cs-head, 86px) + 76px);
   padding-bottom: 12px;
   /* The stage still occupies its full 1440px in layout even when scaled
      down, so the reader clips rather than letting the page report a
@@ -143,7 +151,7 @@
 .cs-topbar {
   position: absolute;
   left: 50%;
-  top: 104px;
+  top: calc(var(--cs-head, 86px) + 20px);
   width: var(--cs-bar, 1340px);
   transform: translateX(-50%);
   display: flex;
@@ -215,31 +223,8 @@
 .cs-upnext .arw { color: var(--accent, #ffc53d); }
 .cs-upnext[hidden] { display: none; }
 
-/* ---------- Chrome: prev/next ---------- */
-.cs-step {
-  position: absolute;
-  top: 50%;
-  z-index: 5;
-  width: 44px; height: 44px;
-  display: grid;
-  place-items: center;
-  margin-top: -22px;
-  border: 1px solid rgba(245, 239, 227, 0.16);
-  border-radius: 50%;
-  background: rgba(10, 14, 28, 0.6);
-  color: var(--cs-ink);
-  font-size: 16px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 300ms linear, border-color 260ms var(--cs-ease),
-              background 260ms var(--cs-ease);
-}
-.cs-reader:hover .cs-step,
-.cs-step:focus-visible { opacity: 1; }
-.cs-step:hover { border-color: var(--accent, #ffc53d); background: rgba(255, 197, 61, 0.12); }
-.cs-step:disabled { opacity: 0 !important; pointer-events: none; }
-.cs-prev { left: 14px; }
-.cs-next { right: 14px; }
+/* The on-screen control is the keycap cluster from the design, not a pair of
+   floating circles. Those were mine, and they are gone. */
 
 /* ---------- Narrator note ---------- */
 .cs-note {
@@ -425,11 +410,35 @@
   display: grid;
   place-items: center;
   width: 40px; height: 40px;
+  padding: 0;
   border: 1px solid rgba(245, 239, 227, 0.14);
   border-radius: 9px;
   background: rgba(14, 18, 34, 0.85);
   color: var(--cs-dim);
   font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 220ms var(--cs-ease), background 220ms var(--cs-ease),
+              color 220ms var(--cs-ease), transform 220ms var(--cs-ease);
+}
+.cs-keys .cap:hover,
+.cs-keys .cap:focus-visible {
+  border-color: var(--accent, #ffc53d);
+  color: var(--accent, #ffc53d);
+  background: rgba(255, 197, 61, 0.10);
+}
+.cs-keys .cap:active { transform: translateY(2px); }
+.cs-keys .cap[disabled] { opacity: 0.35; cursor: default; }
+.cs-keys .cap[disabled]:hover {
+  border-color: rgba(245, 239, 227, 0.14);
+  color: var(--cs-dim);
+  background: rgba(14, 18, 34, 0.85);
+}
+.cs-keys .cap.is-live:hover,
+.cs-keys .cap.is-live:focus-visible {
+  background: #ffd76a;
+  color: #16120a;
+  border-color: #ffd76a;
 }
 .cs-keys .cap.is-live {
   border-color: var(--accent, #ffc53d);
@@ -706,7 +715,7 @@
    ============================================================ */
 @media (max-width: 899px) {
   .cs-page { overflow: auto; }
-  .cs-reader { height: auto; display: block; padding: 92px 0 60px; }
+  .cs-reader { height: auto; display: block; padding: calc(var(--cs-head, 86px) + 20px) 0 60px; }
   .cs-stage {
     width: auto;
     height: auto;
@@ -721,7 +730,7 @@
     padding: 26px 20px 34px;
     border-bottom: 1px solid var(--cs-line);
   }
-  .cs-topbar, .cs-upnext, .cs-step, .cs-keys, .sc-title .hint { display: none; }
+  .cs-topbar, .cs-upnext, .cs-keys, .sc-title .hint { display: none; }
   .cs-note { position: static; max-width: none; margin: 20px 0 0; }
   .cs-note::before { display: none; }
   .cs-h1 { font-size: 44px; }

@@ -26,8 +26,7 @@
   var upnext = document.querySelector(".cs-upnext");
   var upnextLabel = upnext && upnext.querySelector(".txt");
   var viewDesign = document.querySelector(".cs-view-design");
-  var prevBtn = document.querySelector(".cs-prev");
-  var nextBtn = document.querySelector(".cs-next");
+  var caps = [].slice.call(document.querySelectorAll(".cs-keys .cap[data-step]"));
 
   var total = scenes.length;
   var index = 0;
@@ -38,6 +37,10 @@
 
   /* ---------- Fit the 1440x700 frame into whatever room is left ---------- */
   function fit() {
+    var head = document.querySelector(".site-header");
+    if (head) {
+      reader.style.setProperty("--cs-head", Math.ceil(head.getBoundingClientRect().height) + "px");
+    }
     if (flowMedia.matches) {
       stage.style.removeProperty("--cs-scale");
       return;
@@ -93,8 +96,11 @@
       if (upnextLabel && label) { upnextLabel.textContent = label; }
     }
 
-    if (prevBtn) { prevBtn.disabled = index === 0; }
-    if (nextBtn) { nextBtn.disabled = index === total - 1; }
+    // A key that cannot take you anywhere should say so.
+    caps.forEach(function (cap) {
+      var step = parseInt(cap.getAttribute("data-step"), 10);
+      cap.disabled = (step < 0 && index === 0) || (step > 0 && index === total - 1);
+    });
 
     var hash = "#scene-" + (index + 1);
     if (viaHash !== "hash" && window.location.hash !== hash) {
@@ -129,29 +135,16 @@
     }
   });
 
-  // A click anywhere on the stage advances, the way the design says it does.
-  // Anything genuinely clickable inside a scene keeps its own behaviour.
-  stage.addEventListener("click", function (e) {
-    if (flowMedia.matches) { return; }
-    if (e.target.closest("a, button, input, select, textarea, [data-no-advance]")) { return; }
-    go(1, "click");
+  // Clicking the page does NOT advance. The story moves on the arrow keys and
+  // on the keycaps that are drawn on the scene, and nothing else — a stray
+  // click while reading should never skip a scene.
+  caps.forEach(function (cap) {
+    cap.addEventListener("click", function () {
+      go(parseInt(cap.getAttribute("data-step"), 10) || 0, "click");
+    });
   });
 
-  if (prevBtn) { prevBtn.addEventListener("click", function () { go(-1); }); }
-  if (nextBtn) { nextBtn.addEventListener("click", function () { go(1); }); }
   if (upnext) { upnext.addEventListener("click", function (e) { e.preventDefault(); go(1); }); }
-
-  // Swipe, for trackpads and touch screens that still get the slide view.
-  var touchX = null;
-  stage.addEventListener("touchstart", function (e) {
-    touchX = e.changedTouches[0].clientX;
-  }, { passive: true });
-  stage.addEventListener("touchend", function (e) {
-    if (touchX === null || flowMedia.matches) { return; }
-    var dx = e.changedTouches[0].clientX - touchX;
-    touchX = null;
-    if (Math.abs(dx) > 46) { go(dx < 0 ? 1 : -1); }
-  }, { passive: true });
 
   /* ---------- Deep links ---------- */
   function fromHash(how) {

@@ -16,7 +16,7 @@
 
   <!-- styles.css first: the reader reuses its tokens and its header. -->
   <link rel="stylesheet" href="styles.css?v=22" />
-  <link rel="stylesheet" href="casestudy.css?v=1" />
+  <link rel="stylesheet" href="casestudy.css?v=2" />
 </head>
 
 <body class="cs-page">
@@ -98,12 +98,15 @@
           </div>
         </div>
 
-        <div class="cs-keys" aria-hidden="true">
-          <div class="row"><span class="cap">&#8593;</span></div>
+        <!-- The design's keycaps, made real: these are the on-screen control. -->
+        <div class="cs-keys">
           <div class="row">
-            <span class="cap">&#8592;</span>
-            <span class="cap">&#8595;</span>
-            <span class="cap is-live">&#8594;</span>
+            <button class="cap" type="button" data-step="-1" aria-label="Previous scene">&#8593;</button>
+          </div>
+          <div class="row">
+            <button class="cap" type="button" data-step="-1" aria-label="Previous scene">&#8592;</button>
+            <button class="cap" type="button" data-step="1" aria-label="Next scene">&#8595;</button>
+            <button class="cap is-live" type="button" data-step="1" aria-label="Next scene">&#8594;</button>
           </div>
           <p class="say"><b>Use your keyboard arrows</b><i>to view the story!</i></p>
         </div>
@@ -112,7 +115,7 @@
           GrayQuest had already earned trust through school-fee payments. The design
           question was whether that trust could extend to insurance.
         </p>
-        <p class="hint">Click or press &#8594; to continue</p>
+        <p class="hint">Press &#8594; to continue</p>
       </section>
 
       <!-- ============================================================
@@ -369,9 +372,6 @@
 
     </div><!-- /.cs-stage -->
 
-    <button class="cs-step cs-prev" type="button" aria-label="Previous scene">&#8592;</button>
-    <button class="cs-step cs-next" type="button" aria-label="Next scene">&#8594;</button>
-
     <a class="cs-upnext" href="#" role="button">
       <span class="lab">Up next</span>
       <span class="sep" aria-hidden="true"></span>
@@ -380,6 +380,6 @@
     </a>
   </main>
 
-  <script src="casestudy.js?v=1"></script>
+  <script src="casestudy.js?v=2"></script>
 </body>
 </html>
