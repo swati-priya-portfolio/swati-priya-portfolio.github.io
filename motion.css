@@ -933,3 +933,71 @@
     transform: none !important;
   }
 }
+
+
+/* ============================================================
+   AVAILABILITY PILL — un-squash the avatar, give the row its air back
+   ============================================================ */
+
+/* The portrait is deliberately over-sized and cropped back to a 44px ring
+   with negative margins, so its own outer width is smaller than the image.
+   In the folded bar the name collapses to zero, .identity shrinks to that
+   outer width, and the global `img { max-width: 100% }` then clamped the
+   image to it -- 32px wide against an untouched 46.5px height. That is the
+   squashed face in the pill: the crop was feeding its own container back
+   into the image. The cap simply must not apply to this one image. */
+.identity-avatar,
+.sp-js .site-header.is-compact .identity-avatar,
+.sp-js .site-header.is-mini .identity-avatar {
+  max-width: none;
+  flex: 0 0 auto;
+}
+
+@media (min-width: 1080px) {
+  /* Content-sized is the right call -- the pill used to be a fixed 360px with
+     a dead zone in the middle -- but the pass that removed it also took the
+     padding, the gaps and half a point of type with it. Space is measured
+     here, not squeezed: the row stays exactly as wide as it needs to be. */
+  .sp-js .site-header.is-mini .nav-pill {
+    gap: 11px;
+    padding: 6px 8px 6px 7px;
+  }
+
+  .sp-js .site-header.is-mini .identity-group { gap: 9px; }
+
+  .sp-js .site-header.is-mini .nav-available {
+    gap: 7px;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
+    max-width: none;
+  }
+
+  .sp-js .site-header.is-mini .nav-available .nav-dot { margin-left: 1px; }
+
+  .sp-js .site-header.is-mini .nav-cta {
+    max-width: 136px;
+    padding: 8px 10px 8px 14px;
+    gap: 8px;
+    font-size: 12.5px;
+  }
+}
+
+/* ------------------------------------------------------------
+   The footer flourish had nowhere to go on a phone.
+   .footer-arrow is absolutely positioned at left: calc(100% + 8px) of the
+   kicker. On desktop the kicker is narrower than its column, so the arrow
+   sits in the space beside it. On a 393px screen the kicker fills the width,
+   which put the arrow at 381-434px and made the whole page 41px wider than
+   the viewport -- the homepage scrolled sideways. It flows after the text
+   there instead, and wraps to its own line if there is no room.
+   ------------------------------------------------------------ */
+@media (max-width: 719px) {
+  .footer-arrow {
+    position: static;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 27px;
+    margin-left: 8px;
+  }
+}
