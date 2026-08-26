@@ -332,14 +332,22 @@
   background: rgba(255, 255, 255, 0.04);
 }
 .cs-ico svg { width: 19px; height: 19px; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.tone-blue   .cs-ico { border-color: rgba(123, 165, 255, 0.32); background: rgba(123, 165, 255, 0.10); }
-.tone-blue   .cs-ico svg { stroke: var(--cs-blue); }
-.tone-green  .cs-ico { border-color: rgba(75, 214, 164, 0.32); background: rgba(75, 214, 164, 0.10); }
-.tone-green  .cs-ico svg { stroke: var(--cs-green); }
-.tone-purple .cs-ico { border-color: rgba(171, 140, 250, 0.32); background: rgba(171, 140, 250, 0.10); }
-.tone-purple .cs-ico svg { stroke: var(--cs-purple); }
-.tone-amber  .cs-ico { border-color: rgba(255, 197, 61, 0.32); background: rgba(255, 197, 61, 0.10); }
-.tone-amber  .cs-ico svg { stroke: var(--accent, #ffc53d); }
+.tone-blue   .cs-ico,
+.cs-ico.tone-blue { border-color: rgba(123, 165, 255, 0.32); background: rgba(123, 165, 255, 0.10); }
+.tone-blue   .cs-ico svg,
+.cs-ico.tone-blue svg { stroke: var(--cs-blue); }
+.tone-green  .cs-ico,
+.cs-ico.tone-green { border-color: rgba(75, 214, 164, 0.32); background: rgba(75, 214, 164, 0.10); }
+.tone-green  .cs-ico svg,
+.cs-ico.tone-green svg { stroke: var(--cs-green); }
+.tone-purple .cs-ico,
+.cs-ico.tone-purple { border-color: rgba(171, 140, 250, 0.32); background: rgba(171, 140, 250, 0.10); }
+.tone-purple .cs-ico svg,
+.cs-ico.tone-purple svg { stroke: var(--cs-purple); }
+.tone-amber  .cs-ico,
+.cs-ico.tone-amber { border-color: rgba(255, 197, 61, 0.32); background: rgba(255, 197, 61, 0.10); }
+.tone-amber  .cs-ico svg,
+.cs-ico.tone-amber svg { stroke: var(--accent, #ffc53d); }
 
 /* ============================================================
    SCENE 01 — Title
@@ -772,7 +780,10 @@
 .sc-matrix .colhead { padding: 9px 12px; }
 .sc-matrix .guards { margin-top: 10px; }
 .sc-matrix .guard { padding: 9px 11px; }
-.sc-matrix .cs-note { bottom: 16px; max-width: 430px; font-size: 17.5px; }
+/* The note sits clear of the narrator, the way scene 03 does it, rather than
+   printing across her. */
+.sc-matrix .cs-note { left: 172px; bottom: 18px; max-width: 372px; padding: 10px 15px; font-size: 17.5px; }
+.sc-matrix .cs-note::before { top: 16px; }
 
 /* ============================================================
    Reading mode — anything too narrow for the 1440 frame
@@ -781,7 +792,15 @@
    ============================================================ */
 @media (max-width: 899px) {
   .cs-page { overflow: auto; }
-  .cs-reader { height: auto; display: block; padding: calc(var(--cs-head, 86px) + 20px) 0 60px; }
+  /* place-items has to go with the grid: Chromium honours justify-items on a
+     block container too, which was shrink-wrapping the stage to its widest
+     line and centring the overflow off both edges. */
+  .cs-reader {
+    height: auto;
+    display: block;
+    place-items: initial;
+    padding: calc(var(--cs-head, 86px) + 20px) 0 60px;
+  }
   .cs-stage {
     width: auto;
     height: auto;
@@ -799,8 +818,8 @@
   .cs-topbar, .cs-upnext, .cs-keys, .sc-title .hint { display: none; }
   .cs-note { position: static; max-width: none; margin: 20px 0 0; }
   .cs-note::before { display: none; }
-  .cs-h1 { font-size: 44px; }
-  .cs-h2 { font-size: 25px; text-align: left; }
+  .cs-h1, .sc-title .cs-h1 { font-size: 40px; line-height: 1.06; }
+  .cs-h2, .sc-tension .cs-h2 { font-size: 25px; text-align: left; }
   .cs-sub { text-align: left; }
   .sc-title { display: block; text-align: left; }
   .sc-title .wrap { width: auto; margin: 0; }
@@ -817,6 +836,26 @@
     margin-bottom: 16px;
   }
   .sc-audience .divider, .cs-narrator { display: none; }
+  /* The character art is painted as a background, so it has no intrinsic size.
+     Reading mode has to hand each figure a box or she disappears entirely. */
+  .sc-audience .portrait { width: 132px !important; height: 178px !important; margin-bottom: 18px; }
+  .sc-audience .av { width: 64px !important; height: 64px !important; margin-bottom: 10px; }
+  /* The opening scene keeps its narrator — she is the welcome. */
+  .sc-title .cs-narrator {
+    display: block;
+    width: 200px !important; height: 200px !important;
+    margin: 20px 0 -6px -14px;
+  }
+  .sc-title .cs-narrator::before { display: none; }
+  /* A deep link still lands below the fixed bar. */
+  .cs-scene { scroll-margin-top: calc(var(--cs-head, 86px) + 14px); }
+  /* The verdict is a fixed 411x100 plate on the frame; here it wraps. */
+  .sc-audience .verdict { display: block; padding: 16px; }
+  .sc-audience .verdict p { width: auto; }
+  .sc-audience .verdict .g1-mark { margin-bottom: 10px; }
+  /* The tail is drawn against a positioned bubble, and nothing is positioned
+     here, so it would float loose. */
+  .sc-audience .bub-design::before { display: none; }
   .sc-tension .side { padding: 18px; }
   .sc-tension .row { height: auto; padding: 12px 14px; }
   .cs-mobile-note { display: block; }
@@ -842,29 +881,63 @@
 @media (max-width: 899px) { .cs-mobile-note { display: block; } }
 
 /* ------------------------------------------------------------
-   Character art. These are painted as backgrounds rather than <img>
-   so a file that has not been exported yet leaves a clean empty
-   frame instead of a broken-image icon and its alt text. Drop the
-   five PNGs into images/ and every one of these fills in.
+   Character art. Painted as backgrounds rather than <img> so a file that
+   is not there yet leaves a clean frame instead of a broken-image icon.
+
+   Four exports cover the whole story:
+     priya_with_skate  — the opening narrator, waving (scene 01)
+     priya_as_teacher  — the framed portrait; she is the teacher in the copy
+     priya_as_smiling  — the parent speaking, and the narrator after scene 01
+     priya_as_design   — the designer speaking
    ------------------------------------------------------------ */
 .sc-audience .portrait,
 .sc-audience .av,
-.cs-narrator,
-.g1-mark {
+.cs-narrator {
   background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: contain;
 }
+
+/* The framed portrait is 144x193, so the standing figure is cropped to it. */
 .sc-audience .portrait {
-  background-image: url("images/g1-priya-portrait.png");
-  background-size: cover;
-  background-position: center;
+  background-image: url("images/priya_as_teacher.png");
+  background-size: 118%;
+  background-position: center 18%;
+  background-color: #dfe6f2;
   border-radius: 10px;
   box-shadow: 0 0 0 5px #f7f2e6, 0 16px 30px rgba(0, 0, 0, 0.45);
 }
-.sc-audience .av-parent { background-image: url("images/g1-parent.png"); }
-.sc-audience .av-design { background-image: url("images/g1-design.png"); }
-.cs-narrator            { background-image: url("images/g1-priya.png"); }
-.g1-mark                { background-image: url("images/g1-shield.png"); display: block; }
+
+/* Busts sit head-high in the disc, the way the frame crops them. */
+.sc-audience .av {
+  background-size: 116%;
+  background-position: center 14%;
+  overflow: hidden;
+}
+.sc-audience .av-parent { background-image: url("images/priya_as_smiling.png"); }
+.sc-audience .av-design { background-image: url("images/priya_as_design.png"); }
+
+.cs-narrator {
+  background-image: url("images/priya_as_smiling.png");
+  background-size: contain;
+  background-position: bottom center;
+}
+/* The opening scene has her on skates, full height. The export is a square
+   canvas with the figure filling about 63% of it, so the box is sized past
+   the frame's 231x273 to land the figure itself at that size. */
+.sc-title .cs-narrator {
+  left: -40px; bottom: -8px;
+  width: 340px; height: 340px;
+  background-image: url("images/priya_with_skate.png");
+  background-size: contain;
+  background-position: bottom center;
+}
+.sc-title .cs-narrator::before { left: -120px; bottom: 0; }
+
+/* The Guardian One mark. Drawn rather than exported — swap in a real PNG by
+   pointing .g1-mark at it if you would rather use the original. */
+.g1-mark { display: block; }
+.g1-mark svg { width: 100%; height: 100%; display: block; }
 .sc-audience .verdict .g1-mark { width: 55px; height: 66px; flex: none; }
-.sc-tension .sweet .badge .g1-mark { width: 40px; height: 48px; background-position: center; }
+.sc-tension .sweet .badge .g1-mark { width: 40px; height: 48px; }
+
+/* Scene 01: the note sits to the right of the skater, not at the margin. */
+.sc-title .cs-note { left: 207px; bottom: 63px; max-width: 271px; }

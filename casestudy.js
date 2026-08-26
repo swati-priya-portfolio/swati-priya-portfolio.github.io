@@ -105,7 +105,12 @@
     });
 
     var hash = "#scene-" + (index + 1);
-    if (viaHash !== "hash" && window.location.hash !== hash) {
+    // In reading mode the whole story is one scroll, so stamping a scene hash
+    // on load only gives the browser a fragment to jump to — which pushed the
+    // top of the page up under the header. Deep links still work; we just do
+    // not write one for you.
+    var stampsHash = !(flowMedia.matches && viaHash === "init");
+    if (viaHash !== "hash" && stampsHash && window.location.hash !== hash) {
       try { history.replaceState(null, "", hash); } catch (e) {}
     }
 
