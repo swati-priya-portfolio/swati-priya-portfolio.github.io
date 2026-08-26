@@ -94,7 +94,9 @@
     if (upnext) {
       var label = scene.getAttribute("data-next");
       var last = index === total - 1;
-      upnext.hidden = last || !label;
+      // The design parks the pill outside the frame on the opening scene, so
+      // the keyboard hint has that corner to itself. data-no-upnext says so.
+      upnext.hidden = last || !label || scene.hasAttribute("data-no-upnext");
       if (upnextLabel && label) { upnextLabel.textContent = label; }
     }
 
