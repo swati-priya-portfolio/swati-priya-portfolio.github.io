@@ -540,3 +540,38 @@
     width: min(91vw, 338px);
   }
 }
+
+
+/* ============================================================
+   DESKTOP MUSIC HOVER + MINI NAV TIGHTEN
+   Desktop-only polish. Mobile <= 767px remains untouched.
+   ============================================================ */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .sp-js #behind .music-board {
+    transition: transform 320ms var(--ep), border-color 320ms var(--ep),
+                box-shadow 320ms var(--ep);
+  }
+
+  .sp-js #behind .music-board:hover {
+    transform: translateY(-4px) scale(1.008) !important;
+    border-color: rgba(255, 197, 61, 0.40);
+    box-shadow: inset 0 0 12px 1px rgba(255, 217, 140, 0.08);
+  }
+}
+
+@media (min-width: 1080px) {
+  /* 430px left a large dead zone around the actual mini-nav content. */
+  .sp-js .site-header.is-mini .nav-pill {
+    max-width: 360px;
+    gap: 8px;
+    padding: 5px 8px 5px 6px;
+  }
+
+  .sp-js .site-header.is-mini .identity-group {
+    gap: 6px;
+  }
+
+  .sp-js .site-header.is-mini .nav-available {
+    margin-left: 0;
+  }
+}
