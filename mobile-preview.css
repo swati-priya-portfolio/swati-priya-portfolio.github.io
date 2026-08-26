@@ -1,0 +1,313 @@
+/* Mobile preview pass — intentionally scoped to phones only. */
+@media (max-width: 767px) {
+  /* 1) HERO — one-line role strip, one-row CTAs, cleaner illustration story. */
+  .hero {
+    padding-top: 28px !important;
+    padding-bottom: 46px !important;
+  }
+
+  .hero-inner {
+    gap: 16px !important;
+  }
+
+  .hero-copy {
+    gap: 18px !important;
+  }
+
+  .role-strip {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    padding: 7px 8px !important;
+    margin-bottom: 14px !important;
+    font-size: clamp(8.2px, 2.25vw, 9.4px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.06px !important;
+    white-space: nowrap !important;
+    overflow: hidden;
+  }
+
+  .hero-actions {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 2px !important;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    padding: 12px 9px !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .hero-actions .btn-arrow {
+    width: 23px !important;
+    height: 23px !important;
+    font-size: 12px !important;
+  }
+
+  /* Give the CTA and illustration story a little more room to separate. */
+  .hero-character {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: 10px !important;
+    row-gap: 10px !important;
+    align-items: end !important;
+    justify-items: stretch !important;
+    padding-top: 0 !important;
+    margin-top: 50px !important;
+  }
+
+  .hero-character .speech,
+  .hero-character .speech-left,
+  .hero-character .speech-right {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 3 !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin: 0 !important;
+    padding: 13px 11px !important;
+    font-size: clamp(16px, 4vw, 18px) !important;
+    line-height: 1.08 !important;
+    text-align: center !important;
+    justify-self: stretch !important;
+  }
+
+  .hero-character .speech-left {
+    grid-column: 1 !important;
+    transform: rotate(1.2deg) !important;
+  }
+
+  .hero-character .speech-right {
+    grid-column: 2 !important;
+    transform: rotate(-1.2deg) !important;
+  }
+
+  .hero-character .speech::after {
+    width: 15px !important;
+    height: 15px !important;
+    bottom: -5px !important;
+  }
+
+  /* The source PNG carries transparent headroom. Pull the artwork upward enough
+     to create a visible relationship with the speech bubbles without changing
+     the rest of the hero spacing. */
+  .hero-art {
+    grid-column: 1 / -1 !important;
+    z-index: 1 !important;
+    width: min(90vw, 330px) !important;
+    max-width: 330px !important;
+    margin: -22px auto 0 !important;
+    justify-self: center !important;
+  }
+
+  /* A little more air before proof starts so the laptop gets its own beat. */
+  .proof-strip {
+    margin-top: 58px !important;
+  }
+
+  /* 2) BEHIND THE SCREENS — one board should feel like one scroll chapter. */
+  #behind {
+    padding-top: 66px !important;
+    padding-bottom: 82px !important;
+  }
+
+  #behind .behind-head {
+    margin-bottom: 34px !important;
+  }
+
+  #behind .board-grid {
+    display: grid !important;
+    gap: 42px !important;
+  }
+
+  #behind .board {
+    margin: 0 !important;
+  }
+
+  /* 3) ABOUT — use a repeatable 36–44px reading rhythm instead of crowding. */
+  #about {
+    padding-top: 68px !important;
+    padding-bottom: 88px !important;
+  }
+
+  #about .about-grid {
+    gap: 44px !important;
+  }
+
+  #about .polaroid-col {
+    padding-top: 12px !important;
+  }
+
+  #about .tools {
+    margin-top: 32px !important;
+  }
+
+  #about .story-col {
+    display: grid !important;
+    gap: 0 !important;
+  }
+
+  #about .story-head {
+    gap: 24px !important;
+  }
+
+  #about .story-title {
+    margin-top: 10px !important;
+  }
+
+  #about .thought-bubble {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin-top: 2px !important;
+    padding: 16px 20px !important;
+  }
+
+  #about .story-body {
+    margin-top: 32px !important;
+    line-height: 1.55 !important;
+  }
+
+  #about .timeline {
+    display: grid !important;
+    gap: 18px !important;
+    margin-top: 34px !important;
+  }
+
+  #about .timeline-item {
+    padding: 14px 0 !important;
+  }
+
+  #about .tl-body {
+    min-width: 0 !important;
+  }
+
+  #about .tl-role {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 5px 8px !important;
+  }
+
+  #about .tl-title {
+    white-space: normal !important;
+  }
+
+  #about .tl-detail,
+  #about .tl-date {
+    line-height: 1.4 !important;
+  }
+
+  #about .drives {
+    margin-top: 42px !important;
+  }
+
+  .mobile-focus-ready {
+    will-change: opacity, transform;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-actions .btn {
+    font-size: 11.2px !important;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+
+  .role-strip {
+    font-size: 8px !important;
+  }
+
+  .hero-character {
+    margin-top: 48px !important;
+  }
+
+  .hero-character .speech,
+  .hero-character .speech-left,
+  .hero-character .speech-right {
+    font-size: 16px !important;
+    padding: 12px 9px !important;
+  }
+
+  .hero-art {
+    width: min(90vw, 320px) !important;
+    max-width: 320px !important;
+    margin-top: -22px !important;
+  }
+}
+
+/* ============================================================
+   MOBILE SCROLL STORY
+   Paper overlap remains the dominant interaction. Supporting reveals stay
+   quieter so each chapter reads before the next motion asks for attention.
+   ============================================================ */
+@keyframes mobile-story-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+    /* Hero copy + CTAs read first. The character arrives only as its own
+       composition enters the viewport. */
+    .hero-character {
+      animation-name: mobile-story-rise;
+      animation-duration: 1s;
+      animation-fill-mode: both;
+      animation-timing-function: linear;
+      animation-timeline: view();
+      animation-range: entry 12% cover 34%;
+    }
+  }
+}
+
+/* The existing IntersectionObserver already reveals the proof strip reliably
+   across mobile browsers. On phones, remove the number pop/bounce and keep one
+   simple staggered rise so it does not compete with the torn-page motion. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .sp-js .proof-strip.is-metrics-ready {
+    transform: translateY(10px);
+    transition: opacity 360ms linear, transform 460ms var(--ep);
+  }
+
+  .sp-js .proof-strip.is-metrics-ready .proof-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 340ms linear, transform 460ms var(--ep);
+  }
+
+  .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item {
+    opacity: 1;
+    transform: none;
+  }
+
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(1) { transition-delay: 0ms !important; }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(2) { transition-delay: 100ms !important; }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(3) { transition-delay: 200ms !important; }
+  .sp-js .proof-strip.is-visible .proof-item:nth-child(4) { transition-delay: 300ms !important; }
+
+  .sp-js .proof-strip.is-metrics-ready .proof-item strong,
+  .sp-js .proof-strip.is-metrics-ready .proof-item span,
+  .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item strong,
+  .sp-js .proof-strip.is-metrics-ready.is-visible .proof-item span {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

@@ -232,3 +232,311 @@
     scale: 1 !important;
   }
 }
+
+/* ============================================================
+   MOBILE MOTION V2 — <= 767px ONLY
+   Compact reading rhythm + one comic issue per scroll beat.
+   Desktop/tablet remain untouched.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Stable floating nav: opening the menu never changes page height. */
+  .site-header,
+  .sp-js .site-header.is-compact {
+    padding: max(8px, env(safe-area-inset-top)) 12px 0 !important;
+  }
+
+  .nav-pill,
+  .sp-js .site-header.is-compact .nav-pill {
+    position: relative;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    min-height: 54px;
+    padding: 5px 8px !important;
+    border-radius: 28px;
+    overflow: visible;
+  }
+
+  .identity-group { flex: 1 1 auto; min-width: 0; }
+  .identity { min-width: 0; gap: 10px; }
+
+  .identity-name,
+  .sp-js .site-header.is-compact .identity-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px !important;
+  }
+
+  .sp-js .site-header.is-compact .identity-avatar {
+    width: 64px;
+    height: 64px;
+    margin: -5.75px -10.25px -14.25px -9.75px;
+  }
+
+  .nav-toggle {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    padding: 0 9px;
+    border-radius: 50%;
+    background: rgba(255, 197, 61, 0.04);
+  }
+  .nav-toggle[aria-expanded="true"] {
+    background: rgba(255, 197, 61, 0.10);
+    border-color: rgba(255, 197, 61, 0.62);
+  }
+
+  .nav-links {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    order: initial;
+    width: auto;
+    max-height: 0;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 197, 61, 0.22);
+    border-radius: 18px;
+    background: rgba(20, 16, 10, 0.96);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+            backdrop-filter: blur(12px) saturate(120%);
+    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px) scale(0.985);
+    transform-origin: top center;
+    overflow: hidden;
+    transition: max-height 360ms var(--ep), padding 360ms var(--ep), opacity 220ms linear,
+                transform 360ms var(--ep), visibility 0s linear 360ms;
+  }
+  .nav-links.is-open {
+    max-height: 320px;
+    padding: 8px 10px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    transition-delay: 0s;
+  }
+  .nav-link,
+  .sp-js .site-header.is-compact .nav-link {
+    padding: 13px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+  .nav-links li + li { border-top: 1px solid rgba(245, 239, 227, 0.07); }
+  .nav-link::after { left: 12px; right: auto; width: 34px; bottom: 7px; }
+  .nav-cta,
+  .nav-available { display: none !important; }
+
+  /* Hero: tighter hierarchy and a single clean visual axis. */
+  .hero {
+    padding-top: 28px !important;
+    padding-bottom: 44px !important;
+  }
+  .hero-inner { gap: 18px !important; }
+  .hero-copy { gap: 15px !important; }
+
+  .hero .role-strip {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 9px 10px !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.08px !important;
+    text-align: center;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  .hero-actions {
+    width: 100%;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+  }
+  .hero-actions .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    gap: 5px !important;
+    padding: 12px 8px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+  .hero-actions .btn-arrow {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 12px !important;
+  }
+
+  .hero-character {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 8px !important;
+    row-gap: 8px !important;
+    justify-items: stretch;
+    align-items: center;
+    padding-top: 0 !important;
+  }
+  .hero-character .speech,
+  .hero-character .speech-left,
+  .hero-character .speech-right {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 8px 9px !important;
+    font-size: 14px !important;
+    line-height: 1.12 !important;
+    text-align: center;
+    justify-self: stretch !important;
+  }
+  .hero-character .speech-left {
+    grid-column: 1;
+    transform: rotate(1deg) !important;
+  }
+  .hero-character .speech-right {
+    grid-column: 2;
+    transform: rotate(-1deg) !important;
+  }
+  .hero-character .speech::after {
+    width: 14px;
+    height: 14px;
+    bottom: -5px;
+  }
+  .hero-art {
+    grid-column: 1 / -1;
+    width: min(100%, 342px) !important;
+    max-width: 342px !important;
+    margin: -2px auto 0 !important;
+  }
+
+  /* Behind the Screens: one board is the focus at a time. */
+  .behind {
+    padding-top: 64px !important;
+    padding-bottom: 88px !important;
+  }
+  .behind-head { margin-bottom: 34px !important; }
+  .board-grid { gap: 42px !important; }
+
+  /* About: equal breathing space from Tools through the career timeline. */
+  .about { padding-top: 62px !important; padding-bottom: 82px !important; }
+  .about-grid { gap: 52px !important; }
+  .polaroid-col { padding-top: 18px !important; }
+  .tools { margin-top: 30px !important; }
+  .story-head { gap: 24px !important; }
+  .story-title { margin-top: 10px !important; }
+  .thought-bubble {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 13px 18px !important;
+    font-size: 18px !important;
+  }
+  .story-body { margin-top: 28px !important; }
+  .timeline {
+    margin-top: 32px !important;
+    display: grid !important;
+    gap: 14px !important;
+  }
+  .timeline-item {
+    grid-template-columns: 46px minmax(0, 1fr) !important;
+    column-gap: 14px !important;
+    row-gap: 4px !important;
+    padding: 15px 0 !important;
+  }
+  .tl-role {
+    display: grid !important;
+    gap: 3px !important;
+  }
+  .tl-role a { font-size: 18px !important; }
+  .tl-title { font-size: 10px !important; line-height: 1.3; }
+  .tl-detail { font-size: 14px !important; line-height: 1.4; }
+  .tl-date {
+    grid-column: 2 !important;
+    font-size: 13px !important;
+  }
+
+  /* Keep the container alive, but allow its child beats to reveal separately. */
+  .sp-js .story-col,
+  .sp-js .timeline {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sp-js .timeline-item .tl-logo,
+  .sp-js .timeline-item .tl-body,
+  .sp-js .timeline-item .tl-date {
+    translate: 0 0 !important;
+  }
+
+  /* Pick an episode: one full issue at a time. */
+  .case-track.mobile-episode-v2 {
+    position: relative;
+    height: var(--mobile-v2-track-h, auto) !important;
+    overflow: visible !important;
+  }
+  .case-track.mobile-episode-v2 .case-stage {
+    position: sticky !important;
+    top: var(--mobile-v2-top, 78px) !important;
+    height: var(--mobile-v2-card-h, 480px) !important;
+    overflow: visible !important;
+  }
+  .case-track.mobile-episode-v2 .case-grid {
+    position: relative;
+    display: block;
+    width: min(92vw, 372px);
+    max-width: 372px;
+    height: var(--mobile-v2-card-h, 480px);
+    margin: 0 auto;
+    perspective: 1200px;
+    overflow: visible !important;
+  }
+  .case-track.mobile-episode-v2 .case-card,
+  .sp-js .case-track.mobile-episode-v2 .case-card.settle-in,
+  .sp-js .case-track.mobile-episode-v2 .case-card.settle-in.is-visible {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0 !important;
+    opacity: var(--m-o, 1) !important;
+    transform: translate3d(0, var(--m-y, 0px), 0) rotate(var(--m-r, 0deg)) scale(var(--m-s, 1)) !important;
+    transform-origin: 50% 8%;
+    transition: none !important;
+    will-change: transform, opacity;
+    pointer-events: none !important;
+  }
+  .case-track.mobile-episode-v2 .case-card:nth-child(1) { z-index: 1 !important; }
+  .case-track.mobile-episode-v2 .case-card:nth-child(2) { z-index: 2 !important; }
+  .case-track.mobile-episode-v2 .case-card:nth-child(3) { z-index: 3 !important; }
+  .case-track.mobile-episode-v2 .case-card.is-mobile-active { pointer-events: auto !important; }
+
+  .cases,
+  .cases .case-track,
+  .cases .case-stage,
+  .cases .case-grid { overflow: visible !important; }
+  .cases { padding-bottom: 72px !important; }
+}
+
+@media (max-width: 360px) {
+  .identity-name,
+  .sp-js .site-header.is-compact .identity-name {
+    max-width: 92px;
+    font-size: 11px !important;
+  }
+
+  .hero .role-strip { font-size: 9px !important; }
+  .hero-actions .btn { font-size: 11px !important; padding-left: 6px !important; padding-right: 6px !important; }
+  .hero-character .speech { font-size: 13px !important; }
+
+  .case-track.mobile-episode-v2 .case-grid {
+    width: min(91vw, 338px);
+  }
+}
