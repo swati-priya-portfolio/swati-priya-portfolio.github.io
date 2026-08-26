@@ -6,8 +6,10 @@
     padding-bottom: 46px !important;
   }
 
+  /* The visible CTA → illustration distance comes from BOTH this grid gap and
+     the character margin below. Control both so mobile spacing is predictable. */
   .hero-inner {
-    gap: 24px !important;
+    gap: 12px !important;
   }
 
   .hero-copy {
@@ -64,7 +66,7 @@
     align-items: end !important;
     justify-items: stretch !important;
     padding-top: 4px !important;
-    margin-top: 62px !important;
+    margin-top: 28px !important;
   }
 
   .hero-character .speech,
@@ -100,14 +102,14 @@
     bottom: -5px !important;
   }
 
-  /* Pull the transparent top padding of the PNG upward a little more so the
-     speech bubbles and Bitmoji feel physically connected. */
+  /* Pull the transparent top padding of the PNG upward so the speech bubbles
+     and Bitmoji feel physically connected rather than two separate blocks. */
   .hero-art {
     grid-column: 1 / -1 !important;
     z-index: 1 !important;
     width: min(94vw, 344px) !important;
     max-width: 344px !important;
-    margin: -64px auto 0 !important;
+    margin: -72px auto 0 !important;
     justify-self: center !important;
   }
 
@@ -225,7 +227,7 @@
   }
 
   .hero-character {
-    margin-top: 58px !important;
+    margin-top: 26px !important;
   }
 
   .hero-character .speech,
@@ -236,6 +238,6 @@
   }
 
   .hero-art {
-    margin-top: -60px !important;
+    margin-top: -68px !important;
   }
 }
