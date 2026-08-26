@@ -22,6 +22,7 @@
     max-width: 100% !important;
     box-sizing: border-box;
     padding: 7px 8px !important;
+    margin-bottom: 14px !important;
     font-size: clamp(8.2px, 2.25vw, 9.4px) !important;
     line-height: 1.15 !important;
     letter-spacing: 0.06px !important;
@@ -34,6 +35,7 @@
     flex-wrap: nowrap !important;
     width: 100% !important;
     gap: 8px !important;
+    margin-top: 2px !important;
   }
 
   .hero-actions .btn {
@@ -52,14 +54,16 @@
     font-size: 12px !important;
   }
 
+  /* Treat the two speech bubbles + laptop as one illustration cluster. */
   .hero-character {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
     column-gap: 10px !important;
-    row-gap: 12px !important;
+    row-gap: 0 !important;
     align-items: end !important;
     justify-items: stretch !important;
     padding-top: 4px !important;
+    margin-top: 2px !important;
   }
 
   .hero-character .speech,
@@ -67,6 +71,7 @@
   .hero-character .speech-right {
     position: relative !important;
     inset: auto !important;
+    z-index: 3 !important;
     width: 100% !important;
     max-width: none !important;
     box-sizing: border-box;
@@ -80,12 +85,12 @@
 
   .hero-character .speech-left {
     grid-column: 1 !important;
-    transform: rotate(1.2deg) !important;
+    transform: translateY(5px) rotate(1.2deg) !important;
   }
 
   .hero-character .speech-right {
     grid-column: 2 !important;
-    transform: rotate(-1.2deg) !important;
+    transform: translateY(5px) rotate(-1.2deg) !important;
   }
 
   .hero-character .speech::after {
@@ -94,11 +99,14 @@
     bottom: -5px !important;
   }
 
+  /* The PNG has transparent breathing room above the laptop. Pull that space
+     back so the bubbles visually belong to the Bitmoji/laptop composition. */
   .hero-art {
     grid-column: 1 / -1 !important;
+    z-index: 1 !important;
     width: min(94vw, 344px) !important;
     max-width: 344px !important;
-    margin: 8px auto 0 !important;
+    margin: -64px auto 0 !important;
     justify-self: center !important;
   }
 
@@ -213,5 +221,9 @@
 
   .role-strip {
     font-size: 8px !important;
+  }
+
+  .hero-art {
+    margin-top: -58px !important;
   }
 }
