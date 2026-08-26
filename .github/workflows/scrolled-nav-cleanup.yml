@@ -1,0 +1,26 @@
+name: Scrolled Nav Cleanup
+on:
+  push:
+    branches:
+      - fix/scrolled-nav-cleanup-20260826
+    paths:
+      - tools/scrolled_nav_cleanup.py
+      - .github/workflows/scrolled-nav-cleanup.yml
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/scrolled_nav_cleanup.py
+      - run: |
+          git config user.name "ChatGPT Motion Repair"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add motion.css
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Clean compact navbar on scroll"
+            git push
+          fi
