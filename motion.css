@@ -912,16 +912,35 @@
     box-shadow: none !important;
   }
 
+  /* Matched to the Figma frame's hovered GrayQuest card. The lift was
+     translateY(-20px) at scale 1.008 -- about 26px of travel on a 417px
+     cover, six percent, which reads as a nudge rather than the issue being
+     taken off the shelf. The frame lifts it roughly 60px and holds it a
+     touch closer to the reader, so the cover overhangs the card's edge.
+     Scale is measured from the base (transform-origin: 50% 100%), so the
+     bottom stays tucked behind the yellow panel and only the top rises. */
   .sp-js .case-card:hover .case-cover,
   .sp-js .case-card:focus-visible .case-cover {
-    transform: translateY(-20px) rotate(-0.8deg) scale(1.008);
-    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.46),
-                0 5px 12px rgba(0, 0, 0, 0.30);
+    transform: translateY(-33px) rotate(-1.1deg) scale(1.07);
+    box-shadow: 0 30px 46px rgba(0, 0, 0, 0.58),
+                0 10px 20px rgba(0, 0, 0, 0.4);
   }
 
   .sp-js .case-card:nth-child(even):hover .case-cover,
   .sp-js .case-card:nth-child(even):focus-visible .case-cover {
-    transform: translateY(-20px) rotate(0.8deg) scale(1.008);
+    transform: translateY(-33px) rotate(1.1deg) scale(1.07);
+  }
+
+  /* The raised issue has to pass over its neighbours, not under them. */
+  .sp-js .case-card:hover,
+  .sp-js .case-card:focus-visible { z-index: 5; }
+
+  /* The annotation is a sticker on the issue, so it travels with the artwork
+     rather than staying pinned to the card. Without this the bigger lift
+     dropped it 66px down the cover, straight across the masthead. */
+  .sp-js .case-card:hover .case-flag,
+  .sp-js .case-card:focus-visible .case-flag {
+    transform: translateY(-33px) rotate(-1deg);
   }
 
   .sp-js .case-card:hover::after,
