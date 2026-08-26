@@ -899,8 +899,18 @@
    full card frame stay planted. The artwork lifts four pixels farther.
    ============================================================ */
 @media (hover: hover) and (pointer: fine) {
+  /* The cover used to stop exactly where the yellow panel starts (78.23%),
+     so lifting it dragged its bottom edge out from behind the panel and you
+     could see the artwork end in mid-air, 29px clear of the sleeve. It runs
+     on to 89% now -- the extra strip lives permanently behind the panel,
+     which is what keeps the issue tucked at the bottom while the top rises.
+
+     The crop is unchanged. object-fit: cover with a 784x1044 source in a
+     392px-wide box is governed by width in both cases (0.5 either way), so
+     the artwork still renders 392x522 anchored to the top; a taller box only
+     uncovers more of the bottom, and 475px stays inside that 522. */
   .sp-js .case-card .case-cover {
-    height: calc(78.23% - 7px);
+    height: calc(89% - 7px);
     object-position: center top;
   }
 
@@ -921,14 +931,14 @@
      bottom stays tucked behind the yellow panel and only the top rises. */
   .sp-js .case-card:hover .case-cover,
   .sp-js .case-card:focus-visible .case-cover {
-    transform: translateY(-33px) rotate(-1.1deg) scale(1.07);
+    transform: translateY(-29px) rotate(-1.1deg) scale(1.07);
     box-shadow: 0 30px 46px rgba(0, 0, 0, 0.58),
                 0 10px 20px rgba(0, 0, 0, 0.4);
   }
 
   .sp-js .case-card:nth-child(even):hover .case-cover,
   .sp-js .case-card:nth-child(even):focus-visible .case-cover {
-    transform: translateY(-33px) rotate(1.1deg) scale(1.07);
+    transform: translateY(-29px) rotate(1.1deg) scale(1.07);
   }
 
   /* The raised issue has to pass over its neighbours, not under them. */
@@ -940,7 +950,7 @@
      dropped it 66px down the cover, straight across the masthead. */
   .sp-js .case-card:hover .case-flag,
   .sp-js .case-card:focus-visible .case-flag {
-    transform: translateY(-33px) rotate(-1deg);
+    transform: translateY(-29px) rotate(-1deg);
   }
 
   .sp-js .case-card:hover::after,
