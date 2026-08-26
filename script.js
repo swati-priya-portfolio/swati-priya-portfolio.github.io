@@ -6,12 +6,13 @@
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* Mobile preview stylesheet is loaded from JS so a commit-specific preview
-     always picks up the exact mobile pass, independent of stale branch CSS. */
+  /* Mobile preview stylesheet is loaded at high priority so repeat visits do
+     not visibly settle into the mobile layout after first paint. */
   if (window.matchMedia("(max-width: 767px)").matches) {
     var mobileStyle = document.createElement("link");
     mobileStyle.rel = "stylesheet";
-    mobileStyle.href = "mobile-preview.css?v=5";
+    mobileStyle.href = "mobile-preview.css?v=6";
+    mobileStyle.fetchPriority = "high";
     document.head.appendChild(mobileStyle);
   }
 
@@ -32,12 +33,17 @@
     loader.style.padding = "0 24px";
     loader.style.background = "#000000";
     loader.style.textAlign = "center";
-    setTimeout(function () { loader.classList.add("is-done"); }, 760);
+
+    var isPhone = window.matchMedia("(max-width: 767px)").matches;
+    var fadeAt = isPhone ? 620 : 760;
+    var removeAt = isPhone ? 840 : 980;
+
+    setTimeout(function () { loader.classList.add("is-done"); }, fadeAt);
     setTimeout(function () {
       loader.setAttribute("hidden", "");
       loader.removeAttribute("style");
       root.style.removeProperty("overflow");
-    }, 980);
+    }, removeAt);
   })();
 
   (function calmParallax() {
