@@ -54,7 +54,9 @@
     font-size: 12px !important;
   }
 
-  /* Treat the two speech bubbles + laptop as one illustration cluster. */
+  /* Treat the two speech bubbles + laptop as one illustration cluster.
+     Give the cluster its own breathing room from the hero copy without
+     separating the bubbles from the Bitmoji/laptop itself. */
   .hero-character {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
@@ -63,7 +65,7 @@
     align-items: end !important;
     justify-items: stretch !important;
     padding-top: 4px !important;
-    margin-top: 2px !important;
+    margin-top: 24px !important;
   }
 
   .hero-character .speech,
@@ -76,8 +78,8 @@
     max-width: none !important;
     box-sizing: border-box;
     margin: 0 !important;
-    padding: 9px 8px !important;
-    font-size: clamp(12px, 3.4vw, 14px) !important;
+    padding: 11px 10px !important;
+    font-size: clamp(13px, 3.65vw, 15.5px) !important;
     line-height: 1.08 !important;
     text-align: center !important;
     justify-self: stretch !important;
@@ -94,8 +96,8 @@
   }
 
   .hero-character .speech::after {
-    width: 13px !important;
-    height: 13px !important;
+    width: 14px !important;
+    height: 14px !important;
     bottom: -5px !important;
   }
 
@@ -106,7 +108,7 @@
     z-index: 1 !important;
     width: min(94vw, 344px) !important;
     max-width: 344px !important;
-    margin: -64px auto 0 !important;
+    margin: -60px auto 0 !important;
     justify-self: center !important;
   }
 
@@ -223,7 +225,18 @@
     font-size: 8px !important;
   }
 
+  .hero-character {
+    margin-top: 22px !important;
+  }
+
+  .hero-character .speech,
+  .hero-character .speech-left,
+  .hero-character .speech-right {
+    font-size: 13.2px !important;
+    padding: 10px 8px !important;
+  }
+
   .hero-art {
-    margin-top: -58px !important;
+    margin-top: -56px !important;
   }
 }
