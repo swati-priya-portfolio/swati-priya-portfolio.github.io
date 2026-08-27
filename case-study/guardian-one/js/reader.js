@@ -27,7 +27,10 @@
     if(mobile){document.documentElement.style.setProperty("--cs-scale","1");return;}
     var roomW=Math.max(320,innerWidth-28);
     var roomH=Math.max(280,innerHeight-head-74);
-    var scale=Math.min(1,roomW/1440,roomH/700);
+    /* Let the fixed Figma frame grow on large monitors as well as shrink on
+       laptops. The height and width ratios remain hard limits, so no scene
+       can be clipped; 1.24 is simply an optical ceiling for readable type. */
+    var scale=Math.min(1.24,roomW/1440,roomH/700);
     document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
     document.documentElement.style.setProperty("--cs-bar",Math.min(1340,roomW/scale)+"px");
   }
