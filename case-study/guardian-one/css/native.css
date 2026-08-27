@@ -1,9 +1,6 @@
 /* Shared native scene system — all slide content remains real, selectable HTML. */
 .cs-loading,.cs-load-error{position:absolute;inset:0;display:grid;place-items:center;color:var(--cs-dim);font:500 14px var(--font-mono);letter-spacing:.08em}
 .cs-load-error{text-align:center;color:var(--cs-ink)}
-.cs-scene-nav{position:fixed;z-index:32;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:6px;padding:6px 9px;border:1px solid rgba(255,197,61,.25);border-radius:999px;background:rgba(8,8,10,.72);backdrop-filter:blur(12px)}
-.cs-scene-nav a{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;color:var(--cs-dim);font:500 9px var(--font-mono);text-decoration:none}
-.cs-scene-nav a:hover,.cs-scene-nav a.is-current{color:#17120b;background:var(--accent,#ffc53d)}
 .cs-scene.native{padding:64px 96px 68px;background:radial-gradient(60% 100% at 50% 42%,rgba(62,45,24,.34),transparent 74%),#17130d}
 .native .native-kicker{margin:0 0 8px;color:var(--accent);font:500 11px var(--font-mono);letter-spacing:.14em;text-transform:uppercase;text-align:center}
 .native .native-title{margin:0;color:#f4eee2;font:400 36px/1.04 "Archivo Black",sans-serif;letter-spacing:-.035em;text-align:center;text-transform:none}
@@ -38,7 +35,6 @@
 .native-table td:first-child{font-weight:700}
 .figma-note{font:700 16px/1 "Caveat",cursive;color:var(--accent)}
 @media(max-width:899px){
- .cs-scene-nav{position:sticky;top:calc(var(--cs-head,86px) + 8px);left:auto;bottom:auto;transform:none;justify-content:center;flex-wrap:wrap;margin:8px 16px;order:-1}
  .cs-scene.native{padding:34px 20px 42px}
  .native .native-title{text-align:left;font-size:29px}
  .native .native-kicker,.native .native-sub{text-align:left;margin-left:0}
@@ -54,5 +50,5 @@
  .audit-card,.compare-step,.input-card,.result-ui,.comparison-ui,.report-preview{height:auto!important;min-height:0!important}
  .audit-card{padding-bottom:86px!important}.anatomy{grid-column:auto!important}
  .quote-stack{grid-template-columns:1fr!important}.mini-narrator img{width:56px;height:74px}
- .question-flow{grid-template-columns:1fr!important}.cs-scene-nav a{width:22px;height:22px}
+ .question-flow{grid-template-columns:1fr!important}
 }
