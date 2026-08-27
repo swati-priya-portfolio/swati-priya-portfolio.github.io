@@ -11,7 +11,6 @@
   ];
   var reader=document.querySelector(".cs-reader");
   var stage=document.querySelector(".cs-stage");
-  var nav=document.querySelector(".cs-scene-nav");
   var crumb=document.querySelector(".cs-crumb");
   var count=document.querySelector(".cs-count");
   var fill=document.querySelector(".cs-fill");
@@ -27,7 +26,7 @@
     document.documentElement.style.setProperty("--cs-head",head+"px");
     if(mobile){document.documentElement.style.setProperty("--cs-scale","1");return;}
     var roomW=Math.max(320,innerWidth-28);
-    var roomH=Math.max(280,innerHeight-head-112);
+    var roomH=Math.max(280,innerHeight-head-74);
     var scale=Math.min(1,roomW/1440,roomH/700);
     document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
     document.documentElement.style.setProperty("--cs-bar",Math.min(1340,roomW/scale)+"px");
@@ -55,26 +54,15 @@
     fill.style.setProperty("--cs-progress",(index+1)/scenes.length);
     next.hidden=index===scenes.length-1 || scene.hasAttribute("data-no-upnext");
     nextName.textContent=scene.dataset.next || (manifests[index+1]&&manifests[index+1][1]) || "";
-    nav.querySelectorAll("a").forEach(function(a,i){a.classList.toggle("is-current",i===index);});
     if(!opts || !opts.fromHash) history.replaceState(null,"","#scene-"+(index+1));
     if((!opts || !opts.silent) && !document.body.classList.contains("is-flow")){
       window.setTimeout(function(){scene.focus({preventScroll:true});},80);
     }
   }
 
-  function buildNav(){
-    nav.innerHTML=manifests.map(function(item,i){
-      return '<a href="#scene-'+(i+1)+'" aria-label="Scene '+(i+1)+': '+item[1]+'">'+String(i+1).padStart(2,"0")+'</a>';
-    }).join("");
-    nav.addEventListener("click",function(e){
-      var link=e.target.closest("a"); if(!link)return; e.preventDefault();
-      show(Number(link.hash.replace("#scene-",""))-1);
-    });
-  }
-
   function init(){
     scenes=Array.from(stage.querySelectorAll(".cs-scene"));
-    buildNav(); fit(); show(indexFromHash(),{fromHash:true,silent:true});
+    fit(); show(indexFromHash(),{fromHash:true,silent:true});
     next.addEventListener("click",function(){show(current+1);});
     addEventListener("resize",fit,{passive:true});
     addEventListener("hashchange",function(){show(indexFromHash(),{fromHash:true,silent:true});});
