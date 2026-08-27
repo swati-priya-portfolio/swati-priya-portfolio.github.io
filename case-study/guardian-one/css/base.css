@@ -820,6 +820,7 @@
     width: auto;
     height: auto;
     transform: none;
+    counter-reset: cs-mobile-scene;
   }
   .cs-scene {
     position: static;
@@ -839,6 +840,16 @@
     background-position: left bottom, center center;
     background-repeat: no-repeat;
     background-size: 72% 118%, 177.85% 175.15%;
+    counter-increment: cs-mobile-scene;
+  }
+  .cs-scene::before {
+    content: "Scene " counter(cs-mobile-scene, decimal-leading-zero) " / 14 · " attr(data-section);
+    display: block;
+    margin: 0 0 22px;
+    color: rgba(245, 239, 227, 0.48);
+    font: 500 10px/1.4 var(--font-mono, "IBM Plex Mono", monospace);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   .cs-page.is-flow #scene-1 { background-color: #17120b; }
   .cs-topbar, .cs-upnext, .cs-keys, .sc-title .hint { display: none; }

@@ -47,8 +47,15 @@
     scenes.forEach(function(scene,i){
       var active=i===index;
       scene.classList.toggle("is-current",active);
-      scene.setAttribute("aria-hidden",active?"false":"true");
-      if(!document.body.classList.contains("is-flow")) scene.tabIndex=active?0:-1;
+      if(document.body.classList.contains("is-flow")){
+        /* Mobile is one continuous document: every scene is visible and must
+           remain available to assistive technology as the reader scrolls. */
+        scene.setAttribute("aria-hidden","false");
+        scene.removeAttribute("tabindex");
+      }else{
+        scene.setAttribute("aria-hidden",active?"false":"true");
+        scene.tabIndex=active?0:-1;
+      }
     });
     current=index;
     document.body.classList.toggle("is-overview",index===0);
