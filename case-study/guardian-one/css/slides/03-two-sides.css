@@ -6,7 +6,7 @@
 .sc-tension .side-biz{border-color:#1f2e59;background:#0e1324}
 .sc-tension .side-par{border-color:#1f4d33;background:#0d1a14}
 .sc-tension .head{gap:15px}
-.sc-tension .head .cs-ico{width:55px;height:55px;border-radius:13px}
+.sc-tension .head .cs-ico{display:grid;place-items:center;width:55px;height:55px;margin-top:0;border-radius:13px}
 .sc-tension .head b{font-size:16.5px;line-height:24px;letter-spacing:.33px}
 .sc-tension .head span{margin-top:4px;color:#9ea6b2;font-size:12.85px;line-height:18px}
 .sc-tension .rows{margin-top:20px}
