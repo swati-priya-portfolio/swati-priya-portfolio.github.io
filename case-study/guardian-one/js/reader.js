@@ -48,6 +48,7 @@
       if(!document.body.classList.contains("is-flow")) scene.tabIndex=active?0:-1;
     });
     current=index;
+    document.body.classList.toggle("is-overview",index===0);
     var scene=scenes[index], section=scene.dataset.section || manifests[index][1];
     crumb.innerHTML="Case study · <b>Guardian One</b> · "+section;
     count.textContent="Scene "+String(index+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");

@@ -33,15 +33,7 @@
 .cs-page {
   min-height: 100vh;
   margin: 0;
-  /* The frame is near-black with ONE soft blue bloom over it. In the design
-     that bloom is a single 2561x1226 ellipse across a 1440x700 frame — a
-     plain colour-to-transparent falloff, which is why the corners read black
-     and the middle reads navy. My earlier version stacked hard colour stops
-     inside an oversized radial, and the whole page came out as a blue wash.
-     The warm ellipse at the bottom left is the light on the narrator. */
-  background:
-    radial-gradient(70% 60% at 50% 46%, rgba(26, 44, 88, 0.55) 0%, rgba(10, 12, 22, 0) 100%),
-    #07070b;
+  background: #08090d;
   color: var(--cs-ink);
   font-family: var(--font-body, Inter, system-ui, sans-serif);
   overflow: hidden;                     /* the reader owns the viewport */
@@ -112,7 +104,21 @@
      down, so the reader clips rather than letting the page report a
      scrollable width it can never actually scroll. */
   overflow: hidden;
+  /* Figma uses one uninterrupted atmospheric surface for the whole frame:
+     the breadcrumb rail and the scene content do not sit on separate
+     rectangles. Painting the bloom on the viewport removes the visible
+     1440x700 canvas edge while keeping the original oversized ellipse. */
+  background-color: #08090d;
+  background-image:
+    radial-gradient(48% 82% at 4% 96%, rgba(111, 66, 25, 0.28), rgba(34, 21, 11, 0) 72%),
+    url("../assets/shared/figma-scene-glow.png");
+  background-position: left bottom, center center;
+  background-repeat: no-repeat;
+  background-size: 72% 118%, 177.85% 175.15%;
+  transition: background-color 320ms var(--cs-ease);
 }
+.cs-page.is-overview,
+.cs-page.is-overview .cs-reader { background-color: #17120b; }
 
 /* The stage is the design's own 1440x700 canvas, scaled to fit whatever
    room is left. Scaling the whole frame is what keeps every scene true to
@@ -124,12 +130,7 @@
   flex: none;
   transform: scale(var(--cs-scale, 1));
   transform-origin: center top;
-  /* The glow is the frame's, not the window's. In the design it is one soft
-     2561x1226 ellipse centred on a 1440x700 frame — colour to transparent,
-     nothing else — which is why the corners read black. Painting it on the
-     page instead made it stretch with the viewport and wash the whole thing
-     blue. The warm ellipse at the bottom left is the light on the narrator. */
-  background: #08090d;
+  background: transparent;
 }
 
 .cs-scene {
@@ -142,16 +143,7 @@
   transform: translateX(var(--cs-enter, 26px));
   transition: opacity 420ms linear, transform 620ms var(--cs-ease),
               visibility 0s linear 660ms;
-  /* The exact Figma bloom is intentionally larger than the frame. Keeping it
-     as one transparent layer gives every scene dark edges, a restrained navy
-     centre and enough local contrast for hairline borders. */
-  background-color: #08090d;
-  background-image:
-    radial-gradient(48% 82% at 4% 96%, rgba(111, 66, 25, 0.28), rgba(34, 21, 11, 0) 72%),
-    url("../assets/shared/figma-scene-glow.png");
-  background-position: left bottom, center center;
-  background-repeat: no-repeat;
-  background-size: 72% 118%, 177.85% 175.15%;
+  background: transparent;
 }
 /* show() moves focus into the current scene so a screen reader follows the
    story. The scene is a container, not a control, so the browser's focus ring
@@ -848,6 +840,7 @@
     display: block;
     place-items: initial;
     padding: calc(var(--cs-head, 86px) + 20px) 0 60px;
+    background: #08090d;
   }
   .cs-stage {
     width: auto;
@@ -862,7 +855,18 @@
     transform: none;
     padding: 26px 20px 34px;
     border-bottom: 1px solid var(--cs-line);
+    /* Mobile is a continuous document rather than a single viewport. Give
+       each scene its own copy of the same soft surface so later sections do
+       not fall outside one enormous page-level gradient. */
+    background-color: #08090d;
+    background-image:
+      radial-gradient(48% 82% at 4% 96%, rgba(111, 66, 25, 0.28), rgba(34, 21, 11, 0) 72%),
+      url("../assets/shared/figma-scene-glow.png");
+    background-position: left bottom, center center;
+    background-repeat: no-repeat;
+    background-size: 72% 118%, 177.85% 175.15%;
   }
+  .cs-page.is-flow #scene-1 { background-color: #17120b; }
   .cs-topbar, .cs-upnext, .cs-keys, .sc-title .hint { display: none; }
   .cs-note,
   .sc-title .cs-note, .sc-tension .cs-note, .sc-matrix .cs-note {
@@ -1035,4 +1039,3 @@
 .g1-mark svg { width: 100%; height: 100%; display: block; }
 .sc-audience .verdict .g1-mark { width: 55px; height: 66px; flex: none; }
 .sc-tension .sweet .badge .g1-mark { width: 40px; height: 48px; }
-
