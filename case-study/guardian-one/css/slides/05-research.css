@@ -2,6 +2,7 @@
 .sc-research{padding:30px 64px 28px}
 .sc-research .native-kicker{margin-bottom:4px}
 .sc-research .native-title{font-size:33px;line-height:1.02}
+.sc-research .native-title .hl{color:var(--accent)}
 .sc-research .native-sub{max-width:700px;margin-top:5px;font-size:11.5px}
 .sc-research .section-label{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px;font-family:var(--font-mono);text-transform:uppercase}
 .sc-research .section-label span{color:var(--accent);font-size:8px;letter-spacing:.12em}
@@ -32,7 +33,7 @@
 .sc-research .photo-art i{position:absolute;bottom:5%;width:40%;height:48%;border-radius:50% 50% 12% 12%;background:rgba(9,13,21,.78)}
 .sc-research .photo-art i:nth-child(1){left:-7%}.sc-research .photo-art i:nth-child(2){left:30%;height:56%}.sc-research .photo-art i:nth-child(3){right:-8%;height:44%}
 .sc-research .research-photo figcaption{position:absolute;left:0;right:0;bottom:0;height:22px;display:grid;place-items:center;background:#20190d;color:#e4d7c2;font:500 7px var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
-.sc-research .paper-note{position:absolute;left:50%;bottom:10px;z-index:2;width:74%;padding:8px 11px;transform:translateX(-50%) rotate(-.3deg);font-size:11px;text-align:center}
+.sc-research .paper-note{position:absolute;left:50%;bottom:14px;z-index:2;width:74%;padding:8px 11px;transform:translateX(-50%) rotate(-.3deg);font-size:11px;text-align:center}
 .sc-research .paper-note::before{left:46%;width:36px;height:11px}
 .sc-research .funnel-panel{padding:11px 12px}
 .sc-research .funnel-panel .eyeline{color:var(--accent);font:500 7.5px var(--font-mono);letter-spacing:.12em;text-transform:uppercase}
