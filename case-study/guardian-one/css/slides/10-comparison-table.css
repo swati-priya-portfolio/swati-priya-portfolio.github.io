@@ -1,1 +1,98 @@
-.sc-compare-table .table-layout{display:grid;grid-template-columns:760px 300px;gap:20px;margin:20px auto 0;max-width:1080px}.sc-compare-table .comparison-ui{height:420px}.sc-compare-table .ui-bar strong{margin-left:auto;font:700 8px var(--font-mono)}.sc-compare-table .comparison-ui section{position:relative;padding:8px 14px 0}.sc-compare-table .comparison-ui h3{margin:0 0 5px;padding-left:28px;font-size:10px}.sc-compare-table .module-no{position:absolute;left:14px;top:8px;color:#b68100;font:700 8px var(--font-mono)}.sc-compare-table .native-table th,.sc-compare-table .native-table td{padding:5px 7px;font-size:7.5px}.sc-compare-table .table-reasons{align-content:start}.sc-compare-table .reason{min-height:70px}.sc-compare-table .paper-note{margin:8px 8px 0}.sc-compare-table .mini-narrator{bottom:7px}
+/* Scene 10 — native HTML mapped from Figma node 5:9310.
+   Frame coordinates: title block at y=68, body at y=152, the table block
+   814.9 wide at x=85, its three bands 144.9 tall at y=153.6 / 307.5 /
+   461.5, the decision column 412.9 wide at x=918, narrator at (1,601) and
+   the up-next pill at (1085,639).
+
+   The frame shows one long product table windowed three times — the same
+   rows, scrolled — which is why rows are cut at the band edges. That is
+   built here the same way: one table per band, each offset to its own
+   slice, rather than three unrelated tables. The screenshot itself was
+   never exported, so the table is rebuilt as markup. */
+.sc-comparison-table{padding:0}
+.sc-comparison-table .native-kicker{display:none}
+
+.sc-comparison-table .table-title{position:absolute;top:68px;left:170px;width:1100px;text-align:center}
+.sc-comparison-table .table-title h2{margin:0;color:#f5f2eb;font:400 30px/40px "Archivo Black",sans-serif;letter-spacing:0}
+.sc-comparison-table .table-title h2 em{color:#ffc53d;font-style:normal}
+.sc-comparison-table .table-title p{margin:12px auto 0;width:1000px;color:#9ea6b8;font:400 13px/20px Inter,sans-serif}
+
+.sc-comparison-table .table-body{position:absolute;top:152px;left:32px;width:1352px;height:456px}
+
+/* ---------- the three banded table slices ---------- */
+.sc-comparison-table .table-bands{position:absolute;left:53px;top:1.6px;width:814.9px;height:452.7px}
+.sc-comparison-table .table-band{position:absolute;left:0;display:grid;width:814.9px;height:144.9px;grid-template-columns:172px minmax(0,1fr);border:1px solid #26304f;border-radius:10px;background:#0e1221;box-sizing:border-box;overflow:hidden}
+.sc-comparison-table .band-1{top:0}.sc-comparison-table .band-2{top:153.9px}.sc-comparison-table .band-3{top:307.9px}
+.sc-comparison-table .band-label{padding:12.7px}
+.sc-comparison-table .band-no{display:grid;place-items:center;width:32.6px;height:32.6px;border-radius:8px;background:#ffc53d;color:#0b0f1c;font:700 13px/1 Inter,sans-serif}
+.sc-comparison-table .band-label b{display:block;margin-top:6.3px;color:#ffc53d;font:600 10.5px/14px Inter,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.sc-comparison-table .band-label p{margin:6.3px 0 0;color:#9ea6b8;font:400 10.5px/14px Inter,sans-serif}
+
+/* Each window shows its own slice of the same table. */
+.sc-comparison-table .band-window{position:relative;overflow:hidden;background:#fff}
+.sc-comparison-table .band-window .ct{position:absolute;left:34.4px;top:calc(var(--slice, 0) * -1px);width:632.3px}
+.sc-comparison-table .band-1 .band-window{--slice:0}
+.sc-comparison-table .band-2 .band-window{--slice:152}
+.sc-comparison-table .band-3 .band-window{--slice:296}
+
+.sc-comparison-table .ct{border-collapse:collapse;table-layout:fixed;color:#101828;font-family:Inter,sans-serif}
+.sc-comparison-table .ct th,.sc-comparison-table .ct td{padding:0 8px;border-bottom:1px solid #eaecf0;font-weight:400;text-align:left;vertical-align:middle}
+.sc-comparison-table .ct thead th{height:74px;padding-top:8px;border-bottom:1px solid #e4e7ec;vertical-align:top}
+.sc-comparison-table .ct thead .ct-lead{width:200px}
+.sc-comparison-table .ct thead .ct-lead b{display:block;color:#101828;font:600 10.5px/14px Inter,sans-serif;text-align:center}
+.sc-comparison-table .ct thead .ct-lead span{display:block;margin-top:5px;color:#717680;font:400 8px/12px Inter,sans-serif;text-align:center}
+.sc-comparison-table .ct thead th b{display:block;margin-top:4px;color:#101828;font:600 10px/13px Inter,sans-serif}
+.sc-comparison-table .ct thead th span{display:block;color:#717680;font:400 8.5px/12px Inter,sans-serif}
+.sc-comparison-table .ct-logo{display:block;width:34px;height:26px;border:1px solid #eaecf0;border-radius:4px;background:var(--brand,#eef2fb)}
+.sc-comparison-table .lg-niva{--brand:#e8f2fb}.sc-comparison-table .lg-birla{--brand:#fdeceb}.sc-comparison-table .lg-hdfc{--brand:#fdecec}
+.sc-comparison-table .ct tbody th{height:36px;color:#344054;font:400 10px/14px Inter,sans-serif}
+.sc-comparison-table .ct tbody td{height:36px;color:#101828;font:400 10px/14px Inter,sans-serif}
+/* The rightmost plan is the one under consideration, tinted the way the
+   product tints it. */
+.sc-comparison-table .ct .ct-on{background:#eef3ff}
+.sc-comparison-table .ct em{display:inline-block;padding:3px 7px;border:1px solid #b9c9f2;border-radius:4px;background:#e7edfb;color:#253781;font-style:normal;font-weight:500}
+.sc-comparison-table .ct i{font-style:normal;font-size:11px}
+.sc-comparison-table .ct .ok{color:#129c6b}.sc-comparison-table .ct .no{color:#b42318}
+
+/* ---------- the three decision cards ---------- */
+.sc-comparison-table .table-decisions{position:absolute;left:886px;top:1.6px;width:412.9px;height:452.7px}
+.sc-comparison-table .table-decision{position:absolute;left:0;display:grid;width:412.9px;height:144.9px;padding:10.9px;grid-template-columns:32.6px 43.5px minmax(0,1fr);gap:9.9px;align-items:center;border:1px solid #26304f;border-radius:10px;background:#0e1221;box-sizing:border-box;overflow:hidden}
+.sc-comparison-table .table-decision:nth-child(1){top:0}
+.sc-comparison-table .table-decision:nth-child(2){top:153.9px}
+.sc-comparison-table .table-decision:nth-child(3){top:307.9px}
+.sc-comparison-table .table-decision.is-on{border-color:#3b6cd9}
+.sc-comparison-table .decision-no{display:grid;place-items:center;width:32.6px;height:32.6px;border-radius:50%;background:#ffc53d;color:#0b0f1c;font:700 13px/1 Inter,sans-serif}
+.sc-comparison-table .decision-mark{display:grid;place-items:center;width:43.5px;height:43.5px;border:1px solid rgba(255,197,61,.55);border-radius:50%;background:rgba(255,197,61,.08)}
+.sc-comparison-table .decision-mark svg{width:27px;height:27px;fill:none;stroke:#ffc53d;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sc-comparison-table .table-decision>div{display:flex;min-width:0;flex-direction:column;gap:2.7px}
+.sc-comparison-table .table-decision b{color:#ffc53d;font:600 10px/12px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.sc-comparison-table .table-decision h3{margin:0;color:#f5f2eb;font:600 14px/17px Inter,sans-serif}
+.sc-comparison-table .table-decision p{margin:0;color:#9ea6b8;font:400 11px/14px Inter,sans-serif}
+
+/* ---------- narrator and up-next, on the frame's own marks ---------- */
+.sc-comparison-table .mini-narrator{position:absolute;left:1px;top:601px;bottom:auto;display:block;width:520px;height:auto;min-height:99px;margin:0}
+.sc-comparison-table .mini-narrator img{position:absolute;left:0;top:0;width:134px;height:99px;object-fit:contain;object-position:bottom}
+.sc-comparison-table .mini-narrator blockquote{position:absolute;left:127px;top:44px;width:379px;max-width:none;min-height:43px;margin:0;padding:10px 14px;border:0;border-radius:5px;background:#f5efe3;color:#24180f;font:400 17px/19px Caveat,cursive;box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+.sc-comparison-table .mini-narrator blockquote::before{content:"";position:absolute;left:-9px;top:15px;border:8px solid transparent;border-right-color:#f5efe3;border-left:0}
+.sc-comparison-table.is-current~.cs-upnext{left:1085px;right:auto;top:639px;bottom:auto;width:299px;height:44px;padding:0 14px;gap:12px;border-color:#26304f;border-radius:10px;background:#0b0f1c;box-sizing:border-box}
+.sc-comparison-table.is-current~.cs-upnext .cs-upnext-label{color:#ffc53d;font:600 11px/14px Inter,sans-serif;text-transform:uppercase}
+.sc-comparison-table.is-current~.cs-upnext .cs-upnext-name{color:#f5f2eb;font:400 12px/16px Inter,sans-serif}
+
+@media(max-width:899px){
+ .sc-comparison-table{padding:34px 20px 42px}
+ .sc-comparison-table .table-title{position:static;width:auto;text-align:left}
+ .sc-comparison-table .table-title h2{font-size:29px;line-height:1.08}
+ .sc-comparison-table .table-title p{width:auto;margin:10px 0 0;font-size:13px;line-height:1.45}
+ .sc-comparison-table .table-body{position:static;width:auto;height:auto;margin-top:26px}
+ .sc-comparison-table .table-bands{position:static;display:grid;width:auto;height:auto;gap:14px}
+ .sc-comparison-table .table-band{position:static;width:auto;height:auto;grid-template-columns:1fr}
+ /* The slice still holds, but the third plan column has to stay reachable,
+    so the window scrolls sideways instead of cutting it off. */
+ .sc-comparison-table .band-window{height:180px;overflow-x:auto;overflow-y:hidden}
+ .sc-comparison-table .band-window .ct{position:relative;left:0;width:520px}
+ .sc-comparison-table .table-decisions{position:static;display:grid;width:auto;height:auto;margin-top:14px;gap:10px}
+ .sc-comparison-table .table-decision{position:static;width:auto;height:auto;min-height:112px}
+ .sc-comparison-table .mini-narrator{position:static;display:flex;width:auto;height:auto;min-height:0;margin-top:26px;align-items:flex-end;gap:10px}
+ .sc-comparison-table .mini-narrator img{position:static;width:96px;height:92px}
+ .sc-comparison-table .mini-narrator blockquote{position:relative;left:auto;top:auto;width:auto;margin:0 0 8px;padding:11px 14px}
+}
