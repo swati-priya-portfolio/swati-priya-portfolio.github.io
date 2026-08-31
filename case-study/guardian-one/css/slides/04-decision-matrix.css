@@ -15,15 +15,18 @@
 #scene-4 .cell b{font-size:12.5px;line-height:1.18}
 #scene-4 .cell span{font-size:10px;line-height:1.34}
 #scene-4 .cell .rule{margin-top:4px;font-size:7.5px;letter-spacing:1px}
-#scene-4 .cell .cs-ico{width:40px;height:40px;flex:0 0 40px}
+#scene-4 .cs-ico{display:grid;place-items:center;align-content:center;justify-content:center;padding:0;line-height:0;box-sizing:border-box;overflow:hidden}
+#scene-4 .colhead .cs-ico{width:37px;height:37px;flex:0 0 37px}
+#scene-4 .cell .cs-ico{width:43px;height:43px;flex:0 0 43px}
+#scene-4 .guard .cs-ico{width:33px;height:33px;flex:0 0 33px}
 #scene-4 .arrow{color:#ffc53d;font-size:20px;opacity:.8}
-#scene-4 .cs-ico img{display:block;width:100%;height:100%;object-fit:contain}
+#scene-4 .cs-ico img{grid-area:1/1;display:block;margin:auto;object-fit:contain;object-position:50% 50%}
 #scene-4 .colhead .cs-ico img{width:20px;height:20px}
 #scene-4 .cell .cs-ico img{width:22px;height:22px}
 #scene-4 .guard .cs-ico img{width:20px;height:20px}
 #scene-4 .feature-illustration{position:absolute;right:8px;top:50%;display:block;width:78px;height:65px;object-fit:contain;transform:translateY(-50%)}
 #scene-4 .guards{grid-template-columns:222px repeat(4,1fr);gap:8px;margin-top:9px}
-#scene-4 .guard{min-height:64px;padding:8px 10px;border-color:rgba(255,197,61,.2);background:linear-gradient(145deg,rgba(10,14,27,.97),rgba(8,10,19,.96))}
+#scene-4 .guard{min-height:64px;padding:8px 10px;align-items:center;border-color:rgba(255,197,61,.2);background:linear-gradient(145deg,rgba(10,14,27,.97),rgba(8,10,19,.96))}
 #scene-4 .guard b{font-size:8.5px}
 #scene-4 .guard span{font-size:9.6px;line-height:1.3}
 #scene-4 .cs-note{bottom:16px}
