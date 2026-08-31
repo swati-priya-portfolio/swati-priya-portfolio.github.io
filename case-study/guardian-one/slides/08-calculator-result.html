@@ -1,23 +1,37 @@
-<section class="cs-scene native sc-result" id="scene-8" data-section="Calculator result" data-next="Compare flow" aria-label="Scene 8: Term cover calculator result">
-  <p class="native-kicker">08 · Calculator result</p>
-  <h2 class="native-title">Show the Answer. <span class="hl">Then the Math.</span></h2>
-  <p class="native-sub">The recommendation explains the cover, affordability and reasoning before it asks for action.</p>
-  <div class="result-layout">
-    <article class="ui-panel result-ui">
-      <div class="ui-bar"><i></i><i></i><i></i><strong>Guardian One</strong></div>
-      <div class="result-hero"><span>Recommended cover</span><strong>₹1.2 Cr</strong><em>Premium starting ₹2,000 / month</em></div>
-      <div class="allocation"><div><span>Education</span><b>₹35L</b></div><div><span>Family care</span><b>₹25L</b></div><div><span>Loan cover</span><b>₹15L</b></div></div>
-      <div class="gap-card"><div class="risk"><span>Risk level</span><b>HIGH</b></div><div><span>Protection need</span><b>₹1.2Cr</b></div><div><span>Current cover</span><b>₹0</b></div><div><span>Gap</span><b>₹1.2Cr</b></div><div class="coverage"><i style="width:0%"></i><small>0% covered</small></div></div>
-      <button type="button">Download PDF</button>
-      <p class="reading-order">Cover → affordability → allocation → gap → next action</p>
+<section class="cs-scene native sc-result" id="scene-8" data-section="Term cover · Calculator result" data-next="New product: the health add-on" aria-label="Scene 8: Term cover calculator result">
+  <a class="scene-design-link" href="https://www.figma.com/design/4q2oFiABg0WdZfDyMyTvmE?node-id=805-9189" target="_blank" rel="noopener">View design ↗</a>
+  <header class="result-title">
+    <h2>Term Cover: Show the Answer, <em>Then the Math.</em></h2>
+    <p>A useful recommendation shows what it contains, what it costs and why it exists.</p>
+  </header>
+
+  <div class="result-body">
+    <article class="result-product" aria-label="Actual calculator result">
+      <header><img src="assets/scene-08/spark.png" alt="" /><b>Actual calculator result</b><img src="assets/scene-08/spark.png" alt="" /></header>
+      <div class="result-viewport">
+        <div class="result-primary">
+          <section class="cover-answer"><p>Recommended Guardian One Cover :</p><strong>₹ 1.2 Cr</strong><div><span>Premium starting :</span> <b>₹ 2,000 /month</b><small>See coverage and monthly premium together</small></div></section>
+          <section class="allocation-answer"><h3>Complete protection for your family</h3><div class="allocation-items"><div><i>1.</i><span><b>₹ 35L</b><small>Education</small></span></div><div><i>2.</i><span><b>₹ 25L</b><small>Family Care</small></span></div><div><i>3.</i><span><b>₹ 15L</b><small>Loan Cover</small></span></div></div></section>
+        </div>
+        <section class="risk-answer">
+          <div class="risk-gauge"><img src="assets/scene-08/risk-gauge.png" alt="Risk gauge showing a high risk level" /></div>
+          <h3>Risk Level : <em>HIGH</em></h3>
+          <dl><div><dt>Protection Need:</dt><dd>₹ 1.2 Cr</dd></div><div><dt>Current Cover:</dt><dd>₹ 0</dd></div><hr><div><dt>Protection Gap:</dt><dd>₹ 1.2 Cr</dd></div></dl>
+          <p>Coverage is at 0%.</p>
+          <button type="button">Download PDF</button>
+        </section>
+      </div>
+      <p class="reading-order">Reading order: cover → affordability → allocation → protection gap → next action</p>
     </article>
-    <div class="reason-list result-reasons">
-      <article class="reason"><span class="n">01</span><div><strong>Recommended cover leads</strong><small>The decision appears before supporting detail.</small></div></article>
-      <article class="reason"><span class="n">02</span><div><strong>Affordability follows</strong><small>Monthly premium makes the answer feel real.</small></div></article>
-      <article class="reason"><span class="n">03</span><div><strong>Explain the number</strong><small>Risk level and protection gap show why.</small></div></article>
-      <article class="reason"><span class="n">04</span><div><strong>Show allocation</strong><small>Parents can see what the cover protects.</small></div></article>
-      <article class="reason"><span class="n">05</span><div><strong>Progressive disclosure</strong><small>The detailed PDF stays one step away.</small></div></article>
+
+    <div class="result-explanations">
+      <article><span class="result-no">01</span><span class="result-icon"><img src="assets/scene-08/recommended-cover.png" alt="" /></span><div><b>What leads</b><h3>Recommended cover</h3><p>₹1.2 Cr answers the main question first—how much protection is needed.</p></div></article>
+      <article><span class="result-no">02</span><span class="result-icon"><img src="assets/scene-08/monthly-premium.png" alt="" /></span><div><b>Affordability</b><h3>Monthly premium</h3><p>₹2,000/month translates a future need into a manageable monthly cost.</p></div></article>
+      <article><span class="result-no">03</span><span class="result-icon"><img src="assets/scene-08/protection-gap.png" alt="" /></span><div><b>Explains the number</b><h3>Risk + protection gap</h3><p>Need, current cover and shortfall make the recommendation inspectable.</p></div></article>
+      <article><span class="result-no">04</span><span class="result-icon"><img src="assets/scene-08/coverage-breakdown.png" alt="" /></span><div><b>Allocation</b><h3>Coverage breakdown</h3><p>Education, family care and loan cover show how the total is distributed.</p></div></article>
+      <article><span class="result-no">05</span><span class="result-icon"><img src="assets/scene-08/download-pdf.png" alt="" /></span><div><b>Progressive disclosure</b><h3>Download PDF</h3><p>Keeps the summary scannable while detailed reasoning remains available on demand.</p></div></article>
     </div>
   </div>
-  <div class="mini-narrator"><img src="../../images/priya_as_smiling.png" alt="" /><blockquote>The result explains itself before it asks for action.</blockquote></div>
+
+  <div class="mini-narrator"><img src="assets/scene-08/narrator.png" alt="" /><blockquote>The result explains itself before it asks for action.</blockquote></div>
 </section>

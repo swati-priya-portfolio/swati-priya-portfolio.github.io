@@ -1,21 +1,77 @@
-<section class="cs-scene native sc-questions" id="scene-7" data-section="Calculator questions" data-next="Calculator result" aria-label="Scene 7: Calculator questions">
-  <p class="native-kicker">07 · Calculator</p>
-  <h2 class="native-title">Four Inputs. <span class="hl">One Defensible Answer.</span></h2>
-  <p class="native-sub">Each answer changes the education-cost model. Nothing else enters this estimate.</p>
-  <div class="questions-layout">
-    <div class="question-flow">
-      <article class="ui-panel"><div class="ui-bar"><i></i><i></i><i></i></div><div class="ui-body"><span class="step">01</span><label class="ui-label">Which grade / class?</label><div class="ui-input">Class 5 <span>⌄</span></div></div></article>
-      <article class="ui-panel"><div class="ui-body"><span class="step">02</span><label class="ui-label">Which education board?</label><div class="option-row"><b>CBSE</b><b>ICSE</b><b>IB</b><b>State</b><b>Other</b></div></div></article>
-      <article class="ui-panel"><div class="ui-body"><span class="step">03</span><label class="ui-label">Current education costs</label><div class="ui-input">₹ 1,000.00 / month</div></div></article>
-      <article class="ui-panel optional"><div class="ui-body"><span class="step">04</span><label class="ui-label">Additional expenses <em>optional</em></label><div class="ui-input">Transport, coaching, activities</div></div></article>
+<section class="cs-scene native sc-questions" id="scene-7" data-section="Calculator questions" data-next="How the result explains itself" aria-label="Scene 7: Calculator questions">
+  <a class="scene-design-link" href="https://www.figma.com/design/4q2oFiABg0WdZfDyMyTvmE/Portfolio?node-id=805-6454" target="_blank" rel="noopener">View design ↗</a>
+  <header class="questions-title">
+    <h2>Calculator: Four Inputs. One <em>Defensible Answer.</em></h2>
+    <p>Each answer changes the education-cost model. Nothing else enters this estimate.</p>
+  </header>
+
+  <div class="questions-body">
+    <div class="calculator-questions" aria-label="Actual calculator questions">
+      <ol class="step-rail" aria-hidden="true">
+        <li class="blue">01</li><i class="blue"></i>
+        <li class="green">02</li><i class="green"></i>
+        <li class="amber">03</li><i class="amber"></i>
+        <li class="purple">04</li>
+      </ol>
+
+      <div class="calculator-stack">
+        <article class="actual-question q-grade">
+          <h3>Which grade/class are they in?</h3>
+          <p>This helps us calculate the exact timeline for their educational journey</p>
+          <div class="actual-input">Current Grade/Class <span aria-hidden="true"></span></div>
+        </article>
+        <article class="actual-question q-board">
+          <h3>Which education board?</h3>
+          <p>Different boards have different cost structures</p>
+          <div class="board-options">
+            <span class="selected"><b>CBSE</b><small>Central Board of<br>Secondary Education</small></span>
+            <span><b>ICSE</b><small>Indian Certificate of<br>Secondary Education</small></span>
+            <span><b>IB</b><small>International<br>Baccalaureate</small></span>
+            <span><b>State board</b><small>Your state’s<br>curriculum</small></span>
+            <span><b>Other</b><small>IGCSE,<br>American, etc.</small></span>
+          </div>
+        </article>
+        <article class="actual-question q-cost">
+          <h3>Current education costs</h3>
+          <p>Enter the annual school fees your family pays for your child’s education</p>
+          <div class="actual-input">₹&nbsp; 1,000.00</div>
+          <small>Basic tuition fees charged by the school annually</small>
+        </article>
+        <article class="actual-question q-optional">
+          <div><h3>Additional expenses (optional)</h3><p>Enter any additional costs like transport, tuitions/extracurriculars, etc.</p></div>
+          <span class="chevron" aria-hidden="true"></span>
+        </article>
+      </div>
     </div>
-    <div class="reason-list">
-      <article class="reason"><span class="n">01</span><div><strong>Grade / Class</strong><small>Defines how long costs compound and the years remaining.</small></div></article>
-      <article class="reason"><span class="n">02</span><div><strong>Education Board</strong><small>Selects the relevant cost structure.</small></div></article>
-      <article class="reason"><span class="n">03</span><div><strong>Current Cost</strong><small>Anchors the projection to a real starting point.</small></div></article>
-      <article class="reason"><span class="n">04</span><div><strong>Optional Costs</strong><small>Adds extra expenses only when they are genuine.</small></div></article>
-      <article class="native-card question-principle"><span class="eyeline">Design principle</span><h3>Ask only what changes the model.</h3><p>3 required inputs + 1 optional. Insurer selection, underwriting and purchase are deferred.</p><div class="measure">Measure: completion + question drop-off</div></article>
+
+    <div class="question-reasons">
+      <article class="question-reason blue">
+        <span class="reason-icon"><img src="assets/scene-07/grade.png" alt="" /></span>
+        <div class="reason-copy"><b>01 · Grade / class</b><h3>Which grade or class are they in?</h3><p><strong>Why</strong> Determines the years remaining in the education journey.</p><p><strong>Changes</strong> Sets the projection timeline.</p></div>
+        <div class="model-effect"><b>Model effect</b><p>Defines how long the model projects education costs.</p></div>
+      </article>
+      <article class="question-reason green">
+        <span class="reason-icon"><img src="assets/scene-07/board.png" alt="" /></span>
+        <div class="reason-copy"><b>02 · Education board</b><h3>Which education board?</h3><p><strong>Why</strong> Different boards follow different cost structures.</p><p><strong>Changes</strong> Adjusts the cost structure used in the estimate.</p></div>
+        <div class="model-effect"><b>Model effect</b><p>Selects the relevant cost model for the estimate.</p></div>
+      </article>
+      <article class="question-reason amber">
+        <span class="reason-icon"><img src="assets/scene-07/current-cost.png" alt="" /></span>
+        <div class="reason-copy"><b>03 · Current cost</b><h3>What is the annual school fee?</h3><p><strong>Why</strong> Grounds the estimate in the family’s current reality.</p><p><strong>Changes</strong> Becomes the baseline for future education cost.</p></div>
+        <div class="model-effect"><b>Model effect</b><p>Anchors the projection to a real starting value.</p></div>
+      </article>
+      <article class="question-reason purple">
+        <span class="reason-icon"><img src="assets/scene-07/optional-costs.png" alt="" /></span>
+        <div class="reason-copy"><b>04 · Optional costs</b><h3>Additional education expenses?</h3><p><strong>Why</strong> Captures transport, tuition and activities only when relevant.</p><p><strong>Changes</strong> Expands annual cost without forcing an answer.</p></div>
+        <div class="model-effect"><b>Model effect</b><p>Adds only costs that genuinely affect the estimate.</p></div>
+      </article>
+      <article class="question-reason principle purple">
+        <span class="reason-icon"><img src="assets/scene-07/principle.png" alt="" /></span>
+        <div class="reason-copy"><b>Principle · Relevance before commitment</b><h3>3 required inputs + 1 optional.</h3><h4>Ask only what changes the model.</h4><p>Deferred: insurer selection, underwriting and purchase.</p></div>
+        <div class="model-effect"><b>Measure later</b><p>Completion + question-level drop-off.</p></div>
+      </article>
     </div>
   </div>
-  <div class="mini-narrator"><img src="../../images/priya_as_smiling.png" alt="" /><blockquote>Only four questions changed the model. Everything else was deferred.</blockquote></div>
+
+  <div class="mini-narrator"><img src="assets/scene-07/narrator.png" alt="" /><blockquote>Only four questions changed the model. Everything else was deferred.</blockquote></div>
 </section>
