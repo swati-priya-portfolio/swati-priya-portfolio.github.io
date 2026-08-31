@@ -1,20 +1,122 @@
-<section class="cs-scene native sc-compare-table" id="scene-10" data-section="Health add-on comparison table" data-next="Report journey" data-design="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-9310&p=f&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" aria-label="Scene 10: Health add-on comparison table">
-  <p class="native-kicker">10 · Health add-on</p>
-  <h2 class="native-title">Put Decision Anchors <span class="hl">First.</span></h2>
-  <p class="native-sub">The full plan remains available, while the differences that drive a decision lead.</p>
-  <div class="table-layout">
-    <article class="ui-panel comparison-ui">
-      <div class="ui-bar"><i></i><i></i><i></i><strong>Compare plans</strong></div>
-      <section><span class="module-no">01</span><h3>Decision anchors</h3><table class="native-table"><thead><tr><th>Plan</th><th>Optima Secure</th><th>AdvantEdge</th><th>Care Supreme</th></tr></thead><tbody><tr><td>Sum insured</td><td>₹10 lakh</td><td>₹10 lakh</td><td>₹15 lakh</td></tr><tr><td>Premium / yr</td><td>₹18,640</td><td>₹19,230</td><td>₹21,100</td></tr><tr><td>Network</td><td>13,000+</td><td>9,500+</td><td>11,400+</td></tr></tbody></table></section>
-      <section><span class="module-no">02</span><h3>Coverage details</h3><table class="native-table"><tbody><tr><td>Room rent</td><td>No cap</td><td>Single private</td><td>No cap</td></tr><tr><td>Pre-existing disease</td><td>36 months</td><td>24 months</td><td>36 months</td></tr><tr><td>No-claim bonus</td><td>100%</td><td>50%</td><td>100%</td></tr></tbody></table></section>
-      <section><span class="module-no">03</span><h3>Exceptions + add-ons</h3><table class="native-table"><tbody><tr><td>Maternity</td><td>Optional</td><td>Included</td><td>Optional</td></tr><tr><td>Consumables</td><td>Included</td><td>Optional</td><td>Included</td></tr></tbody></table></section>
-    </article>
-    <div class="reason-list table-reasons">
-      <article class="reason"><span class="n">01</span><div><strong>What leads</strong><small>Sum insured, premium and network hospitals.</small></div></article>
-      <article class="reason"><span class="n">02</span><div><strong>One comparison grammar</strong><small>The same row order makes scanning predictable.</small></div></article>
-      <article class="reason"><span class="n">03</span><div><strong>Recognition over recall</strong><small>Measure plan selection and comparison completion.</small></div></article>
-      <div class="paper-note">Decision anchors first. Full details stay one step away.</div>
+<section class="cs-scene native sc-comparison-table" id="scene-10" data-section="Health add-on comparison table" data-next="Both plans, one Suraksha report" data-design="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-9310&p=f&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" aria-label="Scene 10: Health add-on comparison table">
+  <header class="table-title">
+    <h2>Health Add-on: <em>Put Decision Anchors First.</em></h2>
+    <p>The full plan stays available&mdash;while the differences that shape a decision appear first.</p>
+  </header>
+
+  <div class="table-body">
+
+    <div class="table-bands">
+      <article class="table-band band-1">
+        <div class="band-label">
+          <span class="band-no">01</span>
+          <b>Decision anchors</b>
+          <p>The few details that shape the decision.</p>
+        </div>
+        <div class="band-window" role="img" aria-label="Comparison table: the decision anchors at the top of the table">
+          <table class="ct">
+            <thead>
+              <tr><th class="ct-lead"><b>Insurance Policies &amp; Plans</b><span><i class="ok">&#10003;</i> Included <i class="no">&#10007;</i> Not Included</span></th>
+                  <th><i class="ct-logo lg-niva"></i><b>Niva Bupa</b><span>Health Companion</span></th>
+                  <th><i class="ct-logo lg-birla"></i><b>Aditya Birla</b><span>Activ Plat. Enhanced</span></th>
+                  <th class="ct-on"><i class="ct-logo lg-hdfc"></i><b>HDFC EGRO</b><span>Optima Secure</span></th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Sum Insured</th><td><i class="no">&#10007;</i></td><td><i class="no">&#10007;</i></td><td class="ct-on"><i class="no">&#10007;</i></td></tr>
+              <tr><th>Post Hospitalization Cover</th><td>180 days</td><td>180 days</td><td class="ct-on">180 days</td></tr>
+              <tr><th>Hospitalization at Home</th><td>Yes, up to sum insured</td><td>Yes, up to sum insured</td><td class="ct-on">Upto 10L</td></tr>
+              <tr><th>Organ Donor Expenses</th><td>Yes, up to sum insured</td><td>Yes, up to sum insured</td><td class="ct-on">Yes, up to sum insured</td></tr>
+              <tr><th>Consumables Cover</th><td>Optional add-on</td><td>Optional add-on</td><td class="ct-on"><i class="ok">&#10003;</i></td></tr>
+              <tr><th>Pre Hospitalization Cover</th><td>60 days</td><td>60 days</td><td class="ct-on">60 days</td></tr>
+              <tr><th>Daycare Procedure</th><td><em>All covered</em></td><td>586 covered</td><td class="ct-on"><em>All covered</em></td></tr>
+              <tr><th>Ambulance Charges</th><td>2k/event</td><td><em>10L/year, 5K/event</em></td><td class="ct-on">10L/event</td></tr>
+              <tr><th>Ayush Coverage</th><td>Yes, up to Sum Insured</td><td>Yes, up to Sum Insured</td><td class="ct-on">Upto 10L</td></tr>
+              <tr><th>Animal Bite Vaccination</th><td><i class="ok">&#10003;</i></td><td><i class="ok">&#10003;</i></td><td class="ct-on"><i class="no">&#10007;</i></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="table-band band-2">
+        <div class="band-label">
+          <span class="band-no">02</span>
+          <b>Coverage details</b>
+          <p>Core benefits families compare.</p>
+        </div>
+        <div class="band-window" aria-hidden="true">
+          <table class="ct">
+            <thead>
+              <tr><th class="ct-lead"><b>Insurance Policies &amp; Plans</b><span><i class="ok">&#10003;</i> Included <i class="no">&#10007;</i> Not Included</span></th>
+                  <th><i class="ct-logo lg-niva"></i><b>Niva Bupa</b><span>Health Companion</span></th>
+                  <th><i class="ct-logo lg-birla"></i><b>Aditya Birla</b><span>Activ Plat. Enhanced</span></th>
+                  <th class="ct-on"><i class="ct-logo lg-hdfc"></i><b>HDFC EGRO</b><span>Optima Secure</span></th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Sum Insured</th><td><i class="no">&#10007;</i></td><td><i class="no">&#10007;</i></td><td class="ct-on"><i class="no">&#10007;</i></td></tr>
+              <tr><th>Post Hospitalization Cover</th><td>180 days</td><td>180 days</td><td class="ct-on">180 days</td></tr>
+              <tr><th>Hospitalization at Home</th><td>Yes, up to sum insured</td><td>Yes, up to sum insured</td><td class="ct-on">Upto 10L</td></tr>
+              <tr><th>Organ Donor Expenses</th><td>Yes, up to sum insured</td><td>Yes, up to sum insured</td><td class="ct-on">Yes, up to sum insured</td></tr>
+              <tr><th>Consumables Cover</th><td>Optional add-on</td><td>Optional add-on</td><td class="ct-on"><i class="ok">&#10003;</i></td></tr>
+              <tr><th>Pre Hospitalization Cover</th><td>60 days</td><td>60 days</td><td class="ct-on">60 days</td></tr>
+              <tr><th>Daycare Procedure</th><td><em>All covered</em></td><td>586 covered</td><td class="ct-on"><em>All covered</em></td></tr>
+              <tr><th>Ambulance Charges</th><td>2k/event</td><td><em>10L/year, 5K/event</em></td><td class="ct-on">10L/event</td></tr>
+              <tr><th>Ayush Coverage</th><td>Yes, up to Sum Insured</td><td>Yes, up to Sum Insured</td><td class="ct-on">Upto 10L</td></tr>
+              <tr><th>Animal Bite Vaccination</th><td><i class="ok">&#10003;</i></td><td><i class="ok">&#10003;</i></td><td class="ct-on"><i class="no">&#10007;</i></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="table-band band-3">
+        <div class="band-label">
+          <span class="band-no">03</span>
+          <b>Exceptions + add-ons</b>
+          <p>Differences that affect real outcomes.</p>
+        </div>
+        <div class="band-window" aria-hidden="true">
+          <table class="ct">
+            <thead>
+              <tr><th class="ct-lead"><b>Insurance Policies &amp; Plans</b><span><i class="ok">&#10003;</i> Included <i class="no">&#10007;</i> Not Included</span></th>
+                  <th><i class="ct-logo lg-niva"></i><b>Niva Bupa</b><span>Health Companion</span></th>
+                  <th><i class="ct-logo lg-birla"></i><b>Aditya Birla</b><span>Activ Plat. Enhanced</span></th>
+                  <th class="ct-on"><i class="ct-logo lg-hdfc"></i><b>HDFC EGRO</b><span>Optima Secure</span></th></tr>
+            </thead>
+            <tbody>
+              <tr><th>Sum Insured</th><td><i class="no">&#10007;</i></td><td><i class="no">&#10007;</i></td><td class="ct-on"><i class="no">&#10007;</i></td></tr>
+              <tr><th>Post Hospitalization Cover</th><td>180 days</td><td>180 days</td><td class="ct-on">180 days</td></tr>
+              <tr><th>Hospitalization at Home</th><td>Yes, up to sum insured</td><td>Yes, up to sum insured</td><td class="ct-on">Upto 10L</td></tr>
+              <tr><th>Organ Donor Expenses</th><td>Yes, up to sum insured</td><td>Yes, up to sum insured</td><td class="ct-on">Yes, up to sum insured</td></tr>
+              <tr><th>Consumables Cover</th><td>Optional add-on</td><td>Optional add-on</td><td class="ct-on"><i class="ok">&#10003;</i></td></tr>
+              <tr><th>Pre Hospitalization Cover</th><td>60 days</td><td>60 days</td><td class="ct-on">60 days</td></tr>
+              <tr><th>Daycare Procedure</th><td><em>All covered</em></td><td>586 covered</td><td class="ct-on"><em>All covered</em></td></tr>
+              <tr><th>Ambulance Charges</th><td>2k/event</td><td><em>10L/year, 5K/event</em></td><td class="ct-on">10L/event</td></tr>
+              <tr><th>Ayush Coverage</th><td>Yes, up to Sum Insured</td><td>Yes, up to Sum Insured</td><td class="ct-on">Upto 10L</td></tr>
+              <tr><th>Animal Bite Vaccination</th><td><i class="ok">&#10003;</i></td><td><i class="ok">&#10003;</i></td><td class="ct-on"><i class="no">&#10007;</i></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
     </div>
+
+    <div class="table-decisions">
+      <article class="table-decision">
+        <span class="decision-no">01</span>
+        <span class="decision-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span>
+        <div><b>What leads</b><h3>Decision anchors first</h3><p>Sum insured, room rent, co-pay, waiting period and hospital network lead the table.</p></div>
+      </article>
+      <article class="table-decision">
+        <span class="decision-no">02</span>
+        <span class="decision-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 6 .5l2-2a4 4 0 1 0-5.7-5.7L11 8"/><path d="M14 10a4 4 0 0 0-6-.5l-2 2A4 4 0 1 0 11.7 17L13 16"/></svg></span>
+        <div><b>Structure</b><h3>One comparison grammar</h3><p>Each row aligns the same concept across every plan&mdash;reducing translation work.</p></div>
+      </article>
+      <article class="table-decision is-on">
+        <span class="decision-no">03</span>
+        <span class="decision-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8-4.2-4.1 5.9-.9z"/></svg></span>
+        <div><b>Principle + measure</b><h3>Recognition over recall</h3><p>Support faster shortlisting. Track compare-to-shortlist, edit and exit behaviour.</p></div>
+      </article>
+    </div>
+
   </div>
+
   <div class="mini-narrator"><img src="../../images/priya_as_smiling.png" alt="" /><blockquote>Decision anchors first. Full details stayed one step away.</blockquote></div>
 </section>

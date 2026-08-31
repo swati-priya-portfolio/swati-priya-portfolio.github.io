@@ -1,12 +1,102 @@
-<section class="cs-scene native sc-compare-flow" id="scene-9" data-section="Health add-on compare flow" data-next="Comparison table" data-design="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-7887&p=f&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" aria-label="Scene 9: Health add-on compare flow">
-  <p class="native-kicker">09 · Health add-on</p>
-  <h2 class="native-title">Shortlist Before <span class="hl">the Table.</span></h2>
-  <p class="native-sub">Parents choose the insurer and plan first. The full comparison appears only when the set is ready.</p>
-  <div class="compare-steps">
-    <article class="native-card compare-step"><span class="card-no">01 · Select insurer</span><div class="phone-ui"><header>Choose insurers</header><label><i class="logo hdfc">H</i><span>HDFC Ergo<small>6 plans</small></span><b>＋</b></label><label><i class="logo icici">I</i><span>ICICI Lombard<small>5 plans</small></span><b>＋</b></label><label><i class="logo care">C</i><span>Care Health<small>4 plans</small></span><b>＋</b></label></div><p>Choose insurers worth comparing.</p></article>
-    <article class="native-card compare-step"><span class="card-no">02 · Choose plan</span><div class="phone-ui"><header>Pick one plan</header><div class="plan active"><b>Optima Secure</b><small>₹10L · Cashless</small><em>Selected</em></div><div class="plan"><b>Energy</b><small>₹10L · Diabetes care</small></div><div class="plan"><b>My Health Suraksha</b><small>₹5L · Family floater</small></div></div><p>One plan from each insurer.</p></article>
-    <article class="native-card compare-step"><span class="card-no">03 · Add + review</span><div class="phone-ui"><header>Your shortlist · 3</header><div class="short"><span>Optima Secure</span><b>₹10L</b></div><div class="short"><span>Health AdvantEdge</span><b>₹10L</b></div><div class="short"><span>Care Supreme</span><b>₹15L</b></div><button type="button">Compare 3 plans</button></div><p>Review the set before the full table.</p></article>
+<section class="cs-scene native sc-compare-flow" id="scene-9" data-section="Health add-on compare flow" data-next="How the table supports decisions" data-design="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-7887&p=f&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" aria-label="Scene 9: Health add-on compare flow">
+  <header class="flow-title">
+    <h2>Health Add-on: <em>Shortlist Before the Table.</em></h2>
+    <p>Parents choose an insurer and plan first; the full comparison appears only after the set is ready.</p>
+  </header>
+
+  <div class="flow-body">
+    <div class="flow-steps">
+
+      <article class="flow-step step-1">
+        <header class="step-head">
+          <span class="step-badge">01</span>
+          <span class="step-copy"><b>Select insurer</b><span>Choose the insurers worth comparing.</span></span>
+        </header>
+        <div class="step-ui" role="img" aria-label="Product screen: choosing which insurers to compare">
+          <span class="step-bar"><i>‹ Health Insurance 101</i><i>Book a Free Consult</i></span>
+          <b class="ui-h1">Compare Health Plans</b>
+          <span class="ui-lede">Compare popular health insurance plans and discover which one suits your family&rsquo;s needs best</span>
+          <span class="ui-eyebrow">Compare up to 3 Policies</span>
+          <div class="ui-rail"><b>Ready to<br>compare?</b><i class="on">1. Select Insurer</i><i>2. Choose Plan</i><i>3. Add to Compare</i><i>4. Review Details</i></div>
+          <div class="step-panel ui-insurers">
+            <b>Select Insurer</b>
+            <div class="ui-grid">
+              <span class="ui-logo lg-niva"><i></i><em>Niva Bupa</em></span>
+              <span class="ui-logo lg-birla"><i></i><em>Aditya Birla</em></span>
+              <span class="ui-logo lg-hdfc"><i></i><em>HDFC ERGO</em></span>
+              <span class="ui-logo lg-newindia"><i></i><em>New India Assurance</em></span>
+              <span class="ui-logo lg-icici"><i></i><em>ICICI Lombard</em></span>
+              <span class="ui-logo lg-care"><i></i><em>Care Health</em></span>
+              <span class="ui-logo lg-tata"><i></i><em>Tata AIG</em></span>
+              <span class="ui-logo lg-bajaj"><i></i><em>Bajaj Allianz</em></span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <span class="flow-arrow arrow-1" aria-hidden="true"></span>
+
+      <article class="flow-step step-2">
+        <header class="step-head">
+          <span class="step-badge">02</span>
+          <span class="step-copy"><b>Choose plan</b><span>Select one plan from each insurer.</span></span>
+        </header>
+        <div class="step-ui" role="img" aria-label="Product screen: choosing one plan from the selected insurer">
+          <span class="step-bar"><i>‹ Health Insurance 101</i><i>Book a Free Consult</i></span>
+          <b class="ui-h1">Compare Health Plans</b>
+          <span class="ui-lede">Compare popular health insurance plans and discover which one suits your family&rsquo;s needs best</span>
+          <span class="ui-eyebrow">Compare up to 3 Policies</span>
+          <div class="ui-rail"><b>Ready to<br>compare?</b><i>1. Select Insurer</i><i class="on">2. Choose Plan</i><i>3. Add to Compare</i><i>4. Review Details</i></div>
+          <div class="ui-chosen chosen-1"><span class="ui-mark lg-niva"></span><span class="ui-chosen-copy"><i>Selected Insurance</i><b>Niva Bupa</b></span><u>Edit</u></div>
+          <div class="step-panel ui-plans">
+            <b>Select<br>Plan</b>
+            <i>Health Companion</i><i>Health Premia</i><i>ReAssure</i><i>ReAssure (Direct)</i><i>2.0 Bronze+ Value (Direct)</i>
+          </div>
+        </div>
+      </article>
+
+      <span class="flow-arrow arrow-2" aria-hidden="true"></span>
+
+      <article class="flow-step step-3">
+        <header class="step-head">
+          <span class="step-badge">03</span>
+          <span class="step-copy"><b>Add + review</b><span>Review the set before the full table.</span></span>
+        </header>
+        <div class="step-ui" role="img" aria-label="Product screen: reviewing the shortlist before the full table">
+          <span class="step-bar"><i>‹ Health Insurance 101</i><i>Book a Free Consult</i></span>
+          <b class="ui-h1">Compare Health Plans</b>
+          <span class="ui-lede">Compare popular health insurance plans and discover which one suits your family&rsquo;s needs best</span>
+          <span class="ui-eyebrow">Compare up to 3 Policies</span>
+          <div class="ui-rail"><b>Ready to<br>compare?</b><i>1. Select Insurer</i><i>2. Choose Plan</i><i class="on">3. Add to Compare</i><i>4. Review Details</i></div>
+          <div class="ui-chosen chosen-1"><span class="ui-mark lg-niva"></span><span class="ui-chosen-copy"><i>Selected Insurance</i><b>Niva Bupa</b></span><span class="ui-chosen-copy plan"><i>Selected Plan</i><b>Health Companion</b></span><u>Edit</u></div>
+          <span class="ui-vs">VS</span>
+          <div class="ui-chosen chosen-2"><span class="ui-mark lg-birla"></span><span class="ui-chosen-copy"><i>Selected Insurance</i><b>Aditya Birla</b></span><span class="ui-chosen-copy plan"><i>Selected Plan</i><b>Activ Plat. Enhanced</b></span><u>Edit</u></div>
+          <div class="ui-add">＋ Add 3rd insurance policy</div>
+          <div class="ui-cta">Add to compare</div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="flow-reasons">
+      <article class="flow-reason">
+        <span class="reason-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6"/><path d="M12 16.5v.5"/></svg></span>
+        <div><b>The problem</b><h3>Too much to remember</h3><p>Plan pages used different labels, jargon and long benefit lists.</p></div>
+      </article>
+      <article class="flow-reason">
+        <span class="reason-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M7 12h10"/><path d="M10 17h4"/></svg></span>
+        <div><b>Why compare</b><h3>Put differences in one place</h3><p>Parents inspect plans without carrying details across tabs.</p></div>
+      </article>
+      <article class="flow-reason">
+        <span class="reason-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></svg></span>
+        <div><b>Design decision</b><h3>Select → choose → add → review</h3><p>Up to three plans. Editable selections. No table until the set is ready.</p></div>
+      </article>
+      <article class="flow-reason">
+        <span class="reason-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span>
+        <div><b>Principle + measure</b><h3>Recognition over recall</h3><p>Progressive disclosure lowers early load. Track compare-to-shortlist progression.</p></div>
+      </article>
+    </div>
   </div>
-  <div class="compare-insights"><article><b>The problem</b><span>Too much to remember</span></article><article><b>Why compare</b><span>Put differences in one place</span></article><article><b>Design decision</b><span>Select → choose → add → review</span></article><article><b>Principle + measure</b><span>Recognition over recall</span></article></div>
-  <div class="mini-narrator"><img src="../../images/priya_as_smiling.png" alt="" /><blockquote>Shortlist first. Details second. Progressive disclosure kept comparison manageable.</blockquote></div>
+
+  <div class="mini-narrator"><img src="../../images/priya_as_smiling.png" alt="" /><blockquote>Progressive disclosure kept the comparison manageable: shortlist first, details second.</blockquote></div>
 </section>
