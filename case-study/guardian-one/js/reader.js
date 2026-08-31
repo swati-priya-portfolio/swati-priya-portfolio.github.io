@@ -14,6 +14,7 @@
   var crumb=document.querySelector(".cs-crumb");
   var count=document.querySelector(".cs-count");
   var fill=document.querySelector(".cs-fill");
+  var viewDesign=document.querySelector(".cs-view-design");
   var next=document.querySelector(".cs-upnext");
   var nextName=document.querySelector(".cs-upnext-name");
   var current=0, scenes=[], busy=false, startX=0;
@@ -63,6 +64,17 @@
     crumb.innerHTML="Case study · <b>Guardian One</b> · "+section;
     count.textContent="Scene "+String(index+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");
     fill.style.setProperty("--cs-progress",(index+1)/scenes.length);
+    // The frame draws VIEW DESIGN in the top rail, pointing at the scene you
+    // are actually on. Without this it stayed on scene 1's node all the way
+    // through, and the scenes that carried their own copy showed two links.
+    if(viewDesign){
+      var design=scene.dataset.design;
+      // .is-on is what makes it visible; nothing was ever adding it, so the
+      // rail link sat at opacity 0 on every scene while two of the scenes
+      // carried their own floating copy instead.
+      viewDesign.classList.toggle("is-on",!!design);
+      if(design){ viewDesign.href=design; }
+    }
     next.hidden=index===scenes.length-1 || scene.hasAttribute("data-no-upnext");
     nextName.textContent=scene.dataset.next || (manifests[index+1]&&manifests[index+1][1]) || "";
     if(!opts || !opts.fromHash) history.replaceState(null,"","#scene-"+(index+1));
