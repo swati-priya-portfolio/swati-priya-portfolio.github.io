@@ -91,7 +91,7 @@
   }
 
   Promise.all(manifests.map(function(item){
-    return fetch("slides/"+item[0]+"?v=12").then(function(r){if(!r.ok)throw new Error(item[0]);return r.text();});
+    return fetch("slides/"+item[0]+"?v=13").then(function(r){if(!r.ok)throw new Error(item[0]);return r.text();});
   })).then(function(parts){
     stage.querySelector(".cs-loading").remove();
     next.insertAdjacentHTML("beforebegin",parts.join("\n"));
