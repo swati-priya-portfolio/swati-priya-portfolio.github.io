@@ -11,15 +11,17 @@
 #scene-4 .colhead.tone-purple{background:linear-gradient(135deg,rgba(48,28,86,.74),rgba(27,18,57,.58));border-color:rgba(171,140,250,.26)}
 #scene-4 .cell{position:relative;min-height:72px;padding:9px 12px;border-color:rgba(132,154,205,.27);background:linear-gradient(145deg,rgba(11,16,31,.98),rgba(7,10,20,.97));overflow:hidden;box-shadow:inset 0 1px rgba(255,255,255,.025),0 10px 24px rgba(0,0,0,.12)}
 #scene-4 .cell.tone-green{border-color:rgba(75,214,164,.25)}
-#scene-4 .cell.tone-purple{padding-right:98px;border-color:rgba(171,140,250,.3);background:linear-gradient(118deg,rgba(11,14,27,.98) 0%,rgba(16,13,35,.98) 70%,rgba(41,25,75,.68) 100%)}
+#scene-4 .cell.tone-purple{padding-right:98px;border-color:rgba(139,92,246,.3);background:#000}
 #scene-4 .cell b{font-size:12.5px;line-height:1.18}
 #scene-4 .cell span{font-size:10px;line-height:1.34}
 #scene-4 .cell .rule{margin-top:4px;font-size:7.5px;letter-spacing:1px}
 #scene-4 .cell .cs-ico{width:40px;height:40px;flex:0 0 40px}
 #scene-4 .arrow{color:#ffc53d;font-size:20px;opacity:.8}
-#scene-4 .rule-visual{position:absolute;right:14px;top:50%;display:grid!important;place-items:center;width:68px;height:54px;margin:0!important;transform:translateY(-50%);color:#ab8cfa;opacity:.7}
-#scene-4 .rule-visual::before{content:"";position:absolute;inset:1px 5px;border:1px solid rgba(171,140,250,.28);border-radius:50%;box-shadow:0 0 28px rgba(128,86,245,.16)}
-#scene-4 .rule-visual svg{position:relative;width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round}
+#scene-4 .cs-ico img{display:block;width:100%;height:100%;object-fit:contain}
+#scene-4 .colhead .cs-ico img{width:20px;height:20px}
+#scene-4 .cell .cs-ico img{width:22px;height:22px}
+#scene-4 .guard .cs-ico img{width:20px;height:20px}
+#scene-4 .feature-illustration{position:absolute;right:8px;top:50%;display:block;width:78px;height:65px;object-fit:contain;transform:translateY(-50%)}
 #scene-4 .guards{grid-template-columns:222px repeat(4,1fr);gap:8px;margin-top:9px}
 #scene-4 .guard{min-height:64px;padding:8px 10px;border-color:rgba(255,197,61,.2);background:linear-gradient(145deg,rgba(10,14,27,.97),rgba(8,10,19,.96))}
 #scene-4 .guard b{font-size:8.5px}
@@ -30,6 +32,6 @@
  #scene-4{padding:26px 20px 34px}
  #scene-4 .band,#scene-4 .guards{grid-template-columns:1fr}
  #scene-4 .cell.tone-purple{padding-right:82px}
- #scene-4 .rule-visual{right:10px;width:58px}
+ #scene-4 .feature-illustration{right:4px;width:70px;height:58px}
  #scene-4 .guard{min-height:0}
 }
