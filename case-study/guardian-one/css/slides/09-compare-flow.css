@@ -1,109 +1,39 @@
-/* Scene 09 — native HTML mapped from Figma node 5:7887.
-   Frame coordinates: title block at y=68, body at y=152, the three step
-   cards 413.9x343.7 at x=48.3 / 513 / 977.7, the flow arrows at x=474 /
-   938.7 y=310, the four reasoning cards 327x87.9 at y=512.4, narrator at
-   (20,607) and the up-next pill at (1110,640).
-
-   The product shots inside each step are real screenshots in the frame and
-   were never exported, so they are rebuilt here as markup at the same
-   coordinates. Everything else is the frame's own geometry. */
+/* Scene 09 — native shell mapped from Figma node 5:7887. */
 .sc-compare-flow{padding:0}
-.sc-compare-flow .native-kicker{display:none}
+.sc-compare-flow .compare-heading{position:absolute;top:68px;left:32px;width:1376px;height:72px;text-align:center}
+.sc-compare-flow .compare-heading h2{margin:0;color:#f5f2eb;font:400 36px/48px "Archivo Black",sans-serif;letter-spacing:0}
+.sc-compare-flow .compare-heading h2 span{color:#ffc53d}
+.sc-compare-flow .compare-heading p{margin:4px 0 0;color:#6b738a;font:400 14px/20px Inter,sans-serif}
+.sc-compare-flow .compare-body{position:absolute;top:152px;left:44px;width:1352px;height:453px}
 
-.sc-compare-flow .flow-title{position:absolute;top:68px;left:170px;width:1100px;text-align:center}
-.sc-compare-flow .flow-title h2{margin:0;color:#f5f2eb;font:400 30px/40px "Archivo Black",sans-serif;letter-spacing:0}
-.sc-compare-flow .flow-title h2 em{color:#ffc53d;font-style:normal}
-.sc-compare-flow .flow-title p{margin:12px auto 0;width:1000px;color:#9ea6b8;font:400 13px/20px Inter,sans-serif}
+.sc-compare-flow .compare-sequence{display:grid;width:100%;height:344px;grid-template-columns:414px 28px 414px 28px 414px;column-gap:12px;align-items:center}
+.sc-compare-flow .compare-step{height:344px;padding:12px;border:1px solid #26304f;border-radius:12px;background:#0b0f1c;box-sizing:border-box;overflow:hidden}
+.sc-compare-flow .step-heading{display:grid;height:51px;grid-template-columns:39px 1fr;gap:12px;align-items:center}
+.sc-compare-flow .step-heading>b{display:grid;width:39px;height:39px;place-items:center;border-radius:8px;background:#ffc53d;color:#0a0d14;font:700 15.6px/1 Inter,sans-serif}
+.sc-compare-flow .step-heading h3{margin:0;color:#ffc53d;font:600 11.7px/15.6px Inter,sans-serif;text-transform:uppercase}
+.sc-compare-flow .step-heading p{margin:3px 0 0;color:#adb5c9;font:400 10.7px/14.6px Inter,sans-serif}
+.sc-compare-flow .product-viewport{width:390px;height:260px;margin-top:9px;border-radius:8px;background:#fff;overflow:hidden}
+.sc-compare-flow .product-viewport img{display:block;width:100%;height:100%;object-fit:fill}
+.sc-compare-flow .flow-arrow{display:block;width:28px;height:28px;object-fit:contain}
 
-.sc-compare-flow .flow-body{position:absolute;top:152px;left:32px;width:1376px;height:453px}
+.sc-compare-flow .compare-insights{display:grid;width:100%;height:97px;margin-top:12px;grid-template-columns:repeat(4,1fr);gap:12px}
+.sc-compare-flow .compare-insights article{display:grid;min-width:0;padding:11px 13px;grid-template-columns:47px 1fr;gap:12px;align-items:center;border:1px solid #26304f;border-radius:12px;background:#0b0f1c;box-sizing:border-box}
+.sc-compare-flow .compare-insights img{display:block;width:47px;height:47px;object-fit:contain}
+.sc-compare-flow .compare-insights b{display:block;color:#ffc53d;font:600 9.8px/13px Inter,sans-serif;text-transform:uppercase}
+.sc-compare-flow .compare-insights h3{margin:2px 0 0;color:#f5f2eb;font:600 13.6px/17px Inter,sans-serif}
+.sc-compare-flow .compare-insights p{margin:3px 0 0;color:#8f97aa;font:400 10.7px/14px Inter,sans-serif}
 
-/* ---------- the three guided-selection cards ---------- */
-.sc-compare-flow .flow-step{position:absolute;top:0;width:414px;height:344px;padding:10.7px;border:1px solid #26304f;border-radius:14px;background:#0e1221;box-sizing:border-box;overflow:hidden}
-.sc-compare-flow .step-1{left:16.3px}.sc-compare-flow .step-2{left:481px}.sc-compare-flow .step-3{left:945.7px}
-.sc-compare-flow .step-head{display:grid;height:50.8px;grid-template-columns:39px minmax(0,1fr);gap:11.7px;align-items:center}
-.sc-compare-flow .step-badge{display:grid;place-items:center;width:39px;height:39px;border-radius:9px;background:#ffc53d;color:#0b0f1c;font:700 15px/1 Inter,sans-serif}
-.sc-compare-flow .step-copy{display:flex;min-width:0;flex-direction:column;gap:3px}
-.sc-compare-flow .step-copy b{color:#ffc53d;font:600 13px/16px Inter,sans-serif;letter-spacing:.06em;text-transform:uppercase}
-.sc-compare-flow .step-copy>span{color:#9ea6b8;font:400 11.5px/15px Inter,sans-serif}
-
-/* The viewport is a window onto a taller page, exactly as the frame clips it. */
-.sc-compare-flow .step-ui{position:relative;height:259.7px;margin-top:9.8px;border-radius:6px;background:#fff;color:#0f1424;overflow:hidden}
-.sc-compare-flow .step-ui>*{position:absolute}
-.sc-compare-flow .step-bar{left:0;top:0;display:flex;width:100%;height:15.5px;padding:0 7px;align-items:center;justify-content:space-between;background:#f3f5fa;box-sizing:border-box;overflow:hidden}
-.sc-compare-flow .step-bar i{color:#5b6480;font:400 4.6px/6px Inter,sans-serif;font-style:normal;white-space:nowrap}
-.sc-compare-flow .ui-h1{left:0;top:29px;width:100%;color:#101828;font:700 11px/14px Inter,sans-serif;text-align:center}
-.sc-compare-flow .ui-lede{left:50%;top:44px;width:200px;margin-left:-100px;color:#717680;font:400 4.6px/6px Inter,sans-serif;text-align:center}
-.sc-compare-flow .ui-eyebrow{left:0;top:60px;width:100%;color:#98a2b3;font:600 4.6px/6px Inter,sans-serif;letter-spacing:.09em;text-align:center;text-transform:uppercase}
-.sc-compare-flow .ui-rail{left:54.8px;top:71.9px;display:flex;width:46px;flex-direction:column;gap:2.4px}
-.sc-compare-flow .ui-rail b{color:#101828;font:600 5.4px/6.4px Inter,sans-serif}
-.sc-compare-flow .ui-rail i{padding:1.8px 3px;border-radius:2.5px;color:#717680;font:400 4.1px/1 Inter,sans-serif;font-style:normal;white-space:nowrap}
-.sc-compare-flow .ui-rail i.on{background:#e7edfb;color:#253781;font-weight:600}
-
-.sc-compare-flow .step-panel{left:119.3px;top:71.9px;width:151.9px;border:1px solid #e4e7ec;border-radius:4px;box-sizing:border-box}
-.sc-compare-flow .ui-insurers{height:165.2px;padding:7px 5.5px}
-.sc-compare-flow .ui-insurers>b{display:block;color:#101828;font:600 5.2px/6px Inter,sans-serif}
-.sc-compare-flow .ui-grid{display:grid;margin-top:3px;grid-template-columns:repeat(3,43.4px);gap:5px}
-.sc-compare-flow .ui-logo{display:block;height:43.4px;border:1px solid #e4e7ec;border-radius:3px;box-sizing:border-box;overflow:hidden}
-.sc-compare-flow .ui-logo i{display:block;height:31.6px;background:var(--brand,#dbe3f5)}
-.sc-compare-flow .ui-logo em{display:block;height:9.8px;padding-top:2.4px;background:#f7f8fa;color:#475467;font:600 3.8px/1 Inter,sans-serif;font-style:normal;text-align:center}
-.sc-compare-flow .lg-niva{--brand:#e8f2fb}.sc-compare-flow .lg-birla{--brand:#fdeceb}
-.sc-compare-flow .lg-hdfc{--brand:#fdecec}.sc-compare-flow .lg-newindia{--brand:#eaf0fb}
-.sc-compare-flow .lg-icici{--brand:#fdf0e6}.sc-compare-flow .lg-care{--brand:#fdf7e3}
-.sc-compare-flow .lg-tata{--brand:#e9eefb}.sc-compare-flow .lg-bajaj{--brand:#e7ecfa}
-
-/* The chosen-insurer bar, and the plan list that follows it. */
-.sc-compare-flow .ui-chosen{left:119.3px;display:flex;width:151.9px;height:25.5px;padding:0 6px;align-items:center;gap:5px;border:1px solid #cfd9f2;border-radius:4px;background:#f5f8ff;box-sizing:border-box}
-.sc-compare-flow .chosen-1{top:71.9px}.sc-compare-flow .chosen-2{top:125px}
-.sc-compare-flow .ui-mark{width:19px;height:19px;flex:none;border:1px solid #e4e7ec;border-radius:3px;background:var(--brand,#dbe3f5)}
-.sc-compare-flow .ui-chosen-copy{display:flex;min-width:0;flex-direction:column;gap:1px}
-.sc-compare-flow .ui-chosen-copy i{color:#8a93a8;font:400 3.7px/1 Inter,sans-serif;font-style:normal}
-.sc-compare-flow .ui-chosen-copy b{color:#253781;font:600 5px/1 Inter,sans-serif;white-space:nowrap}
-.sc-compare-flow .ui-chosen-copy.plan{margin-left:8px}
-.sc-compare-flow .ui-chosen u{margin-left:auto;color:#3b6cd9;font:600 4.6px/1 Inter,sans-serif}
-.sc-compare-flow .ui-plans{top:90.9px;height:66.5px;padding:6px 5.5px;background:#fff}
-.sc-compare-flow .ui-plans>b{display:block;color:#101828;font:600 5px/6px Inter,sans-serif}
-.sc-compare-flow .ui-plans i{display:block;margin-top:3.2px;color:#475467;font:400 4.6px/1 Inter,sans-serif;font-style:normal}
-.sc-compare-flow .ui-vs{left:119.3px;top:103.9px;width:151.9px;color:#253781;font:700 9px/13px Inter,sans-serif;text-align:center}
-.sc-compare-flow .ui-add{left:119.3px;top:158.7px;display:grid;width:151.9px;height:25.5px;place-items:center;border:1px dashed #cfd4dc;border-radius:4px;color:#717680;font:400 4.6px/1 Inter,sans-serif;box-sizing:border-box}
-.sc-compare-flow .ui-cta{left:162.5px;top:192.3px;display:grid;width:66px;height:13.6px;place-items:center;border-radius:3px;background:#253781;color:#fff;font:600 5px/1 Inter,sans-serif}
-
-/* ---------- the gold flow arrows between the cards ---------- */
-.sc-compare-flow .flow-arrow{position:absolute;top:158.3px;display:grid;width:27.3px;height:27.3px;place-items:center;border:1px solid rgba(255,197,61,.55);border-radius:50%;background:rgba(255,197,61,.10)}
-.sc-compare-flow .arrow-1{left:441.9px}.sc-compare-flow .arrow-2{left:906.7px}
-.sc-compare-flow .flow-arrow::before{content:"";width:8px;height:8px;border-top:1.4px solid #ffc53d;border-right:1.4px solid #ffc53d;transform:translateX(-2px) rotate(45deg)}
-
-/* ---------- the four reasoning cards ---------- */
-.sc-compare-flow .flow-reasons{position:absolute;left:16.3px;top:355.9px;display:grid;width:1343.4px;grid-template-columns:repeat(4,327px);gap:11.7px}
-.sc-compare-flow .flow-reason{display:grid;height:87.9px;padding:9.7px 11.7px;grid-template-columns:46.9px minmax(0,1fr);gap:11.7px;align-items:center;border:1px solid #26304f;border-radius:12px;background:#0e1221;box-sizing:border-box;overflow:hidden}
-.sc-compare-flow .reason-mark{display:grid;place-items:center;width:46.9px;height:46.9px;border:1px solid rgba(255,197,61,.55);border-radius:10px;background:rgba(255,197,61,.08)}
-.sc-compare-flow .reason-mark svg{width:23.4px;height:23.4px;fill:none;stroke:#ffc53d;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.sc-compare-flow .flow-reason>div{display:flex;min-width:0;flex-direction:column;gap:2px}
-.sc-compare-flow .flow-reason b{color:#ffc53d;font:600 10px/14px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase}
-.sc-compare-flow .flow-reason h3{margin:0;color:#f5f2eb;font:600 14px/18px Inter,sans-serif}
-.sc-compare-flow .flow-reason p{margin:0;color:#9ea6b8;font:400 11px/15px Inter,sans-serif}
-
-/* ---------- narrator and up-next, on the frame's own marks ---------- */
-.sc-compare-flow .mini-narrator{position:absolute;left:20px;top:607px;bottom:auto;display:block;width:300px;height:auto;min-height:93px;margin:0}
-.sc-compare-flow .mini-narrator img{position:absolute;left:0;top:0;width:91px;height:93px;object-fit:contain;object-position:bottom}
-.sc-compare-flow .mini-narrator blockquote{position:absolute;left:89px;top:23px;width:186px;max-width:none;min-height:55px;margin:0;padding:9px 12px;border:0;border-radius:5px;background:#f5efe3;color:#24180f;font:400 15px/17px Caveat,cursive;box-shadow:2px 3px 0 rgba(0,0,0,.35)}
-.sc-compare-flow .mini-narrator blockquote::before{content:"";position:absolute;left:-8px;top:22px;border:7px solid transparent;border-right-color:#f5efe3;border-left:0}
-.sc-compare-flow.is-current~.cs-upnext{left:1110px;right:auto;top:640px;bottom:auto;width:298px;height:36px;padding:0 14px;gap:12px;border-color:#614d14;border-radius:10px;background:rgba(9,9,13,.85);box-sizing:border-box}
-.sc-compare-flow.is-current~.cs-upnext .cs-upnext-label{color:#ffc53d;font:600 11px/14px Inter,sans-serif;text-transform:uppercase}
-.sc-compare-flow.is-current~.cs-upnext .cs-upnext-name{color:#f5f2eb;font:400 12px/16px Inter,sans-serif}
+.sc-compare-flow .compare-narrator{left:20px;bottom:0;gap:10px}
+.sc-compare-flow .compare-narrator img{width:91px;height:93px}
+.sc-compare-flow .compare-narrator blockquote{width:225px;max-width:none;margin-bottom:18px;padding:10px 14px;border:0;border-radius:5px;background:#f5efe3;color:#24180f;font:400 16px/19px Caveat,cursive;box-shadow:2px 3px 0 rgba(0,0,0,.34)}
+.sc-compare-flow .compare-narrator blockquote::before{content:"";position:absolute;left:101px;bottom:41px;border:7px solid transparent;border-right-color:#f5efe3;border-left:0}
+.sc-compare-flow.is-current~.cs-upnext{left:auto;right:45px;top:625px;bottom:auto;width:270px;height:42px;padding:0 14px;gap:11px;justify-content:center;border-color:#614d14;border-radius:10px;background:rgba(9,13,26,.9);box-sizing:border-box}
+.sc-compare-flow.is-current~.cs-upnext .cs-upnext-label{padding-right:11px;border-right:1px solid #614d14;color:#ffc53d;font:600 10px/16px Inter,sans-serif;text-transform:uppercase}
+.sc-compare-flow.is-current~.cs-upnext .cs-upnext-name{color:#f5f2e8;font:400 12px/17px Inter,sans-serif}.sc-compare-flow.is-current~.cs-upnext>span:last-child{color:#ffc53d}
 
 @media(max-width:899px){
- .sc-compare-flow{padding:34px 20px 42px}
- .sc-compare-flow .flow-title{position:static;width:auto;text-align:left}
- .sc-compare-flow .flow-title h2{font-size:29px;line-height:1.08}
- .sc-compare-flow .flow-title p{width:auto;margin:10px 0 0;font-size:13px;line-height:1.45}
- .sc-compare-flow .flow-body{position:static;width:auto;height:auto;margin-top:26px}
- .sc-compare-flow .flow-steps{display:grid;gap:16px}
- .sc-compare-flow .flow-step{position:static;width:auto;height:auto;padding:14px}
- .sc-compare-flow .step-ui{height:300px}
- .sc-compare-flow .flow-arrow{display:none}
- .sc-compare-flow .flow-reasons{position:static;display:grid;width:auto;margin-top:16px;grid-template-columns:1fr;gap:10px}
- .sc-compare-flow .flow-reason{height:auto;min-height:96px}
- .sc-compare-flow .mini-narrator{position:static;display:flex;width:auto;height:auto;margin-top:26px;align-items:flex-end;gap:10px}
- .sc-compare-flow .mini-narrator img{position:static;width:80px;height:82px}
- .sc-compare-flow .mini-narrator blockquote{position:relative;left:auto;top:auto;width:auto;margin:0 0 8px;padding:11px 14px}
+ .sc-compare-flow{padding:34px 20px 42px}.sc-compare-flow .compare-heading{position:static;width:auto;height:auto;text-align:left}.sc-compare-flow .compare-heading h2{font-size:29px;line-height:1.08}.sc-compare-flow .compare-heading p{font-size:13px;line-height:1.45}
+ .sc-compare-flow .compare-body{position:static;width:auto;height:auto;margin-top:26px}.sc-compare-flow .compare-sequence{display:grid;width:auto;height:auto;grid-template-columns:1fr;gap:14px}.sc-compare-flow .compare-step{height:auto;padding:12px}.sc-compare-flow .product-viewport{width:100%;height:auto;aspect-ratio:391/260}.sc-compare-flow .flow-arrow{margin:auto;transform:rotate(90deg)}
+ .sc-compare-flow .compare-insights{display:grid;width:auto;height:auto;margin-top:24px;grid-template-columns:1fr;gap:10px}.sc-compare-flow .compare-insights article{min-height:96px}
+ .sc-compare-flow .compare-narrator{position:static;margin-top:22px}.sc-compare-flow .compare-narrator blockquote{width:auto;max-width:260px;margin-bottom:9px}.sc-compare-flow .compare-narrator blockquote::before{display:none}
 }

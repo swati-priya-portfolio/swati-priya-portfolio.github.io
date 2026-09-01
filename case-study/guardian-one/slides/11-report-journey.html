@@ -1,22 +1,45 @@
-<section class="cs-scene native sc-report-journey" id="scene-11" data-section="Suraksha report journey" data-next="Report anatomy" data-design="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-8114&p=f&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" aria-label="Scene 11: Suraksha report journey">
-  <p class="native-kicker">11 · Family Suraksha Report</p>
-  <h2 class="native-title">Turn Inputs Into <span class="hl">a Family Story.</span></h2>
-  <p class="native-sub">Eleven questions, each shaping a take-home story that families can understand and revisit.</p>
-  <div class="journey-layout">
-    <div class="journey-inputs">
-      <article class="native-card input-card"><span class="card-no">01 · Input age</span><div class="ui-panel mini-form"><div class="ui-body"><label class="ui-label">How old are you?</label><div class="age-ring">38</div><input type="range" value="38" aria-label="Age example" /></div></div><p><b>Why:</b> Sets the dependency horizon.</p></article>
-      <article class="native-card input-card"><span class="card-no">02 · Input city</span><div class="ui-panel mini-form"><div class="ui-body"><label class="ui-label">Where does your family live?</label><div class="ui-input">Bengaluru <span>⌄</span></div><div class="city-chips"><b>Delhi</b><b>Mumbai</b><b>Pune</b></div></div></div><p><b>Why:</b> Feeds local cost context.</p></article>
-      <article class="native-card input-card"><span class="card-no">03 · Input children</span><div class="ui-panel mini-form"><div class="ui-body"><label class="ui-label">Tell us about your children</label><div class="child-row"><i>👧</i><span>Anaya<small>Age 8 · Class 3</small></span><b>✓</b></div><div class="child-row"><i>👦</i><span>Kabir<small>Age 4 · Pre-primary</small></span><b>✓</b></div></div></div><p><b>Why:</b> Creates child-specific projections.</p></article>
+<section class="cs-scene native sc-report-journey" id="scene-11"
+  data-section="Suraksha report journey"
+  data-next="Inside the complete report"
+  data-design="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-8114&p=f&t=ID6fxry9YXx0gE78-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1"
+  aria-label="Scene 11: Suraksha report journey">
+  <header class="journey-heading">
+    <p>11 · Family Suraksha Report</p>
+    <h2>Turn Inputs Into a Family Story.</h2>
+    <span>Eleven questions, each shaping a take-home story that families can understand and revisit.</span>
+  </header>
+  <div class="journey-body">
+    <div class="journey-left">
+      <div class="journey-inputs">
+        <article class="input-card">
+          <header><b>01</b><div><h3>Input 01 · Age</h3><p>Defines the protection horizon.</p></div></header>
+          <div class="input-viewport"><img src="assets/scene-11/input-age.png" alt="Age input asking how old the parent is" /></div>
+          <dl><dt>Why</dt><dd>Estimates how long the family may rely on the parent’s income.</dd><dt>Feeds</dt><dd>Dependency horizon</dd></dl>
+        </article>
+        <article class="input-card">
+          <header><b>02</b><div><h3>Input 02 · City</h3><p>Adds real-world cost context.</p></div></header>
+          <div class="input-viewport"><img src="assets/scene-11/input-city.png" alt="City input with search and popular city choices" /></div>
+          <dl><dt>Why</dt><dd>Adjusts education and lifestyle assumptions by location.</dd><dt>Feeds</dt><dd>Local cost context</dd></dl>
+        </article>
+        <article class="input-card">
+          <header><b>03</b><div><h3>Input 03 · Children</h3><p>Builds a child-specific journey.</p></div></header>
+          <div class="input-viewport"><img src="assets/scene-11/input-children.png" alt="Children input collecting details for a child" /></div>
+          <dl><dt>Why</dt><dd>Education costs change by child, age and stage.</dd><dt>Feeds</dt><dd>Child-specific projections</dd></dl>
+        </article>
+      </div>
+      <div class="journey-principles">
+        <article><img src="assets/scene-11/icon-logic.png" alt="" aria-hidden="true" /><div><b>Why it mattered</b><h3>Every input changes the model</h3><p>A question stayed only if it changed an assumption, projection or recommendation.</p></div></article>
+        <article><img src="assets/scene-11/icon-layers.png" alt="" aria-hidden="true" /><div><b>Principle</b><h3>Progressive disclosure</h3><p>Ask one thing at a time, then reveal how it shaped the final report.</p></div></article>
+      </div>
     </div>
-    <article class="ui-panel report-preview">
-      <div class="report-cover"><span>Complete Suraksha Report</span><h3>Your family’s education protection plan</h3><p>Prepared for the Sharma family</p></div>
-      <div class="report-total"><small>Estimated education need</small><strong>₹76.9L</strong><em>Across 2 children</em></div>
-      <div class="report-chart"><i style="height:35%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:78%"></i><i style="height:95%"></i></div>
-      <div class="report-section"><b>Anaya’s journey</b><span>School → Graduation</span></div>
-      <div class="report-section"><b>Kabir’s journey</b><span>Pre-primary → Graduation</span></div>
-      <button type="button">Download full report</button>
+    <article class="report-card">
+      <header><h3>Complete Suraksha Report</h3><p>Every answer, carried into one story.</p></header>
+      <div class="report-viewport"><img src="assets/scene-11/complete-report.png" alt="Complete personalised Family Suraksha Report" /></div>
+      <p class="report-caption">One continuous take-home experience—not a partial result card.</p>
     </article>
   </div>
-  <div class="journey-principles"><article><b>Why it mattered</b><span>Every input changes the model.</span></article><article><b>Principle</b><span>Progressive disclosure keeps eleven questions manageable.</span></article></div>
-  <div class="mini-narrator"><img src="../../images/priya_as_smiling.png" alt="" /><blockquote>Every question had to change the recommendation — or it was removed.</blockquote></div>
+  <div class="mini-narrator journey-narrator">
+    <img src="assets/scene-11/narrator.png" alt="" />
+    <blockquote>Every question had to change the recommendation—or it was removed.</blockquote>
+  </div>
 </section>
