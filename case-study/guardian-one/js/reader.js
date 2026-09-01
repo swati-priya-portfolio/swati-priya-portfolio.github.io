@@ -64,14 +64,8 @@
     crumb.innerHTML="Case study · <b>Guardian One</b> · "+section;
     count.textContent="Scene "+String(index+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");
     fill.style.setProperty("--cs-progress",(index+1)/scenes.length);
-    // The frame draws VIEW DESIGN in the top rail, pointing at the scene you
-    // are actually on. Without this it stayed on scene 1's node all the way
-    // through, and the scenes that carried their own copy showed two links.
     if(viewDesign){
       var design=scene.dataset.design;
-      // .is-on is what makes it visible; nothing was ever adding it, so the
-      // rail link sat at opacity 0 on every scene while two of the scenes
-      // carried their own floating copy instead.
       viewDesign.classList.toggle("is-on",!!design);
       if(design){ viewDesign.href=design; }
     }
@@ -103,7 +97,7 @@
   }
 
   Promise.all(manifests.map(function(item){
-    return fetch("slides/"+item[0]+"?v=14").then(function(r){if(!r.ok)throw new Error(item[0]);return r.text();});
+    return fetch("slides/"+item[0]+"?v=15").then(function(r){if(!r.ok)throw new Error(item[0]);return r.text();});
   })).then(function(parts){
     stage.querySelector(".cs-loading").remove();
     next.insertAdjacentHTML("beforebegin",parts.join("\n"));
