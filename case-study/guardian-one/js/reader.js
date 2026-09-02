@@ -17,6 +17,9 @@
   var viewDesign=document.querySelector(".cs-view-design");
   var next=document.querySelector(".cs-upnext");
   var nextName=document.querySelector(".cs-upnext-name");
+  var mobilePrev=document.querySelector(".cs-mobile-prev");
+  var mobileNext=document.querySelector(".cs-mobile-next");
+  var mobilePosition=document.querySelector(".cs-mobile-position");
   var current=0, scenes=[], busy=false, startX=0;
 
   function fit(){
@@ -65,6 +68,17 @@
     }
     next.hidden=index===scenes.length-1 || scene.hasAttribute("data-no-upnext");
     nextName.textContent=scene.dataset.next || (manifests[index+1]&&manifests[index+1][1]) || "";
+    if(mobilePrev){
+      mobilePrev.disabled=index===0;
+      mobilePrev.setAttribute("aria-label",index===0?"This is the first scene":"Go to previous scene: "+manifests[index-1][1]);
+    }
+    if(mobileNext){
+      mobileNext.disabled=index===scenes.length-1;
+      mobileNext.setAttribute("aria-label",index===scenes.length-1?"This is the final scene":"Go to next scene: "+manifests[index+1][1]);
+    }
+    if(mobilePosition){
+      mobilePosition.textContent=String(index+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");
+    }
     if(!opts || !opts.fromHash) history.replaceState(null,"","#scene-"+(index+1));
     if(!opts || !opts.silent){
       if(document.body.classList.contains("is-flow")){
@@ -80,6 +94,8 @@
     scenes.forEach(function(scene,i){scene.dataset.sceneLabel="Scene "+String(i+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");});
     fit(); show(indexFromHash(),{fromHash:true,silent:true});
     next.addEventListener("click",function(){show(current+1);});
+    if(mobilePrev){mobilePrev.addEventListener("click",function(){show(current-1);});}
+    if(mobileNext){mobileNext.addEventListener("click",function(){show(current+1);});}
     addEventListener("resize",fit,{passive:true});
     addEventListener("hashchange",function(){show(indexFromHash(),{fromHash:true,silent:true});});
     addEventListener("keydown",function(e){

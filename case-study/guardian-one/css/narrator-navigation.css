@@ -1,0 +1,239 @@
+/* Shared narrator and mobile navigation corrections.
+   Loaded after every scene stylesheet so one system controls all 14 scenes. */
+
+.cs-narrator-pair { display: contents; }
+.cs-mobile-nav { display: none; }
+
+/* The Figma poses have different source canvases, but their visible character
+   should occupy one consistent footer slot on the desktop reader. */
+@media (min-width: 1281px) {
+  .cs-scene.native .mini-narrator {
+    position: absolute !important;
+    left: 22px !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: 0 !important;
+    display: flex !important;
+    width: 540px !important;
+    height: 126px !important;
+    margin: 0 !important;
+    align-items: flex-end !important;
+    gap: 0 !important;
+  }
+
+  .cs-scene.native .mini-narrator img {
+    position: static !important;
+    flex: 0 0 112px !important;
+    width: 112px !important;
+    height: 124px !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+
+  .cs-scene.native .mini-narrator blockquote {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 390px !important;
+    margin: 0 0 12px -3px !important;
+    padding: 10px 15px !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    background: #f5efe3 !important;
+    color: #17120b !important;
+    font: 400 17px/1.2 Caveat, cursive !important;
+    text-align: left !important;
+    box-shadow: 2px 3px 0 rgba(0, 0, 0, .35) !important;
+  }
+
+  .cs-scene.native .mini-narrator blockquote::before {
+    content: "" !important;
+    position: absolute !important;
+    display: block !important;
+    left: -9px !important;
+    right: auto !important;
+    top: 28px !important;
+    bottom: auto !important;
+    border: 8px solid transparent !important;
+    border-right-color: #f5efe3 !important;
+    border-left: 0 !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .cs-reader { padding-bottom: 118px !important; }
+  .cs-stage { padding-bottom: 10px; }
+
+  /* Native scenes (05–14): same avatar column, same baseline, same bubble. */
+  .cs-scene.native .mini-narrator {
+    position: static !important;
+    display: grid !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 112px !important;
+    margin: 28px 0 0 !important;
+    grid-template-columns: 92px minmax(0, 1fr) !important;
+    align-items: end !important;
+    gap: 0 !important;
+  }
+
+  .cs-scene.native .mini-narrator img {
+    position: static !important;
+    display: block !important;
+    width: 92px !important;
+    height: 108px !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+
+  .cs-scene.native .mini-narrator blockquote {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    margin: 0 0 9px -2px !important;
+    padding: 11px 14px !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    background: #f5efe3 !important;
+    color: #17120b !important;
+    font: 400 18px/1.22 Caveat, cursive !important;
+    text-align: left !important;
+    box-shadow: 2px 3px 0 rgba(0, 0, 0, .35) !important;
+  }
+
+  .cs-scene.native .mini-narrator blockquote::before {
+    content: "" !important;
+    position: absolute !important;
+    display: block !important;
+    left: -9px !important;
+    right: auto !important;
+    top: 26px !important;
+    bottom: auto !important;
+    border: 8px solid transparent !important;
+    border-right-color: #f5efe3 !important;
+    border-left: 0 !important;
+  }
+
+  /* Coordinate-based scenes (01, 03 and 04): pair the painted avatar with
+     its existing saying instead of hiding the character in reading mode. */
+  .cs-narrator-pair {
+    position: static !important;
+    display: grid !important;
+    width: 100% !important;
+    min-height: 116px;
+    margin: 28px 0 0 !important;
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: end;
+  }
+
+  .cs-narrator-pair .cs-narrator,
+  .sc-title .cs-narrator-pair .cs-narrator {
+    position: static !important;
+    display: block !important;
+    width: 96px !important;
+    height: 112px !important;
+    margin: 0 !important;
+    background-size: contain !important;
+    background-position: center bottom !important;
+  }
+
+  .cs-narrator-pair .cs-note,
+  .sc-title .cs-narrator-pair .cs-note,
+  .sc-tension .cs-narrator-pair .cs-note,
+  .sc-matrix .cs-narrator-pair .cs-note {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 0 9px -2px !important;
+    padding: 11px 14px !important;
+    border-radius: 5px !important;
+    font-size: 18px !important;
+    line-height: 1.22 !important;
+  }
+
+  .cs-narrator-pair .cs-note::before {
+    display: block !important;
+    left: -9px !important;
+    top: 26px !important;
+  }
+
+  /* Always-available, thumb-friendly navigation for narrow and zoomed views. */
+  .cs-mobile-nav {
+    position: fixed;
+    z-index: 70;
+    left: 50%;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    display: grid;
+    width: min(calc(100% - 24px), 430px);
+    min-height: 58px;
+    padding: 6px;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 6px;
+    transform: translateX(-50%);
+    border: 1px solid rgba(255, 197, 61, .34);
+    border-radius: 16px;
+    background: rgba(8, 11, 20, .94);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, .46), inset 0 1px rgba(255, 255, 255, .05);
+    backdrop-filter: blur(14px);
+  }
+
+  .cs-mobile-nav button {
+    display: flex;
+    min-width: 0;
+    min-height: 46px;
+    padding: 0 12px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 197, 61, .42);
+    border-radius: 11px;
+    background: rgba(255, 197, 61, .08);
+    color: #f5efe3;
+    font: 600 12px/1 Inter, sans-serif;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .cs-mobile-next { justify-self: stretch; }
+  .cs-mobile-prev { justify-self: stretch; }
+  .cs-mobile-arrow { color: #ffc53d; font-size: 19px; line-height: 1; }
+  .cs-mobile-position {
+    min-width: 56px;
+    color: rgba(245, 239, 227, .62);
+    font: 500 10px/1 "IBM Plex Mono", monospace;
+    letter-spacing: .08em;
+    text-align: center;
+  }
+
+  .cs-mobile-nav button:disabled {
+    border-color: rgba(245, 239, 227, .1);
+    background: rgba(245, 239, 227, .025);
+    color: rgba(245, 239, 227, .25);
+    cursor: default;
+  }
+  .cs-mobile-nav button:disabled .cs-mobile-arrow { color: rgba(245, 239, 227, .22); }
+  .cs-mobile-nav button:focus-visible { outline: 2px solid #ffc53d; outline-offset: 2px; }
+}
+
+@media (max-width: 360px) {
+  .cs-mobile-nav button { padding-inline: 9px; font-size: 11px; gap: 6px; }
+  .cs-mobile-position { min-width: 48px; font-size: 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-mobile-nav { backdrop-filter: none; }
+}

@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="css/slides/12-report-anatomy.css?v=14" />
   <link rel="stylesheet" href="css/slides/13-launch.css?v=14" />
   <link rel="stylesheet" href="css/slides/14-reflection.css?v=14" />
+  <link rel="stylesheet" href="css/narrator-navigation.css?v=1" />
 </head>
 <body class="cs-page is-overview">
   <a class="skip-link" href="#scene-1">Skip to the story</a>
@@ -54,7 +55,7 @@
       <span class="cs-count">Scene 01 / 14</span>
       <span class="cs-track"><span class="cs-fill"></span></span>
     </div>
-    <p class="cs-mobile-note">This scene is in responsive reading mode. Swipe, use the arrow keys, or choose “Up next” to continue.</p>
+    <p class="cs-mobile-note">This scene is in responsive reading mode. Swipe or use Previous and Next below to continue.</p>
     <div class="cs-stage" id="case-study-stage" aria-live="polite">
       <div class="cs-loading" role="status">Loading the case study…</div>
       <button class="cs-upnext" type="button" aria-label="Go to next scene">
@@ -63,7 +64,18 @@
         <span aria-hidden="true">→</span>
       </button>
     </div>
+    <nav class="cs-mobile-nav" aria-label="Case study scene navigation">
+      <button class="cs-mobile-prev" type="button" aria-label="Go to previous scene">
+        <span class="cs-mobile-arrow" aria-hidden="true">←</span>
+        <span>Previous</span>
+      </button>
+      <span class="cs-mobile-position" aria-live="polite">01 / 14</span>
+      <button class="cs-mobile-next" type="button" aria-label="Go to next scene">
+        <span>Next</span>
+        <span class="cs-mobile-arrow" aria-hidden="true">→</span>
+      </button>
+    </nav>
   </main>
-  <script src="js/reader.js?v=22"></script>
+  <script src="js/reader.js?v=23"></script>
 </body>
 </html>
