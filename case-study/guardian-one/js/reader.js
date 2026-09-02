@@ -22,7 +22,7 @@
   function fit(){
     var header=document.querySelector(".site-header");
     var head=header ? Math.ceil(header.getBoundingClientRect().height) : 86;
-    var compact=matchMedia("(max-width: 1100px)").matches;
+    var compact=matchMedia("(max-width:1280px)").matches;
     document.body.classList.toggle("is-flow",compact);
     document.documentElement.style.setProperty("--cs-head",head+"px");
     if(compact){document.documentElement.style.setProperty("--cs-scale","1");return;}

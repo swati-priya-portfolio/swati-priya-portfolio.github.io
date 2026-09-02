@@ -76,7 +76,7 @@
 .sc-research .mini-narrator img{display:block;width:148px;height:166px;object-fit:contain;object-position:bottom}
 .sc-research .mini-narrator blockquote{position:absolute;top:34px;left:143px;width:178px;height:91px;margin:0;padding:12px 9px;border:0;border-radius:6px;background:#f5efe3;color:#24180f;font:400 16px/18px Caveat,cursive;box-sizing:border-box;box-shadow:3px 4px 0 rgba(0,0,0,.35)}
 
-@media(max-width:1100px){
+@media(max-width:1280px){
  .sc-research{padding:34px 20px 42px}
  .sc-research .native-title{position:static;width:auto;transform:none;font-size:29px;line-height:1.08;text-align:left}
  .sc-research .research-main,.sc-research .research-bottom{position:static;display:grid;width:auto;height:auto;margin-top:24px;transform:none;grid-template-columns:1fr}

@@ -804,7 +804,7 @@
    Keep one scene active, but let that scene reflow as a document.
    This preserves readable browser zoom without stacking all 14 scenes.
    ============================================================ */
-@media (max-width:1100px) {
+@media (max-width:1280px) {
   .cs-page { overflow: auto; }
   /* place-items has to go with the grid: Chromium honours justify-items on a
      block container too, which was shrink-wrapping the stage to its widest
@@ -852,7 +852,7 @@
   .cs-topbar, .cs-keys, .sc-title .hint { display: none; }
   .cs-upnext {
     position: static;
-    display: inline-flex;
+    display: flex;
     width: max-content;
     max-width: calc(100% - 40px);
     margin: 24px 20px 0 auto;
@@ -933,7 +933,7 @@
   .cs-upnext:hover { transform: none; }
 }
 
-@media (max-width:1100px) { .cs-mobile-note { display: block; } }
+@media (max-width:1280px) { .cs-mobile-note { display: block; } }
 
 /* ------------------------------------------------------------
    Character art. Painted as backgrounds rather than <img> so a file that

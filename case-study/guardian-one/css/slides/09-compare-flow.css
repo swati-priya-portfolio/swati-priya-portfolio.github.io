@@ -31,7 +31,7 @@
 .sc-compare-flow.is-current~.cs-upnext .cs-upnext-label{padding-right:11px;border-right:1px solid #614d14;color:#ffc53d;font:600 10px/16px Inter,sans-serif;text-transform:uppercase}
 .sc-compare-flow.is-current~.cs-upnext .cs-upnext-name{color:#f5f2e8;font:400 12px/17px Inter,sans-serif}.sc-compare-flow.is-current~.cs-upnext>span:last-child{color:#ffc53d}
 
-@media(max-width:1100px){
+@media(max-width:1280px){
  .sc-compare-flow{padding:34px 20px 42px}.sc-compare-flow .compare-heading{position:static;width:auto;height:auto;text-align:left}.sc-compare-flow .compare-heading h2{font-size:29px;line-height:1.08}.sc-compare-flow .compare-heading p{font-size:13px;line-height:1.45}
  .sc-compare-flow .compare-body{position:static;width:auto;height:auto;margin-top:26px}.sc-compare-flow .compare-sequence{display:grid;width:auto;height:auto;grid-template-columns:1fr;gap:14px}.sc-compare-flow .compare-step{height:auto;padding:12px}.sc-compare-flow .product-viewport{width:100%;height:auto;aspect-ratio:391/260}.sc-compare-flow .flow-arrow{margin:auto;transform:rotate(90deg)}
  .sc-compare-flow .compare-insights{display:grid;width:auto;height:auto;margin-top:24px;grid-template-columns:1fr;gap:10px}.sc-compare-flow .compare-insights article{min-height:96px}
