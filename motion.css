@@ -387,6 +387,75 @@
     font-size: 16px;
   }
 
+  /* Persistent contact entry point. Bottom-left avoids the existing Page One
+     button that appears in the bottom-right corner later in the scroll. */
+  .mobile-contact-fab {
+    position: fixed;
+    z-index: 98;
+    left: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    display: inline-flex !important;
+    min-height: 52px;
+    padding: 6px 6px 6px 12px;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 197, 61, 0.46);
+    border-radius: 999px;
+    background: rgba(18, 15, 11, 0.92);
+    color: var(--cream);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.44), inset 0 1px rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+            backdrop-filter: blur(12px) saturate(120%);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-contact-fab-copy { display: grid; gap: 3px; }
+  .mobile-contact-fab-copy small {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(245, 239, 227, 0.62);
+    font: 600 8px/1 var(--font-body);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .mobile-contact-fab-copy strong {
+    color: var(--cream);
+    font: 600 12px/1.1 var(--font-body);
+    white-space: nowrap;
+  }
+  .mobile-contact-fab-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.14), 0 0 7px rgba(74, 222, 128, 0.72);
+  }
+  .mobile-contact-fab-icon {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    flex: 0 0 38px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--ink);
+  }
+  .mobile-contact-fab-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .mobile-contact-fab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .mobile-contact-fab:active { transform: scale(0.97); }
+
   /* Hero: tighter hierarchy and a single clean visual axis. */
   .hero {
     padding-top: 28px !important;

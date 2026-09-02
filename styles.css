@@ -239,6 +239,7 @@ h1, h2, h3, p { margin: 0; }
 .nav-cta { flex-shrink: 0; }
 .nav-mobile-contact,
 .mobile-contact-dot { display: none; }
+.mobile-contact-fab { display: none; }
 
 /* Hamburger — only shown on small screens */
 .nav-toggle {
