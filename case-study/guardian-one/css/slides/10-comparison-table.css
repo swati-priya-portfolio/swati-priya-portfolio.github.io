@@ -32,7 +32,7 @@
 .sc-compare-table.is-current~.cs-upnext .cs-upnext-label{padding-right:11px;border-right:1px solid #614d14;color:#ffc53d;font:600 10px/16px Inter,sans-serif;text-transform:uppercase}
 .sc-compare-table.is-current~.cs-upnext .cs-upnext-name{color:#f5f2e8;font:400 12px/17px Inter,sans-serif}.sc-compare-table.is-current~.cs-upnext>span:last-child{color:#ffc53d}
 
-@media(max-width:899px){
+@media(max-width:1100px){
  .sc-compare-table{padding:34px 20px 42px}.sc-compare-table .table-heading{position:static;width:auto;height:auto;text-align:left}.sc-compare-table .table-heading h2{font-size:29px;line-height:1.08}.sc-compare-table .table-heading p{font-size:13px;line-height:1.45}
  .sc-compare-table .comparison-body{position:static;display:grid;width:auto;height:auto;margin-top:26px;grid-template-columns:1fr;gap:24px}.sc-compare-table .comparison-bands,.sc-compare-table .table-decisions{height:auto;grid-template-rows:none;gap:12px}
  .sc-compare-table .comparison-band{display:block}.sc-compare-table .comparison-band>header{min-height:112px;border-right:0;border-bottom:1px solid #26304f}.sc-compare-table .table-crop{height:auto;aspect-ratio:643/145;overflow:hidden}.sc-compare-table .table-crop img{width:100%;height:100%}

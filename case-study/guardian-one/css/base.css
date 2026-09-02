@@ -800,11 +800,11 @@
 .sc-matrix .cs-note::before { top: 16px; }
 
 /* ============================================================
-   Reading mode — anything too narrow for the 1440 frame
-   The stage stops pretending to be a slide and becomes a document,
-   so the story is still readable on a phone.
+   Responsive scene mode — phones, tablets and zoomed desktop views
+   Keep one scene active, but let that scene reflow as a document.
+   This preserves readable browser zoom without stacking all 14 scenes.
    ============================================================ */
-@media (max-width: 899px) {
+@media (max-width:1100px) {
   .cs-page { overflow: auto; }
   /* place-items has to go with the grid: Chromium honours justify-items on a
      block container too, which was shrink-wrapping the stage to its widest
@@ -820,7 +820,6 @@
     width: auto;
     height: auto;
     transform: none;
-    counter-reset: cs-mobile-scene;
   }
   .cs-scene {
     position: static;
@@ -830,9 +829,7 @@
     transform: none;
     padding: 26px 20px 34px;
     border-bottom: 1px solid var(--cs-line);
-    /* Mobile is a continuous document rather than a single viewport. Give
-       each scene its own copy of the same soft surface so later sections do
-       not fall outside one enormous page-level gradient. */
+    /* The active scene becomes a readable vertical document. */
     background-color: #08090d;
     background-image:
       radial-gradient(48% 82% at 4% 96%, rgba(111, 66, 25, 0.28), rgba(34, 21, 11, 0) 72%),
@@ -840,10 +837,10 @@
     background-position: left bottom, center center;
     background-repeat: no-repeat;
     background-size: 72% 118%, 177.85% 175.15%;
-    counter-increment: cs-mobile-scene;
   }
+  .cs-page.is-flow .cs-scene:not(.is-current) { display: none; }
   .cs-scene::before {
-    content: "Scene " counter(cs-mobile-scene, decimal-leading-zero) " / 14 · " attr(data-section);
+    content: attr(data-scene-label) " · " attr(data-section);
     display: block;
     margin: 0 0 22px;
     color: rgba(245, 239, 227, 0.48);
@@ -852,7 +849,15 @@
     text-transform: uppercase;
   }
   .cs-page.is-flow #scene-1 { background-color: #17120b; }
-  .cs-topbar, .cs-upnext, .cs-keys, .sc-title .hint { display: none; }
+  .cs-topbar, .cs-keys, .sc-title .hint { display: none; }
+  .cs-upnext {
+    position: static;
+    display: inline-flex;
+    width: max-content;
+    max-width: calc(100% - 40px);
+    margin: 24px 20px 0 auto;
+    white-space: normal;
+  }
   .cs-note,
   .sc-title .cs-note, .sc-tension .cs-note, .sc-matrix .cs-note {
     position: static;
@@ -928,7 +933,7 @@
   .cs-upnext:hover { transform: none; }
 }
 
-@media (max-width: 899px) { .cs-mobile-note { display: block; } }
+@media (max-width:1100px) { .cs-mobile-note { display: block; } }
 
 /* ------------------------------------------------------------
    Character art. Painted as backgrounds rather than <img> so a file that

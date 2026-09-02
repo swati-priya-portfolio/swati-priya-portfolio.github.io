@@ -34,13 +34,12 @@
 .native-table th{background:#f0c343;color:#17120b;font:700 9px var(--font-mono);text-transform:uppercase}
 .native-table td:first-child{font-weight:700}
 .figma-note{font:700 16px/1 "Caveat",cursive;color:var(--accent)}
-@media(max-width:899px){
+@media(max-width:1100px){
  .cs-scene.native{padding:34px 20px 42px}
  .native .native-title{text-align:left;font-size:29px}
  .native .native-kicker,.native .native-sub{text-align:left;margin-left:0}
  .native-grid{grid-template-columns:1fr!important}
  .mini-narrator{position:static;margin-top:20px}
- .cs-upnext{display:none!important}
  .research-layout,.audit-grid,.questions-layout,.reason-list,.result-layout,
  .compare-steps,.compare-insights,.table-layout,.journey-layout,.journey-inputs,
  .anatomy-grid,.launch-metrics,.launch-layout,.reflection-grid{

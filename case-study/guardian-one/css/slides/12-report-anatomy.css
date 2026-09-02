@@ -27,7 +27,7 @@
 .report-narrator img{flex:0 0 79px;width:79px!important;height:79px!important}
 .report-narrator blockquote{position:relative;max-width:none;width:390px;margin:0 0 10px -1px!important;padding:10px 15px!important;border:0!important;border-radius:4px!important;background:#f5efe3!important;color:#17120b!important;font:400 17px/1.15 Caveat,cursive!important;box-shadow:2px 3px 0 rgba(0,0,0,.34)!important}
 .report-narrator blockquote::before{content:"";position:absolute;left:-9px;top:23px;border:8px solid transparent;border-right-color:#f5efe3;border-left:0}
-@media(max-width:899px){
+@media(max-width:1100px){
  .sc-report-anatomy{padding:34px 20px 42px!important}.sc-report-anatomy .native-title{font-size:29px;text-align:left}.report-heading{text-align:left!important}
  .report-anatomy-grid{display:grid;grid-template-columns:1fr;grid-template-rows:auto;gap:14px;margin-top:22px}
  .report-card--answer,.report-card--journey,.report-card--split,.report-card--recommendations,.report-card--action{grid-column:auto;min-height:0}

@@ -22,10 +22,10 @@
   function fit(){
     var header=document.querySelector(".site-header");
     var head=header ? Math.ceil(header.getBoundingClientRect().height) : 86;
-    var mobile=matchMedia("(max-width: 899px)").matches;
-    document.body.classList.toggle("is-flow",mobile);
+    var compact=matchMedia("(max-width: 1100px)").matches;
+    document.body.classList.toggle("is-flow",compact);
     document.documentElement.style.setProperty("--cs-head",head+"px");
-    if(mobile){document.documentElement.style.setProperty("--cs-scale","1");return;}
+    if(compact){document.documentElement.style.setProperty("--cs-scale","1");return;}
     var roomW=Math.max(320,innerWidth-28);
     var roomH=Math.max(280,innerHeight-head-74);
     /* Use the full Figma canvas on large displays. The previous 1.24 ceiling
@@ -49,15 +49,8 @@
     scenes.forEach(function(scene,i){
       var active=i===index;
       scene.classList.toggle("is-current",active);
-      if(document.body.classList.contains("is-flow")){
-        /* Mobile is one continuous document: every scene is visible and must
-           remain available to assistive technology as the reader scrolls. */
-        scene.setAttribute("aria-hidden","false");
-        scene.removeAttribute("tabindex");
-      }else{
-        scene.setAttribute("aria-hidden",active?"false":"true");
-        scene.tabIndex=active?0:-1;
-      }
+      scene.setAttribute("aria-hidden",active?"false":"true");
+      scene.tabIndex=active?0:-1;
     });
     current=index;
     document.body.classList.toggle("is-overview",index===0);
@@ -73,19 +66,23 @@
     next.hidden=index===scenes.length-1 || scene.hasAttribute("data-no-upnext");
     nextName.textContent=scene.dataset.next || (manifests[index+1]&&manifests[index+1][1]) || "";
     if(!opts || !opts.fromHash) history.replaceState(null,"","#scene-"+(index+1));
-    if((!opts || !opts.silent) && !document.body.classList.contains("is-flow")){
-      window.setTimeout(function(){scene.focus({preventScroll:true});},80);
+    if(!opts || !opts.silent){
+      if(document.body.classList.contains("is-flow")){
+        window.setTimeout(function(){scene.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});},40);
+      }else{
+        window.setTimeout(function(){scene.focus({preventScroll:true});},80);
+      }
     }
   }
 
   function init(){
     scenes=Array.from(stage.querySelectorAll(".cs-scene"));
+    scenes.forEach(function(scene,i){scene.dataset.sceneLabel="Scene "+String(i+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");});
     fit(); show(indexFromHash(),{fromHash:true,silent:true});
     next.addEventListener("click",function(){show(current+1);});
     addEventListener("resize",fit,{passive:true});
     addEventListener("hashchange",function(){show(indexFromHash(),{fromHash:true,silent:true});});
     addEventListener("keydown",function(e){
-      if(document.body.classList.contains("is-flow"))return;
       if(["ArrowRight","ArrowDown","PageDown"," "].includes(e.key)){e.preventDefault();show(current+1);}
       if(["ArrowLeft","ArrowUp","PageUp"].includes(e.key)){e.preventDefault();show(current-1);}
       if(e.key==="Home"){e.preventDefault();show(0);}

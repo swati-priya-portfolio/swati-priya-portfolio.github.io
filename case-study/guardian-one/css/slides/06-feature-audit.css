@@ -44,7 +44,7 @@
 .sc-audit.is-current~.cs-upnext .cs-upnext-name{color:#f5f2eb;font:500 12px/16px Inter,sans-serif}
 .sc-audit.is-current~.cs-upnext>span:last-child{color:#ffc53d;font:500 14px/20px Inter,sans-serif}
 
-@media(max-width:899px){
+@media(max-width:1100px){
  .sc-audit{padding:34px 20px 42px}
  .sc-audit .native-title{position:static;width:auto;transform:none;font-size:29px;line-height:1.1;text-align:left}
  .sc-audit .audit-grid{position:static;display:grid;width:auto;margin-top:26px;grid-template-columns:1fr;gap:26px}
