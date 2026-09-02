@@ -28,10 +28,11 @@
     if(mobile){document.documentElement.style.setProperty("--cs-scale","1");return;}
     var roomW=Math.max(320,innerWidth-28);
     var roomH=Math.max(280,innerHeight-head-74);
-    /* Let the fixed Figma frame grow on large monitors as well as shrink on
-       laptops. The height and width ratios remain hard limits, so no scene
-       can be clipped; 1.24 is simply an optical ceiling for readable type. */
-    var scale=Math.min(1.24,roomW/1440,roomH/700);
+    /* Use the full Figma canvas on large displays. The previous 1.24 ceiling
+       left a wide unused border on extended monitors and made every scene's
+       type, cards and icons feel uniformly undersized. Width and height stay
+       as hard limits, so the complete 1440×700 frame always remains visible. */
+    var scale=Math.min(1.42,roomW/1440,roomH/700);
     document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
     document.documentElement.style.setProperty("--cs-bar",Math.min(1340,roomW/scale)+"px");
   }
