@@ -4,6 +4,47 @@
 .cs-narrator-pair { display: contents; }
 .cs-mobile-nav { display: none; }
 
+/* The case-study reader has no hamburger menu. Keep contact visible as a
+   compact availability CTA whenever the shared desktop nav collapses. */
+@media (max-width: 1079px) {
+  .cs-page .nav-pill { gap: 8px; }
+  .cs-page .nav-links { display: none; }
+  .cs-page .identity-group { min-width: 0; }
+  .cs-page .identity { min-width: 0; gap: 9px; }
+  .cs-page .identity-name {
+    overflow: hidden;
+    max-width: 112px;
+    text-overflow: ellipsis;
+  }
+  .cs-page .nav-cta {
+    display: inline-flex !important;
+    min-height: 40px;
+    padding: 6px 7px 6px 10px;
+    gap: 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .cs-page .nav-cta .mobile-contact-dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, .14), 0 0 7px rgba(74, 222, 128, .72);
+  }
+  .cs-page .nav-cta .btn-arrow {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cs-page .identity-name { display: none; }
+}
+
 /* The Figma poses have different source canvases, but their visible character
    should occupy one consistent footer slot on the desktop reader. */
 @media (min-width: 1281px) {

@@ -313,7 +313,7 @@
                 transform 360ms var(--ep), visibility 0s linear 360ms;
   }
   .nav-links.is-open {
-    max-height: 320px;
+    max-height: 410px;
     padding: 8px 10px;
     opacity: 1;
     visibility: visible;
@@ -331,6 +331,61 @@
   .nav-link::after { left: 12px; right: auto; width: 34px; bottom: 7px; }
   .nav-cta,
   .nav-available { display: none !important; }
+
+  /* Contact belongs inside the mobile menu: visible, deliberate and easier
+     to act on than a desktop CTA squeezed into the narrow header row. */
+  .nav-mobile-contact { display: block !important; padding-top: 7px; }
+  .nav-mobile-contact-link,
+  .sp-js .site-header.is-compact .nav-mobile-contact-link {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 36px;
+    grid-template-rows: auto auto;
+    gap: 4px 10px;
+    align-items: center;
+    margin: 0;
+    padding: 12px 12px 12px 14px !important;
+    border: 1px solid rgba(255, 197, 61, 0.36);
+    border-radius: 13px !important;
+    background: linear-gradient(115deg, rgba(255, 197, 61, 0.14), rgba(255, 197, 61, 0.04));
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.04);
+  }
+  .nav-mobile-contact-link::after { display: none !important; }
+  .nav-mobile-contact-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: rgba(245, 239, 227, 0.64);
+    font: 600 9px/1.2 var(--font-body);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .nav-mobile-contact-dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.14), 0 0 8px rgba(74, 222, 128, 0.72);
+  }
+  .nav-mobile-contact-link strong {
+    color: var(--cream);
+    font: 600 14px/1.2 var(--font-body);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .nav-mobile-contact-arrow {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--ink);
+    font-size: 16px;
+  }
 
   /* Hero: tighter hierarchy and a single clean visual axis. */
   .hero {

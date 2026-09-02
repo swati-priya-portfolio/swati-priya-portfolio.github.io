@@ -237,6 +237,8 @@ h1, h2, h3, p { margin: 0; }
 .nav-link.is-active::after { transform: scaleX(1); }
 
 .nav-cta { flex-shrink: 0; }
+.nav-mobile-contact,
+.mobile-contact-dot { display: none; }
 
 /* Hamburger — only shown on small screens */
 .nav-toggle {
