@@ -5,7 +5,7 @@
   var body=document.body;
   var loader=document.querySelector(".scene1-loader");
   var header=document.querySelector(".site-header");
-  var rail=document.querySelector(".cs-topbar");
+  var shell=document.querySelector(".cs-stage-shell");
   var started=performance.now();
   var initialHash=location.hash;
   var wantsSceneOne=!initialHash || initialHash==="#scene-1";
@@ -18,23 +18,34 @@
   function isDesktop(){ return matchMedia("(min-width:900px)").matches; }
   function isSceneOne(){ return body.classList.contains("cs-scene-1"); }
 
-  /* The real case-study rail replaces the first ~80px of the Figma frame.
-     Fit the remaining 1440×620 content region, so normal laptop viewports keep
-     the title, Bitmoji, metrics and keyboard at their intended Figma scale. */
+  /* Preserve the full 1440×700 Figma composition. The navbar overlays above it;
+     the real case-study rail is positioned at the Figma rail coordinate (y≈44),
+     so the rail no longer consumes another vertical band and forces a tiny scene. */
   function fitSceneOne(){
     if(!isDesktop() || !isSceneOne()) return;
 
     var navRect=header ? header.getBoundingClientRect() : {bottom:66};
-    var railRect=rail ? rail.getBoundingClientRect() : {bottom:(navRect.bottom||66)+38};
-    var sceneTop=Math.ceil(Math.max(navRect.bottom||66,railRect.bottom||104)+12);
-    var availableWidth=Math.max(320,innerWidth);
-    var availableHeight=Math.max(260,innerHeight-sceneTop-2);
-    var masterW=1440;
-    var masterH=620;
-    var scale=Math.min(1,availableWidth/masterW,availableHeight/masterH);
+    var navBottom=Math.ceil(navRect.bottom || 66);
+    var baseTop=navBottom+8;
+    var availableWidth=Math.max(720,innerWidth-64);
+    var availableHeight=Math.max(420,innerHeight-baseTop-2);
+    var scale=Math.min(1,availableWidth/1440,availableHeight/700);
+    var stageW=1440*scale;
+    var stageH=700*scale;
+    var spareY=Math.max(0,availableHeight-stageH);
+    var sceneTop=baseTop+Math.min(spareY*.35,28);
+    var railTop=sceneTop+(44*scale);
 
-    root.style.setProperty("--scene1-stage-top",sceneTop+"px");
+    root.style.setProperty("--scene1-stage-top",sceneTop.toFixed(2)+"px");
+    root.style.setProperty("--scene1-stage-w",stageW.toFixed(2)+"px");
+    root.style.setProperty("--scene1-stage-h",stageH.toFixed(2)+"px");
+    root.style.setProperty("--scene1-rail-top",railTop.toFixed(2)+"px");
     root.style.setProperty("--scene1-scale",scale.toFixed(5));
+
+    if(shell){
+      shell.style.width=stageW.toFixed(2)+"px";
+      shell.style.height=stageH.toFixed(2)+"px";
+    }
 
     if(window.scrollX || window.scrollY) window.scrollTo(0,0);
   }
@@ -61,7 +72,7 @@
       var rect=scene.getBoundingClientRect();
       if(!rect.width || !rect.height)return;
       var x=(e.clientX-rect.left)*(1440/rect.width);
-      var y=80+((e.clientY-rect.top)*(620/rect.height));
+      var y=(e.clientY-rect.top)*(700/rect.height);
       scene.style.setProperty("--reveal-x",x.toFixed(1)+"px");
       scene.style.setProperty("--reveal-y",y.toFixed(1)+"px");
       scene.classList.add("is-revealing");
