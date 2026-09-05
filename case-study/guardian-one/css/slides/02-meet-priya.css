@@ -1,123 +1,371 @@
-/* Scene 02: preserve the Figma layout; motion/hover only. */
-#scene-2{isolation:isolate}
+/* ============================================================
+   SCENE 02 — Meet Priya / Audience
+   Figma source: node 5:9215 (1440×700).
+   This file intentionally touches Scene 02 only.
+   Scene 01 and Scenes 03–14 are not restyled here.
+   ============================================================ */
+
+#scene-2{
+  isolation:isolate;
+}
 
 @media (min-width:900px){
-  /* Soft warm ambience behind Priya — no layout changes. */
+  /* ----------------------------------------------------------
+     1) FULL-BLEED FIGMA ATMOSPHERE — no visible black slide box
+     ---------------------------------------------------------- */
+  body.cs-page.cs-scene-2 .cs-reader{
+    background-color:#17120b !important;
+    background-image:
+      radial-gradient(ellipse 92% 150% at 52% 40%, rgba(35,48,101,.62) 0%, rgba(27,36,77,.50) 30%, rgba(23,27,51,.28) 54%, rgba(23,18,11,0) 78%),
+      radial-gradient(ellipse 48% 88% at 0% 88%, rgba(109,67,27,.28) 0%, rgba(74,43,19,.15) 38%, rgba(23,18,11,0) 76%),
+      linear-gradient(180deg,#17120b 0%,#15120d 100%) !important;
+    background-position:center !important;
+    background-size:cover !important;
+  }
+
+  /* The external rail replaces the Figma topbar. Crop only that original
+     topbar band so the actual content can render larger under the navbar. */
+  body.cs-page.cs-scene-2 .cs-stage-shell{
+    overflow:hidden !important;
+  }
+  body.cs-page.cs-scene-2 .cs-stage{
+    top:var(--cs-stage-shift-y,0px) !important;
+  }
+
+  /* The scene itself uses the Figma base so the edges blend seamlessly with
+     the full-bleed reader instead of revealing a darker rectangle. */
+  #scene-2{
+    background:#17120b !important;
+    overflow:hidden !important;
+  }
+
+  /* Main oversized navy bloom from Figma (node 5:9219). */
   #scene-2::before{
     content:"";
     position:absolute;
-    left:-150px;
-    bottom:-245px;
-    width:740px;
-    height:640px;
     z-index:0;
+    left:50%;
+    top:185px;
+    width:2561px;
+    height:1226px;
+    transform:translate(-50%,-50%);
     pointer-events:none;
-    background:radial-gradient(ellipse at 34% 58%,rgba(255,197,61,.10) 0%,rgba(158,95,32,.06) 35%,rgba(82,47,19,.025) 57%,rgba(18,16,12,0) 78%);
-    filter:blur(12px);
-    opacity:.88;
-    transition:opacity 220ms ease,filter 220ms ease;
+    background:radial-gradient(ellipse at 50% 50%,rgba(44,60,126,.58) 0%,rgba(34,46,98,.47) 28%,rgba(26,33,68,.30) 49%,rgba(23,18,11,0) 73%);
   }
-  #scene-2:has(.portrait:hover)::before{opacity:1;filter:blur(10px)}
-  #scene-2 .portrait{transition:filter 220ms ease}
-  #scene-2 .portrait:hover{filter:brightness(1.035)}
 
-  /* Entrance sequence. It activates only when Scene 02 is current. */
-  #scene-2.is-current .portrait{animation:s2-rise 420ms cubic-bezier(.22,.61,.36,1) 80ms both}
-  #scene-2.is-current .thought{animation:s2-pop 390ms cubic-bezier(.22,.61,.36,1) 180ms both}
-  #scene-2.is-current .who-title{animation:s2-rise 390ms cubic-bezier(.22,.61,.36,1) 280ms both}
-  #scene-2.is-current .who-lede{animation:s2-rise 360ms cubic-bezier(.22,.61,.36,1) 340ms both}
-  #scene-2.is-current .facts{animation:s2-rise 360ms cubic-bezier(.22,.61,.36,1) 400ms both}
-  #scene-2.is-current .wants{animation:s2-rise 360ms cubic-bezier(.22,.61,.36,1) 460ms both}
-  #scene-2.is-current .divider{animation:s2-fade 320ms ease 430ms both}
+  /* Warm left glow from Figma (node 5:9216). */
+  #scene-2::after{
+    content:"";
+    position:absolute;
+    z-index:0;
+    left:-95px;
+    top:23px;
+    width:470px;
+    height:398px;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 48% 50%,rgba(150,91,32,.24) 0%,rgba(102,59,24,.15) 42%,rgba(23,18,11,0) 76%);
+    filter:blur(2px);
+  }
+
+  #scene-2 > *{
+    z-index:1;
+  }
+
+  /* ----------------------------------------------------------
+     2) LEFT PERSONA — exact Figma typography / surfaces
+     ---------------------------------------------------------- */
+  #scene-2 .thought{
+    left:157px !important;
+    top:82px !important;
+    width:286px !important;
+    padding:10px 22px !important;
+    border-radius:18px !important;
+    background:#fff !important;
+    color:#000 !important;
+    font:400 18px/26px Caveat,cursive !important;
+    box-shadow:3px 4px 0 rgba(0,0,0,.35) !important;
+  }
+  #scene-2 .thought::after{
+    background:#fff !important;
+    box-shadow:-13px 10px 0 -1px #fff,-24px 20px 0 -2px #fff !important;
+  }
+
+  #scene-2 .portrait{
+    left:56px !important;
+    top:154px !important;
+    width:144px !important;
+    height:193px !important;
+    filter:none !important;
+  }
+  #scene-2 .portrait::before{
+    left:0 !important;
+    top:55px !important;
+    width:138px !important;
+    height:138px !important;
+    border:1px solid #ffd34d !important;
+    border-radius:8px !important;
+    background:#fff !important;
+    box-shadow:none !important;
+  }
+
+  #scene-2 .who-title{
+    left:56px !important;
+    top:370px !important;
+    width:406px !important;
+    margin:0 !important;
+    color:#f8f4ec !important;
+    font:400 20px/32px "Archivo Black",sans-serif !important;
+    letter-spacing:-.2px !important;
+  }
+  #scene-2 .who-lede{
+    left:56px !important;
+    top:446px !important;
+    width:406px !important;
+    margin:0 !important;
+    color:#c9bfae !important;
+    font:500 14px/20px Inter,sans-serif !important;
+  }
+
+  #scene-2 .facts{
+    left:56px !important;
+    top:500px !important;
+    width:406px !important;
+  }
+  #scene-2 .facts span{
+    height:36px !important;
+    margin:0 10px 10px 0 !important;
+    padding:0 16px !important;
+    border:1px solid #3a3020 !important;
+    border-radius:100px !important;
+    background:#221b10 !important;
+    color:#f5efe3 !important;
+    font:500 12px/16px Inter,sans-serif !important;
+    box-shadow:none !important;
+  }
+
+  #scene-2 .wants{
+    left:56px !important;
+    top:599px !important;
+    width:390px !important;
+  }
+  #scene-2 .wants b{
+    color:#ffc53d !important;
+    font:500 14px/26px Inter,sans-serif !important;
+  }
+  #scene-2 .wants p{
+    margin:0 !important;
+    color:#c9bfae !important;
+    font:500 14px/26px Inter,sans-serif !important;
+  }
+
+  #scene-2 .divider{
+    left:496px !important;
+    top:104px !important;
+    width:1px !important;
+    height:572px !important;
+    background:rgba(201,191,174,.22) !important;
+  }
+
+  /* ----------------------------------------------------------
+     3) PARENT + DESIGN CONVERSATION — Figma values
+     ---------------------------------------------------------- */
+  #scene-2 .who-label{
+    color:#c9bfae !important;
+    font:500 16px/22px Inter,sans-serif !important;
+  }
+
+  #scene-2 .av{
+    width:116px !important;
+    height:116px !important;
+    border-radius:50% !important;
+    background:radial-gradient(circle at 50% 42%,rgba(42,54,103,.74) 0%,rgba(27,30,57,.64) 48%,rgba(23,18,11,.96) 100%) !important;
+    box-shadow:none !important;
+  }
+  #scene-2 .av-design{
+    box-shadow:0 0 80px rgba(35,52,112,.14) !important;
+  }
+
+  #scene-2 .bub{
+    border-radius:6px !important;
+    box-shadow:3px 4px 0 rgba(0,0,0,.35) !important;
+    font:400 14px/22px Inter,sans-serif !important;
+  }
+  #scene-2 .bub-parent{
+    padding:10px 14px !important;
+    background:#221b10 !important;
+    color:#fff !important;
+  }
+  #scene-2 .bub-design{
+    background:#f5efe3 !important;
+    color:#0e1b4d !important;
+  }
+  #scene-2 .bub-design[style*="top:114px"]{
+    padding:18px 24px !important;
+  }
+  #scene-2 .bub-design[style*="top:319px"]{
+    padding:10px 24px !important;
+  }
+  #scene-2 .bub-design::before{
+    left:-12px !important;
+    top:38px !important;
+    border-right-color:#f5efe3 !important;
+  }
+
+  /* ----------------------------------------------------------
+     4) GUARDIAN ONE CONCLUSION — exact Figma card
+     ---------------------------------------------------------- */
+  #scene-2 .verdict{
+    left:973px !important;
+    top:490px !important;
+    width:411px !important;
+    height:100px !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:16px !important;
+    padding:22px 26px !important;
+    border:1px solid #ffcc40 !important;
+    border-radius:16px !important;
+    background:#141217 !important;
+    box-shadow:none !important;
+  }
+  #scene-2 .verdict .g1-mark{
+    width:55px !important;
+    height:66px !important;
+    flex:none !important;
+  }
+  #scene-2 .verdict p{
+    width:300px !important;
+    margin:0 !important;
+    color:#f5efe3 !important;
+    font:700 14px/20px Inter,sans-serif !important;
+  }
+  #scene-2 .verdict p+p{
+    margin-top:4px !important;
+    color:#ffc53d !important;
+    font-weight:500 !important;
+  }
+
+  /* ----------------------------------------------------------
+     5) UP NEXT — small, like Figma
+     ---------------------------------------------------------- */
+  body.cs-page.cs-scene-2 .cs-upnext{
+    right:56px !important;
+    bottom:34px !important;
+    gap:10px !important;
+    padding:10px 16px 10px 14px !important;
+    border:1px solid #333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+  }
+  body.cs-page.cs-scene-2 .cs-upnext-label{
+    display:inline-flex !important;
+    align-items:center !important;
+    gap:10px !important;
+    color:#ffcc47 !important;
+    font:500 10px/14px "IBM Plex Mono",monospace !important;
+    letter-spacing:.8px !important;
+    text-transform:uppercase !important;
+  }
+  body.cs-page.cs-scene-2 .cs-upnext-label::after{
+    content:"";
+    width:1px;
+    height:14px;
+    background:#333645;
+  }
+  body.cs-page.cs-scene-2 .cs-upnext-name{
+    color:#f5f2eb !important;
+    font:500 12px/16px Inter,sans-serif !important;
+  }
+  body.cs-page.cs-scene-2 .cs-upnext > span:last-child{
+    color:#ffcc47 !important;
+    font-size:14px !important;
+    transition:transform 180ms ease !important;
+  }
+  body.cs-page.cs-scene-2 .cs-upnext:hover,
+  body.cs-page.cs-scene-2 .cs-upnext:focus-visible{
+    transform:translateY(-1px) !important;
+    border-color:#4a4e60 !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+  }
+  body.cs-page.cs-scene-2 .cs-upnext:hover > span:last-child,
+  body.cs-page.cs-scene-2 .cs-upnext:focus-visible > span:last-child{
+    transform:translateX(3px) !important;
+  }
+
+  /* ----------------------------------------------------------
+     6) SUBTLE STORY MOTION — layout never shifts permanently
+     ---------------------------------------------------------- */
+  #scene-2.is-current .portrait{animation:s2-rise 400ms cubic-bezier(.22,.61,.36,1) 80ms both}
+  #scene-2.is-current .thought{animation:s2-pop 390ms cubic-bezier(.22,.61,.36,1) 170ms both}
+  #scene-2.is-current .who-title{animation:s2-rise 380ms cubic-bezier(.22,.61,.36,1) 260ms both}
+  #scene-2.is-current .who-lede{animation:s2-rise 350ms cubic-bezier(.22,.61,.36,1) 320ms both}
+  #scene-2.is-current .facts{animation:s2-rise 350ms cubic-bezier(.22,.61,.36,1) 380ms both}
+  #scene-2.is-current .wants{animation:s2-rise 350ms cubic-bezier(.22,.61,.36,1) 440ms both}
+  #scene-2.is-current .divider{animation:s2-fade 300ms ease 410ms both}
 
   #scene-2.is-current .who-label[style*="top:66px"],
   #scene-2.is-current .av-parent[style*="top:120px"],
-  #scene-2.is-current .bub-parent[style*="top:106px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 540ms both}
-
+  #scene-2.is-current .bub-parent[style*="top:106px"]{animation:s2-left 380ms cubic-bezier(.22,.61,.36,1) 520ms both}
   #scene-2.is-current .who-label[style*="top:74px"],
   #scene-2.is-current .av-design[style*="top:106px"],
-  #scene-2.is-current .bub-design[style*="top:114px"]{animation:s2-right 390ms cubic-bezier(.22,.61,.36,1) 640ms both}
-
+  #scene-2.is-current .bub-design[style*="top:114px"]{animation:s2-right 380ms cubic-bezier(.22,.61,.36,1) 620ms both}
   #scene-2.is-current .who-label[style*="left:664px"][style*="top:282px"],
   #scene-2.is-current .av-parent[style*="top:306px"],
-  #scene-2.is-current .bub-parent[style*="top:314px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 740ms both}
-
+  #scene-2.is-current .bub-parent[style*="top:314px"]{animation:s2-left 380ms cubic-bezier(.22,.61,.36,1) 720ms both}
   #scene-2.is-current .who-label[style*="left:1092px"][style*="top:282px"],
   #scene-2.is-current .av-design[style*="top:321px"],
-  #scene-2.is-current .bub-design[style*="top:319px"]{animation:s2-right 390ms cubic-bezier(.22,.61,.36,1) 840ms both}
-
+  #scene-2.is-current .bub-design[style*="top:319px"]{animation:s2-right 380ms cubic-bezier(.22,.61,.36,1) 820ms both}
   #scene-2.is-current .who-label[style*="top:481px"],
   #scene-2.is-current .av-parent[style*="top:505px"],
-  #scene-2.is-current .bub-parent[style*="top:513px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 940ms both}
+  #scene-2.is-current .bub-parent[style*="top:513px"]{animation:s2-left 380ms cubic-bezier(.22,.61,.36,1) 920ms both}
+  #scene-2.is-current .verdict{animation:s2-verdict 440ms cubic-bezier(.22,.61,.36,1) 1020ms both}
 
-  #scene-2.is-current .verdict{animation:s2-verdict 460ms cubic-bezier(.22,.61,.36,1) 1040ms both}
-
-  /* Parent → Design hover pairing. Only visual emphasis; no movement of layout. */
+  /* Useful hover: parent statement and its corresponding design response.
+     Everything else softens only slightly (never disappears). */
   #scene-2 .who-label,#scene-2 .av,#scene-2 .bub,#scene-2 .verdict{
-    transition:opacity 180ms ease,filter 180ms ease,transform 180ms cubic-bezier(.22,.61,.36,1),box-shadow 180ms ease;
+    transition:opacity 180ms ease,filter 180ms ease,transform 180ms cubic-bezier(.22,.61,.36,1),box-shadow 180ms ease !important;
   }
 
   #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label,
   #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .av,
   #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub,
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .verdict{opacity:.72}
-
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label[style*="top:66px"],
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .av-parent[style*="top:120px"],
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-parent[style*="top:106px"],
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label[style*="top:74px"],
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .av-design[style*="top:106px"],
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-design[style*="top:114px"]{opacity:1;filter:brightness(1.035)}
-
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-parent[style*="top:106px"],
-  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-design[style*="top:114px"]{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,197,61,.26),0 9px 24px rgba(0,0,0,.12)}
-
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .verdict,
   #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .who-label,
   #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .av,
   #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub,
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .verdict{opacity:.72}
-
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .who-label[style*="left:664px"][style*="top:282px"],
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .av-parent[style*="top:306px"],
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-parent[style*="top:314px"],
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .who-label[style*="left:1092px"][style*="top:282px"],
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .av-design[style*="top:321px"],
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-design[style*="top:319px"]{opacity:1;filter:brightness(1.035)}
-
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-parent[style*="top:314px"],
-  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-design[style*="top:319px"]{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,197,61,.26),0 9px 24px rgba(0,0,0,.12)}
-
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .verdict,
   #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .who-label,
   #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .av,
   #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .bub,
-  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{opacity:.72}
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{
+    opacity:.90;
+  }
 
-  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .who-label[style*="top:481px"],
-  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .av-parent[style*="top:505px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-parent[style*="top:106px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-design[style*="top:114px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-parent[style*="top:314px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-design[style*="top:319px"],
   #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .bub-parent[style*="top:513px"],
-  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{opacity:1;filter:brightness(1.035)}
-
-  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .bub-parent[style*="top:513px"],
-  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,197,61,.18),0 0 22px rgba(255,197,61,.07)}
-
-  /* Guardian One conclusion appears last; icon draws once on entry. */
-  #scene-2.is-current .verdict .g1-mark path,
-  #scene-2.is-current .verdict .g1-mark circle{stroke-dasharray:180;stroke-dashoffset:180;animation:s2-shield 520ms cubic-bezier(.22,.61,.36,1) 1160ms forwards}
-
-  body.cs-scene-2 .cs-upnext{transition:transform 180ms cubic-bezier(.22,.61,.36,1),border-color 180ms ease,box-shadow 180ms ease}
-  body.cs-scene-2 .cs-upnext:hover,body.cs-scene-2 .cs-upnext:focus-visible{transform:translateY(-2px);border-color:rgba(255,197,61,.45);box-shadow:0 0 18px rgba(255,197,61,.08)}
-  body.cs-scene-2 .cs-upnext > span:last-child{display:inline-block;transition:transform 180ms ease}
-  body.cs-scene-2 .cs-upnext:hover > span:last-child,body.cs-scene-2 .cs-upnext:focus-visible > span:last-child{transform:translateX(3px)}
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{
+    opacity:1 !important;
+    filter:brightness(1.025);
+    transform:translateY(-1px);
+    box-shadow:0 0 0 1px rgba(255,197,61,.14),0 8px 20px rgba(0,0,0,.10) !important;
+  }
 }
 
-@keyframes s2-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes s2-pop{from{opacity:0;transform:translateY(6px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes s2-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s2-pop{from{opacity:0;transform:translateY(5px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes s2-left{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
 @keyframes s2-right{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 @keyframes s2-fade{from{opacity:0}to{opacity:1}}
-@keyframes s2-verdict{0%{opacity:0;transform:translateY(8px);box-shadow:0 0 0 rgba(255,197,61,0)}70%{opacity:1;transform:translateY(0);box-shadow:0 0 24px rgba(255,197,61,.10)}100%{opacity:1;transform:translateY(0);box-shadow:0 0 0 rgba(255,197,61,0)}}
-@keyframes s2-shield{to{stroke-dashoffset:0}}
+@keyframes s2-verdict{0%{opacity:0;transform:translateY(6px);box-shadow:0 0 0 rgba(255,197,61,0)}70%{opacity:1;transform:translateY(0);box-shadow:0 0 20px rgba(255,197,61,.08)}100%{opacity:1;transform:translateY(0);box-shadow:0 0 0 rgba(255,197,61,0)}}
 
 @media (prefers-reduced-motion:reduce){
-  #scene-2 *,#scene-2::before,body.cs-scene-2 .cs-upnext{animation:none!important;transition:none!important}
+  #scene-2 *,#scene-2::before,#scene-2::after,body.cs-page.cs-scene-2 .cs-upnext{
+    animation:none !important;
+    transition:none !important;
+  }
 }
