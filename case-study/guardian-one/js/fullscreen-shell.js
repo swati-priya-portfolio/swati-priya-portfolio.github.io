@@ -36,6 +36,7 @@
       root.style.removeProperty("--cs-scene-top");
       root.style.removeProperty("--cs-stage-w");
       root.style.removeProperty("--cs-stage-h");
+      root.style.removeProperty("--cs-stage-shift-y");
       return;
     }
 
@@ -44,13 +45,23 @@
     var rect=header ? header.getBoundingClientRect() : {bottom:66,height:54};
     var navBottom=Math.ceil(rect.bottom || rect.height || 66);
     var railTop=navBottom+14;
-    var sceneTop=railTop+24+12;
-    var bottomSafe=12;
+    var isSceneTwo=body.classList.contains("cs-scene-2");
+
+    /* Scene 02's Figma topbar occupies the first ~40px of the original frame.
+       Our real case-study rail already renders that information above the stage,
+       so crop only that empty/topbar band for Scene 02. This lets the design render
+       larger without changing any internal Figma coordinates or touching Scene 01. */
+    var cropTop=isSceneTwo ? 40 : 0;
+    var designH=700-cropTop;
+    var railGap=isSceneTwo ? 6 : 12;
+    var sceneTop=railTop+24+railGap;
+    var bottomSafe=isSceneTwo ? 6 : 12;
     var usableW=Math.min(1440,Math.max(720,innerWidth-80));
     var usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
-    var scale=Math.min(1,usableW/1440,usableH/700);
+    var scale=Math.min(1,usableW/1440,usableH/designH);
     var stageW=1440*scale;
-    var stageH=700*scale;
+    var stageH=designH*scale;
+    var shiftY=-(cropTop*scale);
 
     root.style.setProperty("--cs-head",navBottom+"px");
     root.style.setProperty("--cs-rail-top",railTop+"px");
@@ -58,6 +69,7 @@
     root.style.setProperty("--cs-scale",scale.toFixed(4));
     root.style.setProperty("--cs-stage-w",stageW.toFixed(2)+"px");
     root.style.setProperty("--cs-stage-h",stageH.toFixed(2)+"px");
+    root.style.setProperty("--cs-stage-shift-y",shiftY.toFixed(2)+"px");
 
     if(shell){
       shell.style.width=stageW.toFixed(2)+"px";
