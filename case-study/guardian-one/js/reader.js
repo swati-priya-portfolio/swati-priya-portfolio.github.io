@@ -20,7 +20,7 @@
   var mobilePrev=document.querySelector(".cs-mobile-prev");
   var mobileNext=document.querySelector(".cs-mobile-next");
   var mobilePosition=document.querySelector(".cs-mobile-position");
-  var current=0, scenes=[], busy=false, startX=0;
+  var current=0, scenes=[], startX=0;
 
   function fit(){
     var header=document.querySelector(".site-header");
@@ -31,18 +31,20 @@
 
     if(compact){
       document.documentElement.style.setProperty("--cs-scale","1");
+      document.documentElement.style.removeProperty("--cs-topbar-top");
       return;
     }
 
     /* Desktop fidelity is measured against the actual 1440×700 Figma frame.
-       The old calculation subtracted the website header and an extra 74px,
-       which forced the entire case study to ~75–85% scale and made every
-       heading, annotation and product screen look miniaturised. */
+       The former layout subtracted the website header and another 74px before
+       fitting the frame. That shrank every scene even at the requested
+       1440×700 QA viewport. */
     var roomW=Math.max(320,innerWidth);
     var roomH=Math.max(280,innerHeight);
     var scale=Math.min(1,roomW/1440,roomH/700);
+    var stageTop=(innerHeight-(700*scale))/2;
     document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
-    document.documentElement.style.setProperty("--cs-bar",(1340*scale).toFixed(2)+"px");
+    document.documentElement.style.setProperty("--cs-topbar-top",(stageTop+(40*scale)).toFixed(2)+"px");
   }
 
   function indexFromHash(){
