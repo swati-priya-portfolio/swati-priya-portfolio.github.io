@@ -1,7 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2561 1226" preserveAspectRatio="none">
   <defs>
-    <radialGradient id="g" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="#3D5AD9" stop-opacity="0.5"/>
+    <radialGradient id="g" cx="54%" cy="45%" r="58%">
+      <stop offset="0" stop-color="#2A438D" stop-opacity="0.50"/>
+      <stop offset="0.28" stop-color="#21366F" stop-opacity="0.40"/>
+      <stop offset="0.52" stop-color="#19284F" stop-opacity="0.30"/>
+      <stop offset="0.72" stop-color="#141A32" stop-opacity="0.16"/>
       <stop offset="1" stop-color="#17120B" stop-opacity="0"/>
     </radialGradient>
   </defs>
