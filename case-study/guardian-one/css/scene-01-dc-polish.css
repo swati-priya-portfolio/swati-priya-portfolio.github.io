@@ -1,0 +1,56 @@
+/* Scene 01 micro-polish layered on the preferred dc54236 layout.
+   Scope is intentionally tiny: remove the odd line-art, tighten spacing slightly,
+   ground the existing Bitmoji at the bottom, and add a soft warm glow. */
+
+@media (min-width: 900px) {
+  /* Remove the faint shield/line-art that reads like a random outline. */
+  #scene-1 .scene1-understory {
+    display: none !important;
+  }
+
+  /* Keep the preferred browser-first composition; only tighten the central stack a touch. */
+  #scene-1 .scene1-center {
+    top: clamp(12px, 2.8vh, 28px) !important;
+  }
+  #scene-1 .scene1-center .cs-h1 {
+    margin-top: clamp(7px, .9vh, 11px) !important;
+  }
+  #scene-1 .scene1-center .lede {
+    margin-top: clamp(7px, 1vh, 12px) !important;
+  }
+  #scene-1 .scene1-center .dur {
+    margin-top: clamp(6px, .85vh, 10px) !important;
+  }
+  #scene-1 .scene1-center .chips {
+    margin-top: clamp(8px, 1.15vh, 13px) !important;
+  }
+
+  /* Ground the existing narrator composition at the bottom without changing the pose. */
+  #scene-1 .cs-narrator-pair {
+    bottom: 0 !important;
+  }
+  #scene-1 .cs-narrator {
+    transform: translateY(10px) !important;
+  }
+
+  /* Soft yellow/amber ambience behind the Bitmoji, with a broad gentle falloff. */
+  #scene-1::before {
+    content: "";
+    position: absolute;
+    left: -180px;
+    bottom: -250px;
+    width: 760px;
+    height: 660px;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 38% 48%, rgba(255,197,61,.17) 0%, rgba(164,103,34,.10) 34%, rgba(86,50,21,.045) 55%, rgba(18,16,12,0) 76%);
+    filter: blur(10px);
+  }
+
+  #scene-1 .scene1-center,
+  #scene-1 .cs-narrator-pair,
+  #scene-1 .cs-keys,
+  #scene-1 .hint {
+    z-index: 2;
+  }
+}
