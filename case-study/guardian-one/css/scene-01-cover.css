@@ -1,6 +1,14 @@
 /* Guardian One — Scene 01 single source of truth.
-   Desktop keeps the compact portfolio navbar + real case-study rail outside
-   one 1440×700 Figma-composed artboard. Only Scene 01 is styled here. */
+   The compact portfolio navbar + real case-study rail stay outside this scene.
+   Scene 01 owns one 1440×700 artboard, scaled uniformly below that chrome. */
+
+:root {
+  --scene1-ease: cubic-bezier(.22,.61,.36,1);
+  --scene1-scale: 1;
+  --scene1-stage-w: 1440px;
+  --scene1-stage-h: 700px;
+  --scene1-stage-top: 112px;
+}
 
 @media (min-width: 900px) {
   body.cs-page.cs-scene-1,
@@ -8,16 +16,21 @@
     overflow: hidden !important;
   }
 
-  /* The shared fullscreen shell computes --cs-scene-top / --cs-scale / stage size.
-     Scene 01 simply consumes those values, just like the other fixed chapters. */
+  body.cs-page.cs-scene-1 .cs-reader {
+    overflow: hidden !important;
+    background: #17120b !important;
+  }
+
+  /* IMPORTANT: outer shell is centred once; inner artboard scales from top-left.
+     No second translate/centering transform, which caused the cropped half-scene. */
   body.cs-page.cs-scene-1 .cs-stage-shell {
     position: fixed !important;
     left: 50% !important;
-    top: var(--cs-scene-top, 112px) !important;
+    top: var(--scene1-stage-top) !important;
     right: auto !important;
     bottom: auto !important;
-    width: var(--cs-stage-w, 1200px) !important;
-    height: var(--cs-stage-h, 583px) !important;
+    width: var(--scene1-stage-w) !important;
+    height: var(--scene1-stage-h) !important;
     margin: 0 !important;
     overflow: hidden !important;
     transform: translateX(-50%) !important;
@@ -25,15 +38,15 @@
 
   body.cs-page.cs-scene-1 .cs-stage {
     position: absolute !important;
-    left: 50% !important;
+    left: 0 !important;
     top: 0 !important;
     inset: auto !important;
     width: 1440px !important;
     height: 700px !important;
     padding: 0 !important;
     overflow: hidden !important;
-    transform: translateX(-50%) scale(var(--cs-scale, 1)) !important;
-    transform-origin: center top !important;
+    transform: scale(var(--scene1-scale)) !important;
+    transform-origin: top left !important;
   }
 
   body.cs-page.cs-scene-1 #scene-1.scene1-final {
@@ -48,7 +61,7 @@
     text-align: center;
   }
 
-  /* Exact Figma lighting from nodes 5:9165 and 5:9168, stored locally as SVG. */
+  /* Exact Figma lighting from nodes 5:9165 + 5:9168. */
   #scene-1 .scene1-bg {
     position: absolute;
     display: block;
@@ -57,711 +70,216 @@
     user-select: none;
     z-index: 0;
   }
+  #scene-1 .scene1-bg--navy { left: -560px; top: -263px; width: 2561px; height: 1226px; }
+  #scene-1 .scene1-bg--warm { left: -340px; top: 166px; width: 1009px; height: 866px; }
 
-  #scene-1 .scene1-bg--navy {
-    left: -560px;
-    top: -263px;
-    width: 2561px;
-    height: 1226px;
+  /* Previous hover-reveal interaction restored, kept extremely subtle. */
+  #scene-1 .scene1-understory {
+    --reveal-x: 720px;
+    --reveal-y: 320px;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 1440px;
+    height: 700px;
+    pointer-events: none;
+    opacity: .025;
+    -webkit-mask-image: radial-gradient(circle 165px at var(--reveal-x) var(--reveal-y), #000 0 44%, rgba(0,0,0,.72) 68%, transparent 100%);
+            mask-image: radial-gradient(circle 165px at var(--reveal-x) var(--reveal-y), #000 0 44%, rgba(0,0,0,.72) 68%, transparent 100%);
+    transition: opacity 220ms ease;
+  }
+  #scene-1.is-revealing .scene1-understory { opacity: .14; }
+  #scene-1 .scene1-understory svg { display:block; width:100%; height:100%; }
+  #scene-1 .scene1-understory-lines {
+    fill: none;
+    stroke: rgba(245,239,227,.70);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  #scene-1 .scene1-understory .accent-line { stroke: rgba(255,197,61,.76); }
+  #scene-1 .scene1-understory text {
+    fill: rgba(255,197,61,.72);
+    font: 500 17px "IBM Plex Mono", monospace;
+    letter-spacing: .14em;
   }
 
-  #scene-1 .scene1-bg--warm {
-    left: -340px;
-    top: 166px;
-    width: 1009px;
-    height: 866px;
-  }
-
-  /* Figma hero geometry: 20 / 20 / 20 / 54 spacing is encoded by coordinates. */
+  /* Figma hero geometry. */
   #scene-1 .scene1-kicker {
-    position: absolute;
-    left: 586px;
-    top: 105px;
-    z-index: 2;
-    box-sizing: border-box;
-    width: 268px;
-    height: 37px;
-    margin: 0;
-    padding: 10px 20px;
-    border: 1.5px solid #3a3020;
-    border-radius: 100px;
-    background: #2a2214;
-    color: #f5efe3;
-    font: 500 13px/17px "IBM Plex Mono", monospace;
-    letter-spacing: .65px;
-    white-space: nowrap;
+    position: absolute; left: 586px; top: 105px; z-index: 3;
+    box-sizing: border-box; width: 268px; height: 37px; margin: 0; padding: 10px 20px;
+    border: 1.5px solid #3a3020; border-radius: 100px; background: #2a2214; color: #f5efe3;
+    font: 500 13px/17px "IBM Plex Mono", monospace; letter-spacing: .65px; white-space: nowrap;
   }
-
   #scene-1 .scene1-title {
-    position: absolute;
-    left: 337px;
-    top: 162px;
-    z-index: 2;
-    width: 766px;
-    height: 113px;
-    margin: 0;
-    color: #f5efe3;
-    font: 400 104px/112.32px "Archivo Black", sans-serif;
-    letter-spacing: -1.04px;
-    white-space: nowrap;
+    position: absolute; left: 337px; top: 162px; z-index: 3;
+    width: 766px; height: 113px; margin: 0; color: #f5efe3;
+    font: 400 104px/112.32px "Archivo Black", sans-serif; letter-spacing: -1.04px; white-space: nowrap;
+    transition: transform 220ms var(--scene1-ease), letter-spacing 220ms var(--scene1-ease);
   }
-
+  @media (hover:hover) and (pointer:fine) {
+    #scene-1 .scene1-title:hover { transform: translateY(-1px); letter-spacing: -.45px; }
+  }
   #scene-1 .scene1-lede {
-    position: absolute;
-    left: 252px;
-    top: 295px;
-    z-index: 2;
-    width: 936px;
-    height: 54px;
-    margin: 0;
-    color: #ffc53d;
-    font: 400 18px/27px Inter, sans-serif;
-    letter-spacing: 0;
-    text-align: center;
+    position: absolute; left: 252px; top: 295px; z-index: 3;
+    width: 936px; height: 54px; margin: 0; color: #ffc53d;
+    font: 400 18px/27px Inter, sans-serif; text-align: center;
   }
-
   #scene-1 .scene1-duration {
-    position: absolute;
-    left: 641px;
-    top: 369px;
-    z-index: 2;
-    width: 158px;
-    height: 18px;
-    margin: 0;
-    color: #9a8f79;
-    font: 500 14px/18px "IBM Plex Mono", monospace;
-    letter-spacing: .84px;
-    white-space: nowrap;
+    position: absolute; left: 641px; top: 369px; z-index: 3;
+    width: 158px; height: 18px; margin: 0; color: #9a8f79;
+    font: 500 14px/18px "IBM Plex Mono", monospace; letter-spacing: .84px; white-space: nowrap;
   }
 
   #scene-1 .scene1-metrics {
-    position: absolute;
-    left: 498.5px;
-    top: 441px;
-    z-index: 2;
-    display: flex;
-    width: 443px;
-    height: 52px;
-    margin: 0;
-    gap: 12px;
+    position: absolute; left: 498.5px; top: 441px; z-index: 3;
+    display: flex; width: 443px; height: 52px; margin: 0; gap: 12px;
   }
-
   #scene-1 .scene1-metric {
-    box-sizing: border-box;
-    flex: none;
-    height: 52px;
-    padding: 10px 16px;
-    overflow: hidden;
-    border: 1px solid #3a3020;
-    border-radius: 10px;
-    background: #221b10;
-    text-align: left;
-    transition:
-      transform 220ms cubic-bezier(.22,.61,.36,1),
-      border-color 220ms cubic-bezier(.22,.61,.36,1),
-      background 220ms cubic-bezier(.22,.61,.36,1);
+    box-sizing: border-box; flex: none; height: 52px; padding: 10px 16px; overflow: hidden;
+    border: 1px solid #3a3020; border-radius: 10px; background: #221b10; text-align: left;
+    transition: transform 220ms var(--scene1-ease), border-color 220ms var(--scene1-ease), background 220ms var(--scene1-ease);
   }
-
   #scene-1 .scene1-metric--live { width: 142px; }
   #scene-1 .scene1-metric--zero { width: 153px; }
   #scene-1 .scene1-metric--reach { width: 124px; }
-
-  #scene-1 .scene1-metric strong {
-    display: block;
-    margin: 0;
-    font: 700 15px/18px Inter, sans-serif;
-  }
-
-  #scene-1 .scene1-metric--live strong { color: #3dd68c; }
-  #scene-1 .scene1-metric--zero strong,
-  #scene-1 .scene1-metric--reach strong { color: #ffc53d; }
-
-  #scene-1 .scene1-metric span {
-    display: block;
-    margin-top: 2px;
-    color: #9a8f79;
-    font: 500 9px/12px "IBM Plex Mono", monospace;
-    letter-spacing: .36px;
-    white-space: nowrap;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    #scene-1 .scene1-metric:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255,197,61,.48);
-      background: #271f12;
-    }
-  }
-
-  /* Exact Figma image crop for node 5:9169. The local file is the raw source. */
-  #scene-1 .scene1-bitmoji-frame {
-    position: absolute;
-    left: 25px;
-    top: 424px;
-    z-index: 3;
-    width: 231px;
-    height: 273px;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  #scene-1 .scene1-bitmoji-frame img {
-    position: absolute;
-    left: -31.6%;
-    top: -20.88%;
-    width: 152.81%;
-    height: 129.3%;
-    max-width: none;
-    object-fit: fill;
-  }
-
-  /* Bubble and tail are independently positioned, matching the Figma composition. */
-  #scene-1 .scene1-note {
-    position: absolute;
-    left: 215px;
-    top: 517px;
-    z-index: 5;
-    box-sizing: border-box;
-    width: 263px;
-    height: 120px;
-    margin: 0;
-    padding: 12.046px 16.564px;
-    overflow: hidden;
-    border-radius: 4.517px;
-    background: #f5efe3;
-    color: #17120b;
-    font: 400 19.165px/24.64px Caveat, cursive;
-    text-align: left;
-    box-shadow: 2.259px 3.012px 0 rgba(0,0,0,.35);
-  }
-
-  #scene-1 .scene1-note-tail {
-    position: absolute;
-    left: 207px;
-    top: 556.15px;
-    z-index: 5;
-    display: block;
-    width: 11.293px;
-    height: 17.317px;
-    pointer-events: none;
-  }
-
-  /* Lower-right keyboard mirrors Figma node 5:9192. */
-  #scene-1 .scene1-keys {
-    position: absolute;
-    left: 1162px;
-    top: 424px;
-    z-index: 6;
-    display: flex;
-    width: 216.804px;
-    height: 177.26px;
-    margin: 0;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    transform: rotate(2deg);
-    transform-origin: center;
-  }
-
-  #scene-1 .scene1-keycaps {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  #scene-1 .scene1-key-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  #scene-1 .scene1-key {
-    display: grid;
-    place-items: center;
-    box-sizing: border-box;
-    width: 46px;
-    height: 46px;
-    min-width: 46px;
-    min-height: 46px;
-    padding: 0;
-    border: 2px solid #3a3020;
-    border-radius: 10px;
-    background: #2a2214;
-    color: #ffc53d;
-    font: 700 18px/1 Inter, sans-serif;
-    cursor: pointer;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    transition:
-      transform 180ms cubic-bezier(.22,.61,.36,1),
-      border-color 180ms cubic-bezier(.22,.61,.36,1),
-      background 180ms cubic-bezier(.22,.61,.36,1),
-      box-shadow 180ms cubic-bezier(.22,.61,.36,1),
-      filter 180ms cubic-bezier(.22,.61,.36,1);
-  }
-
-  #scene-1 .scene1-key--next {
-    border-color: #ffc53d;
-    background: #ffc53d;
-    color: #17120b;
-    animation: scene1-next-pulse 2.4s ease-in-out 1s infinite;
-    will-change: transform, box-shadow, filter;
-  }
-
-  #scene-1 .scene1-key:not(.scene1-key--next) {
-    animation: none;
-    box-shadow: none;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    #scene-1 .scene1-key--next:hover,
-    #scene-1 .scene1-key--next:focus-visible {
-      animation-play-state: paused;
-      transform: translateY(-3px) scale(1.05);
-      filter: brightness(1.06);
-      box-shadow:
-        0 0 0 6px rgba(255,197,61,.12),
-        0 0 24px rgba(255,197,61,.34),
-        0 0 34px rgba(255,197,61,.14);
-    }
-  }
-
-  #scene-1 .scene1-key:focus-visible {
-    outline: 2px solid #ffc53d;
-    outline-offset: 3px;
-  }
-
-  #scene-1 .scene1-key:active,
-  #scene-1 .scene1-key--next.is-pressing {
-    animation-play-state: paused;
-    transform: translateY(1px) scale(.96);
-    transition-duration: 90ms;
-  }
-
-  #scene-1 .scene1-key-help {
-    box-sizing: border-box;
-    display: flex;
-    width: 212.896px;
-    height: 65.328px;
-    margin: 0;
-    padding: 12px 16px;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-    overflow: hidden;
-    border-radius: 12px;
-    background: #fff7dc;
-    color: #17120b;
-    white-space: nowrap;
-  }
-
-  #scene-1 .scene1-key-help strong {
-    font: 700 14px/17px Inter, sans-serif;
-  }
-
-  #scene-1 .scene1-key-help em {
-    color: #3c4569;
-    font: italic 400 13px/16px Inter, sans-serif;
-  }
-
-  #scene-1 .scene1-continue {
-    position: absolute;
-    left: 611px;
-    top: 650px;
-    z-index: 6;
-    width: 218px;
-    height: 14px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #6e6552;
-    font: 500 11px/14px "IBM Plex Mono", monospace;
-    letter-spacing: .66px;
-    white-space: pre;
-    cursor: pointer;
-    appearance: none;
-    transition: color 180ms ease, opacity 180ms ease;
-  }
-
-  #scene-1 .scene1-continue:hover,
-  #scene-1 .scene1-continue:focus-visible {
-    color: #9a8f79;
-  }
-
-  #scene-1 .scene1-continue:focus-visible {
-    outline: 1px solid rgba(255,197,61,.7);
-    outline-offset: 5px;
-  }
-
-  /* Scene 01 entrance motion: quiet, fast, and complete in under ~1.2s. */
-  body.scene1-enter #scene-1.is-current .scene1-kicker {
-    animation: scene1-rise 380ms cubic-bezier(.22,.61,.36,1) 40ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-title {
-    animation: scene1-rise 440ms cubic-bezier(.22,.61,.36,1) 90ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-lede {
-    animation: scene1-rise 420ms cubic-bezier(.22,.61,.36,1) 150ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-duration {
-    animation: scene1-fade 320ms ease 210ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-metric:nth-child(1) {
-    animation: scene1-rise 360ms cubic-bezier(.22,.61,.36,1) 260ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-metric:nth-child(2) {
-    animation: scene1-rise 360ms cubic-bezier(.22,.61,.36,1) 310ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-metric:nth-child(3) {
-    animation: scene1-rise 360ms cubic-bezier(.22,.61,.36,1) 360ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-bitmoji-frame {
-    animation: scene1-left-in 430ms cubic-bezier(.22,.61,.36,1) 400ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-note,
-  body.scene1-enter #scene-1.is-current .scene1-note-tail {
-    animation: scene1-left-in 400ms cubic-bezier(.22,.61,.36,1) 470ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-keys {
-    animation: scene1-keyboard-in 430ms cubic-bezier(.22,.61,.36,1) 450ms both;
-  }
-  body.scene1-enter #scene-1.is-current .scene1-continue {
-    animation: scene1-fade 360ms ease 620ms both;
-  }
-
-  @keyframes scene1-rise {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes scene1-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes scene1-left-in {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  @keyframes scene1-keyboard-in {
-    from { opacity: 0; transform: translateX(10px) rotate(2deg); }
-    to { opacity: 1; transform: translateX(0) rotate(2deg); }
-  }
-}
-
-/* Keep the current mobile/portrait reading experience; this pass is desktop Scene 01 only. */
-
-
-@media (max-width: 899px) {
-  #scene-1.scene1-final {
-    position: relative;
-    min-height: 100vh;
-    padding: 112px 20px 110px;
-    overflow: hidden;
-    background: #17120b;
-    color: #f5efe3;
-    text-align: center;
-  }
-  #scene-1 .scene1-bg { position: absolute; max-width: none; pointer-events: none; }
-  #scene-1 .scene1-bg--navy { left: -95%; top: -8%; width: 300%; height: 120%; }
-  #scene-1 .scene1-bg--warm { left: -120%; bottom: -25%; width: 240%; height: 95%; }
-
-  #scene-1 .scene1-kicker,
-  #scene-1 .scene1-title,
-  #scene-1 .scene1-lede,
-  #scene-1 .scene1-duration,
-  #scene-1 .scene1-metrics,
-  #scene-1 .scene1-bitmoji-frame,
-  #scene-1 .scene1-note,
-  #scene-1 .scene1-note-tail,
-  #scene-1 .scene1-keys {
-    position: relative;
-    z-index: 2;
-  }
-
-  #scene-1 .scene1-kicker {
-    display: inline-block;
-    margin: 0 auto 18px;
-    padding: 9px 16px;
-    border: 1.5px solid #3a3020;
-    border-radius: 100px;
-    background: #2a2214;
-    font: 500 11px/15px "IBM Plex Mono", monospace;
-    letter-spacing: .55px;
-    white-space: nowrap;
-  }
-  #scene-1 .scene1-title {
-    margin: 0;
-    font: 400 52px/1 "Archivo Black", sans-serif;
-    letter-spacing: -.8px;
-  }
-  #scene-1 .scene1-lede {
-    max-width: 560px;
-    margin: 18px auto 0;
-    color: #ffc53d;
-    font: 400 16px/24px Inter, sans-serif;
-  }
-  #scene-1 .scene1-duration {
-    margin: 18px 0 0;
-    color: #9a8f79;
-    font: 500 12px/16px "IBM Plex Mono", monospace;
-    letter-spacing: .6px;
-  }
-  #scene-1 .scene1-metrics {
-    display: grid;
-    max-width: 430px;
-    margin: 34px auto 0;
-    grid-template-columns: repeat(3,minmax(0,1fr));
-    gap: 8px;
-  }
-  #scene-1 .scene1-metric {
-    min-width: 0;
-    padding: 9px 10px;
-    border: 1px solid #3a3020;
-    border-radius: 10px;
-    background: #221b10;
-    text-align: left;
-  }
-  #scene-1 .scene1-metric strong { display:block; font:700 13px/17px Inter,sans-serif; }
+  #scene-1 .scene1-metric strong { display:block; margin:0; font:700 15px/18px Inter,sans-serif; }
   #scene-1 .scene1-metric--live strong { color:#3dd68c; }
   #scene-1 .scene1-metric--zero strong,
   #scene-1 .scene1-metric--reach strong { color:#ffc53d; }
-  #scene-1 .scene1-metric span {
-    display:block;
-    margin-top:2px;
-    overflow:hidden;
-    color:#9a8f79;
-    font:500 7px/10px "IBM Plex Mono",monospace;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+  #scene-1 .scene1-metric span { display:block; margin-top:2px; color:#9a8f79; font:500 9px/12px "IBM Plex Mono",monospace; letter-spacing:.36px; white-space:nowrap; }
+  @media (hover:hover) and (pointer:fine) {
+    #scene-1 .scene1-metric:hover { transform:translateY(-3px); border-color:rgba(255,197,61,.48); background:#271f12; }
+    #scene-1 .scene1-metric--live:hover .scene1-live-dot { display:inline-block; animation:scene1-live-pulse 520ms ease-out 1; }
   }
 
+  /* Exact Figma image crop for node 5:9169. */
   #scene-1 .scene1-bitmoji-frame {
-    width: 184px;
-    height: 218px;
-    margin: 34px auto 0;
-    overflow: hidden;
+    position:absolute; left:25px; top:424px; z-index:4; width:231px; height:273px; overflow:hidden; pointer-events:none;
   }
   #scene-1 .scene1-bitmoji-frame img {
-    position:absolute;
-    left:-31.6%;
-    top:-20.88%;
-    width:152.81%;
-    height:129.3%;
-    max-width:none;
+    position:absolute; left:-31.6%; top:-20.88%; width:152.81%; height:129.3%; max-width:none; object-fit:fill;
   }
+
   #scene-1 .scene1-note {
-    box-sizing:border-box;
-    max-width:360px;
-    margin: -20px auto 0;
-    padding:12px 15px;
-    border-radius:5px;
-    background:#f5efe3;
-    color:#17120b;
-    font:400 18px/23px Caveat,cursive;
-    text-align:left;
-    box-shadow:2px 3px 0 rgba(0,0,0,.35);
+    position:absolute; left:215px; top:517px; z-index:6;
+    box-sizing:border-box; width:263px; height:120px; margin:0; padding:12.046px 16.564px; overflow:hidden;
+    border-radius:4.517px; background:#f5efe3; color:#17120b;
+    font:400 19.165px/24.64px Caveat,cursive; text-align:left; box-shadow:2.259px 3.012px 0 rgba(0,0,0,.35);
   }
-  #scene-1 .scene1-note-tail { display:none; }
+  #scene-1 .scene1-note-tail {
+    position:absolute; left:207px; top:556.15px; z-index:6; display:block; width:11.293px; height:17.317px; pointer-events:none;
+  }
 
   #scene-1 .scene1-keys {
-    display:flex;
-    margin:28px auto 0;
-    flex-direction:column;
-    align-items:center;
-    gap:10px;
-    transform:rotate(1deg);
+    position:absolute; left:1162px; top:424px; z-index:7;
+    display:flex; width:216.804px; height:177.26px; margin:0; flex-direction:column; align-items:center; gap:12px;
+    transform:rotate(2deg); transform-origin:center;
   }
-  #scene-1 .scene1-keycaps { display:flex; flex-direction:column; align-items:center; gap:7px; }
-  #scene-1 .scene1-key-row { display:flex; gap:7px; }
+  #scene-1 .scene1-keycaps { display:flex; flex-direction:column; align-items:center; gap:8px; }
+  #scene-1 .scene1-key-row { display:flex; align-items:center; justify-content:center; gap:8px; }
   #scene-1 .scene1-key {
-    display:grid;
-    place-items:center;
-    width:44px;
-    height:44px;
-    padding:0;
-    border:2px solid #3a3020;
-    border-radius:10px;
-    background:#2a2214;
-    color:#ffc53d;
-    font:700 18px/1 Inter,sans-serif;
+    display:grid; place-items:center; box-sizing:border-box; width:46px; height:46px; min-width:46px; min-height:46px;
+    padding:0; border:2px solid #3a3020; border-radius:10px; background:#2a2214; color:#ffc53d;
+    font:700 18px/1 Inter,sans-serif; cursor:pointer; appearance:none; -webkit-tap-highlight-color:transparent;
+    transition:transform 180ms var(--scene1-ease),border-color 180ms var(--scene1-ease),background 180ms var(--scene1-ease),box-shadow 180ms var(--scene1-ease),filter 180ms var(--scene1-ease);
   }
   #scene-1 .scene1-key--next {
-    border-color:#ffc53d;
-    background:#ffc53d;
-    color:#17120b;
-    animation:scene1-next-pulse 2.4s ease-in-out 1s infinite;
+    border-color:#ffc53d; background:#ffc53d; color:#17120b;
+    animation:scene1-next-pulse 2.4s ease-in-out 1s infinite; will-change:transform,box-shadow,filter;
   }
+  #scene-1 .scene1-key:not(.scene1-key--next) { animation:none; box-shadow:none; }
+  @media (hover:hover) and (pointer:fine) {
+    #scene-1 .scene1-key--next:hover,
+    #scene-1 .scene1-key--next:focus-visible {
+      animation-play-state:paused; transform:translateY(-3px) scale(1.05); filter:brightness(1.06);
+      box-shadow:0 0 0 6px rgba(255,197,61,.12),0 0 24px rgba(255,197,61,.34),0 0 34px rgba(255,197,61,.14);
+    }
+  }
+  #scene-1 .scene1-key:focus-visible { outline:2px solid #ffc53d; outline-offset:3px; }
+  #scene-1 .scene1-key:active,
+  #scene-1 .scene1-key--next.is-pressing { animation-play-state:paused; transform:translateY(1px) scale(.96); transition-duration:90ms; }
   #scene-1 .scene1-key-help {
-    margin:0;
-    padding:10px 14px;
-    border-radius:10px;
-    background:#fff7dc;
-    color:#17120b;
+    box-sizing:border-box; display:flex; width:212.896px; height:65.328px; margin:0; padding:12px 16px;
+    flex-direction:column; align-items:center; gap:1px; overflow:hidden; border-radius:12px; background:#fff7dc; color:#17120b; white-space:nowrap;
   }
-  #scene-1 .scene1-key-help strong { display:block; font:700 13px/17px Inter,sans-serif; }
-  #scene-1 .scene1-key-help em { display:block; color:#3c4569; font:italic 400 12px/15px Inter,sans-serif; }
+  #scene-1 .scene1-key-help strong { font:700 14px/17px Inter,sans-serif; }
+  #scene-1 .scene1-key-help em { color:#3c4569; font:italic 400 13px/16px Inter,sans-serif; }
 
-  #scene-1 .scene1-continue { display:none; }
+  #scene-1 .scene1-continue {
+    position:absolute; left:611px; top:650px; z-index:7; width:218px; height:14px; margin:0; padding:0; border:0; background:transparent;
+    color:#6e6552; font:500 11px/14px "IBM Plex Mono",monospace; letter-spacing:.66px; white-space:pre; cursor:pointer; appearance:none;
+    transition:color 180ms ease,opacity 180ms ease;
+  }
+  #scene-1 .scene1-continue:hover,
+  #scene-1 .scene1-continue:focus-visible { color:#9a8f79; }
+
+  /* Entrance motion: starts after the loader begins clearing, so it is visible. */
+  body.scene1-enter #scene-1.is-current .scene1-kicker { animation:scene1-rise 420ms var(--scene1-ease) 0ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-title { animation:scene1-rise 500ms var(--scene1-ease) 55ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-lede { animation:scene1-rise 460ms var(--scene1-ease) 130ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-duration { animation:scene1-fade 340ms ease 210ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-metric:nth-child(1) { animation:scene1-rise 380ms var(--scene1-ease) 260ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-metric:nth-child(2) { animation:scene1-rise 380ms var(--scene1-ease) 315ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-metric:nth-child(3) { animation:scene1-rise 380ms var(--scene1-ease) 370ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-bitmoji-frame { animation:scene1-left-in 470ms var(--scene1-ease) 410ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-note,
+  body.scene1-enter #scene-1.is-current .scene1-note-tail { animation:scene1-left-in 440ms var(--scene1-ease) 490ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-keys { animation:scene1-keyboard-in 470ms var(--scene1-ease) 455ms both; }
+  body.scene1-enter #scene-1.is-current .scene1-continue { animation:scene1-fade 380ms ease 690ms both; }
 }
 
-
+@keyframes scene1-rise { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes scene1-fade { from{opacity:0} to{opacity:1} }
+@keyframes scene1-left-in { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
+@keyframes scene1-keyboard-in { from{opacity:0;transform:translateX(12px) rotate(2deg)} to{opacity:1;transform:translateX(0) rotate(2deg)} }
+@keyframes scene1-live-pulse { 0%{transform:scale(1);filter:brightness(1)} 45%{transform:scale(1.34);filter:brightness(1.2)} 100%{transform:scale(1);filter:brightness(1)} }
 @keyframes scene1-next-pulse {
-  0%, 21%, 100% {
-    transform: translateY(0) scale(1);
-    filter: brightness(1);
-    box-shadow: 0 0 0 0 rgba(255,197,61,0);
-  }
-  6% {
-    transform: translateY(-3px) scale(1.07);
-    filter: brightness(1.07);
-    box-shadow:
-      0 0 0 5px rgba(255,197,61,.10),
-      0 0 18px rgba(255,197,61,.28),
-      0 0 32px rgba(255,197,61,.12);
-  }
-  12% {
-    transform: translateY(-1px) scale(1.03);
-    filter: brightness(1.035);
-    box-shadow:
-      0 0 0 4px rgba(255,197,61,.08),
-      0 0 14px rgba(255,197,61,.20),
-      0 0 24px rgba(255,197,61,.08);
-  }
+  0%,21%,100%{transform:translateY(0) scale(1);filter:brightness(1);box-shadow:0 0 0 0 rgba(255,197,61,0)}
+  6%{transform:translateY(-3px) scale(1.07);filter:brightness(1.07);box-shadow:0 0 0 5px rgba(255,197,61,.10),0 0 18px rgba(255,197,61,.28),0 0 32px rgba(255,197,61,.12)}
+  12%{transform:translateY(-1px) scale(1.03);filter:brightness(1.035);box-shadow:0 0 0 4px rgba(255,197,61,.08),0 0 14px rgba(255,197,61,.20),0 0 24px rgba(255,197,61,.08)}
 }
 
-/* Short comic loader kept intentionally lightweight. */
-.scene1-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: #09090b;
-  color: #f5efe3;
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 320ms cubic-bezier(.22,.61,.36,1), opacity 240ms linear;
-}
-.scene1-loader[hidden] { display: none; }
-.scene1-loader.is-leaving {
-  clip-path: inset(0 0 100% 0);
-  opacity: .98;
-  pointer-events: none;
-}
-.scene1-loader__web {
-  position: absolute;
-  left: 50%;
-  top: -8px;
-  width: 1px;
-  height: min(42vh, 330px);
-  transform-origin: top;
-  background: linear-gradient(#f5efe3, rgba(245,239,227,.35));
-  animation: scene1-web 760ms cubic-bezier(.22,.61,.36,1) both;
-}
-.scene1-loader__slinger {
-  position: absolute;
-  left: 50%;
-  bottom: -30px;
-  width: 30px;
-  height: 40px;
-  transform: translateX(-50%) rotate(8deg);
-}
-.scene1-loader__slinger::before,
-.scene1-loader__slinger::after {
-  content: "";
-  position: absolute;
-  background: #f5efe3;
-}
-.scene1-loader__slinger::before {
-  left: 9px;
-  top: 0;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  box-shadow: 0 14px 0 2px #f5efe3;
-}
-.scene1-loader__slinger::after {
-  left: 15px;
-  top: 11px;
-  width: 2px;
-  height: 27px;
-  border-radius: 2px;
-  transform: rotate(-12deg);
-  box-shadow: -8px 11px 0 -0.4px #f5efe3, 8px 12px 0 -0.4px #f5efe3;
-}
-.scene1-loader__tab {
-  position: absolute;
-  left: 50%;
-  top: calc(50% - 52px);
-  padding: 7px 12px;
-  transform: translateX(-50%) rotate(-1deg);
-  border: 1px solid rgba(255,197,61,.68);
-  border-radius: 4px;
-  background: #ffc53d;
-  color: #17120b;
-  font: 600 10px/1 "IBM Plex Mono", monospace;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  box-shadow: 3px 4px 0 rgba(0,0,0,.28);
-  animation: scene1-tab 720ms cubic-bezier(.22,.61,.36,1) both;
-}
-.scene1-loader__copy {
-  position: relative;
-  z-index: 2;
-  display: grid;
-  width: min(310px, calc(100vw - 48px));
-  gap: 10px;
-  margin-top: 66px;
-  color: rgba(245,239,227,.72);
-  font: 500 10px/1.2 "IBM Plex Mono", monospace;
-  letter-spacing: .1em;
-  text-align: center;
-  text-transform: uppercase;
-}
-.scene1-loader__bar {
-  position: relative;
-  display: block;
-  height: 3px;
-  overflow: hidden;
-  border-radius: 99px;
-  background: rgba(245,239,227,.12);
-}
-.scene1-loader__bar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: #ffc53d;
-  transform-origin: left center;
-  animation: scene1-load 680ms cubic-bezier(.22,.61,.36,1) both;
+/* Mobile/portrait keeps a readable non-scaled layout. */
+@media (max-width: 899px) {
+  #scene-1.scene1-final { position:relative; min-height:100vh; padding:112px 20px 110px; overflow:hidden; background:#17120b; color:#f5efe3; text-align:center; }
+  #scene-1 .scene1-bg { position:absolute; max-width:none; pointer-events:none; }
+  #scene-1 .scene1-bg--navy { left:-95%; top:-8%; width:300%; height:120%; }
+  #scene-1 .scene1-bg--warm { left:-120%; bottom:-25%; width:240%; height:95%; }
+  #scene-1 .scene1-understory { display:none; }
+  #scene-1 .scene1-kicker { display:inline-block; margin:0 auto 18px; padding:9px 16px; border:1.5px solid #3a3020; border-radius:100px; background:#2a2214; font:500 11px/15px "IBM Plex Mono",monospace; letter-spacing:.55px; white-space:nowrap; position:relative; z-index:2; }
+  #scene-1 .scene1-title { position:relative; z-index:2; margin:0; font:400 52px/1 "Archivo Black",sans-serif; letter-spacing:-.8px; }
+  #scene-1 .scene1-lede { position:relative; z-index:2; max-width:560px; margin:18px auto 0; color:#ffc53d; font:400 16px/24px Inter,sans-serif; }
+  #scene-1 .scene1-duration { position:relative; z-index:2; margin:18px 0 0; color:#9a8f79; font:500 12px/16px "IBM Plex Mono",monospace; letter-spacing:.6px; }
+  #scene-1 .scene1-metrics { position:relative; z-index:2; display:grid; max-width:430px; margin:34px auto 0; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+  #scene-1 .scene1-metric { min-width:0; padding:9px 10px; border:1px solid #3a3020; border-radius:10px; background:#221b10; text-align:left; }
+  #scene-1 .scene1-metric strong { display:block; font:700 13px/17px Inter,sans-serif; }
+  #scene-1 .scene1-metric--live strong{color:#3dd68c} #scene-1 .scene1-metric--zero strong,#scene-1 .scene1-metric--reach strong{color:#ffc53d}
+  #scene-1 .scene1-metric span{display:block;margin-top:2px;overflow:hidden;color:#9a8f79;font:500 7px/10px "IBM Plex Mono",monospace;text-overflow:ellipsis;white-space:nowrap}
+  #scene-1 .scene1-bitmoji-frame { position:relative; z-index:2; width:184px; height:218px; margin:34px auto 0; overflow:hidden; }
+  #scene-1 .scene1-bitmoji-frame img{position:absolute;left:-31.6%;top:-20.88%;width:152.81%;height:129.3%;max-width:none}
+  #scene-1 .scene1-note { position:relative; z-index:2; box-sizing:border-box; max-width:360px; margin:-20px auto 0; padding:12px 15px; border-radius:5px; background:#f5efe3;color:#17120b;font:400 18px/23px Caveat,cursive;text-align:left;box-shadow:2px 3px 0 rgba(0,0,0,.35)}
+  #scene-1 .scene1-note-tail{display:none}
+  #scene-1 .scene1-keys{position:relative;z-index:2;display:flex;margin:28px auto 0;flex-direction:column;align-items:center;gap:10px;transform:rotate(1deg)}
+  #scene-1 .scene1-keycaps{display:flex;flex-direction:column;align-items:center;gap:7px} #scene-1 .scene1-key-row{display:flex;gap:7px}
+  #scene-1 .scene1-key{display:grid;place-items:center;width:44px;height:44px;padding:0;border:2px solid #3a3020;border-radius:10px;background:#2a2214;color:#ffc53d;font:700 18px/1 Inter,sans-serif}
+  #scene-1 .scene1-key--next{border-color:#ffc53d;background:#ffc53d;color:#17120b;animation:scene1-next-pulse 2.4s ease-in-out 1s infinite}
+  #scene-1 .scene1-key-help{margin:0;padding:10px 14px;border-radius:10px;background:#fff7dc;color:#17120b} #scene-1 .scene1-key-help strong{display:block;font:700 13px/17px Inter,sans-serif} #scene-1 .scene1-key-help em{display:block;color:#3c4569;font:italic 400 12px/15px Inter,sans-serif}
+  #scene-1 .scene1-continue{display:none}
 }
 
-@keyframes scene1-web {
-  0% { transform: rotate(16deg); opacity: 0; }
-  20% { opacity: 1; }
-  62% { transform: rotate(-9deg); }
-  100% { transform: rotate(0); opacity: 1; }
-}
-@keyframes scene1-tab {
-  0%, 34% { transform: translate(-50%, 16px) rotate(-1deg); opacity: 0; }
-  58% { opacity: 1; }
-  100% { transform: translate(-50%, 0) rotate(-1deg); opacity: 1; }
-}
-@keyframes scene1-load {
-  from { transform: scaleX(.08); }
-  to { transform: scaleX(1); }
-}
+/* Short comic web-slinger loader from the earlier approved direction. */
+.scene1-loader { position:fixed; inset:0; z-index:1000; display:grid; place-items:center; overflow:hidden; background:radial-gradient(50% 60% at 50% 42%,rgba(22,35,69,.22),transparent 72%),#09090b; color:#f5efe3; clip-path:inset(0 0 0 0); transition:clip-path 340ms var(--scene1-ease),opacity 260ms linear; }
+.scene1-loader[hidden]{display:none}.scene1-loader.is-leaving{clip-path:inset(0 0 100% 0);opacity:.98;pointer-events:none}
+.scene1-loader__web{position:absolute;left:50%;top:-10px;width:1px;height:min(44vh,360px);transform-origin:top center;background:linear-gradient(#f5efe3,rgba(245,239,227,.45));animation:scene1-web-swing 900ms var(--scene1-ease) both}
+.scene1-loader__slinger{position:absolute;left:50%;bottom:-31px;width:32px;height:42px;transform:translateX(-50%) rotate(8deg)}
+.scene1-loader__slinger::before,.scene1-loader__slinger::after{content:"";position:absolute;background:#f5efe3}.scene1-loader__slinger::before{left:9px;top:0;width:14px;height:14px;border-radius:50%;box-shadow:0 15px 0 2px #f5efe3}.scene1-loader__slinger::after{left:15px;top:12px;width:2px;height:29px;border-radius:3px;transform:rotate(-12deg);box-shadow:-9px 12px 0 -.4px #f5efe3,8px 13px 0 -.4px #f5efe3}
+.scene1-loader__tab{position:absolute;left:50%;top:calc(50% - 54px);padding:7px 12px;transform:translateX(-50%) rotate(-1deg);border:1px solid rgba(255,197,61,.68);border-radius:4px;background:#ffc53d;color:#17120b;font:600 10px/1 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;box-shadow:3px 4px 0 rgba(0,0,0,.28);animation:scene1-tab-pull 880ms var(--scene1-ease) both}
+.scene1-loader__copy{position:relative;z-index:2;display:grid;width:min(320px,calc(100vw - 48px));gap:12px;margin-top:72px;color:rgba(245,239,227,.78);font:500 11px/1.2 "IBM Plex Mono",monospace;letter-spacing:.1em;text-align:center;text-transform:uppercase}.scene1-loader__bar{position:relative;display:block;height:3px;overflow:hidden;border-radius:99px;background:rgba(245,239,227,.13)}.scene1-loader__bar::after{content:"";position:absolute;inset:0;background:#ffc53d;transform-origin:left center;animation:scene1-load-bar 820ms var(--scene1-ease) both}
+@keyframes scene1-web-swing{0%{transform:rotate(18deg);opacity:0}18%{opacity:1}58%{transform:rotate(-11deg)}100%{transform:rotate(0);opacity:1}} @keyframes scene1-tab-pull{0%,34%{transform:translate(-50%,18px) rotate(-1deg);opacity:0}55%{opacity:1}100%{transform:translate(-50%,0) rotate(-1deg);opacity:1}} @keyframes scene1-load-bar{from{transform:scaleX(.08)}to{transform:scaleX(1)}}
 
 @media (prefers-reduced-motion: reduce) {
-  .scene1-loader,
-  .scene1-loader *,
-  body.scene1-enter #scene-1.is-current *,
-  #scene-1 .scene1-key--next {
-    animation: none !important;
-    transition-duration: .01ms !important;
-  }
+  .scene1-loader__web,.scene1-loader__tab,.scene1-loader__bar::after,
+  #scene-1 .scene1-key--next,
+  body.scene1-enter #scene-1.is-current * { animation:none !important; transition-duration:.01ms !important; }
 }
