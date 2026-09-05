@@ -1,0 +1,463 @@
+/* Guardian One — browser-first presentation + subtle story motion.
+   This layer intentionally sits after the Figma-fidelity CSS.
+   Figma remains the composition reference, but browser readability wins over
+   forcing navbar + rail + a 1440×700 frame inside one short viewport. */
+
+:root {
+  --story-ease: cubic-bezier(.22,.61,.36,1);
+  --story-fast: 200ms;
+  --story-med: 440ms;
+}
+
+.cs-page {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Keep the homepage navbar visible and independent from the scene transform. */
+.cs-page .site-header {
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  transition: padding var(--story-fast) var(--story-ease);
+}
+.cs-page .nav-pill,
+.cs-page .identity-avatar,
+.cs-page .nav-cta {
+  transition: padding var(--story-fast) var(--story-ease),
+              transform var(--story-fast) var(--story-ease),
+              opacity var(--story-fast) linear;
+}
+.cs-page.cs-deep .site-header { padding-top: 6px; padding-bottom: 6px; }
+.cs-page.cs-deep .nav-pill { padding-top: 6px; padding-bottom: 6px; }
+.cs-page.cs-deep .identity-avatar { transform: scale(.9); }
+.cs-page.cs-deep .nav-cta { transform: scale(.96); transform-origin: right center; }
+
+/* The page is allowed to be taller than 100vh. Width controls presentation
+   scale; height simply creates a little page scroll when needed. */
+@media (min-width: 1281px) {
+  .cs-reader {
+    min-height: 100vh !important;
+    height: auto !important;
+    display: block !important;
+    padding: calc(var(--cs-head, 82px) + 26px) 0 28px !important;
+    overflow: visible !important;
+    background-position: center top !important;
+  }
+
+  .cs-topbar {
+    position: sticky !important;
+    left: auto !important;
+    top: calc(var(--cs-head, 82px) + 10px) !important;
+    z-index: 35;
+    width: min(1340px, calc(100vw - 48px)) !important;
+    min-height: 28px;
+    margin: 0 auto 20px;
+    padding: 4px 0;
+    transform: none !important;
+    transform-origin: center !important;
+    background: linear-gradient(180deg, rgba(9,11,23,.86), rgba(9,11,23,.38) 70%, transparent);
+    backdrop-filter: blur(5px);
+  }
+
+  .cs-stage-shell {
+    position: relative;
+    width: calc(1440px * var(--cs-scale, 1));
+    height: calc(700px * var(--cs-scale, 1));
+    margin: 0 auto 30px;
+  }
+
+  .cs-stage {
+    position: absolute !important;
+    top: 0;
+    left: 50%;
+    width: 1440px !important;
+    height: 700px !important;
+    transform: translateX(-50%) scale(var(--cs-scale, 1)) !important;
+    transform-origin: center top !important;
+  }
+
+  /* The Figma frame remains intact, but it no longer owns the browser height. */
+  .cs-scene {
+    width: 1440px;
+    height: 700px;
+  }
+
+  /* Make support surfaces quieter so product work and decision logic lead. */
+  .native-card,
+  .audit-card,
+  .question-reason,
+  .result-explanations article,
+  .compare-insights article,
+  .table-decisions article,
+  .journey-principles article,
+  .reflection-panel {
+    box-shadow: inset 0 1px rgba(255,255,255,.025), 0 10px 24px rgba(0,0,0,.16) !important;
+  }
+}
+
+/* Progress should feel continuous rather than jump between scenes. */
+.cs-fill { transition: transform 460ms var(--story-ease) !important; }
+.cs-count.is-changing { animation: story-count 220ms var(--story-ease) both; }
+@keyframes story-count {
+  from { opacity: .35; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Better tactile feedback without oversized hover effects. */
+.cs-upnext,
+.cs-keys .cap,
+.cs-mobile-nav button { transition: transform 100ms var(--story-ease), border-color 180ms var(--story-ease), background 180ms var(--story-ease), color 180ms var(--story-ease) !important; }
+.cs-upnext:active,
+.cs-keys .cap:active,
+.cs-mobile-nav button:active { transform: translateY(1px) !important; }
+.cs-view-design { transition: color 180ms var(--story-ease), opacity 180ms linear, transform 180ms var(--story-ease) !important; }
+.cs-view-design:hover,
+.cs-view-design:focus-visible { color: #ffc53d; transform: translate(2px,-2px); }
+
+/* Editorial card hover: tiny lift, slightly stronger edge, no big scale. */
+@media (hover: hover) and (pointer: fine) {
+  .native-card,
+  .audit-card,
+  .question-reason,
+  .result-explanations article,
+  .compare-insights article,
+  .table-decisions article,
+  .journey-principles article,
+  .reflection-panel,
+  .input-card,
+  .report-card {
+    transition: transform 200ms var(--story-ease), border-color 200ms var(--story-ease), box-shadow 200ms var(--story-ease);
+  }
+  .native-card:hover,
+  .audit-card:hover,
+  .question-reason:hover,
+  .result-explanations article:hover,
+  .compare-insights article:hover,
+  .table-decisions article:hover,
+  .journey-principles article:hover,
+  .reflection-panel:hover,
+  .input-card:hover,
+  .report-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,197,61,.34) !important;
+  }
+
+  .audit-card:hover .audit-response { border-color: rgba(255,197,61,.44); }
+
+  /* Actual product work gets a restrained inspect affordance. */
+  .product-viewport,
+  .result-viewport,
+  .table-crop,
+  .input-viewport,
+  .report-viewport,
+  .report-ui,
+  .ui-panel {
+    transition: transform 210ms var(--story-ease), filter 210ms var(--story-ease), border-color 210ms var(--story-ease);
+    transform-origin: center;
+  }
+  .product-viewport:hover,
+  .result-viewport:hover,
+  .table-crop:hover,
+  .input-viewport:hover,
+  .report-viewport:hover,
+  .report-ui:hover,
+  .ui-panel:hover {
+    transform: scale(1.012);
+    filter: brightness(1.025);
+  }
+}
+
+/* ---------- Story entrances ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .cs-scene {
+    transform: translateY(12px) !important;
+    transition: opacity 420ms linear, transform 480ms var(--story-ease), visibility 0s linear 500ms !important;
+  }
+  .cs-scene.is-current {
+    transform: translateY(0) !important;
+    transition: opacity 420ms linear, transform 480ms var(--story-ease), visibility 0s linear 0s !important;
+  }
+
+  .cs-scene.is-current .native-title,
+  .cs-scene.is-current .cs-h1,
+  .cs-scene.is-current .cs-h2,
+  .cs-scene.is-current .questions-title h2,
+  .cs-scene.is-current .result-title h2,
+  .cs-scene.is-current .compare-heading h2,
+  .cs-scene.is-current .table-heading h2,
+  .cs-scene.is-current .journey-heading h2,
+  .cs-scene.is-current .reflection-heading h2 {
+    animation: story-rise 460ms var(--story-ease) 60ms both;
+  }
+
+  .cs-scene.is-current .native-sub,
+  .cs-scene.is-current .questions-title p,
+  .cs-scene.is-current .result-title p,
+  .cs-scene.is-current .compare-heading p,
+  .cs-scene.is-current .table-heading p,
+  .cs-scene.is-current .journey-heading > span,
+  .cs-scene.is-current .reflection-intro {
+    animation: story-rise 420ms var(--story-ease) 130ms both;
+  }
+
+  .cs-scene.is-current .mini-narrator img,
+  .cs-scene.is-current .cs-narrator {
+    animation: story-narrator 450ms var(--story-ease) 250ms both;
+  }
+  .cs-scene.is-current .mini-narrator blockquote,
+  .cs-scene.is-current .cs-note {
+    animation: story-paper 420ms var(--story-ease) 350ms both;
+  }
+
+  @keyframes story-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes story-narrator {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes story-paper {
+    from { opacity: 0; transform: translateY(6px) rotate(-.5deg); }
+    to   { opacity: 1; transform: translateY(0) rotate(0); }
+  }
+  @keyframes story-soft-pop {
+    from { opacity: 0; transform: scale(.98); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes story-line-y {
+    from { opacity: 0; transform: scaleY(0); }
+    to   { opacity: 1; transform: scaleY(1); }
+  }
+  @keyframes story-line-x {
+    from { opacity: 0; transform: scaleX(0); }
+    to   { opacity: 1; transform: scaleX(1); }
+  }
+
+  /* Scene 01: slightly more cinematic, total sequence stays below ~1.2s. */
+  #scene-1.is-current .cs-eyebrow { animation: story-rise 340ms var(--story-ease) 20ms both; }
+  #scene-1.is-current .cs-h1 { animation-delay: 90ms; }
+  #scene-1.is-current .lede { animation: story-rise 380ms var(--story-ease) 170ms both; }
+  #scene-1.is-current .dur { animation: story-rise 320ms var(--story-ease) 230ms both; }
+  #scene-1.is-current .chip:nth-child(1) { animation: story-rise 330ms var(--story-ease) 280ms both; }
+  #scene-1.is-current .chip:nth-child(2) { animation: story-rise 330ms var(--story-ease) 330ms both; }
+  #scene-1.is-current .chip:nth-child(3) { animation: story-rise 330ms var(--story-ease) 380ms both; }
+  #scene-1.is-current .cs-keys { animation: story-rise 360ms var(--story-ease) 500ms both; }
+  #scene-1.is-current .hint { animation: story-rise 300ms var(--story-ease) 580ms both; }
+
+  /* Scene 03: two sides first, sweet spot last. */
+  #scene-3.is-current .side-biz { animation: story-rise 390ms var(--story-ease) 120ms both; }
+  #scene-3.is-current .side-par { animation: story-rise 390ms var(--story-ease) 170ms both; }
+  #scene-3.is-current .sweet { animation: story-soft-pop 260ms var(--story-ease) 310ms both; }
+
+  /* Scene 04: each relationship appears as a unit; connectors arrive with it. */
+  #scene-4.is-current .band:nth-of-type(1) { animation: story-rise 380ms var(--story-ease) 120ms both; }
+  #scene-4.is-current .band:nth-of-type(2) { animation: story-rise 380ms var(--story-ease) 180ms both; }
+  #scene-4.is-current .band:nth-of-type(3) { animation: story-rise 380ms var(--story-ease) 240ms both; }
+  #scene-4.is-current .band .arrow { animation: story-soft-pop 220ms var(--story-ease) 280ms both; }
+
+  /* Scene 05: evidence board, connectors, then the synthesis note. */
+  #scene-5.is-current .research-photo:nth-child(1) { animation: story-rise 350ms var(--story-ease) 80ms both; }
+  #scene-5.is-current .research-photo:nth-child(2) { animation: story-rise 350ms var(--story-ease) 130ms both; }
+  #scene-5.is-current .research-photo:nth-child(3) { animation: story-rise 350ms var(--story-ease) 180ms both; }
+  #scene-5.is-current .research-photo:nth-child(4) { animation: story-rise 350ms var(--story-ease) 230ms both; }
+  #scene-5.is-current .board-connectors { animation: story-soft-pop 330ms var(--story-ease) 300ms both; }
+  #scene-5.is-current .research-board .paper-note { animation: story-paper 360ms var(--story-ease) 370ms both; }
+  #scene-5.is-current .funnel-bar i { transform-origin: left center; animation: story-line-x 560ms var(--story-ease) 220ms both; }
+
+  /* Scene 06: quick card stagger; the hover state emphasises Response. */
+  #scene-6.is-current .audit-card:nth-child(1) { animation: story-rise 360ms var(--story-ease) 90ms both; }
+  #scene-6.is-current .audit-card:nth-child(2) { animation: story-rise 360ms var(--story-ease) 140ms both; }
+  #scene-6.is-current .audit-card:nth-child(3) { animation: story-rise 360ms var(--story-ease) 190ms both; }
+  #scene-6.is-current .audit-card:nth-child(4) { animation: story-rise 360ms var(--story-ease) 240ms both; }
+
+  /* Scene 07: question rail reveals top-to-bottom in under 700ms. */
+  #scene-7.is-current .step-rail li:nth-of-type(1) { animation: story-soft-pop 220ms var(--story-ease) 80ms both; }
+  #scene-7.is-current .step-rail li:nth-of-type(2) { animation: story-soft-pop 220ms var(--story-ease) 190ms both; }
+  #scene-7.is-current .step-rail li:nth-of-type(3) { animation: story-soft-pop 220ms var(--story-ease) 300ms both; }
+  #scene-7.is-current .step-rail li:nth-of-type(4) { animation: story-soft-pop 220ms var(--story-ease) 410ms both; }
+  #scene-7.is-current .step-rail i { transform-origin: top center; animation: story-line-y 260ms var(--story-ease) 170ms both; }
+
+  /* Scene 08: answer first, then affordability, then protection context. */
+  #scene-8.is-current .cover-answer > strong { animation: story-soft-pop 360ms var(--story-ease) 130ms both; }
+  #scene-8.is-current .cover-answer > div { animation: story-rise 330ms var(--story-ease) 220ms both; }
+  #scene-8.is-current .risk-answer { animation: story-rise 380ms var(--story-ease) 310ms both; }
+
+  /* Scene 09: flow reads left to right; arrows reveal between steps. */
+  #scene-9.is-current .compare-step:nth-of-type(1) { animation: story-rise 370ms var(--story-ease) 100ms both; }
+  #scene-9.is-current .flow-arrow:nth-of-type(1) { animation: story-soft-pop 220ms var(--story-ease) 180ms both; }
+  #scene-9.is-current .compare-step:nth-of-type(2) { animation: story-rise 370ms var(--story-ease) 210ms both; }
+  #scene-9.is-current .flow-arrow:nth-of-type(2) { animation: story-soft-pop 220ms var(--story-ease) 290ms both; }
+  #scene-9.is-current .compare-step:nth-of-type(3) { animation: story-rise 370ms var(--story-ease) 320ms both; }
+
+  /* Scene 10: decision anchors receive first and strongest emphasis. */
+  #scene-10.is-current .comparison-band:nth-child(1) { animation: story-rise 360ms var(--story-ease) 90ms both; }
+  #scene-10.is-current .comparison-band:nth-child(2) { animation: story-rise 360ms var(--story-ease) 160ms both; }
+  #scene-10.is-current .comparison-band:nth-child(3) { animation: story-rise 360ms var(--story-ease) 230ms both; }
+
+  /* Scene 11: inputs → report. */
+  #scene-11.is-current .input-card:nth-child(1) { animation: story-rise 360ms var(--story-ease) 80ms both; }
+  #scene-11.is-current .input-card:nth-child(2) { animation: story-rise 360ms var(--story-ease) 150ms both; }
+  #scene-11.is-current .input-card:nth-child(3) { animation: story-rise 360ms var(--story-ease) 220ms both; }
+  #scene-11.is-current .journey-body > .report-card { animation: story-soft-pop 420ms var(--story-ease) 330ms both; }
+
+  /* Scene 12: guided automatic reveal, no click-through. */
+  #scene-12.is-current .report-card:nth-child(1) { animation: story-rise 330ms var(--story-ease) 70ms both; }
+  #scene-12.is-current .report-card:nth-child(2) { animation: story-rise 330ms var(--story-ease) 120ms both; }
+  #scene-12.is-current .report-card:nth-child(3) { animation: story-rise 330ms var(--story-ease) 170ms both; }
+  #scene-12.is-current .report-card:nth-child(4) { animation: story-rise 330ms var(--story-ease) 220ms both; }
+  #scene-12.is-current .report-card:nth-child(5) { animation: story-rise 330ms var(--story-ease) 270ms both; }
+
+  /* Scene 13: animate the journey steps only; never count-up the numbers. */
+  #scene-13.is-current .funnel-row:nth-child(1) { animation: story-rise 320ms var(--story-ease) 80ms both; }
+  #scene-13.is-current .funnel-row:nth-child(2) { animation: story-rise 320ms var(--story-ease) 130ms both; }
+  #scene-13.is-current .funnel-row:nth-child(3) { animation: story-rise 320ms var(--story-ease) 180ms both; }
+  #scene-13.is-current .funnel-row:nth-child(4) { animation: story-rise 320ms var(--story-ease) 230ms both; }
+  #scene-13.is-current .funnel-row:nth-child(5) { animation: story-rise 320ms var(--story-ease) 280ms both; }
+
+  /* Scene 14: deliberately calmer ending. */
+  #scene-14.is-current .reflection-panel.defend { animation: story-rise 420ms var(--story-ease) 100ms both; }
+  #scene-14.is-current .reflection-panel.change { animation: story-rise 420ms var(--story-ease) 200ms both; }
+}
+
+/* ---------- Responsive reading mode ---------- */
+@media (max-width: 1280px) {
+  .cs-stage-shell { width: auto; height: auto; margin: 0; }
+  .cs-page .site-header { position: fixed !important; }
+  .cs-reader {
+    min-height: 100vh;
+    padding-top: calc(var(--cs-head, 86px) + 18px) !important;
+  }
+  .cs-scene { min-height: 0; }
+  .cs-upnext { margin-bottom: 82px !important; }
+}
+
+/* Mobile/tablet portrait: readable type, full-width product work, no desktop scaling. */
+@media (max-width: 899px) {
+  .cs-reader { padding-left: 0 !important; padding-right: 0 !important; }
+  .cs-scene,
+  .cs-scene.native { padding-left: 20px !important; padding-right: 20px !important; }
+
+  .native .native-title,
+  .sc-questions .questions-title h2,
+  .sc-result .result-title h2,
+  .sc-compare-flow .compare-heading h2,
+  .sc-compare-table .table-heading h2,
+  .sc-report-journey .journey-heading h2,
+  .sc-reflection .reflection-heading h2,
+  .cs-h1,
+  .cs-h2 {
+    font-size: clamp(30px, 8.5vw, 34px) !important;
+    line-height: 1.12 !important;
+  }
+
+  .native .native-sub,
+  .sc-questions .questions-title p,
+  .sc-result .result-title p,
+  .sc-compare-flow .compare-heading p,
+  .sc-compare-table .table-heading p,
+  .sc-report-journey .journey-heading > span,
+  .reflection-intro {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+  }
+
+  .native-card h3,
+  .audit-card h3,
+  .question-reason h3,
+  .result-explanations h3,
+  .compare-insights h3,
+  .table-decisions h3,
+  .journey-principles h3,
+  .reflection-panel h3,
+  .reflection-row h4 {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+  }
+
+  .native-card p,
+  .audit-card p,
+  .question-reason p,
+  .result-explanations p,
+  .compare-insights p,
+  .table-decisions p,
+  .journey-principles p,
+  .reflection-row p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+  }
+
+  .cs-scene .native-kicker,
+  .cs-scene .eyeline,
+  .cs-scene .card-no,
+  .cs-scene [class*="number"],
+  .cs-scene [class*="-no"] {
+    font-size: 11px;
+  }
+
+  .product-viewport,
+  .result-viewport,
+  .table-crop,
+  .input-viewport,
+  .report-viewport,
+  .report-ui,
+  .ui-panel,
+  .product-viewport img,
+  .table-crop img,
+  .input-viewport img,
+  .report-viewport img,
+  .report-ui {
+    max-width: 100%;
+  }
+
+  /* Calculator is real HTML, so explicitly prevent its desktop micro-type from
+     surviving into the mobile reading layout. */
+  .sc-questions .actual-question h3 { font-size: 16px !important; line-height: 1.35 !important; }
+  .sc-questions .actual-question p,
+  .sc-questions .actual-question > small { font-size: 13px !important; line-height: 1.45 !important; }
+  .sc-questions .actual-input { width: 100% !important; min-height: 44px; height: auto !important; font-size: 14px !important; }
+  .sc-questions .board-options { grid-template-columns: 1fr !important; }
+  .sc-questions .board-options span { min-height: 66px; height: auto !important; padding: 12px 12px 12px 32px !important; }
+  .sc-questions .board-options b { font-size: 14px !important; }
+  .sc-questions .board-options small { font-size: 12px !important; line-height: 1.35 !important; }
+  .sc-questions .reason-copy > b,
+  .sc-questions .model-effect > b { font-size: 11px !important; line-height: 1.35 !important; }
+  .sc-questions .reason-copy h3,
+  .sc-questions .reason-copy h4 { font-size: 16px !important; line-height: 1.35 !important; }
+  .sc-questions .reason-copy p,
+  .sc-questions .model-effect p { font-size: 14px !important; line-height: 1.45 !important; }
+
+  /* Result-page annotations must remain readable beside the full-width UI. */
+  .sc-result .result-explanations article > div > b { font-size: 11px !important; line-height: 1.35 !important; }
+  .sc-result .result-explanations h3 { font-size: 17px !important; line-height: 1.35 !important; }
+  .sc-result .result-explanations p { font-size: 14px !important; line-height: 1.45 !important; }
+
+  .mini-narrator blockquote,
+  .cs-note { font-size: 18px !important; line-height: 1.25 !important; }
+
+  .cs-mobile-nav { min-height: 60px !important; }
+  .cs-mobile-nav button { min-height: 46px !important; }
+}
+
+/* Reduced motion keeps navigation and state changes immediate and accessible. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .cs-scene,
+  .cs-scene.is-current,
+  .cs-count,
+  .mini-narrator img,
+  .mini-narrator blockquote,
+  .cs-note { transform: none !important; }
+}
