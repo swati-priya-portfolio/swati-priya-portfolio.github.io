@@ -59,7 +59,9 @@
     root.style.setProperty("--cs-stage-w",stageW.toFixed(2)+"px");
     root.style.setProperty("--cs-stage-h",stageH.toFixed(2)+"px");
 
-    if(shell){
+    /* Scene 01 has a dedicated fit calculation in scene-01-cover.js.
+       Do not overwrite its shell dimensions after the scene becomes active. */
+    if(shell && !body.classList.contains("cs-scene-1")){
       shell.style.width=stageW.toFixed(2)+"px";
       shell.style.height=stageH.toFixed(2)+"px";
     }
@@ -68,8 +70,6 @@
   rewriteBreakpoints();
   fitDesktop();
 
-  /* The reader owns its own breakpoint logic. Keep this shell as the final
-     desktop authority after scene/class mutations and viewport changes. */
   var queued=false;
   function queueFit(){
     if(queued)return;
@@ -88,7 +88,6 @@
   addEventListener("hashchange",queueFit,{passive:true});
   document.fonts && document.fonts.ready && document.fonts.ready.then(queueFit);
 
-  /* Reassert after the asynchronous scene loader has had time to initialise. */
   setTimeout(queueFit,0);
   setTimeout(queueFit,80);
   setTimeout(queueFit,240);
