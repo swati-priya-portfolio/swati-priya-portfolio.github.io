@@ -24,20 +24,25 @@
 
   function fit(){
     var header=document.querySelector(".site-header");
-    var head=header ? Math.ceil(header.getBoundingClientRect().height) : 86;
     var compact=matchMedia("(max-width:1280px)").matches;
+    var head=compact && header ? Math.ceil(header.getBoundingClientRect().height) : 0;
     document.body.classList.toggle("is-flow",compact);
     document.documentElement.style.setProperty("--cs-head",head+"px");
-    if(compact){document.documentElement.style.setProperty("--cs-scale","1");return;}
-    var roomW=Math.max(320,innerWidth-28);
-    var roomH=Math.max(280,innerHeight-head-74);
-    /* Use the full Figma canvas on large displays. The previous 1.24 ceiling
-       left a wide unused border on extended monitors and made every scene's
-       type, cards and icons feel uniformly undersized. Width and height stay
-       as hard limits, so the complete 1440×700 frame always remains visible. */
-    var scale=Math.min(1.42,roomW/1440,roomH/700);
+
+    if(compact){
+      document.documentElement.style.setProperty("--cs-scale","1");
+      return;
+    }
+
+    /* Desktop fidelity is measured against the actual 1440×700 Figma frame.
+       The old calculation subtracted the website header and an extra 74px,
+       which forced the entire case study to ~75–85% scale and made every
+       heading, annotation and product screen look miniaturised. */
+    var roomW=Math.max(320,innerWidth);
+    var roomH=Math.max(280,innerHeight);
+    var scale=Math.min(1,roomW/1440,roomH/700);
     document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
-    document.documentElement.style.setProperty("--cs-bar",Math.min(1340,roomW/scale)+"px");
+    document.documentElement.style.setProperty("--cs-bar",(1340*scale).toFixed(2)+"px");
   }
 
   function indexFromHash(){
@@ -57,6 +62,11 @@
     });
     current=index;
     document.body.classList.toggle("is-overview",index===0);
+    Array.from(document.body.classList).forEach(function(name){
+      if(/^cs-scene-\d+$/.test(name)) document.body.classList.remove(name);
+    });
+    document.body.classList.add("cs-scene-"+(index+1));
+
     var scene=scenes[index], section=scene.dataset.section || manifests[index][1];
     crumb.innerHTML="Case study · <b>Guardian One</b> · "+section;
     count.textContent="Scene "+String(index+1).padStart(2,"0")+" / "+String(scenes.length).padStart(2,"0");
@@ -103,6 +113,13 @@
       if(["ArrowLeft","ArrowUp","PageUp"].includes(e.key)){e.preventDefault();show(current-1);}
       if(e.key==="Home"){e.preventDefault();show(0);}
       if(e.key==="End"){e.preventDefault();show(scenes.length-1);}
+    });
+    stage.addEventListener("click",function(e){
+      var stepButton=e.target.closest("[data-step]");
+      if(stepButton){
+        e.preventDefault();
+        show(current+Number(stepButton.dataset.step||0));
+      }
     });
     stage.addEventListener("pointerdown",function(e){startX=e.clientX;});
     stage.addEventListener("pointerup",function(e){
