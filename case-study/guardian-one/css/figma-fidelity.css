@@ -11,9 +11,9 @@
   --cs-navy-meta: #6b738a;
 }
 
-/* Desktop is an immersive 1440×700 presentation, exactly like the Figma
-   frames. The full portfolio navigation remains in the DOM and is restored in
-   responsive reading mode; the breadcrumb is also a homepage link. */
+/* Desktop is an immersive 1440×700 presentation, matching the Figma frames.
+   The portfolio navigation remains intact for responsive reading mode and the
+   visible breadcrumb links back to the case-study index. */
 @media (min-width: 1281px) {
   .cs-page .site-header {
     visibility: hidden;
@@ -35,19 +35,21 @@
     transform-origin: center center;
   }
 
+  /* The rail is part of the Figma composition. JS provides its viewport top
+     when the full 1440×700 frame must scale below 1. At the QA viewport
+     (1440×700), these values resolve to the original x=50/y=40 geometry. */
   .cs-topbar {
-    top: calc(50% - (350px * var(--cs-scale, 1)) + (40px * var(--cs-scale, 1)));
-    width: calc(1340px * var(--cs-scale, 1));
-    gap: calc(18px * var(--cs-scale, 1));
-    font-size: calc(12px * var(--cs-scale, 1));
-    letter-spacing: calc(.6px * var(--cs-scale, 1));
+    top: var(--cs-topbar-top, 40px);
+    width: 1340px;
+    gap: 18px;
+    font-size: 12px;
+    letter-spacing: .6px;
+    transform: translateX(-50%) scale(var(--cs-scale, 1));
+    transform-origin: center top;
   }
 
-  .cs-count { font-size: calc(13px * var(--cs-scale, 1)); }
-  .cs-track {
-    width: calc(180px * var(--cs-scale, 1));
-    height: calc(4px * var(--cs-scale, 1));
-  }
+  .cs-count { font-size: 13px; }
+  .cs-track { width: 180px; height: 4px; }
 
   .cs-crumb {
     color: inherit;
@@ -93,7 +95,7 @@
       radial-gradient(45% 78% at 3% 98%, rgba(111, 66, 25, .12) 0%, rgba(9, 11, 23, 0) 76%);
   }
 
-  /* Scene 01 — values measured directly from Figma node 5:9164. */
+  /* Scene 01 — measured directly from Figma node 5:9164. */
   .sc-title .cs-eyebrow {
     left: 586px;
     top: 105px;
@@ -185,7 +187,26 @@
     color: #17120b;
   }
 
-  /* Scene 02 measurements from Figma node 5:9215. */
+  /* Opening narration bubble is 263×120 at x=215/y=517 in the source. */
+  .sc-title .cs-note {
+    left: 215px !important;
+    top: 517px !important;
+    bottom: auto !important;
+    width: 263px !important;
+    max-width: 263px !important;
+    min-height: 120px !important;
+    padding: 12px 16px !important;
+    border-radius: 4.5px !important;
+    font-size: 18px !important;
+    line-height: 1.22 !important;
+    box-shadow: none !important;
+  }
+  .sc-title .cs-note::before {
+    left: -8px !important;
+    top: 39px !important;
+  }
+
+  /* Scene 02 — measured from Figma node 5:9215. */
   .sc-audience .who-title {
     left: 56px;
     top: 370px;
@@ -197,8 +218,28 @@
     letter-spacing: -.2px;
   }
 
-  /* Scenes 03–14 use 36/48 display titles in Figma. Keep the explanatory
-     subtitle at the measured 14/20 presentation scale. */
+  /* Scene 03 title is 36/48 in Figma. */
+  .sc-tension .cs-h2 {
+    left: 400px;
+    top: 60px;
+    width: 644px;
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: -.36px;
+  }
+
+  /* Scene 04 is also a full 36px story beat rather than a small label. */
+  #scene-4 .cs-h2 {
+    font-size: 36px;
+    line-height: 39px;
+  }
+  #scene-4 .cs-sub {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  /* Native presentation scenes use the Figma 36/48 display scale and 14/20
+     explanatory copy. Scene-specific CSS still owns their product UI. */
   .cs-scene.native .native-title {
     font-size: 36px;
     line-height: 48px;
@@ -208,18 +249,10 @@
     font-size: 14px;
     line-height: 20px;
   }
-  .sc-tension .cs-h2 {
-    left: 400px;
-    top: 60px;
-    width: 644px;
-    font-size: 36px;
-    line-height: 48px;
-    letter-spacing: -.36px;
-  }
 }
 
-/* Responsive reading mode stays intentionally reflowed. It is separate from
-   desktop fidelity so a small viewport never forces the 1440×700 artwork into
+/* Responsive reading mode is intentionally separate from desktop fidelity so
+   small viewports reflow instead of shrinking a 1440px presentation into
    unreadable micro-type. */
 @media (max-width: 1280px) {
   .cs-page .site-header { visibility: visible; pointer-events: auto; }
