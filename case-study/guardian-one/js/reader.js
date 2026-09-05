@@ -10,6 +10,7 @@
     ["13-launch.html","Launch and measurement"], ["14-reflection.html","Reflection"]
   ];
   var reader=document.querySelector(".cs-reader");
+  var shell=document.querySelector(".cs-stage-shell");
   var stage=document.querySelector(".cs-stage");
   var crumb=document.querySelector(".cs-crumb");
   var count=document.querySelector(".cs-count");
@@ -37,6 +38,7 @@
 
     if(responsive){
       document.documentElement.style.setProperty("--cs-scale","1");
+      if(shell){ shell.style.width=""; shell.style.height=""; }
       return;
     }
 
@@ -46,6 +48,10 @@
     var usable=Math.min(1440,Math.max(960,innerWidth-48));
     var scale=usable/1440;
     document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
+    if(shell){
+      shell.style.width=usable.toFixed(2)+"px";
+      shell.style.height=(700*scale).toFixed(2)+"px";
+    }
   }
 
   function indexFromHash(){
