@@ -1,104 +1,122 @@
-/* Scene 02 keeps its editorial portrait and audience composition in base.css. */
+/* Scene 02: preserve the Figma layout; motion/hover only. */
 #scene-2{isolation:isolate}
 
-/* Scene 02 motion layer only — no layout/spacing changes. */
 @media (min-width:900px){
+  /* Soft warm ambience behind Priya — no layout changes. */
   #scene-2::before{
     content:"";
     position:absolute;
-    left:-160px;
-    bottom:-250px;
-    width:760px;
-    height:650px;
+    left:-150px;
+    bottom:-245px;
+    width:740px;
+    height:640px;
     z-index:0;
     pointer-events:none;
-    background:radial-gradient(ellipse at 34% 58%,rgba(255,197,61,.10) 0%,rgba(160,96,32,.065) 34%,rgba(84,48,20,.025) 56%,rgba(18,16,12,0) 77%);
+    background:radial-gradient(ellipse at 34% 58%,rgba(255,197,61,.10) 0%,rgba(158,95,32,.06) 35%,rgba(82,47,19,.025) 57%,rgba(18,16,12,0) 78%);
     filter:blur(12px);
-    opacity:.9;
-    transition:opacity 240ms ease,filter 240ms ease;
+    opacity:.88;
+    transition:opacity 220ms ease,filter 220ms ease;
   }
-  #scene-2.scene2-portrait-hover::before{opacity:1;filter:blur(10px)}
-
-  #scene-2 .portrait,
-  #scene-2 .thought,
-  #scene-2 .who-title,
-  #scene-2 .who-lede,
-  #scene-2 .facts,
-  #scene-2 .wants,
-  #scene-2 .divider,
-  #scene-2 .who-label,
-  #scene-2 .av,
-  #scene-2 .bub,
-  #scene-2 .verdict{
-    will-change:opacity,transform;
-  }
-
-  #scene-2.scene2-motion-ready .portrait{animation:scene2-rise 420ms cubic-bezier(.22,.61,.36,1) 120ms both}
-  #scene-2.scene2-motion-ready .thought{animation:scene2-pop 390ms cubic-bezier(.22,.61,.36,1) 220ms both}
-  #scene-2.scene2-motion-ready .who-title{animation:scene2-rise 390ms cubic-bezier(.22,.61,.36,1) 320ms both}
-  #scene-2.scene2-motion-ready .who-lede{animation:scene2-rise 360ms cubic-bezier(.22,.61,.36,1) 380ms both}
-  #scene-2.scene2-motion-ready .facts{animation:scene2-rise 360ms cubic-bezier(.22,.61,.36,1) 440ms both}
-  #scene-2.scene2-motion-ready .wants{animation:scene2-rise 360ms cubic-bezier(.22,.61,.36,1) 500ms both}
-  #scene-2.scene2-motion-ready .divider{animation:scene2-fade 320ms ease 470ms both}
-
-  #scene-2.scene2-motion-ready .scene2-parent-1{animation:scene2-from-left 390ms cubic-bezier(.22,.61,.36,1) 560ms both}
-  #scene-2.scene2-motion-ready .scene2-design-1{animation:scene2-from-right 390ms cubic-bezier(.22,.61,.36,1) 660ms both}
-  #scene-2.scene2-motion-ready .scene2-parent-2{animation:scene2-from-left 390ms cubic-bezier(.22,.61,.36,1) 760ms both}
-  #scene-2.scene2-motion-ready .scene2-design-2{animation:scene2-from-right 390ms cubic-bezier(.22,.61,.36,1) 860ms both}
-  #scene-2.scene2-motion-ready .scene2-parent-3{animation:scene2-from-left 390ms cubic-bezier(.22,.61,.36,1) 960ms both}
-  #scene-2.scene2-motion-ready .verdict{animation:scene2-verdict-in 460ms cubic-bezier(.22,.61,.36,1) 1060ms both}
-
-  #scene-2 .scene2-pair-node{
-    transition:opacity 190ms ease,filter 190ms ease,transform 190ms cubic-bezier(.22,.61,.36,1),box-shadow 190ms ease,border-color 190ms ease;
-  }
-  #scene-2.scene2-pairing .scene2-pair-node{opacity:.72}
-  #scene-2.scene2-pairing .scene2-pair-active{opacity:1;filter:brightness(1.035)}
-  #scene-2.scene2-pairing .bub.scene2-pair-active{
-    transform:translateY(-2px);
-    box-shadow:0 0 0 1px rgba(255,197,61,.28),0 9px 24px rgba(0,0,0,.12);
-  }
-  #scene-2.scene2-pairing .verdict.scene2-pair-active{
-    opacity:1;
-    transform:translateY(-2px);
-    box-shadow:0 0 0 1px rgba(255,197,61,.16),0 0 24px rgba(255,197,61,.08);
-  }
-
-  #scene-2 .portrait{
-    transition:filter 220ms ease;
-  }
+  #scene-2:has(.portrait:hover)::before{opacity:1;filter:blur(10px)}
+  #scene-2 .portrait{transition:filter 220ms ease}
   #scene-2 .portrait:hover{filter:brightness(1.035)}
 
-  #scene-2.scene2-motion-ready .verdict{
-    box-shadow:0 0 0 rgba(255,197,61,0);
-  }
-  #scene-2.scene2-motion-ready .verdict .g1-mark path,
-  #scene-2.scene2-motion-ready .verdict .g1-mark circle{
-    stroke-dasharray:180;
-    stroke-dashoffset:180;
-    animation:scene2-shield-draw 520ms cubic-bezier(.22,.61,.36,1) 1180ms forwards;
+  /* Entrance sequence. It activates only when Scene 02 is current. */
+  #scene-2.is-current .portrait{animation:s2-rise 420ms cubic-bezier(.22,.61,.36,1) 80ms both}
+  #scene-2.is-current .thought{animation:s2-pop 390ms cubic-bezier(.22,.61,.36,1) 180ms both}
+  #scene-2.is-current .who-title{animation:s2-rise 390ms cubic-bezier(.22,.61,.36,1) 280ms both}
+  #scene-2.is-current .who-lede{animation:s2-rise 360ms cubic-bezier(.22,.61,.36,1) 340ms both}
+  #scene-2.is-current .facts{animation:s2-rise 360ms cubic-bezier(.22,.61,.36,1) 400ms both}
+  #scene-2.is-current .wants{animation:s2-rise 360ms cubic-bezier(.22,.61,.36,1) 460ms both}
+  #scene-2.is-current .divider{animation:s2-fade 320ms ease 430ms both}
+
+  #scene-2.is-current .who-label[style*="top:66px"],
+  #scene-2.is-current .av-parent[style*="top:120px"],
+  #scene-2.is-current .bub-parent[style*="top:106px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 540ms both}
+
+  #scene-2.is-current .who-label[style*="top:74px"],
+  #scene-2.is-current .av-design[style*="top:106px"],
+  #scene-2.is-current .bub-design[style*="top:114px"]{animation:s2-right 390ms cubic-bezier(.22,.61,.36,1) 640ms both}
+
+  #scene-2.is-current .who-label[style*="left:664px"][style*="top:282px"],
+  #scene-2.is-current .av-parent[style*="top:306px"],
+  #scene-2.is-current .bub-parent[style*="top:314px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 740ms both}
+
+  #scene-2.is-current .who-label[style*="left:1092px"][style*="top:282px"],
+  #scene-2.is-current .av-design[style*="top:321px"],
+  #scene-2.is-current .bub-design[style*="top:319px"]{animation:s2-right 390ms cubic-bezier(.22,.61,.36,1) 840ms both}
+
+  #scene-2.is-current .who-label[style*="top:481px"],
+  #scene-2.is-current .av-parent[style*="top:505px"],
+  #scene-2.is-current .bub-parent[style*="top:513px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 940ms both}
+
+  #scene-2.is-current .verdict{animation:s2-verdict 460ms cubic-bezier(.22,.61,.36,1) 1040ms both}
+
+  /* Parent → Design hover pairing. Only visual emphasis; no movement of layout. */
+  #scene-2 .who-label,#scene-2 .av,#scene-2 .bub,#scene-2 .verdict{
+    transition:opacity 180ms ease,filter 180ms ease,transform 180ms cubic-bezier(.22,.61,.36,1),box-shadow 180ms ease;
   }
 
-  body.cs-scene-2 .cs-upnext{
-    transition:transform 180ms cubic-bezier(.22,.61,.36,1),border-color 180ms ease,box-shadow 180ms ease;
-  }
-  body.cs-scene-2 .cs-upnext:hover,
-  body.cs-scene-2 .cs-upnext:focus-visible{
-    transform:translateY(-2px);
-    border-color:rgba(255,197,61,.45);
-    box-shadow:0 0 18px rgba(255,197,61,.08);
-  }
-  body.cs-scene-2 .cs-upnext:hover > span:last-child,
-  body.cs-scene-2 .cs-upnext:focus-visible > span:last-child{transform:translateX(3px)}
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label,
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .av,
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub,
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .verdict{opacity:.72}
+
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label[style*="top:66px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .av-parent[style*="top:120px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-parent[style*="top:106px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label[style*="top:74px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .av-design[style*="top:106px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-design[style*="top:114px"]{opacity:1;filter:brightness(1.035)}
+
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-parent[style*="top:106px"],
+  #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .bub-design[style*="top:114px"]{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,197,61,.26),0 9px 24px rgba(0,0,0,.12)}
+
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .who-label,
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .av,
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub,
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .verdict{opacity:.72}
+
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .who-label[style*="left:664px"][style*="top:282px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .av-parent[style*="top:306px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-parent[style*="top:314px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .who-label[style*="left:1092px"][style*="top:282px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .av-design[style*="top:321px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-design[style*="top:319px"]{opacity:1;filter:brightness(1.035)}
+
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-parent[style*="top:314px"],
+  #scene-2:has(.bub-parent[style*="top:314px"]:hover,.bub-design[style*="top:319px"]:hover) .bub-design[style*="top:319px"]{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,197,61,.26),0 9px 24px rgba(0,0,0,.12)}
+
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .who-label,
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .av,
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .bub,
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{opacity:.72}
+
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .who-label[style*="top:481px"],
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .av-parent[style*="top:505px"],
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .bub-parent[style*="top:513px"],
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{opacity:1;filter:brightness(1.035)}
+
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .bub-parent[style*="top:513px"],
+  #scene-2:has(.bub-parent[style*="top:513px"]:hover,.verdict:hover) .verdict{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,197,61,.18),0 0 22px rgba(255,197,61,.07)}
+
+  /* Guardian One conclusion appears last; icon draws once on entry. */
+  #scene-2.is-current .verdict .g1-mark path,
+  #scene-2.is-current .verdict .g1-mark circle{stroke-dasharray:180;stroke-dashoffset:180;animation:s2-shield 520ms cubic-bezier(.22,.61,.36,1) 1160ms forwards}
+
+  body.cs-scene-2 .cs-upnext{transition:transform 180ms cubic-bezier(.22,.61,.36,1),border-color 180ms ease,box-shadow 180ms ease}
+  body.cs-scene-2 .cs-upnext:hover,body.cs-scene-2 .cs-upnext:focus-visible{transform:translateY(-2px);border-color:rgba(255,197,61,.45);box-shadow:0 0 18px rgba(255,197,61,.08)}
   body.cs-scene-2 .cs-upnext > span:last-child{display:inline-block;transition:transform 180ms ease}
+  body.cs-scene-2 .cs-upnext:hover > span:last-child,body.cs-scene-2 .cs-upnext:focus-visible > span:last-child{transform:translateX(3px)}
 }
 
-@keyframes scene2-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes scene2-pop{from{opacity:0;transform:translateY(6px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes scene2-from-left{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
-@keyframes scene2-from-right{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
-@keyframes scene2-fade{from{opacity:0}to{opacity:1}}
-@keyframes scene2-verdict-in{0%{opacity:0;transform:translateY(8px);box-shadow:0 0 0 rgba(255,197,61,0)}70%{opacity:1;transform:translateY(0);box-shadow:0 0 24px rgba(255,197,61,.10)}100%{opacity:1;transform:translateY(0);box-shadow:0 0 0 rgba(255,197,61,0)}}
-@keyframes scene2-shield-draw{to{stroke-dashoffset:0}}
+@keyframes s2-rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s2-pop{from{opacity:0;transform:translateY(6px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes s2-left{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s2-right{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s2-fade{from{opacity:0}to{opacity:1}}
+@keyframes s2-verdict{0%{opacity:0;transform:translateY(8px);box-shadow:0 0 0 rgba(255,197,61,0)}70%{opacity:1;transform:translateY(0);box-shadow:0 0 24px rgba(255,197,61,.10)}100%{opacity:1;transform:translateY(0);box-shadow:0 0 0 rgba(255,197,61,0)}}
+@keyframes s2-shield{to{stroke-dashoffset:0}}
 
 @media (prefers-reduced-motion:reduce){
   #scene-2 *,#scene-2::before,body.cs-scene-2 .cs-upnext{animation:none!important;transition:none!important}
