@@ -29,9 +29,20 @@
   <link rel="stylesheet" href="css/narrator-navigation.css?v=2" />
   <link rel="stylesheet" href="css/figma-fidelity.css?v=1" />
   <link rel="stylesheet" href="css/web-story.css?v=1" />
+  <link rel="stylesheet" href="css/scene-01-cover.css?v=1" />
 </head>
-<body class="cs-page is-overview">
+<body class="cs-page is-overview scene1-boot">
   <a class="skip-link" href="#scene-1">Skip to the story</a>
+
+  <div class="scene1-loader" role="status" aria-live="polite" aria-label="Loading Guardian One">
+    <div class="scene1-loader__web" aria-hidden="true"><span class="scene1-loader__slinger"></span></div>
+    <span class="scene1-loader__tab" aria-hidden="true">Case Study</span>
+    <div class="scene1-loader__copy">
+      <span>Loading Guardian One…</span>
+      <span class="scene1-loader__bar" aria-hidden="true"></span>
+    </div>
+  </div>
+
   <header class="site-header">
     <nav class="nav-pill" aria-label="Main">
       <div class="identity-group">
@@ -81,5 +92,6 @@
     </nav>
   </main>
   <script src="js/reader.js?v=25"></script>
+  <script src="js/scene-01-cover.js?v=1"></script>
 </body>
 </html>
