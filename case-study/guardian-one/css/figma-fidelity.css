@@ -1,0 +1,231 @@
+/* Guardian One — final Figma-fidelity layer.
+   Loaded last so the 1440×700 source frame remains the desktop source of truth
+   without scattering another round of per-scene overrides. */
+
+:root {
+  --cs-figma-w: 1440;
+  --cs-figma-h: 700;
+  --cs-cream: #f5efe3;
+  --cs-yellow: #ffc53d;
+  --cs-warm-meta: #9a8f79;
+  --cs-navy-meta: #6b738a;
+}
+
+/* Desktop is an immersive 1440×700 presentation, exactly like the Figma
+   frames. The full portfolio navigation remains in the DOM and is restored in
+   responsive reading mode; the breadcrumb is also a homepage link. */
+@media (min-width: 1281px) {
+  .cs-page .site-header {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .cs-reader {
+    height: 100vh;
+    padding: 0;
+    place-items: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .cs-stage {
+    width: 1440px;
+    height: 700px;
+    transform-origin: center center;
+  }
+
+  .cs-topbar {
+    top: calc(50% - (350px * var(--cs-scale, 1)) + (40px * var(--cs-scale, 1)));
+    width: calc(1340px * var(--cs-scale, 1));
+    gap: calc(18px * var(--cs-scale, 1));
+    font-size: calc(12px * var(--cs-scale, 1));
+    letter-spacing: calc(.6px * var(--cs-scale, 1));
+  }
+
+  .cs-count { font-size: calc(13px * var(--cs-scale, 1)); }
+  .cs-track {
+    width: calc(180px * var(--cs-scale, 1));
+    height: calc(4px * var(--cs-scale, 1));
+  }
+
+  .cs-crumb {
+    color: inherit;
+    text-decoration: none;
+  }
+  .cs-crumb:focus-visible {
+    outline: 2px solid var(--cs-yellow);
+    outline-offset: 4px;
+  }
+
+  /* Source scene groups use distinct atmospheric surfaces rather than one
+     guessed global blue glow. */
+  .cs-page.cs-scene-1 .cs-reader,
+  .cs-page.cs-scene-2 .cs-reader {
+    background-color: #17120b;
+    background-image:
+      radial-gradient(72% 120% at 5% 96%, rgba(118, 71, 28, .30) 0%, rgba(52, 31, 15, .13) 38%, rgba(23, 18, 11, 0) 70%),
+      radial-gradient(88% 145% at 56% 48%, rgba(17, 31, 71, .58) 0%, rgba(12, 18, 39, .30) 42%, rgba(23, 18, 11, 0) 72%),
+      radial-gradient(95% 150% at 92% 30%, rgba(22, 17, 10, .10) 0%, rgba(23, 18, 11, 0) 64%);
+  }
+
+  .cs-page.cs-scene-3 .cs-reader,
+  .cs-page.cs-scene-4 .cs-reader,
+  .cs-page.cs-scene-5 .cs-reader,
+  .cs-page.cs-scene-6 .cs-reader {
+    background-color: #08090d;
+    background-image:
+      radial-gradient(95% 145% at 50% 47%, rgba(18, 27, 52, .34) 0%, rgba(8, 9, 13, 0) 66%),
+      radial-gradient(48% 88% at 2% 100%, rgba(103, 61, 23, .14) 0%, rgba(8, 9, 13, 0) 74%);
+  }
+
+  .cs-page.cs-scene-7 .cs-reader,
+  .cs-page.cs-scene-8 .cs-reader,
+  .cs-page.cs-scene-9 .cs-reader,
+  .cs-page.cs-scene-10 .cs-reader,
+  .cs-page.cs-scene-11 .cs-reader,
+  .cs-page.cs-scene-12 .cs-reader,
+  .cs-page.cs-scene-13 .cs-reader,
+  .cs-page.cs-scene-14 .cs-reader {
+    background-color: #090b17;
+    background-image:
+      radial-gradient(105% 175% at 50% 44%, rgba(19, 35, 86, .42) 0%, rgba(9, 11, 23, .20) 42%, rgba(9, 11, 23, 0) 72%),
+      radial-gradient(45% 78% at 3% 98%, rgba(111, 66, 25, .12) 0%, rgba(9, 11, 23, 0) 76%);
+  }
+
+  /* Scene 01 — values measured directly from Figma node 5:9164. */
+  .sc-title .cs-eyebrow {
+    left: 586px;
+    top: 105px;
+    width: 268px;
+    height: 37px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 17px;
+    letter-spacing: .65px;
+  }
+
+  .sc-title .cs-h1 {
+    left: 337px;
+    top: 162px;
+    width: 766px;
+    height: 113px;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 104px;
+    font-weight: 400;
+    line-height: 112.32px;
+    letter-spacing: -1.04px;
+  }
+
+  .sc-title .lede {
+    left: 252px;
+    top: 295px;
+    width: 936px;
+    font-family: Inter, sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0;
+    color: var(--cs-yellow);
+  }
+
+  .sc-title .dur {
+    left: 641px;
+    top: 369px;
+    width: 158px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: .6px;
+    color: var(--cs-warm-meta);
+  }
+
+  .sc-title .chips {
+    left: 498.5px;
+    top: 441px;
+    width: 443px;
+    height: 52px;
+    gap: 12px;
+  }
+  .sc-title .chip {
+    height: 52px;
+    padding: 8px 16px;
+    border-radius: 10px;
+  }
+  .sc-title .chip-live { width: 142px; }
+  .sc-title .chip-zero { width: 153px; }
+  .sc-title .chip-reach { width: 124px; }
+  .sc-title .chip b { font-size: 14px; line-height: 18px; }
+  .sc-title .chip > span { margin-top: 2px; font-size: 9px; line-height: 12px; }
+
+  .sc-title .hint {
+    top: 650px;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: .55px;
+  }
+  .sc-title .hint::before { content: "CLICK OR "; }
+
+  .sc-title .cs-keys {
+    left: 1162px;
+    top: 424px;
+    width: 211px;
+    gap: 7px;
+  }
+  .sc-title .cs-keys .cap { width: 46px; height: 46px; border-radius: 10px; }
+  .sc-title .cs-keys .say {
+    width: 211px;
+    min-height: 58px;
+    margin-top: 3px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #fff7dc;
+    color: #17120b;
+  }
+
+  /* Scene 02 measurements from Figma node 5:9215. */
+  .sc-audience .who-title {
+    left: 56px;
+    top: 370px;
+    width: 406px;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 32px;
+    letter-spacing: -.2px;
+  }
+
+  /* Scenes 03–14 use 36/48 display titles in Figma. Keep the explanatory
+     subtitle at the measured 14/20 presentation scale. */
+  .cs-scene.native .native-title {
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: 0;
+  }
+  .cs-scene.native .native-sub {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .sc-tension .cs-h2 {
+    left: 400px;
+    top: 60px;
+    width: 644px;
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: -.36px;
+  }
+}
+
+/* Responsive reading mode stays intentionally reflowed. It is separate from
+   desktop fidelity so a small viewport never forces the 1440×700 artwork into
+   unreadable micro-type. */
+@media (max-width: 1280px) {
+  .cs-page .site-header { visibility: visible; pointer-events: auto; }
+  .cs-reader {
+    background-color: #090b17;
+    background-image:
+      radial-gradient(100% 70% at 50% 0%, rgba(20, 39, 92, .28), rgba(9, 11, 23, 0) 72%);
+  }
+}
