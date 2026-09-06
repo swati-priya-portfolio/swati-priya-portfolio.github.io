@@ -1,0 +1,174 @@
+/* Scene 12 HD + motion polish preview — source of truth: Figma 5:10108. */
+@media (min-width:1281px) {
+  body.cs-scene-12 #scene-12 {
+    overflow:hidden !important;
+  }
+
+  /* Ambient narrator light: elliptical, off-canvas, soft. No visible yellow disc. */
+  body.cs-scene-12 #scene-12 .report-narrator::before {
+    left:-162px !important;
+    bottom:-104px !important;
+    width:420px !important;
+    height:190px !important;
+    border-radius:50% !important;
+    background:radial-gradient(ellipse at 48% 66%,
+      rgba(255,197,61,.18) 0%,
+      rgba(255,197,61,.095) 28%,
+      rgba(255,197,61,.038) 50%,
+      rgba(255,197,61,.012) 64%,
+      rgba(255,197,61,0) 79%) !important;
+    filter:blur(18px) !important;
+    transform-origin:46% 78% !important;
+    opacity:0;
+    will-change:opacity,transform;
+  }
+
+  /* Keep product screenshots crisp and proportional. */
+  body.cs-scene-12 #scene-12 .report-ui {
+    image-rendering:auto;
+    backface-visibility:hidden;
+    transform:translateZ(0);
+    object-fit:contain !important;
+    object-position:center !important;
+    filter:none;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card--recommendations>.report-ui,
+  body.cs-scene-12 #scene-12 .report-card--action>.report-ui {
+    object-fit:contain !important;
+    background:#fff;
+  }
+
+  /* Hover stays tactile without softening the raster. */
+  body.cs-scene-12 #scene-12 .report-card:hover .report-ui {
+    filter:brightness(1.01) contrast(1.005) !important;
+    transform:translateY(-1px) translateZ(0);
+    box-shadow:0 0 0 1px rgba(255,197,61,.08) !important;
+  }
+
+  /* Staged scene story: answer → journey → funding → recommendation → action. */
+  body.cs-scene-12 #scene-12 .report-card--answer { --s12d:260ms; }
+  body.cs-scene-12 #scene-12 .report-card--journey { --s12d:380ms; }
+  body.cs-scene-12 #scene-12 .report-card--split { --s12d:500ms; }
+  body.cs-scene-12 #scene-12 .report-card--recommendations { --s12d:700ms; }
+  body.cs-scene-12 #scene-12 .report-card--action { --s12d:840ms; }
+
+  body.cs-scene-12 #scene-12.is-current .report-heading .native-title>span:first-child {
+    animation:s12TitleIn 470ms cubic-bezier(.16,1,.3,1) 80ms both !important;
+  }
+  body.cs-scene-12 #scene-12.is-current .report-heading .native-title>.hl {
+    animation:s12TitleIn 470ms cubic-bezier(.16,1,.3,1) 150ms both !important;
+  }
+  body.cs-scene-12 #scene-12.is-current .report-heading .native-sub {
+    animation:s12DetailIn 440ms cubic-bezier(.16,1,.3,1) 170ms both !important;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-card {
+    animation:s12CardIn 500ms cubic-bezier(.16,1,.3,1) var(--s12d) both !important;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-card-heading {
+    animation:s12DetailIn 400ms cubic-bezier(.16,1,.3,1) calc(var(--s12d) + 45ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-ui {
+    animation:s12UiIn 480ms cubic-bezier(.16,1,.3,1) calc(var(--s12d) + 85ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-card dl dt,
+  body.cs-scene-12 #scene-12.is-current .report-card dl dd {
+    opacity:0;
+    animation:s12AnnotationIn 320ms cubic-bezier(.16,1,.3,1) both;
+  }
+
+  /* WHAT → WHY → PRINCIPLE / DECISION / FLOW LINK stagger. */
+  body.cs-scene-12 #scene-12.is-current .report-card dl dt:nth-of-type(1),
+  body.cs-scene-12 #scene-12.is-current .report-card dl dd:nth-of-type(1) { animation-delay:calc(var(--s12d) + 190ms); }
+  body.cs-scene-12 #scene-12.is-current .report-card dl dt:nth-of-type(2),
+  body.cs-scene-12 #scene-12.is-current .report-card dl dd:nth-of-type(2) { animation-delay:calc(var(--s12d) + 240ms); }
+  body.cs-scene-12 #scene-12.is-current .report-card dl dt:nth-of-type(3),
+  body.cs-scene-12 #scene-12.is-current .report-card dl dd:nth-of-type(3) { animation-delay:calc(var(--s12d) + 290ms); }
+  body.cs-scene-12 #scene-12.is-current .report-card dl dt:nth-of-type(4),
+  body.cs-scene-12 #scene-12.is-current .report-card dl dd:nth-of-type(4) { animation-delay:calc(var(--s12d) + 340ms); }
+
+  /* 05 finishes the journey with a tiny right-to-left resolve. */
+  body.cs-scene-12 #scene-12.is-current .report-card--action {
+    animation:s12ActionIn 500ms cubic-bezier(.16,1,.3,1) var(--s12d) both !important;
+  }
+
+  /* Narrator arrives after the report anatomy settles. */
+  body.cs-scene-12 #scene-12.is-current .report-narrator img {
+    animation:s12NarratorIn 500ms cubic-bezier(.16,1,.3,1) 1180ms both !important;
+  }
+  body.cs-scene-12 #scene-12.is-current .report-narrator blockquote {
+    animation:s12BubbleIn 430ms cubic-bezier(.16,1,.3,1) 1280ms both !important;
+  }
+  body.cs-scene-12 #scene-12.is-current .report-narrator::before {
+    animation:s12GlowIn 620ms cubic-bezier(.16,1,.3,1) 1120ms forwards,
+              s12GlowBreath 7s ease-in-out 1750ms infinite !important;
+  }
+
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext {
+    animation:s12UpNextIn 420ms cubic-bezier(.16,1,.3,1) 1380ms both !important;
+  }
+
+  @keyframes s12TitleIn {
+    from { opacity:0; transform:translateY(9px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @keyframes s12DetailIn {
+    from { opacity:0; transform:translateY(6px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @keyframes s12CardIn {
+    from { opacity:0; transform:translateY(12px) scale(.992); }
+    to { opacity:1; transform:translateY(0) scale(1); }
+  }
+  @keyframes s12ActionIn {
+    from { opacity:0; transform:translateX(8px) translateY(4px) scale(.994); }
+    to { opacity:1; transform:translateX(0) translateY(0) scale(1); }
+  }
+  @keyframes s12UiIn {
+    from { opacity:0; transform:translateY(7px) translateZ(0); }
+    to { opacity:1; transform:translateY(0) translateZ(0); }
+  }
+  @keyframes s12AnnotationIn {
+    from { opacity:0; transform:translateY(4px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @keyframes s12NarratorIn {
+    from { opacity:0; transform:translateY(11px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @keyframes s12BubbleIn {
+    from { opacity:0; transform:translateY(5px) scale(.992); }
+    to { opacity:1; transform:translateY(0) scale(1); }
+  }
+  @keyframes s12GlowIn {
+    from { opacity:0; transform:scale(.96); }
+    to { opacity:.92; transform:scale(1); }
+  }
+  @keyframes s12GlowBreath {
+    0%,100% { opacity:.88; transform:scale(1); }
+    50% { opacity:.92; transform:scale(1.025); }
+  }
+  @keyframes s12UpNextIn {
+    from { opacity:0; transform:translateY(5px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  body.cs-scene-12 #scene-12 *,
+  body.cs-scene-12 #scene-12 *::before,
+  body.cs-scene-12 #scene-12 *::after,
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext {
+    animation:none !important;
+    transition:none !important;
+  }
+  body.cs-scene-12 #scene-12 .report-card dl dt,
+  body.cs-scene-12 #scene-12 .report-card dl dd,
+  body.cs-scene-12 #scene-12 .report-narrator::before {
+    opacity:1 !important;
+  }
+}
