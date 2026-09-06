@@ -117,7 +117,7 @@
 }
 
 /* Scene entrance — research story: evidence → synthesis → funnel → patterns → direction. */
-#scene-5.is-current .native-title { animation:s5-rise 360ms cubic-bezier(.22,.61,.36,1) 80ms both; }
+#scene-5.is-current .native-title { animation:s5-title-in 360ms cubic-bezier(.22,.61,.36,1) 80ms both; }
 #scene-5.is-current .source-panel .block-title { animation:s5-fade 260ms ease 230ms both; }
 #scene-5.is-current .source-item { animation:s5-card-in 320ms cubic-bezier(.22,.61,.36,1) both; }
 #scene-5.is-current .source-item:nth-child(1){animation-delay:300ms}
@@ -133,7 +133,7 @@
 #scene-5.is-current .research-photo:nth-child(4){animation-delay:635ms}
 #scene-5.is-current .board-connectors i { animation:s5-line-draw 260ms ease-out 640ms both; }
 #scene-5.is-current .board-connectors b { animation:s5-pin-in 220ms ease-out 700ms both; }
-#scene-5.is-current .paper-note { animation:s5-note-in 300ms cubic-bezier(.22,.61,.36,1) 720ms both; }
+#scene-5.is-current .paper-note { animation:s5-paper-note-in 300ms cubic-bezier(.22,.61,.36,1) 720ms both; }
 
 #scene-5.is-current .funnel-panel { animation:s5-rise 360ms cubic-bezier(.22,.61,.36,1) 700ms both; }
 #scene-5.is-current .funnel-bar i { transform-origin:left center; animation:s5-bar-grow 560ms cubic-bezier(.22,.61,.36,1) both; }
@@ -225,12 +225,14 @@
 #scene-5 .source-item:hover,
 #scene-5 .research-photo:hover { transform:translateY(-1px); }
 
+@keyframes s5-title-in { from{opacity:0;transform:translateX(-50%) translateY(6px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
 @keyframes s5-rise { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 @keyframes s5-fade { from{opacity:0} to{opacity:1} }
 @keyframes s5-card-in { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
 @keyframes s5-photo-in { from{opacity:0;transform:translateY(5px) scale(.995)} to{opacity:1;transform:translateY(0) scale(1)} }
 @keyframes s5-line-draw { from{opacity:0;clip-path:inset(100% 0 0 0)} to{opacity:1;clip-path:inset(0 0 0 0)} }
 @keyframes s5-pin-in { from{opacity:0;transform:translateX(-50%) scale(.7)} to{opacity:1;transform:translateX(-50%) scale(1)} }
+@keyframes s5-paper-note-in { from{opacity:0;transform:translateX(-50%) translateY(5px) rotate(-.6deg)} to{opacity:1;transform:translateX(-50%) translateY(0) rotate(-.3deg)} }
 @keyframes s5-note-in { from{opacity:0;transform:translateY(5px) rotate(-.6deg)} to{opacity:1;transform:translateY(0) rotate(0deg)} }
 @keyframes s5-bar-grow { from{transform:scaleX(0)} to{transform:scaleX(1)} }
 @keyframes s5-direction-in { from{opacity:0;transform:translateX(4px)} to{opacity:1;transform:translateX(0)} }
