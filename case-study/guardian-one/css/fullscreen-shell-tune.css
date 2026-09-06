@@ -37,46 +37,8 @@
     background-size:cover !important;
   }
 
-  /* The Figma rail lives at y=40 inside Scene 02. fullscreen-shell.js now
-     positions the real rail there, so it no longer consumes a second row. */
   body.cs-scene-2 .cs-topbar {
     top:var(--cs-rail-top) !important;
-    width:var(--cs-bar,1340px) !important;
-    min-height:20px !important;
-    height:20px !important;
-    font-family:var(--font-body,Inter,sans-serif) !important;
-    font-size:12px !important;
-    font-weight:500 !important;
-    line-height:16px !important;
-    letter-spacing:.05em !important;
-    color:#9a8f79 !important;
-  }
-  body.cs-scene-2 .cs-count {
-    font-size:14px !important;
-    line-height:20px !important;
-    letter-spacing:.03em !important;
-    color:#9a8f79 !important;
-  }
-  body.cs-scene-2 .cs-track {
-    width:180px !important;
-    height:4px !important;
-    background:#c9bfae !important;
-    opacity:1 !important;
-  }
-  body.cs-scene-2 .cs-fill {
-    background:#ffc53d !important;
-  }
-  body.cs-scene-2 .cs-crumb {
-    color:#9a8f79 !important;
-  }
-  body.cs-scene-2 .cs-crumb b {
-    color:#9a8f79 !important;
-    font-weight:500 !important;
-  }
-  body.cs-scene-2 .cs-view-design {
-    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
-    font-size:10px !important;
-    color:rgba(245,239,227,.68) !important;
   }
 
   /* Keep the 1440×700 geometry but let its background blend into the reader. */
@@ -138,36 +100,9 @@
     background-size:cover !important;
   }
 
-  /* Figma places Scene 03's rail at y=40 inside the scene. */
   body.cs-scene-3 .cs-topbar {
     top:var(--cs-rail-top) !important;
-    width:var(--cs-bar,1340px) !important;
-    min-height:20px !important;
-    height:20px !important;
-    font-family:var(--font-body,Inter,sans-serif) !important;
-    font-size:12px !important;
-    font-weight:400 !important;
-    line-height:20px !important;
-    letter-spacing:.05em !important;
-    color:#666e7a !important;
   }
-  body.cs-scene-3 .cs-crumb { color:#666e7a !important; }
-  body.cs-scene-3 .cs-crumb b { color:#666e7a !important;font-weight:400 !important; }
-  body.cs-scene-3 .cs-count {
-    color:#666e7a !important;
-    font-size:12px !important;
-    font-weight:500 !important;
-    line-height:20px !important;
-    letter-spacing:.03em !important;
-  }
-  body.cs-scene-3 .cs-track {
-    width:180px !important;
-    height:4px !important;
-    background:#c9bfae !important;
-    opacity:1 !important;
-  }
-  body.cs-scene-3 .cs-fill { background:#ffc53d !important; }
-  body.cs-scene-3 .cs-view-design { display:none !important; }
 
   body.cs-scene-3 .cs-stage-shell {
     top:var(--cs-scene-top) !important;
@@ -219,6 +154,71 @@
   }
   body.cs-scene-3 .cs-upnext:hover > span:last-child,
   body.cs-scene-3 .cs-upnext:focus-visible > span:last-child { transform:translateX(3px); }
+}
+
+/* Unified case-study rail: Scene 02 and Scene 03 must use exactly the same
+   visual language as Scene 01. Only the section label, scene number and
+   progress amount are allowed to change. */
+@media (min-width:900px) {
+  body.cs-scene-2 .cs-topbar,
+  body.cs-scene-3 .cs-topbar {
+    width:min(calc(100vw - 80px),1320px) !important;
+    min-height:24px !important;
+    height:24px !important;
+    gap:14px !important;
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:11px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    letter-spacing:.07em !important;
+    color:rgba(245,239,227,.56) !important;
+    text-transform:uppercase !important;
+  }
+
+  body.cs-scene-2 .cs-crumb,
+  body.cs-scene-3 .cs-crumb {
+    color:rgba(245,239,227,.56) !important;
+    font:inherit !important;
+    letter-spacing:inherit !important;
+  }
+  body.cs-scene-2 .cs-crumb b,
+  body.cs-scene-3 .cs-crumb b {
+    color:var(--accent,#ffc53d) !important;
+    font-weight:500 !important;
+  }
+
+  body.cs-scene-2 .cs-view-design,
+  body.cs-scene-3 .cs-view-design {
+    display:inline-block !important;
+    font:inherit !important;
+    letter-spacing:inherit !important;
+    color:rgba(245,239,227,.82) !important;
+    text-decoration:none !important;
+  }
+
+  body.cs-scene-2 .cs-count,
+  body.cs-scene-3 .cs-count {
+    color:rgba(245,239,227,.62) !important;
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:11.5px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    letter-spacing:.07em !important;
+  }
+
+  body.cs-scene-2 .cs-track,
+  body.cs-scene-3 .cs-track {
+    width:clamp(110px,12vw,170px) !important;
+    height:4px !important;
+    border-radius:99px !important;
+    background:rgba(245,239,227,.16) !important;
+    opacity:1 !important;
+    overflow:hidden !important;
+  }
+  body.cs-scene-2 .cs-fill,
+  body.cs-scene-3 .cs-fill {
+    background:linear-gradient(90deg,var(--accent,#ffc53d),#ffe0a0) !important;
+  }
 }
 
 @keyframes s3-upnext-in {
