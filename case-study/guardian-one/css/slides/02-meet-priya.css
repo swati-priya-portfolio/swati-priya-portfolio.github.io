@@ -2,9 +2,6 @@
 #scene-2{isolation:isolate;background:transparent}
 
 @media (min-width:900px){
-  /* Exact Figma palette and local atmosphere. The full viewport background is
-     owned by fullscreen-shell-tune.css; these smaller pools sit behind the two
-     Design portraits at the same places as the Figma ellipses. */
   #scene-2{
     background-image:
       radial-gradient(ellipse 157px 145px at 949px 178px,rgba(38,50,103,.28) 0%,rgba(28,38,82,.16) 44%,rgba(23,18,11,0) 76%),
@@ -12,7 +9,16 @@
     background-repeat:no-repeat;
   }
 
-  /* ---- Left persona: exact Figma sizes ---- */
+  /* Exact Figma portrait plate: 138×138 white card, 1px gold edge, 8px radius. */
+  #scene-2 .portrait::before{
+    left:0;top:55px;width:138px;height:138px;
+    box-sizing:border-box;
+    border:1px solid #ffd34d;
+    border-radius:8px;
+    background:#fff;
+    box-shadow:none;
+  }
+
   #scene-2 .thought{
     left:157px;top:82px;width:286px;
     padding:10px 22px;
@@ -39,7 +45,7 @@
     color:#f8f4ec;
   }
   #scene-2 .who-lede{
-    left:56px;top:450px;width:406px;
+    left:56px;top:446px;width:406px;
     margin:0;
     font-family:var(--font-body,Inter,sans-serif);
     font-size:14px;
@@ -80,7 +86,6 @@
   }
   #scene-2 .divider{left:496px;top:104px;width:1px;height:572px;background:rgba(201,191,174,.24)}
 
-  /* ---- Speaker typography / bubbles ---- */
   #scene-2 .who-label{
     font-family:var(--font-body,Inter,sans-serif);
     font-size:16px;
@@ -115,7 +120,6 @@
   }
   #scene-2 .bub-design[style*="top:319px"]::before{top:36px}
 
-  /* ---- Guardian One conclusion ---- */
   #scene-2 .verdict{
     left:973px;top:490px;width:411px;height:100px;
     gap:16px;
@@ -136,7 +140,7 @@
   }
   #scene-2 .verdict p+p{margin-top:4px;font-weight:500;color:#ffc53d}
 
-  /* ---- Motion: sequence follows the story; no layout shifts ---- */
+  /* Entrance sequence follows the story; transforms never alter layout. */
   #scene-2.is-current .portrait{animation:s2-rise 420ms cubic-bezier(.22,.61,.36,1) 80ms both}
   #scene-2.is-current .thought{animation:s2-pop 390ms cubic-bezier(.22,.61,.36,1) 170ms both}
   #scene-2.is-current .who-title{animation:s2-rise 390ms cubic-bezier(.22,.61,.36,1) 260ms both}
@@ -152,7 +156,6 @@
   #scene-2.is-current .who-label[style*="top:481px"],#scene-2.is-current .av-parent[style*="top:505px"],#scene-2.is-current .bub-parent[style*="top:513px"]{animation:s2-left 390ms cubic-bezier(.22,.61,.36,1) 920ms both}
   #scene-2.is-current .verdict{animation:s2-verdict 460ms cubic-bezier(.22,.61,.36,1) 1020ms both}
 
-  /* Parent → Design pairing. Unrelated content only softens a little. */
   #scene-2 .who-label,#scene-2 .av,#scene-2 .bub,#scene-2 .verdict{transition:opacity 180ms ease,filter 180ms ease,transform 180ms cubic-bezier(.22,.61,.36,1),box-shadow 180ms ease}
 
   #scene-2:has(.bub-parent[style*="top:106px"]:hover,.bub-design[style*="top:114px"]:hover) .who-label,
