@@ -36,6 +36,7 @@
       root.style.removeProperty("--cs-scene-top");
       root.style.removeProperty("--cs-stage-w");
       root.style.removeProperty("--cs-stage-h");
+      root.style.removeProperty("--cs-bar");
       return;
     }
 
@@ -43,18 +44,34 @@
 
     var rect=header ? header.getBoundingClientRect() : {bottom:66,height:54};
     var navBottom=Math.ceil(rect.bottom || rect.height || 66);
-    var railTop=navBottom+14;
-    var sceneTop=railTop+24+12;
     var bottomSafe=12;
     var usableW=Math.min(1440,Math.max(720,innerWidth-80));
-    var usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
-    var scale=Math.min(1,usableW/1440,usableH/700);
+    var sceneTwo=body.classList.contains("cs-scene-2");
+    var sceneTop,railTop,usableH,scale;
+
+    if(sceneTwo){
+      /* Scene 02 keeps the Figma rail inside the 700px composition instead of
+         spending a second row above the frame. This gives the scene back the
+         vertical space that was creating black letterboxing and tiny content. */
+      sceneTop=navBottom+8;
+      usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
+      scale=Math.min(1,usableW/1440,usableH/700);
+      railTop=sceneTop+(40*scale);
+      root.style.setProperty("--cs-bar",(1340*scale).toFixed(2)+"px");
+    }else{
+      railTop=navBottom+14;
+      sceneTop=railTop+24+12;
+      usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
+      scale=Math.min(1,usableW/1440,usableH/700);
+      root.style.removeProperty("--cs-bar");
+    }
+
     var stageW=1440*scale;
     var stageH=700*scale;
 
     root.style.setProperty("--cs-head",navBottom+"px");
-    root.style.setProperty("--cs-rail-top",railTop+"px");
-    root.style.setProperty("--cs-scene-top",sceneTop+"px");
+    root.style.setProperty("--cs-rail-top",railTop.toFixed(2)+"px");
+    root.style.setProperty("--cs-scene-top",sceneTop.toFixed(2)+"px");
     root.style.setProperty("--cs-scale",scale.toFixed(4));
     root.style.setProperty("--cs-stage-w",stageW.toFixed(2)+"px");
     root.style.setProperty("--cs-stage-h",stageH.toFixed(2)+"px");
@@ -68,8 +85,6 @@
   rewriteBreakpoints();
   fitDesktop();
 
-  /* The reader owns its own breakpoint logic. Keep this shell as the final
-     desktop authority after scene/class mutations and viewport changes. */
   var queued=false;
   function queueFit(){
     if(queued)return;
@@ -88,7 +103,6 @@
   addEventListener("hashchange",queueFit,{passive:true});
   document.fonts && document.fonts.ready && document.fonts.ready.then(queueFit);
 
-  /* Reassert after the asynchronous scene loader has had time to initialise. */
   setTimeout(queueFit,0);
   setTimeout(queueFit,80);
   setTimeout(queueFit,240);
