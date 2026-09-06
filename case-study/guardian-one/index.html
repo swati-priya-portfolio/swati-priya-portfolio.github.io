@@ -13,9 +13,9 @@
   <link rel="stylesheet" href="css/base.css?v=17" />
   <link rel="stylesheet" href="css/native.css?v=14" />
   <link rel="stylesheet" href="css/slides/01-title.css?v=15" />
-  <link rel="stylesheet" href="css/slides/02-meet-priya.css?v=7" />
-  <link rel="stylesheet" href="css/slides/03-two-sides.css?v=10" />
-  <link rel="stylesheet" href="css/slides/04-decision-matrix.css?v=12" />
+  <link rel="stylesheet" href="css/slides/02-meet-priya.css?v=8" />
+  <link rel="stylesheet" href="css/slides/03-two-sides.css?v=11" />
+  <link rel="stylesheet" href="css/slides/04-decision-matrix.css?v=13" />
   <link rel="stylesheet" href="css/slides/05-research.css?v=15" />
   <link rel="stylesheet" href="css/slides/06-feature-audit.css?v=10" />
   <link rel="stylesheet" href="css/slides/07-calculator-questions.css?v=11" />
@@ -27,9 +27,24 @@
   <link rel="stylesheet" href="css/slides/13-launch.css?v=14" />
   <link rel="stylesheet" href="css/slides/14-reflection.css?v=14" />
   <link rel="stylesheet" href="css/narrator-navigation.css?v=2" />
+  <link rel="stylesheet" href="css/figma-fidelity.css?v=1" />
+  <link rel="stylesheet" href="css/web-story.css?v=1" />
+  <link rel="stylesheet" href="css/scene-01-cover.css?v=1" />
+  <link rel="stylesheet" href="css/fullscreen-shell.css?v=1" />
+  <link rel="stylesheet" href="css/fullscreen-shell-tune.css?v=3" />
 </head>
-<body class="cs-page is-overview">
+<body class="cs-page is-overview scene1-boot">
   <a class="skip-link" href="#scene-1">Skip to the story</a>
+
+  <div class="scene1-loader" role="status" aria-live="polite" aria-label="Loading Guardian One">
+    <div class="scene1-loader__web" aria-hidden="true"><span class="scene1-loader__slinger"></span></div>
+    <span class="scene1-loader__tab" aria-hidden="true">Case Study</span>
+    <div class="scene1-loader__copy">
+      <span>Loading Guardian One…</span>
+      <span class="scene1-loader__bar" aria-hidden="true"></span>
+    </div>
+  </div>
+
   <header class="site-header">
     <nav class="nav-pill" aria-label="Main">
       <div class="identity-group">
@@ -50,19 +65,21 @@
 
   <main class="cs-reader" aria-label="Guardian One case study">
     <div class="cs-topbar">
-      <span class="cs-crumb">Case study · <b>Guardian One</b> · Overview</span>
+      <a class="cs-crumb" href="../../index.html#case-studies" aria-label="Back to portfolio case studies">Case study · <b>Guardian One</b> · Overview</a>
       <a class="cs-view-design" href="https://www.figma.com/proto/BItsaIJYIc1xs8DNVPRuAz/Final-Design?node-id=5-9164&p=f&t=bA1tzPbMFoGIUEXD-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" target="_blank" rel="noopener">VIEW DESIGN ↗</a>
       <span class="cs-count">Scene 01 / 14</span>
       <span class="cs-track"><span class="cs-fill"></span></span>
     </div>
     <p class="cs-mobile-note">This scene is in responsive reading mode. Swipe or use Previous and Next below to continue.</p>
-    <div class="cs-stage" id="case-study-stage" aria-live="polite">
-      <div class="cs-loading" role="status">Loading the case study…</div>
-      <button class="cs-upnext" type="button" aria-label="Go to next scene">
-        <span class="cs-upnext-label">Up next</span>
-        <strong class="cs-upnext-name">Meet Priya</strong>
-        <span aria-hidden="true">→</span>
-      </button>
+    <div class="cs-stage-shell">
+      <div class="cs-stage" id="case-study-stage" aria-live="polite">
+        <div class="cs-loading" role="status">Loading the case study…</div>
+        <button class="cs-upnext" type="button" aria-label="Go to next scene">
+          <span class="cs-upnext-label">Up next</span>
+          <strong class="cs-upnext-name">Meet Priya</strong>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
     </div>
     <nav class="cs-mobile-nav" aria-label="Case study scene navigation">
       <button class="cs-mobile-prev" type="button" aria-label="Go to previous scene">
@@ -76,6 +93,8 @@
       </button>
     </nav>
   </main>
-  <script src="js/reader.js?v=23"></script>
+  <script src="js/reader.js?v=25"></script>
+  <script src="js/scene-01-cover.js?v=1"></script>
+  <script src="js/fullscreen-shell.js?v=3"></script>
 </body>
 </html>

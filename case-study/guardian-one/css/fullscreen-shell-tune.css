@@ -1,0 +1,312 @@
+/* Final Scene 01 balance pass for the fullscreen shell. */
+@media (min-width:900px) {
+  #scene-1 .scene1-center {
+    top: 43% !important;
+    transform: translate(-50%,-50%) !important;
+  }
+  #scene-1 .cs-narrator-pair {
+    bottom: clamp(34px, 5.5vh, 58px) !important;
+  }
+  #scene-1 .cs-keys {
+    bottom: clamp(34px, 5.5vh, 58px) !important;
+  }
+  #scene-1 .hint {
+    bottom: clamp(38px, 5.8vh, 62px) !important;
+  }
+}
+
+@media (min-width:900px) and (max-height:760px) {
+  #scene-1 .scene1-center {
+    top: 44% !important;
+  }
+  #scene-1 .cs-narrator-pair,
+  #scene-1 .cs-keys { bottom: 28px !important; }
+  #scene-1 .hint { bottom: 30px !important; }
+}
+
+/* Scene 02 — make the Figma frame feel native to the page instead of a
+   smaller slide floating inside black letterboxing. Scene 01 is untouched. */
+@media (min-width:900px) {
+  body.cs-scene-2 .cs-reader {
+    background-color:#17120b !important;
+    background-image:
+      radial-gradient(ellipse 178% 175% at 50% 27%, rgba(35,47,98,.88) 0%, rgba(27,37,79,.64) 28%, rgba(24,27,55,.34) 49%, rgba(23,18,11,0) 70%),
+      radial-gradient(ellipse 34% 56% at 6% 32%, rgba(116,73,32,.22) 0%, rgba(77,47,24,.12) 42%, rgba(23,18,11,0) 76%),
+      linear-gradient(180deg,#17120b 0%,#17120b 100%) !important;
+    background-position:center !important;
+    background-size:cover !important;
+  }
+
+  body.cs-scene-2 .cs-topbar {
+    top:var(--cs-rail-top) !important;
+  }
+
+  /* Keep the 1440×700 geometry but let its background blend into the reader. */
+  body.cs-scene-2 .cs-stage-shell {
+    top:var(--cs-scene-top) !important;
+    overflow:visible !important;
+  }
+  body.cs-scene-2 #scene-2 {
+    background-color:transparent !important;
+    overflow:visible !important;
+  }
+
+  /* Match Figma Up Next: small, quiet and close to the bottom-right. */
+  body.cs-scene-2 .cs-upnext {
+    right:52px !important;
+    bottom:35px !important;
+    min-height:40px !important;
+    padding:10px 16px 10px 14px !important;
+    gap:10px !important;
+    border:1px solid #333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:12px !important;
+  }
+  body.cs-scene-2 .cs-upnext-label {
+    color:#ffcc47 !important;
+    font-size:10px !important;
+    font-weight:500 !important;
+    line-height:14px !important;
+    letter-spacing:.08em !important;
+    text-transform:uppercase !important;
+  }
+  body.cs-scene-2 .cs-upnext-name {
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+  }
+  body.cs-scene-2 .cs-upnext:hover,
+  body.cs-scene-2 .cs-upnext:focus-visible {
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,197,61,.52) !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+  }
+}
+
+/* Scene 03 — same full-bleed shell principle as Scene 02, but matching the
+   darker strategic-tension frame from Figma node 5:6453. */
+@media (min-width:900px) {
+  body.cs-scene-3 .cs-reader {
+    background-color:#08090d !important;
+    background-image:
+      radial-gradient(ellipse 178% 175% at 50% 50%, rgba(33,49,112,.80) 0%, rgba(24,35,79,.60) 28%, rgba(14,20,45,.34) 50%, rgba(8,9,13,0) 72%),
+      radial-gradient(ellipse 34% 46% at 4% 96%, rgba(118,76,33,.15) 0%, rgba(69,42,21,.07) 46%, rgba(8,9,13,0) 78%),
+      linear-gradient(180deg,#08090d 0%,#08090d 100%) !important;
+    background-position:center !important;
+    background-size:cover !important;
+  }
+
+  body.cs-scene-3 .cs-topbar {
+    top:var(--cs-rail-top) !important;
+  }
+
+  body.cs-scene-3 .cs-stage-shell {
+    top:var(--cs-scene-top) !important;
+    overflow:visible !important;
+  }
+  body.cs-scene-3 #scene-3 {
+    background-color:transparent !important;
+    overflow:visible !important;
+  }
+
+  body.cs-scene-3 .cs-upnext {
+    right:39px !important;
+    bottom:35px !important;
+    min-height:40px !important;
+    padding:10px 16px 10px 14px !important;
+    gap:10px !important;
+    border:1px solid #333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:12px !important;
+    animation:s3-upnext-in 320ms cubic-bezier(.22,.61,.36,1) 1080ms both;
+  }
+  body.cs-scene-3 .cs-upnext-label {
+    color:#ffc53d !important;
+    font-size:10px !important;
+    font-weight:500 !important;
+    line-height:14px !important;
+    letter-spacing:.08em !important;
+    text-transform:uppercase !important;
+  }
+  body.cs-scene-3 .cs-upnext-name {
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+  }
+  body.cs-scene-3 .cs-upnext > span:last-child {
+    color:#ffc53d !important;
+    display:inline-block;
+    transition:transform 180ms ease;
+  }
+  body.cs-scene-3 .cs-upnext:hover,
+  body.cs-scene-3 .cs-upnext:focus-visible {
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,197,61,.52) !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+  }
+  body.cs-scene-3 .cs-upnext:hover > span:last-child,
+  body.cs-scene-3 .cs-upnext:focus-visible > span:last-child { transform:translateX(3px); }
+}
+
+/* Scene 04 — full-bleed Decision Framework shell matching Figma node 5:7679. */
+@media (min-width:900px) {
+  body.cs-scene-4 .cs-reader {
+    background-color:#09090d !important;
+    background-image:
+      radial-gradient(ellipse 178% 175% at 50% 48%, rgba(33,49,112,.78) 0%, rgba(24,35,79,.56) 29%, rgba(14,20,45,.30) 52%, rgba(9,9,13,0) 73%),
+      radial-gradient(ellipse 34% 48% at 5% 96%, rgba(120,76,32,.16) 0%, rgba(70,43,21,.07) 47%, rgba(9,9,13,0) 80%),
+      linear-gradient(180deg,#09090d 0%,#09090d 100%) !important;
+    background-position:center !important;
+    background-size:cover !important;
+  }
+
+  body.cs-scene-4 .cs-topbar {
+    top:var(--cs-rail-top) !important;
+  }
+
+  body.cs-scene-4 .cs-stage-shell {
+    top:var(--cs-scene-top) !important;
+    overflow:visible !important;
+  }
+  body.cs-scene-4 #scene-4 {
+    background-color:transparent !important;
+    overflow:visible !important;
+  }
+
+  body.cs-scene-4 .cs-upnext {
+    right:58px !important;
+    bottom:16px !important;
+    min-width:280px !important;
+    min-height:46px !important;
+    padding:10px 18px !important;
+    gap:12px !important;
+    border:1px solid rgba(255,197,61,.50) !important;
+    border-radius:10px !important;
+    background:rgba(6,8,11,.88) !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:13px !important;
+    animation:s4-upnext-in 320ms cubic-bezier(.22,.61,.36,1) 1120ms both;
+  }
+  body.cs-scene-4 .cs-upnext-label {
+    color:#ffc53d !important;
+    font-size:11px !important;
+    font-weight:500 !important;
+    line-height:14px !important;
+    letter-spacing:.08em !important;
+    text-transform:uppercase !important;
+  }
+  body.cs-scene-4 .cs-upnext-name {
+    font-size:13px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+  }
+  body.cs-scene-4 .cs-upnext > span:last-child {
+    color:#ffc53d !important;
+    display:inline-block;
+    font-size:18px !important;
+    transition:transform 180ms ease;
+  }
+  body.cs-scene-4 .cs-upnext:hover,
+  body.cs-scene-4 .cs-upnext:focus-visible {
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,197,61,.72) !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+  }
+  body.cs-scene-4 .cs-upnext:hover > span:last-child,
+  body.cs-scene-4 .cs-upnext:focus-visible > span:last-child { transform:translateX(3px); }
+}
+
+/* Unified case-study rail: Scenes 02–04 use exactly the same visual language
+   as Scene 01. Only the section label, scene number and progress change. */
+@media (min-width:900px) {
+  body.cs-scene-2 .cs-topbar,
+  body.cs-scene-3 .cs-topbar,
+  body.cs-scene-4 .cs-topbar {
+    width:min(calc(100vw - 80px),1320px) !important;
+    min-height:24px !important;
+    height:24px !important;
+    gap:14px !important;
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:11px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    letter-spacing:.07em !important;
+    color:rgba(245,239,227,.56) !important;
+    text-transform:uppercase !important;
+  }
+
+  body.cs-scene-2 .cs-crumb,
+  body.cs-scene-3 .cs-crumb,
+  body.cs-scene-4 .cs-crumb {
+    color:rgba(245,239,227,.56) !important;
+    font:inherit !important;
+    letter-spacing:inherit !important;
+  }
+  body.cs-scene-2 .cs-crumb b,
+  body.cs-scene-3 .cs-crumb b,
+  body.cs-scene-4 .cs-crumb b {
+    color:var(--accent,#ffc53d) !important;
+    font-weight:500 !important;
+  }
+
+  body.cs-scene-2 .cs-view-design,
+  body.cs-scene-3 .cs-view-design,
+  body.cs-scene-4 .cs-view-design {
+    display:inline-block !important;
+    font:inherit !important;
+    letter-spacing:inherit !important;
+    color:rgba(245,239,227,.82) !important;
+    text-decoration:none !important;
+  }
+
+  body.cs-scene-2 .cs-count,
+  body.cs-scene-3 .cs-count,
+  body.cs-scene-4 .cs-count {
+    color:rgba(245,239,227,.62) !important;
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:11.5px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    letter-spacing:.07em !important;
+  }
+
+  body.cs-scene-2 .cs-track,
+  body.cs-scene-3 .cs-track,
+  body.cs-scene-4 .cs-track {
+    width:clamp(110px,12vw,170px) !important;
+    height:4px !important;
+    border-radius:99px !important;
+    background:rgba(245,239,227,.16) !important;
+    opacity:1 !important;
+    overflow:hidden !important;
+  }
+  body.cs-scene-2 .cs-fill,
+  body.cs-scene-3 .cs-fill,
+  body.cs-scene-4 .cs-fill {
+    background:linear-gradient(90deg,var(--accent,#ffc53d),#ffe0a0) !important;
+  }
+}
+
+@keyframes s3-upnext-in {
+  from { opacity:0;transform:translateY(5px); }
+  to { opacity:1;transform:translateY(0); }
+}
+@keyframes s4-upnext-in {
+  from { opacity:0;transform:translateY(5px); }
+  to { opacity:1;transform:translateY(0); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  body.cs-scene-3 .cs-upnext,
+  body.cs-scene-4 .cs-upnext { animation:none !important; }
+}
