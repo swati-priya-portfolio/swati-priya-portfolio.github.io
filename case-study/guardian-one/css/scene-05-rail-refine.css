@@ -1,0 +1,185 @@
+/* Scene 05 refinement preview only.
+   Scoped to Research Evidence so no other Guardian One scene is affected. */
+
+@media (min-width: 900px) {
+  /* Tighten only the nav -> case-study rail relationship. Keep the scene frame
+     itself at the existing --cs-scene-top so the slide content does not jump. */
+  body.cs-scene-5 .cs-topbar {
+    top: calc(var(--cs-rail-top, 80px) - 6px) !important;
+  }
+
+  /* Rebuild the research-board connector as one continuous rail running
+     exactly through the centre of all four existing photo nodes. */
+  body.cs-scene-5 #scene-5 .board-connectors {
+    position: absolute !important;
+    z-index: 3 !important;
+    left: 63.7px !important;
+    right: 63.7px !important;
+    top: 188.7px !important;
+    bottom: auto !important;
+    height: 12px !important;
+    pointer-events: none !important;
+  }
+
+  body.cs-scene-5 #scene-5 .board-connectors::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1.5px;
+    border-radius: 999px;
+    background: #eb3d3d;
+    transform: translateY(-50%);
+    transform-origin: left center;
+  }
+
+  /* Retire the older fan-shaped line segments and centre pin. */
+  body.cs-scene-5 #scene-5 .board-connectors i,
+  body.cs-scene-5 #scene-5 .board-connectors b {
+    display: none !important;
+  }
+
+  /* Larger, uniform nodes. Keeping bottom:-4px preserves the original node
+     centreline while increasing the diameter from 8px to 12px. */
+  body.cs-scene-5 #scene-5 .research-photo::after {
+    width: 12px !important;
+    height: 12px !important;
+    bottom: -4px !important;
+    border: 3px solid #eb3d3d !important;
+    border-radius: 50% !important;
+    background: #ffc53d !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Keep the shared narrator system, but anchor Scene 05 firmly at the lower
+     left and add the same portfolio yellow as soft ambient light behind it. */
+  body.cs-scene-5 #scene-5 .mini-narrator {
+    z-index: 6 !important;
+    isolation: isolate;
+    overflow: visible !important;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    bottom: 0;
+    width: 158px;
+    height: 146px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 43% 62%, rgba(255,197,61,.25) 0%, rgba(255,197,61,.13) 30%, rgba(255,197,61,.055) 50%, rgba(255,197,61,0) 74%);
+    filter: blur(14px);
+    pointer-events: none;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator img,
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote {
+    z-index: 1;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator img {
+    position: relative !important;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote {
+    position: relative !important;
+  }
+}
+
+/* Subtle coordinated scene entrance. The scene-level page transition remains
+   intact; these are small internal reveals only. */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  body.cs-scene-5 #scene-5.is-current .native-title {
+    animation: s5r-content-in 520ms cubic-bezier(.22,.61,.36,1) 70ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-main > .source-panel {
+    animation: s5r-content-in 520ms cubic-bezier(.22,.61,.36,1) 150ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-main > .research-board {
+    animation: s5r-content-in 560ms cubic-bezier(.22,.61,.36,1) 210ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-main > .funnel-panel {
+    animation: s5r-content-in 560ms cubic-bezier(.22,.61,.36,1) 270ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-bottom > * {
+    animation: s5r-content-in 520ms cubic-bezier(.22,.61,.36,1) both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-bottom > :nth-child(1) { animation-delay: 330ms; }
+  body.cs-scene-5 #scene-5.is-current .research-bottom > :nth-child(2) { animation-delay: 390ms; }
+  body.cs-scene-5 #scene-5.is-current .research-bottom > :nth-child(3) { animation-delay: 450ms; }
+
+  body.cs-scene-5 #scene-5.is-current .same-story {
+    animation: s5r-content-in 440ms cubic-bezier(.22,.61,.36,1) 410ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .board-connectors::before {
+    animation: s5r-rail-draw 620ms cubic-bezier(.22,.61,.36,1) 390ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-photo::after {
+    animation: s5r-node-in 380ms cubic-bezier(.22,.61,.36,1) both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(1)::after { animation-delay: 450ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(2)::after { animation-delay: 520ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(3)::after { animation-delay: 590ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(4)::after { animation-delay: 660ms; }
+
+  body.cs-scene-5 #scene-5.is-current .mini-narrator img {
+    animation: s5r-narrator-in 520ms cubic-bezier(.22,.61,.36,1) 430ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .mini-narrator blockquote {
+    animation: s5r-content-in 480ms cubic-bezier(.22,.61,.36,1) 500ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .mini-narrator::before {
+    animation: s5r-glow-breathe 5.4s ease-in-out 760ms infinite alternate both;
+  }
+}
+
+@keyframes s5r-content-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes s5r-rail-draw {
+  from { opacity: 0; transform: translateY(-50%) scaleX(0); }
+  to   { opacity: 1; transform: translateY(-50%) scaleX(1); }
+}
+
+@keyframes s5r-node-in {
+  from { opacity: 0; transform: translateX(-50%) scale(.8); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes s5r-narrator-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes s5r-glow-breathe {
+  0%   { opacity: .58; transform: scale(.985); filter: blur(14px); }
+  100% { opacity: .78; transform: scale(1.035); filter: blur(17px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.cs-scene-5 #scene-5 .native-title,
+  body.cs-scene-5 #scene-5 .research-main > *,
+  body.cs-scene-5 #scene-5 .research-bottom > *,
+  body.cs-scene-5 #scene-5 .same-story,
+  body.cs-scene-5 #scene-5 .research-photo::after,
+  body.cs-scene-5 #scene-5 .board-connectors::before,
+  body.cs-scene-5 #scene-5 .mini-narrator img,
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote,
+  body.cs-scene-5 #scene-5 .mini-narrator::before {
+    animation: none !important;
+  }
+}
