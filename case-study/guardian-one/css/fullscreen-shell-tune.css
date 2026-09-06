@@ -23,3 +23,104 @@
   #scene-1 .cs-keys { bottom: 28px !important; }
   #scene-1 .hint { bottom: 30px !important; }
 }
+
+/* Scene 02 — make the Figma frame feel native to the page instead of a
+   smaller slide floating inside black letterboxing. Scene 01 is untouched. */
+@media (min-width:900px) {
+  body.cs-scene-2 .cs-reader {
+    background-color:#17120b !important;
+    background-image:
+      radial-gradient(ellipse 178% 175% at 50% 27%, rgba(35,47,98,.88) 0%, rgba(27,37,79,.64) 28%, rgba(24,27,55,.34) 49%, rgba(23,18,11,0) 70%),
+      radial-gradient(ellipse 34% 56% at 6% 32%, rgba(116,73,32,.22) 0%, rgba(77,47,24,.12) 42%, rgba(23,18,11,0) 76%),
+      linear-gradient(180deg,#17120b 0%,#17120b 100%) !important;
+    background-position:center !important;
+    background-size:cover !important;
+  }
+
+  /* The Figma rail lives at y=40 inside Scene 02. fullscreen-shell.js now
+     positions the real rail there, so it no longer consumes a second row. */
+  body.cs-scene-2 .cs-topbar {
+    top:var(--cs-rail-top) !important;
+    width:var(--cs-bar,1340px) !important;
+    min-height:20px !important;
+    height:20px !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+    letter-spacing:.05em !important;
+    color:#9a8f79 !important;
+  }
+  body.cs-scene-2 .cs-count {
+    font-size:14px !important;
+    line-height:20px !important;
+    letter-spacing:.03em !important;
+    color:#9a8f79 !important;
+  }
+  body.cs-scene-2 .cs-track {
+    width:180px !important;
+    height:4px !important;
+    background:#c9bfae !important;
+    opacity:1 !important;
+  }
+  body.cs-scene-2 .cs-fill {
+    background:#ffc53d !important;
+  }
+  body.cs-scene-2 .cs-crumb {
+    color:#9a8f79 !important;
+  }
+  body.cs-scene-2 .cs-crumb b {
+    color:#9a8f79 !important;
+    font-weight:500 !important;
+  }
+  body.cs-scene-2 .cs-view-design {
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:10px !important;
+    color:rgba(245,239,227,.68) !important;
+  }
+
+  /* Keep the 1440×700 geometry but let its background blend into the reader. */
+  body.cs-scene-2 .cs-stage-shell {
+    top:var(--cs-scene-top) !important;
+    overflow:visible !important;
+  }
+  body.cs-scene-2 #scene-2 {
+    background-color:transparent !important;
+    overflow:visible !important;
+  }
+
+  /* Match Figma Up Next: small, quiet and close to the bottom-right. */
+  body.cs-scene-2 .cs-upnext {
+    right:52px !important;
+    bottom:35px !important;
+    min-height:40px !important;
+    padding:10px 16px 10px 14px !important;
+    gap:10px !important;
+    border:1px solid #333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:12px !important;
+  }
+  body.cs-scene-2 .cs-upnext-label {
+    color:#ffcc47 !important;
+    font-size:10px !important;
+    font-weight:500 !important;
+    line-height:14px !important;
+    letter-spacing:.08em !important;
+    text-transform:uppercase !important;
+  }
+  body.cs-scene-2 .cs-upnext-name {
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+  }
+  body.cs-scene-2 .cs-upnext:hover,
+  body.cs-scene-2 .cs-upnext:focus-visible {
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,197,61,.52) !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+  }
+}
