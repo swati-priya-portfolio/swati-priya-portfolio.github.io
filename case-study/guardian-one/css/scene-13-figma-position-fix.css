@@ -1,0 +1,56 @@
+/* Scene 13 final Figma-position correction.
+   Source of truth: Final-Design node 146:413 (1440 × 701). */
+@media (min-width:1281px){
+  /* Figma vertical rhythm:
+     rail y≈26 → title y≈60 → metrics y≈142 → main y≈261 → insights y≈547 → footer y≈635. */
+  body.cs-scene-13 #scene-13 .launch-heading{
+    top:60px !important;
+    left:40px !important;
+    width:1360px !important;
+  }
+
+  body.cs-scene-13 #scene-13 .launch-heading .native-title{
+    font-size:36px !important;
+    line-height:43px !important;
+  }
+  body.cs-scene-13 #scene-13 .launch-heading .native-sub{
+    margin-top:8px !important;
+    font-size:14px !important;
+    line-height:17px !important;
+  }
+
+  body.cs-scene-13 #scene-13 .launch-metrics{
+    top:142px !important;
+    left:92.95px !important;
+  }
+
+  body.cs-scene-13 #scene-13 .launch-body{
+    top:261px !important;
+    left:92.3px !important;
+  }
+
+  body.cs-scene-13 #scene-13 .launch-insights{
+    top:547px !important;
+    left:92.35px !important;
+  }
+
+  /* Preserve the exact lower Figma footer zone. */
+  body.cs-scene-13 #scene-13 .launch-narrator{
+    left:-5px !important;
+    bottom:-4px !important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext{
+    right:40px !important;
+    bottom:12px !important;
+  }
+
+  /* SVG funnel art should retain its native ratio and crisp edges. */
+  body.cs-scene-13 #scene-13 .funnel-segment>img{
+    object-fit:contain !important;
+  }
+
+  /* Keep the three learning cards visually below the journey instead of crowding it. */
+  body.cs-scene-13 #scene-13 .launch-insights article{
+    height:73.882px !important;
+  }
+}
