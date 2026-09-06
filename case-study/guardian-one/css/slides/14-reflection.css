@@ -1,35 +1,38 @@
 /* Scene 14 — Reflection
-   Figma source: Final-Design node 5:7037. */
+   Figma source: Final-Design node 5:7037.
+   Keep the 1440×700 composition intact throughout the shared presentation shell. */
 
-@media (min-width:1281px){
+@media (min-width:900px){
   body.cs-scene-14 #scene-14.sc-reflection{
     position:relative;
+    width:1440px!important;
+    height:700px!important;
     padding:0!important;
     overflow:hidden!important;
     background:
-      radial-gradient(ellipse 1260px 610px at 46.9% 50%,rgba(29,46,104,.72) 0%,rgba(21,33,77,.52) 35%,rgba(13,19,43,.25) 58%,rgba(8,8,11,0) 76%),
-      radial-gradient(ellipse 352px 236px at 12% 105%,rgba(255,197,61,.115) 0%,rgba(255,197,61,.052) 42%,rgba(255,197,61,.018) 62%,rgba(255,197,61,0) 82%),
+      radial-gradient(ellipse 1260px 610px at 46.9% 50%,rgba(29,46,104,.67) 0%,rgba(21,33,77,.47) 35%,rgba(13,19,43,.22) 58%,rgba(8,8,11,0) 76%),
+      radial-gradient(ellipse 352px 236px at 12% 105%,rgba(255,197,61,.10) 0%,rgba(255,197,61,.042) 42%,rgba(255,197,61,.012) 62%,rgba(255,197,61,0) 82%),
       #08080b!important;
   }
 
-  /* Figma has no extra body kicker and no visible View Design / Up Next in-frame. */
+  /* Scene identity already lives in the shared reader rail. */
   body.cs-scene-14 #scene-14 .native-kicker{display:none!important}
   body.cs-scene-14 .cs-view-design{display:none!important}
   body.cs-scene-14 .cs-upnext{display:none!important}
 
-  /* Title + reflection note are one compact horizontal Figma group. */
+  /* Title + reflection note: one compact Figma group. */
   body.cs-scene-14 #scene-14 .reflection-heading{
     position:absolute;
     z-index:4;
     top:48px;
     left:50%;
     width:613px;
-    margin:0;
+    margin:0!important;
     transform:translateX(-50%);
     display:flex;
     align-items:flex-start;
     gap:19px;
-    text-align:left;
+    text-align:left!important;
   }
   body.cs-scene-14 #scene-14 .reflection-heading .native-title{
     flex:0 0 347px;
@@ -41,10 +44,7 @@
     text-align:left!important;
   }
   body.cs-scene-14 #scene-14 .reflection-heading .native-title>span{display:block}
-  body.cs-scene-14 #scene-14 .reflection-heading .native-title em{
-    color:#ffc53d;
-    font-style:normal;
-  }
+  body.cs-scene-14 #scene-14 .reflection-heading .native-title em{color:#ffc53d;font-style:normal}
   body.cs-scene-14 #scene-14 .reflection-intro{
     box-sizing:border-box;
     flex:0 0 247px;
@@ -60,13 +60,13 @@
     box-shadow:none!important;
   }
 
-  /* Exact two-panel Figma composition. */
+  /* Two-panel Figma composition. 1226px is the visual span of both cards + 59px gap. */
   body.cs-scene-14 #scene-14 .reflection-grid{
     position:absolute;
     z-index:3;
     top:174px;
     left:50%;
-    width:1212.978px;
+    width:1225.863px;
     height:421.505px;
     margin:0!important;
     transform:translateX(-50%);
@@ -78,11 +78,10 @@
   body.cs-scene-14 #scene-14 .reflection-panel{
     box-sizing:border-box;
     height:421.505px;
-    margin:0;
+    margin:0!important;
     padding:25.769px!important;
-    overflow:visible!important;
-    border-width:.92px!important;
-    border-style:solid!important;
+    overflow:hidden!important;
+    border:.92px solid!important;
     border-radius:18.406px!important;
     box-shadow:none!important;
   }
@@ -98,7 +97,7 @@
     background:#0d1a14!important;
   }
 
-  /* Panel headers — no invented second heading. */
+  /* Headers — quiet, semantic colour only. */
   body.cs-scene-14 #scene-14 .reflection-panel-header{
     box-sizing:border-box;
     width:530.103px;
@@ -120,14 +119,8 @@
     border:.92px solid;
     border-radius:12.884px;
   }
-  body.cs-scene-14 #scene-14 .defend .reflection-header-icon{
-    border-color:#334d80;
-    background:#141c30;
-  }
-  body.cs-scene-14 #scene-14 .change .reflection-header-icon{
-    border-color:#33664d;
-    background:#12211a;
-  }
+  body.cs-scene-14 #scene-14 .defend .reflection-header-icon{border-color:#334d80;background:#141c30}
+  body.cs-scene-14 #scene-14 .change .reflection-header-icon{border-color:#33664d;background:#12211a}
   body.cs-scene-14 #scene-14 .reflection-header-icon img{
     display:block;
     width:22.088px!important;
@@ -160,19 +153,12 @@
     display:grid!important;
     grid-template-columns:42.335px 14.725px 349.721px 47.856px 42.335px!important;
     align-items:center!important;
-    border-width:.92px!important;
-    border-style:solid!important;
+    border:.92px solid!important;
     border-radius:12.884px!important;
-    transition:transform 220ms cubic-bezier(.2,.8,.2,1),border-color 220ms ease,background-color 220ms ease!important;
+    transition:transform 190ms cubic-bezier(.2,.8,.2,1),border-color 190ms ease,background-color 190ms ease!important;
   }
-  body.cs-scene-14 #scene-14 .defend .reflection-row{
-    border-color:#263861!important;
-    background:#141c30!important;
-  }
-  body.cs-scene-14 #scene-14 .change .reflection-row{
-    border-color:#264d38!important;
-    background:#12211a!important;
-  }
+  body.cs-scene-14 #scene-14 .defend .reflection-row{border-color:#263861!important;background:#141c30!important}
+  body.cs-scene-14 #scene-14 .change .reflection-row{border-color:#264d38!important;background:#12211a!important}
   body.cs-scene-14 #scene-14 .defend .reflection-row:nth-child(1){height:101.235px}
   body.cs-scene-14 #scene-14 .defend .reflection-row:nth-child(2){height:92.032px}
   body.cs-scene-14 #scene-14 .defend .reflection-row:nth-child(3){height:73.625px}
@@ -229,23 +215,16 @@
     border-radius:9.203px;
     font:700 12.884px/18.406px Inter,sans-serif!important;
   }
-  body.cs-scene-14 #scene-14 .defend .reflection-row>b{
-    color:#3b82f6!important;
-    background:#1f2e52!important;
-  }
-  body.cs-scene-14 #scene-14 .change .reflection-row>b{
-    color:#59d18c!important;
-    background:#173021!important;
-  }
+  body.cs-scene-14 #scene-14 .defend .reflection-row>b{color:#3b82f6!important;background:#1f2e52!important}
+  body.cs-scene-14 #scene-14 .change .reflection-row>b{color:#59d18c!important;background:#173021!important}
 
   @media (hover:hover) and (pointer:fine){
     body.cs-scene-14 #scene-14 .reflection-row:hover{transform:translateY(-1px)}
-    body.cs-scene-14 #scene-14 .defend .reflection-row:hover{border-color:#38528b!important;background:#161f37!important}
-    body.cs-scene-14 #scene-14 .change .reflection-row:hover{border-color:#35664b!important;background:#14251c!important}
-    body.cs-scene-14 #scene-14 .reflection-row:hover>b{transform:scale(1.02)}
+    body.cs-scene-14 #scene-14 .defend .reflection-row:hover{border-color:#314776!important;background:#151d31!important}
+    body.cs-scene-14 #scene-14 .change .reflection-row:hover{border-color:#315b43!important;background:#132219!important}
   }
 
-  /* Figma narrator: 133×136, partially grounded below the scene. No extra pseudo glow. */
+  /* Narrator stays grounded to the lower-left; no pseudo glow layer. */
   body.cs-scene-14 #scene-14 .reflection-narrator{
     position:absolute!important;
     z-index:6;
@@ -298,57 +277,55 @@
     border-right:10px solid #f5efe3;
   }
 
-  /* Reflective entrance: defend → reconsider → closing note. */
-  body.cs-scene-14 #scene-14.is-current .reflection-heading .native-title>span:first-child{
-    animation:scene14TitleIn 480ms cubic-bezier(.16,1,.3,1) 70ms both;
-  }
-  body.cs-scene-14 #scene-14.is-current .reflection-heading .native-title>span:last-child{
-    animation:scene14TitleIn 480ms cubic-bezier(.16,1,.3,1) 140ms both;
-  }
-  body.cs-scene-14 #scene-14.is-current .reflection-intro{
-    animation:scene14IntroIn 430ms cubic-bezier(.16,1,.3,1) 190ms both;
-  }
-  body.cs-scene-14 #scene-14.is-current .reflection-panel.defend{
-    animation:scene14PanelIn 500ms cubic-bezier(.16,1,.3,1) 300ms both;
-  }
-  body.cs-scene-14 #scene-14.is-current .reflection-panel.change{
-    animation:scene14PanelIn 500ms cubic-bezier(.16,1,.3,1) 410ms both;
-  }
-  body.cs-scene-14 #scene-14.is-current .defend .reflection-row:nth-child(1){animation:scene14RowLeft 430ms cubic-bezier(.16,1,.3,1) 520ms both}
-  body.cs-scene-14 #scene-14.is-current .change .reflection-row:nth-child(1){animation:scene14RowRight 430ms cubic-bezier(.16,1,.3,1) 610ms both}
-  body.cs-scene-14 #scene-14.is-current .defend .reflection-row:nth-child(2){animation:scene14RowLeft 430ms cubic-bezier(.16,1,.3,1) 700ms both}
-  body.cs-scene-14 #scene-14.is-current .change .reflection-row:nth-child(2){animation:scene14RowRight 430ms cubic-bezier(.16,1,.3,1) 790ms both}
-  body.cs-scene-14 #scene-14.is-current .defend .reflection-row:nth-child(3){animation:scene14RowLeft 430ms cubic-bezier(.16,1,.3,1) 880ms both}
-  body.cs-scene-14 #scene-14.is-current .change .reflection-row:nth-child(3){animation:scene14RowRight 430ms cubic-bezier(.16,1,.3,1) 970ms both}
-  body.cs-scene-14 #scene-14.is-current .reflection-narrator>img{
-    animation:scene14NarratorIn 500ms cubic-bezier(.16,1,.3,1) 1080ms both;
-  }
-  body.cs-scene-14 #scene-14.is-current .reflection-narrator blockquote{
-    animation:scene14BubbleIn 430ms cubic-bezier(.16,1,.3,1) 1180ms both;
-  }
+  /* Calm final-scene choreography: title → note → panels → rows → narrator. */
+  body.cs-scene-14 #scene-14.is-current .reflection-heading .native-title>span:first-child{animation:scene14TitleIn 460ms cubic-bezier(.16,1,.3,1) 70ms both}
+  body.cs-scene-14 #scene-14.is-current .reflection-heading .native-title>span:last-child{animation:scene14TitleIn 460ms cubic-bezier(.16,1,.3,1) 135ms both}
+  body.cs-scene-14 #scene-14.is-current .reflection-intro{animation:scene14IntroIn 420ms cubic-bezier(.16,1,.3,1) 180ms both}
+  body.cs-scene-14 #scene-14.is-current .reflection-panel.defend{animation:scene14PanelIn 470ms cubic-bezier(.16,1,.3,1) 290ms both}
+  body.cs-scene-14 #scene-14.is-current .reflection-panel.change{animation:scene14PanelIn 470ms cubic-bezier(.16,1,.3,1) 365ms both}
+  body.cs-scene-14 #scene-14.is-current .defend .reflection-row:nth-child(1){animation:scene14RowIn 380ms cubic-bezier(.16,1,.3,1) 470ms both}
+  body.cs-scene-14 #scene-14.is-current .defend .reflection-row:nth-child(2){animation:scene14RowIn 380ms cubic-bezier(.16,1,.3,1) 545ms both}
+  body.cs-scene-14 #scene-14.is-current .defend .reflection-row:nth-child(3){animation:scene14RowIn 380ms cubic-bezier(.16,1,.3,1) 620ms both}
+  body.cs-scene-14 #scene-14.is-current .change .reflection-row:nth-child(1){animation:scene14RowIn 380ms cubic-bezier(.16,1,.3,1) 550ms both}
+  body.cs-scene-14 #scene-14.is-current .change .reflection-row:nth-child(2){animation:scene14RowIn 380ms cubic-bezier(.16,1,.3,1) 625ms both}
+  body.cs-scene-14 #scene-14.is-current .change .reflection-row:nth-child(3){animation:scene14RowIn 380ms cubic-bezier(.16,1,.3,1) 700ms both}
+  body.cs-scene-14 #scene-14.is-current .reflection-narrator>img{animation:scene14NarratorIn 480ms cubic-bezier(.16,1,.3,1) 840ms both}
+  body.cs-scene-14 #scene-14.is-current .reflection-narrator blockquote{animation:scene14BubbleIn 420ms cubic-bezier(.16,1,.3,1) 930ms both}
 
   @keyframes scene14TitleIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes scene14IntroIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
-  @keyframes scene14PanelIn{from{opacity:0;transform:translateY(12px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
-  @keyframes scene14RowLeft{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
-  @keyframes scene14RowRight{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:translateX(0)}}
-  @keyframes scene14NarratorIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes scene14BubbleIn{from{opacity:0;transform:translateY(6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes scene14IntroIn{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes scene14PanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scene14RowIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scene14NarratorIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scene14BubbleIn{from{opacity:0;transform:translate(5px,4px)}to{opacity:1;transform:translate(0,0)}}
 }
 
-@media (max-width:1280px){
-  .sc-reflection{padding:34px 20px 42px!important;background:#08080b}
-  .reflection-heading{display:flex;flex-direction:column;gap:14px;text-align:left!important}
-  .sc-reflection .native-title{margin:0;font:400 31px/1.08 "Archivo Black",sans-serif!important;text-align:left!important;color:#f8f4ec}
-  .sc-reflection .native-title>span{display:block}.sc-reflection .native-title em{color:#ffc53d;font-style:normal}
-  .reflection-intro{max-width:360px;margin:0!important;padding:10px 14px!important;border:1px solid #30333d!important;border-radius:12px!important;background:#13141a!important;color:#9ea6b8!important;font:400 13px/1.45 Inter,sans-serif!important}
-  .sc-reflection .reflection-grid{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;margin-top:24px!important}
-  .reflection-panel{padding:20px!important;border:1px solid;border-radius:18px!important;box-shadow:none!important}.reflection-panel.defend{border-color:#1f2e59!important;background:#0e1324!important}.reflection-panel.change{border-color:#1f4d33!important;background:#0d1a14!important}
-  .reflection-panel-header{display:flex;align-items:center;gap:12px;margin-bottom:16px!important;border:0!important;background:transparent!important}.reflection-header-icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid;border-radius:12px}.defend .reflection-header-icon{background:#141c30;border-color:#334d80}.change .reflection-header-icon{background:#12211a;border-color:#33664d}.reflection-header-icon img{width:20px;height:20px}.reflection-panel-header h3{margin:0;font:500 14px/1.35 Inter,sans-serif}.defend .reflection-panel-header h3{color:#3b82f6}.change .reflection-panel-header h3{color:#59d18c}
-  .reflection-rows{display:flex;flex-direction:column;gap:10px}.reflection-row{display:grid!important;grid-template-columns:42px 1fr 42px!important;gap:13px!important;align-items:center!important;min-height:88px!important;padding:12px 14px!important;border:1px solid;border-radius:13px!important}.defend .reflection-row{border-color:#263861!important;background:#141c30!important}.change .reflection-row{border-color:#264d38!important;background:#12211a!important}.reflection-row-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:11px}.defend .reflection-row-icon{background:#1f2e52}.change .reflection-row-icon{background:#173021}.reflection-row-icon img{width:22px;height:22px}.reflection-row-copy{width:auto}.reflection-row h4{margin:0 0 4px!important;color:#f5f2eb!important;font:700 14px/1.3 Inter,sans-serif!important}.reflection-row p{margin:0!important;color:#9ea6b2!important;font:400 11px/1.45 Inter,sans-serif!important}.reflection-row>b{display:grid;place-items:center;width:42px;height:42px;margin:0!important;border-radius:9px;font:700 12px Inter,sans-serif}.defend .reflection-row>b{background:#1f2e52!important;color:#3b82f6!important}.change .reflection-row>b{background:#173021!important;color:#59d18c!important}
-  .reflection-narrator{position:static!important;width:auto!important;height:auto!important;margin-top:24px!important;display:flex!important;align-items:flex-end!important}.reflection-narrator>img{width:100px!important;height:102px!important;object-fit:contain!important}.reflection-narrator blockquote{width:auto!important;max-width:310px!important;height:auto!important;margin:0 0 7px!important;padding:10px 14px!important;font:400 21px/1.05 Caveat,cursive!important}
+/* True reading/mobile mode only. The shared shell owns all scaling above this breakpoint. */
+@media (max-width:899px){
+  .sc-reflection{padding:30px 20px 42px!important;background:#08080b!important}
+  .sc-reflection .native-kicker{display:none!important}
+  .reflection-heading{display:block!important;text-align:left!important}
+  .sc-reflection .native-title{margin:0!important;font-size:31px!important;line-height:1.08!important;text-align:left!important}
+  .sc-reflection .native-title>span{display:block}
+  .sc-reflection .native-title em{color:#ffc53d;font-style:normal}
+  .reflection-intro{max-width:360px;margin:14px 0 0!important;padding:10px 13px!important;border:1px solid #30333d!important;border-radius:10px!important;background:#13141a!important;color:#9ea6b8!important;font-size:12px!important;line-height:1.45!important}
+  .sc-reflection .reflection-grid{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;margin:24px 0 0!important}
+  .reflection-panel{padding:18px!important;border-radius:15px!important;box-shadow:none!important}
+  .reflection-panel.defend{border:1px solid #1f2e59!important;background:#0e1324!important}
+  .reflection-panel.change{border:1px solid #1f4d33!important;background:#0d1a14!important}
+  .reflection-panel-header{display:flex!important;align-items:center!important;gap:12px!important;margin:0 0 14px!important;background:transparent!important;border:0!important}
+  .reflection-header-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:11px}
+  .defend .reflection-header-icon{background:#141c30;border:1px solid #334d80}.change .reflection-header-icon{background:#12211a;border:1px solid #33664d}
+  .reflection-header-icon img{width:20px!important;height:20px!important}
+  .reflection-panel-header h3{margin:0!important;font:500 13px/18px Inter,sans-serif!important}.defend .reflection-panel-header h3{color:#3b82f6!important}.change .reflection-panel-header h3{color:#59d18c!important}
+  .reflection-rows{display:flex;flex-direction:column;gap:10px}
+  .reflection-row{display:grid!important;grid-template-columns:38px minmax(0,1fr) 34px!important;gap:11px!important;align-items:center!important;min-height:84px!important;padding:12px!important;border-radius:11px!important}
+  .defend .reflection-row{background:#141c30!important;border:1px solid #263861!important}.change .reflection-row{background:#12211a!important;border:1px solid #264d38!important}
+  .reflection-row-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:10px}.defend .reflection-row-icon{background:#1f2e52}.change .reflection-row-icon{background:#173021}.reflection-row-icon img{width:20px!important;height:20px!important}.reflection-row-icon--full img{width:38px!important;height:38px!important}
+  .reflection-row-copy{min-width:0}.reflection-row h4{margin:0 0 4px!important;color:#f5f2eb!important;font-size:13px!important;line-height:1.25!important}.reflection-row p{margin:0!important;color:#9ea6b2!important;font-size:10px!important;line-height:1.4!important}.reflection-row>b{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;font-size:10px}.defend .reflection-row>b{color:#3b82f6;background:#1f2e52}.change .reflection-row>b{color:#59d18c;background:#173021}
+  .reflection-narrator{position:static!important;display:flex!important;align-items:flex-end!important;gap:3px!important;width:auto!important;height:auto!important;margin:20px 0 0!important}.reflection-narrator>img{width:92px!important;height:94px!important;object-fit:contain!important}.reflection-narrator blockquote{position:relative!important;width:min(280px,calc(100vw - 145px))!important;margin:0 0 8px!important;padding:10px 13px!important;border:0!important;border-radius:5px!important;background:#f5efe3!important;color:#17120b!important;font:400 19px/20px Caveat,cursive!important;box-shadow:2px 3px 0 rgba(0,0,0,.35)!important}.reflection-narrator blockquote::before{content:"";position:absolute;left:-8px;top:18px;border-top:7px solid transparent;border-bottom:7px solid transparent;border-right:9px solid #f5efe3}
 }
 
 @media (prefers-reduced-motion:reduce){
-  body.cs-scene-14 #scene-14 *,body.cs-scene-14 .cs-upnext{animation:none!important;transition:none!important}
+  body.cs-scene-14 #scene-14 *,body.cs-scene-14 #scene-14 *::before,body.cs-scene-14 #scene-14 *::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0ms!important}
 }
