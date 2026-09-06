@@ -46,13 +46,12 @@
     var navBottom=Math.ceil(rect.bottom || rect.height || 66);
     var bottomSafe=12;
     var usableW=Math.min(1440,Math.max(720,innerWidth-80));
-    var integratedRail=body.classList.contains("cs-scene-2") || body.classList.contains("cs-scene-3") || body.classList.contains("cs-scene-4");
+    var integratedRail=body.classList.contains("cs-scene-2") || body.classList.contains("cs-scene-3") || body.classList.contains("cs-scene-4") || body.classList.contains("cs-scene-6");
     var sceneTop,railTop,usableH,scale;
 
     if(integratedRail){
-      /* Scenes 02–04 keep the Figma rail inside the 700px composition instead
-         of spending a second row above the frame. This gives each scene back
-         the vertical space that would otherwise create black letterboxing. */
+      /* Scenes with Figma-integrated metadata keep the case-study rail at the
+         original y=40 position inside the 1440×700 composition. */
       sceneTop=navBottom+8;
       usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
       scale=Math.min(1,usableW/1440,usableH/700);
