@@ -1,0 +1,34 @@
+/* Scene 06 preview alignment pass — keeps the approved card design intact. */
+@media (min-width:900px) {
+  /* Match Slide 05's rail-to-heading rhythm and lock the heading to the
+     exact horizontal centre of the 1440px composition. */
+  body.cs-scene-6 #scene-6 .native-title {
+    top:24px !important;
+    left:50% !important;
+    width:522px !important;
+    transform:translateX(-50%) !important;
+    text-align:center !important;
+  }
+
+  /* Preserve the original 20px title-to-cards relationship after moving the
+     scene under the shared external rail. */
+  body.cs-scene-6 #scene-6 .audit-grid {
+    top:140px !important;
+  }
+
+  /* Keep the lower composition visually in the same place while shifting the
+     Bitmoji/narration group further toward the left edge. */
+  body.cs-scene-6 #scene-6 .mini-narrator {
+    left:-28px !important;
+    top:519px !important;
+  }
+
+  body.cs-scene-6 #scene-6::before {
+    left:-141px !important;
+    top:426px !important;
+  }
+
+  body.cs-scene-6 #scene-6.is-current ~ .cs-upnext {
+    top:596px !important;
+  }
+}
