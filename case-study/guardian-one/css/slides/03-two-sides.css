@@ -1,33 +1,146 @@
-/* Scene 03 — values and assets mapped directly from Figma node 5:6453. */
+/* Scene 03 — pixel-fidelity + restrained interaction for Figma node 5:6453. */
 #scene-3{isolation:isolate}
-.sc-tension .cs-h2{top:60px;font-size:36px;line-height:48px;letter-spacing:-.36px}
-.sc-tension .lede{color:#9ea6b2;font-size:12px;line-height:20px}
-.sc-tension .side{padding:26px;border-radius:18px}
-.sc-tension .side-biz{border-color:#1f2e59;background:#0e1324}
-.sc-tension .side-par{border-color:#1f4d33;background:#0d1a14}
-.sc-tension .head{gap:15px}
-.sc-tension .head .cs-ico{display:grid;place-items:center;width:55px;height:55px;margin-top:0;border-radius:13px}
-.sc-tension .head b{font-size:16.5px;line-height:24px;letter-spacing:.33px}
+
+/* ---------- Exact Figma geometry / styling ---------- */
+.sc-tension .cs-h2{
+  left:398px;top:60px;width:644px;
+  font-size:36px;line-height:48px;letter-spacing:-.36px;
+}
+.sc-tension .lede{
+  left:109px;top:176px;width:600px;
+  color:#9ea6b2;font-size:12px;line-height:20px;
+}
+.sc-tension .side{
+  top:212px;width:534px;height:373px;padding:26px;border-radius:18px;
+  box-shadow:none;
+}
+.sc-tension .side-biz{left:109px;border-color:#1f2e59;background:#0e1324}
+.sc-tension .side-par{left:798px;border-color:#1f4d33;background:#0d1a14}
+.sc-tension .head{height:55px;gap:15px}
+.sc-tension .head .cs-ico{
+  display:grid;place-items:center;width:55px;height:55px;margin-top:0;border-radius:13px;
+}
+.sc-tension .head b{font-size:16.5px;line-height:24px;letter-spacing:.33px;font-weight:500}
 .sc-tension .head span{margin-top:4px;color:#9ea6b2;font-size:12.85px;line-height:18px}
 .sc-tension .rows{margin-top:20px}
-.sc-tension .row{height:73px;margin-bottom:13px;padding:0 15px 0 18px;border-radius:13px}
+.sc-tension .row{
+  height:73px;margin-bottom:13px;padding:0 15px 0 18px;border-radius:13px;gap:15px;
+}
 .sc-tension .side-biz .row{border-color:#263861;background:#141c30}
 .sc-tension .side-par .row{border-color:#264d38;background:#12211a}
-.sc-tension .row .cs-ico{display:grid;place-items:center;width:42px;height:42px;border:0;border-radius:11px}
+.sc-tension .row .cs-ico{
+  display:grid;place-items:center;width:42px;height:42px;border:0;border-radius:11px;
+}
 .sc-tension .side-biz .row .cs-ico,.sc-tension .side-biz .idx{background:#1f2e52}
 .sc-tension .side-par .row .cs-ico,.sc-tension .side-par .idx{background:#173021}
 .sc-tension .cs-ico img{display:block;width:22px;height:22px;object-fit:contain}
 .sc-tension .row .txt{display:flex;flex-direction:column;justify-content:center;gap:5px}
 .sc-tension .row b{color:#f5f2eb;font-size:16.5px;font-weight:700;line-height:24px}
 .sc-tension .row span{margin-top:0;color:#9ea6b2;font-size:12.85px;line-height:18px}
-.sc-tension .row .idx{display:grid;place-items:center;width:42px;height:42px;padding:0;color:inherit;font-size:12.85px;font-weight:700;line-height:18px}
+.sc-tension .row .idx{
+  display:grid;place-items:center;width:42px;height:42px;padding:0;color:inherit;
+  border-radius:9px;font-size:12.85px;font-weight:700;line-height:18px;
+}
 .sc-tension .side-biz .head .cs-ico{border-color:#334d80;background:#141c30}
 .sc-tension .side-par .head .cs-ico{border-color:#33664d;background:#12211a}
 .sc-tension .side-biz .head b,.sc-tension .side-biz .idx{color:#6b99fa}
 .sc-tension .side-par .head b,.sc-tension .side-par .idx{color:#59d18c}
-.sc-tension .sweet .badge{border-width:1.4px;background:#0f121a}
+
+.sc-tension .sweet{left:682px;top:318px;width:77px}
+.sc-tension .sweet .badge{
+  width:77px;height:77px;border-width:1.4px;border-color:#ffc53d;background:#0f121a;
+}
 .sc-tension .sweet .badge .g1-mark{width:40px;height:48px}
 .sc-tension .sweet .badge .g1-mark img{display:block;width:100%;height:100%;object-fit:contain}
-.sc-tension .sweet b{color:#f5f2eb;font-size:11px;line-height:15px;letter-spacing:.33px}
+.sc-tension .sweet b{margin-top:11px;color:#f5f2eb;font-size:11px;line-height:15px;letter-spacing:.33px}
 .sc-tension .sweet b em{letter-spacing:.22px}
-.sc-tension .sweet i{color:#9ea6b2;font-size:11px;line-height:15px}
+.sc-tension .sweet i{margin-top:11px;color:#9ea6b2;font-size:11px;line-height:15px}
+
+/* Figma narrator geometry: avatar nearly touches the 700px baseline; the warm
+   ellipse sits partly outside the frame and the note stays compact. */
+#scene-3 .cs-narrator{left:36px;bottom:-3px;width:126px;height:129px}
+#scene-3 .cs-narrator::before{
+  left:-172px;bottom:-68px;width:461px;height:292px;
+  background:radial-gradient(ellipse at 50% 52%,rgba(156,101,40,.25) 0%,rgba(117,70,28,.14) 42%,rgba(49,29,15,.05) 64%,rgba(8,9,13,0) 82%);
+}
+#scene-3 .cs-note{
+  left:158px;bottom:25px;width:218px;max-width:218px;padding:9px 14px;
+  border-radius:4px;font-size:16px;line-height:20px;box-shadow:2px 3px 0 rgba(0,0,0,.35);
+}
+#scene-3 .cs-note::before{top:14px}
+
+/* ---------- Entrance sequence ---------- */
+@media (min-width:900px){
+  #scene-3.is-current .cs-h2{animation:s3-title 420ms cubic-bezier(.22,.61,.36,1) 90ms both}
+  #scene-3.is-current .cs-h2 .hl{animation:s3-title-gold 420ms cubic-bezier(.22,.61,.36,1) 170ms both}
+  #scene-3.is-current .lede{animation:s3-fade-up 340ms ease 280ms both}
+  #scene-3.is-current .side-biz{animation:s3-panel-left 430ms cubic-bezier(.22,.61,.36,1) 360ms both}
+  #scene-3.is-current .side-par{animation:s3-panel-right 430ms cubic-bezier(.22,.61,.36,1) 430ms both}
+  #scene-3.is-current .side .head{animation:s3-fade-up 320ms ease 520ms both}
+  #scene-3.is-current .side .row:nth-child(1){animation:s3-row 320ms cubic-bezier(.22,.61,.36,1) 590ms both}
+  #scene-3.is-current .side .row:nth-child(2){animation:s3-row 320ms cubic-bezier(.22,.61,.36,1) 660ms both}
+  #scene-3.is-current .side .row:nth-child(3){animation:s3-row 320ms cubic-bezier(.22,.61,.36,1) 730ms both}
+  #scene-3.is-current .sweet .badge{animation:s3-sweet 360ms cubic-bezier(.22,.61,.36,1) 820ms both}
+  #scene-3.is-current .sweet b,#scene-3.is-current .sweet i{animation:s3-fade-up 300ms ease 900ms both}
+  #scene-3.is-current .cs-narrator{animation:s3-fade-up 360ms cubic-bezier(.22,.61,.36,1) 990ms both}
+  #scene-3.is-current .cs-note{animation:s3-note 340ms cubic-bezier(.22,.61,.36,1) 1060ms both}
+
+  /* ---------- Meaningful hover pairing: business ↔ parent ↔ sweet spot ---------- */
+  #scene-3 .row,
+  #scene-3 .row .cs-ico,
+  #scene-3 .row .idx,
+  #scene-3 .sweet .badge,
+  #scene-3 .side{
+    transition:border-color 180ms ease,background-color 180ms ease,opacity 180ms ease,
+               filter 180ms ease,transform 180ms cubic-bezier(.22,.61,.36,1),box-shadow 180ms ease;
+  }
+
+  #scene-3:has(.side-biz .row:nth-child(1):hover,.side-par .row:nth-child(1):hover) .row,
+  #scene-3:has(.side-biz .row:nth-child(2):hover,.side-par .row:nth-child(2):hover) .row,
+  #scene-3:has(.side-biz .row:nth-child(3):hover,.side-par .row:nth-child(3):hover) .row{opacity:.88}
+
+  #scene-3:has(.side-biz .row:nth-child(1):hover,.side-par .row:nth-child(1):hover) .row:nth-child(1),
+  #scene-3:has(.side-biz .row:nth-child(2):hover,.side-par .row:nth-child(2):hover) .row:nth-child(2),
+  #scene-3:has(.side-biz .row:nth-child(3):hover,.side-par .row:nth-child(3):hover) .row:nth-child(3){
+    opacity:1;transform:translateY(-1px);filter:brightness(1.045);
+  }
+
+  #scene-3:has(.side-biz .row:nth-child(1):hover,.side-par .row:nth-child(1):hover) .side-biz .row:nth-child(1),
+  #scene-3:has(.side-biz .row:nth-child(2):hover,.side-par .row:nth-child(2):hover) .side-biz .row:nth-child(2),
+  #scene-3:has(.side-biz .row:nth-child(3):hover,.side-par .row:nth-child(3):hover) .side-biz .row:nth-child(3){
+    border-color:#38558e;background:#17203a;box-shadow:0 8px 22px rgba(18,42,88,.12);
+  }
+
+  #scene-3:has(.side-biz .row:nth-child(1):hover,.side-par .row:nth-child(1):hover) .side-par .row:nth-child(1),
+  #scene-3:has(.side-biz .row:nth-child(2):hover,.side-par .row:nth-child(2):hover) .side-par .row:nth-child(2),
+  #scene-3:has(.side-biz .row:nth-child(3):hover,.side-par .row:nth-child(3):hover) .side-par .row:nth-child(3){
+    border-color:#34714f;background:#14261d;box-shadow:0 8px 22px rgba(24,85,54,.10);
+  }
+
+  #scene-3:has(.side-biz .row:hover,.side-par .row:hover) .sweet .badge{
+    border-color:#ffd45f;box-shadow:0 0 0 3px rgba(255,197,61,.06),0 0 18px rgba(255,197,61,.10);
+    transform:scale(1.025);
+  }
+
+  #scene-3 .side-biz:hover{border-color:#2b4278}
+  #scene-3 .side-par:hover{border-color:#2d6243}
+  #scene-3 .row:hover .cs-ico{transform:translateY(-1px);filter:brightness(1.08)}
+  #scene-3 .row:hover .idx{filter:brightness(1.10)}
+}
+
+@keyframes s3-title{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s3-title-gold{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s3-fade-up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s3-panel-left{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s3-panel-right{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s3-row{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s3-sweet{
+  0%{opacity:0;transform:scale(.96);box-shadow:0 0 0 rgba(255,197,61,0)}
+  70%{opacity:1;transform:scale(1);box-shadow:0 0 22px rgba(255,197,61,.12)}
+  100%{opacity:1;transform:scale(1);box-shadow:0 0 0 rgba(255,197,61,0)}
+}
+@keyframes s3-note{from{opacity:0;transform:translateY(5px) rotate(-.35deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+
+@media (prefers-reduced-motion:reduce){
+  #scene-3 *,#scene-3::before{animation:none!important;transition:none!important}
+}
