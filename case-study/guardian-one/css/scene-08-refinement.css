@@ -1,0 +1,448 @@
+/* Scene 08 — Calculator Result refinement preview.
+   Figma source: node 5:8940. Keeps the approved result UI intact and adds
+   restrained, product-led motion plus paired explanation interactions. */
+
+@media (min-width:1281px) {
+  /* Continue the same environment used by refined Scenes 06–07. */
+  body.cs-scene-8 .cs-reader {
+    background-color:#09090b !important;
+    background-image:
+      radial-gradient(ellipse 89% 88% at 50% 55%,rgba(36,54,126,.78) 0%,rgba(24,35,80,.58) 34%,rgba(15,20,42,.34) 58%,rgba(9,9,11,0) 82%),
+      radial-gradient(ellipse 28% 43% at 0% 100%,rgba(113,74,34,.24) 0%,rgba(68,43,22,.11) 43%,rgba(9,9,11,0) 78%),
+      linear-gradient(180deg,#0e0f18 0%,#09090b 100%) !important;
+  }
+
+  body.cs-scene-8 #scene-8 {
+    background:transparent !important;
+    overflow:visible !important;
+  }
+
+  /* Preserve the Figma geometry; only refine the shared footer system. */
+  body.cs-scene-8 #scene-8 .mini-narrator {
+    position:absolute !important;
+    left:18px !important;
+    right:auto !important;
+    top:auto !important;
+    bottom:-2px !important;
+    display:flex !important;
+    width:500px !important;
+    height:132px !important;
+    margin:0 !important;
+    align-items:flex-end !important;
+    overflow:visible !important;
+    isolation:isolate;
+  }
+
+  body.cs-scene-8 #scene-8 .mini-narrator::before {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    left:-78px;
+    bottom:-76px;
+    width:286px;
+    height:238px;
+    border-radius:50%;
+    pointer-events:none;
+    opacity:0;
+    background:radial-gradient(ellipse at 48% 54%,rgba(255,197,61,.30) 0%,rgba(255,197,61,.16) 32%,rgba(255,197,61,.065) 54%,rgba(255,197,61,0) 76%);
+    filter:blur(10px);
+    transform-origin:45% 70%;
+  }
+
+  body.cs-scene-8 #scene-8 .mini-narrator img {
+    position:relative !important;
+    z-index:1;
+    flex:0 0 118px !important;
+    width:118px !important;
+    height:130px !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
+  }
+
+  body.cs-scene-8 #scene-8 .mini-narrator blockquote {
+    position:relative !important;
+    z-index:2;
+    left:auto !important;
+    top:auto !important;
+    width:auto !important;
+    height:auto !important;
+    max-width:292px !important;
+    margin:0 0 15px -2px !important;
+    padding:11px 16px !important;
+    border:0 !important;
+    border-radius:5px !important;
+    background:#f5efe3 !important;
+    color:#17120b !important;
+    font:400 18px/1.22 Caveat,cursive !important;
+    text-align:left !important;
+    box-shadow:2px 3px 0 rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.12) !important;
+  }
+
+  body.cs-scene-8 #scene-8 .mini-narrator blockquote::before {
+    left:-9px !important;
+    top:27px !important;
+    border:8px solid transparent !important;
+    border-right-color:#f5efe3 !important;
+    border-left:0 !important;
+  }
+
+  /* Same compact Up Next component and baseline as Scenes 06–07. */
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext {
+    left:auto !important;
+    right:24px !important;
+    top:auto !important;
+    bottom:17px !important;
+    width:auto !important;
+    height:auto !important;
+    gap:10px !important;
+    padding:10px 16px 10px 14px !important;
+    justify-content:flex-start !important;
+    border-color:#333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    font-size:12px !important;
+    line-height:16px !important;
+  }
+
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext .cs-upnext-label {
+    display:flex !important;
+    height:14px !important;
+    align-items:center !important;
+    padding-right:10px !important;
+    border-right:1px solid #333645 !important;
+    color:#ffc53d !important;
+    font:500 10px/14px Inter,sans-serif !important;
+    letter-spacing:.8px !important;
+    text-transform:uppercase !important;
+  }
+
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext .cs-upnext-name {
+    color:#f5f2eb !important;
+    font:500 12px/16px Inter,sans-serif !important;
+  }
+
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext > span:last-child {
+    color:#ffc53d !important;
+    font:500 14px/20px Inter,sans-serif !important;
+    transition:translate 220ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext:hover > span:last-child { translate:4px 0; }
+
+  /* The product remains the hero. Explanation cards are supporting links. */
+  body.cs-scene-8 #scene-8 .result-explanations article {
+    translate:0 0;
+    scale:1;
+    transform-origin:50% 50%;
+    transition:
+      translate 220ms cubic-bezier(.2,.8,.2,1),
+      scale 220ms cubic-bezier(.2,.8,.2,1),
+      border-color 220ms cubic-bezier(.2,.8,.2,1),
+      background-color 220ms cubic-bezier(.2,.8,.2,1),
+      box-shadow 220ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  body.cs-scene-8 #scene-8 .result-explanations article:hover {
+    translate:0 -2px;
+    border-color:rgba(255,197,61,.50);
+    background:#111726;
+    box-shadow:0 11px 26px rgba(0,0,0,.16),0 0 0 1px rgba(255,197,61,.035);
+  }
+
+  body.cs-scene-8 #scene-8 .result-no,
+  body.cs-scene-8 #scene-8 .result-icon {
+    scale:1;
+    transition:scale 220ms cubic-bezier(.2,.8,.2,1),border-color 220ms ease,background-color 220ms ease,filter 220ms ease;
+  }
+
+  body.cs-scene-8 #scene-8 .result-explanations article:hover .result-no { scale:1.04; }
+  body.cs-scene-8 #scene-8 .result-explanations article:hover .result-icon {
+    border-color:rgba(255,197,61,.28);
+    background:#0e1423;
+    filter:brightness(1.08);
+  }
+
+  /* Left-side result targets: no recolouring, only restrained emphasis. */
+  body.cs-scene-8 #scene-8 .cover-answer > p,
+  body.cs-scene-8 #scene-8 .cover-answer > strong,
+  body.cs-scene-8 #scene-8 .cover-answer > div,
+  body.cs-scene-8 #scene-8 .allocation-answer,
+  body.cs-scene-8 #scene-8 .risk-gauge,
+  body.cs-scene-8 #scene-8 .risk-answer h3,
+  body.cs-scene-8 #scene-8 .risk-answer dl,
+  body.cs-scene-8 #scene-8 .risk-answer > p,
+  body.cs-scene-8 #scene-8 .risk-answer button {
+    transition:box-shadow 220ms cubic-bezier(.2,.8,.2,1),border-color 220ms cubic-bezier(.2,.8,.2,1),filter 220ms cubic-bezier(.2,.8,.2,1),background-color 220ms cubic-bezier(.2,.8,.2,1),translate 220ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* 01 Recommended cover ↔ ₹1.2 Cr */
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(1):hover) .cover-answer > p,
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(1):hover) .cover-answer > strong {
+    filter:brightness(1.035);
+    box-shadow:inset 0 0 0 1.5px rgba(255,197,61,.20);
+  }
+
+  /* 02 Monthly premium ↔ affordability row */
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(2):hover) .cover-answer > div {
+    box-shadow:inset 0 0 0 1.5px rgba(255,197,61,.24);
+    background-color:#fffdfa;
+  }
+
+  /* 03 Risk + protection gap ↔ evidence panel */
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(3):hover) .risk-gauge,
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(3):hover) .risk-answer dl {
+    box-shadow:inset 0 0 0 1.5px rgba(255,197,61,.20);
+    filter:brightness(1.025);
+  }
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(3):hover) .risk-answer h3,
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(3):hover) .risk-answer > p {
+    filter:brightness(1.07);
+  }
+
+  /* 04 Coverage breakdown ↔ allocation row */
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(4):hover) .allocation-answer {
+    border-color:rgba(255,197,61,.44);
+    box-shadow:0 0 0 1px rgba(255,197,61,.10),0 8px 20px rgba(37,55,129,.08);
+  }
+
+  /* 05 Progressive disclosure ↔ Download PDF */
+  body.cs-scene-8 #scene-8 .result-body:has(.result-explanations article:nth-child(5):hover) .risk-answer button {
+    translate:0 -1px;
+    border-color:rgba(255,197,61,.62);
+    box-shadow:0 5px 14px rgba(37,55,129,.10);
+  }
+
+  /* Reverse linking: hovering the actual result quietly identifies its reason. */
+  body.cs-scene-8 #scene-8 .result-body:has(.cover-answer > strong:hover) .result-explanations article:nth-child(1),
+  body.cs-scene-8 #scene-8 .result-body:has(.cover-answer > p:hover) .result-explanations article:nth-child(1),
+  body.cs-scene-8 #scene-8 .result-body:has(.cover-answer > div:hover) .result-explanations article:nth-child(2),
+  body.cs-scene-8 #scene-8 .result-body:has(.risk-gauge:hover) .result-explanations article:nth-child(3),
+  body.cs-scene-8 #scene-8 .result-body:has(.risk-answer h3:hover) .result-explanations article:nth-child(3),
+  body.cs-scene-8 #scene-8 .result-body:has(.risk-answer dl:hover) .result-explanations article:nth-child(3),
+  body.cs-scene-8 #scene-8 .result-body:has(.risk-answer > p:hover) .result-explanations article:nth-child(3),
+  body.cs-scene-8 #scene-8 .result-body:has(.allocation-answer:hover) .result-explanations article:nth-child(4),
+  body.cs-scene-8 #scene-8 .result-body:has(.risk-answer button:hover) .result-explanations article:nth-child(5) {
+    translate:0 -2px;
+    border-color:rgba(255,197,61,.50);
+    background:#111726;
+    box-shadow:0 11px 26px rgba(0,0,0,.16);
+  }
+
+  body.cs-scene-8 #scene-8 .risk-answer button:hover {
+    translate:0 -1px;
+    border-color:rgba(37,55,129,.30);
+    box-shadow:0 5px 14px rgba(37,55,129,.10);
+  }
+
+  /* Entrance choreography: answer first, then the math, then the rationale. */
+  body.cs-scene-8 #scene-8.is-current .result-title h2 {
+    animation:scene08TitleIn 520ms cubic-bezier(.16,1,.3,1) 70ms both;
+  }
+  body.cs-scene-8 #scene-8 .result-title h2 em { display:inline-block; }
+  body.cs-scene-8 #scene-8.is-current .result-title h2 em {
+    animation:scene08AccentIn 520ms cubic-bezier(.16,1,.3,1) 135ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .result-title p {
+    animation:scene08DetailIn 460ms cubic-bezier(.16,1,.3,1) 170ms both;
+  }
+
+  body.cs-scene-8 #scene-8.is-current .result-product {
+    animation:scene08ProductIn 560ms cubic-bezier(.16,1,.3,1) 255ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .result-product > header b {
+    animation:scene08DetailIn 430ms cubic-bezier(.16,1,.3,1) 330ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .result-product > header img:first-child {
+    animation:scene08SparkIn 430ms cubic-bezier(.16,1,.3,1) 315ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .result-product > header img:last-child {
+    animation:scene08SparkIn 430ms cubic-bezier(.16,1,.3,1) 375ms both;
+  }
+
+  body.cs-scene-8 #scene-8.is-current .cover-answer > p {
+    animation:scene08DetailIn 420ms cubic-bezier(.16,1,.3,1) 380ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .cover-answer > strong {
+    animation:
+      scene08AnswerIn 520ms cubic-bezier(.16,1,.3,1) 430ms both,
+      scene08AnswerSettle 720ms ease 900ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .cover-answer > div {
+    animation:scene08DetailIn 460ms cubic-bezier(.16,1,.3,1) 520ms both;
+  }
+
+  body.cs-scene-8 #scene-8.is-current .allocation-answer h3 {
+    animation:scene08DetailIn 420ms cubic-bezier(.16,1,.3,1) 610ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .allocation-items > div:nth-child(1) {
+    animation:scene08DetailIn 420ms cubic-bezier(.16,1,.3,1) 670ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .allocation-items > div:nth-child(2) {
+    animation:scene08DetailIn 420ms cubic-bezier(.16,1,.3,1) 735ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .allocation-items > div:nth-child(3) {
+    animation:scene08DetailIn 420ms cubic-bezier(.16,1,.3,1) 800ms both;
+  }
+
+  body.cs-scene-8 #scene-8.is-current .risk-gauge {
+    animation:scene08GaugeIn 480ms cubic-bezier(.16,1,.3,1) 720ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .risk-answer h3 {
+    animation:scene08DetailIn 420ms cubic-bezier(.16,1,.3,1) 810ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .risk-answer h3 em {
+    animation:scene08HighSettle 680ms ease 1050ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .risk-answer dl {
+    animation:scene08DetailIn 430ms cubic-bezier(.16,1,.3,1) 875ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .risk-answer > p {
+    animation:scene08DetailIn 400ms cubic-bezier(.16,1,.3,1) 955ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .risk-answer button {
+    animation:scene08DetailIn 410ms cubic-bezier(.16,1,.3,1) 1030ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .reading-order {
+    animation:scene08ReadingIn 500ms cubic-bezier(.16,1,.3,1) 1110ms both;
+  }
+
+  body.cs-scene-8 #scene-8 .result-explanations article:nth-child(1) { --scene08-card-delay:500ms; }
+  body.cs-scene-8 #scene-8 .result-explanations article:nth-child(2) { --scene08-card-delay:620ms; }
+  body.cs-scene-8 #scene-8 .result-explanations article:nth-child(3) { --scene08-card-delay:740ms; }
+  body.cs-scene-8 #scene-8 .result-explanations article:nth-child(4) { --scene08-card-delay:860ms; }
+  body.cs-scene-8 #scene-8 .result-explanations article:nth-child(5) { --scene08-card-delay:980ms; }
+
+  body.cs-scene-8 #scene-8.is-current .result-explanations article {
+    animation:scene08ReasonIn 480ms cubic-bezier(.16,1,.3,1) var(--scene08-card-delay) both;
+  }
+  body.cs-scene-8 #scene-8.is-current .result-explanations article .result-no {
+    animation:scene08BadgeIn 390ms cubic-bezier(.16,1,.3,1) calc(var(--scene08-card-delay) + 45ms) both;
+  }
+
+  body.cs-scene-8 #scene-8.is-current .mini-narrator::before {
+    animation:
+      scene08GlowIn 650ms cubic-bezier(.16,1,.3,1) 1240ms forwards,
+      scene08GlowBreath 6s ease-in-out 1890ms infinite;
+  }
+  body.cs-scene-8 #scene-8.is-current .mini-narrator img {
+    animation:scene08NarratorIn 610ms cubic-bezier(.16,1,.3,1) 1300ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current .mini-narrator blockquote {
+    animation:scene08BubbleIn 520ms cubic-bezier(.16,1,.3,1) 1430ms both;
+  }
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext {
+    animation:scene08UpNextIn 480ms cubic-bezier(.16,1,.3,1) 1540ms both;
+  }
+}
+
+/* Rail typography stays aligned with the already-refined deep scenes. */
+@media (min-width:900px) {
+  body.cs-scene-8 .cs-topbar {
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:11px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    letter-spacing:.07em !important;
+  }
+  body.cs-scene-8 .cs-crumb {
+    color:rgba(245,239,227,.56) !important;
+    font:inherit !important;
+    letter-spacing:inherit !important;
+  }
+  body.cs-scene-8 .cs-crumb b {
+    color:#ffc53d !important;
+    font-weight:500 !important;
+  }
+  body.cs-scene-8 .cs-count {
+    font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
+    font-size:11.5px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    letter-spacing:.07em !important;
+  }
+}
+
+@keyframes scene08TitleIn {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes scene08AccentIn {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes scene08ProductIn {
+  from { opacity:0; transform:translateY(14px) scale(.992); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes scene08DetailIn {
+  from { opacity:0; transform:translateY(7px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes scene08AnswerIn {
+  from { opacity:0; transform:translateY(8px) scale(.97); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes scene08AnswerSettle {
+  0%,100% { box-shadow:inset 0 0 0 0 rgba(37,55,129,0); }
+  48% { box-shadow:inset 0 0 0 1.5px rgba(37,55,129,.14),0 0 18px rgba(37,55,129,.055); }
+}
+@keyframes scene08SparkIn {
+  from { opacity:0; transform:scale(.82) rotate(-8deg); }
+  to { opacity:1; transform:scale(1) rotate(0); }
+}
+@keyframes scene08GaugeIn {
+  from { opacity:0; transform:scale(.97); filter:brightness(.94); }
+  to { opacity:1; transform:scale(1); filter:brightness(1); }
+}
+@keyframes scene08HighSettle {
+  0%,100% { opacity:1; text-shadow:none; }
+  45% { opacity:1; text-shadow:0 0 9px rgba(190,18,60,.20); }
+}
+@keyframes scene08ReadingIn {
+  from { opacity:0; clip-path:inset(0 100% 0 0); }
+  to { opacity:1; clip-path:inset(0 0 0 0); }
+}
+@keyframes scene08ReasonIn {
+  from { opacity:0; transform:translateX(12px) scale(.992); }
+  to { opacity:1; transform:translateX(0) scale(1); }
+}
+@keyframes scene08BadgeIn {
+  from { opacity:0; transform:scale(.85); }
+  to { opacity:1; transform:scale(1); }
+}
+@keyframes scene08GlowIn {
+  from { opacity:0; }
+  to { opacity:.72; }
+}
+@keyframes scene08GlowBreath {
+  0%,100% { transform:scale(1); filter:blur(10px); }
+  50% { transform:scale(1.04); filter:blur(13px); }
+}
+@keyframes scene08NarratorIn {
+  from { opacity:0; transform:translateY(18px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes scene08BubbleIn {
+  from { opacity:0; transform:translateX(-7px) scale(.985); }
+  to { opacity:1; transform:translateX(0) scale(1); }
+}
+@keyframes scene08UpNextIn {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  body.cs-scene-8 #scene-8 *,
+  body.cs-scene-8 #scene-8 *::before,
+  body.cs-scene-8 #scene-8 *::after,
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext,
+  body.cs-scene-8 #scene-8.is-current ~ .cs-upnext * {
+    animation:none !important;
+    transition:none !important;
+    transform:none !important;
+    translate:none !important;
+    scale:none !important;
+    clip-path:none !important;
+  }
+  body.cs-scene-8 #scene-8 .mini-narrator::before { opacity:.72 !important; }
+}
