@@ -55,7 +55,7 @@
     min-height: 68px !important;
     padding: 23px 12px 9px !important;
     box-shadow: 0 9px 22px rgba(0,0,0,.16) !important;
-    transform: rotate(var(--note-rot)) !important;
+    transform: rotate(var(--note-rot));
     transform-origin: 50% 12%;
   }
 
@@ -224,18 +224,22 @@
     filter: brightness(1.10);
   }
 
-  /* Coordinated scene entrance: setup → four tools → problem/pattern →
+  /* Coordinated scene entrance: rail → setup → four tools → problem/pattern →
      response → narrator → transition. */
+  body.cs-scene-6 .cs-topbar {
+    animation: scene06RailIn 420ms cubic-bezier(.16,1,.3,1) 20ms backwards;
+  }
+
   body.cs-scene-6 #scene-6.is-current .audit-title-line:first-child {
-    animation: scene06TitleIn 560ms cubic-bezier(.16,1,.3,1) 70ms both;
+    animation: scene06TitleIn 560ms cubic-bezier(.16,1,.3,1) 70ms backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current .audit-title-line:last-child {
-    animation: scene06TitleIn 580ms cubic-bezier(.16,1,.3,1) 150ms both;
+    animation: scene06TitleIn 580ms cubic-bezier(.16,1,.3,1) 150ms backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current .audit-card {
-    animation: scene06CardIn 620ms cubic-bezier(.16,1,.3,1) var(--card-delay,220ms) both;
+    animation: scene06CardIn 620ms cubic-bezier(.16,1,.3,1) var(--card-delay,220ms) backwards;
   }
 
   body.cs-scene-6 #scene-6 .audit-card:nth-child(1) { --card-delay: 220ms; }
@@ -244,15 +248,15 @@
   body.cs-scene-6 #scene-6 .audit-card:nth-child(4) { --card-delay: 460ms; }
 
   body.cs-scene-6 #scene-6.is-current .audit-card .audit-problem {
-    animation: scene06DetailIn 430ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 170ms) both;
+    animation: scene06DetailIn 430ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 170ms) backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current .audit-card .audit-pattern {
-    animation: scene06DetailIn 430ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 270ms) both;
+    animation: scene06DetailIn 430ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 270ms) backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current .audit-card .audit-response {
-    animation: scene06NoteIn 520ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 390ms) both;
+    animation: scene06NoteIn 520ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 390ms) backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current .mini-narrator::before {
@@ -262,15 +266,15 @@
   }
 
   body.cs-scene-6 #scene-6.is-current .mini-narrator img {
-    animation: scene06NarratorIn 610ms cubic-bezier(.16,1,.3,1) 900ms both;
+    animation: scene06NarratorIn 610ms cubic-bezier(.16,1,.3,1) 900ms backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current .mini-narrator blockquote {
-    animation: scene06BubbleIn 520ms cubic-bezier(.16,1,.3,1) 1040ms both;
+    animation: scene06BubbleIn 520ms cubic-bezier(.16,1,.3,1) 1040ms backwards;
   }
 
   body.cs-scene-6 #scene-6.is-current ~ .cs-upnext {
-    animation: scene06UpNextIn 480ms cubic-bezier(.16,1,.3,1) 1160ms both;
+    animation: scene06UpNextIn 480ms cubic-bezier(.16,1,.3,1) 1160ms backwards;
   }
 }
 
@@ -303,6 +307,11 @@
     line-height: 1 !important;
     letter-spacing: .07em !important;
   }
+}
+
+@keyframes scene06RailIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scene06TitleIn {
@@ -354,7 +363,8 @@
   body.cs-scene-6 #scene-6 *,
   body.cs-scene-6 #scene-6::before,
   body.cs-scene-6 #scene-6::after,
-  body.cs-scene-6 #scene-6 ~ .cs-upnext {
+  body.cs-scene-6 #scene-6 ~ .cs-upnext,
+  body.cs-scene-6 .cs-topbar {
     animation: none !important;
     transition: none !important;
   }
