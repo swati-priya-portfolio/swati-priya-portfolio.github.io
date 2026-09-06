@@ -1,0 +1,8 @@
+/* Scene 05 preview — title spacing only.
+   Match the earlier Guardian One scenes: the centered scene heading sits close
+   to the case-study rail without moving or reflowing the rest of the slide. */
+@media (min-width: 900px) {
+  body.cs-scene-5 #scene-5 .native-title {
+    top: 24px !important;
+  }
+}
