@@ -1,8 +1,37 @@
-/* Scene 05 preview — title spacing only.
-   Match the earlier Guardian One scenes: the centered scene heading sits close
-   to the case-study rail without moving or reflowing the rest of the slide. */
+/* Scene 05 preview — final small spacing/alignment polish only.
+   Keep the approved composition intact. */
 @media (min-width: 900px) {
+  /* Keep the centred title close to the case-study rail. */
   body.cs-scene-5 #scene-5 .native-title {
     top: 24px !important;
+  }
+
+  /* Centre the insight note exactly beneath the shared convergence point,
+     and centre the handwritten copy inside the paper itself. */
+  body.cs-scene-5 #scene-5 .paper-note {
+    left: 50% !important;
+    width: 220px !important;
+    min-height: 31px !important;
+    margin: 0 !important;
+    padding: 7px 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    line-height: 1.15 !important;
+    transform: translateX(-50%) rotate(-.3deg) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Close the visual gap between the Bitmoji and narration bubble. The
+     slight overlap keeps the speech-tail relationship intentional. */
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote {
+    margin-left: -18px !important;
+  }
+
+  /* Give the narrator composition a little breathing room from the viewport
+     edge without disturbing the rest of the slide. */
+  body.cs-scene-5 #scene-5 .mini-narrator {
+    bottom: 8px !important;
   }
 }
