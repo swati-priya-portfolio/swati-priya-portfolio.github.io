@@ -1,0 +1,37 @@
+/* Scene 09 preview-only refinement.
+   Keeps the main case-study layout untouched while tightening the desktop rail
+   and restoring the narrator avatar to its Figma-scale footprint. */
+
+@media (min-width: 900px) {
+  /* Pull the case-study rail up close to the persistent navbar. */
+  body.cs-scene-9 .cs-topbar {
+    top: calc(var(--cs-head) + 8px) !important;
+  }
+
+  /* Scene 09 narrator: sit against the bottom-left and avoid raster upscaling. */
+  body.cs-scene-9 #scene-9 .mini-narrator,
+  body.cs-scene-9 #scene-9 .compare-narrator {
+    left: 2px !important;
+    right: auto !important;
+    bottom: 0 !important;
+    top: auto !important;
+    width: 500px !important;
+    height: 94px !important;
+    align-items: flex-end !important;
+  }
+
+  body.cs-scene-9 #scene-9 .mini-narrator img,
+  body.cs-scene-9 #scene-9 .compare-narrator img {
+    flex: 0 0 91px !important;
+    width: 91px !important;
+    height: 93px !important;
+    object-fit: contain !important;
+    object-position: left bottom !important;
+    image-rendering: auto !important;
+  }
+
+  body.cs-scene-9 #scene-9 .mini-narrator blockquote,
+  body.cs-scene-9 #scene-9 .compare-narrator blockquote {
+    margin: 0 0 10px -1px !important;
+  }
+}
