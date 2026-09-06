@@ -1,0 +1,274 @@
+/* Scene 05 refinement preview only.
+   Scoped to Research Evidence so no other Guardian One scene is affected. */
+
+@media (min-width: 900px) {
+  /* Keep the rail close to the compact portfolio nav. */
+  body.cs-scene-5 .cs-topbar {
+    top: calc(var(--cs-rail-top, 80px) - 6px) !important;
+  }
+
+  /* Bring the existing Scene 05 composition back up toward the rail instead
+     of redesigning/reflowing the slide. This restores the earlier rhythm. */
+  body.cs-scene-5 .cs-stage-shell {
+    top: calc(var(--cs-rail-top, 80px) + 4px) !important;
+  }
+
+  /* Keep the two-line heading genuinely centred. The entrance animation below
+     preserves this translateX instead of accidentally shifting it right. */
+  body.cs-scene-5 #scene-5 .native-title {
+    left: 50% !important;
+    text-align: center !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* ------------------------------------------------------------
+     Research-board connector
+     Four photo nodes converge into one shared centre point/stem.
+     Every line starts from the exact centre of its photo node, so there are
+     no gaps at the dots and no fragile disconnected line pieces.
+     ------------------------------------------------------------ */
+  body.cs-scene-5 #scene-5 .board-connectors {
+    position: absolute !important;
+    z-index: 3 !important;
+    inset: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    pointer-events: none !important;
+  }
+
+  /* Remove the temporary single horizontal rail. */
+  body.cs-scene-5 #scene-5 .board-connectors::before {
+    display: none !important;
+  }
+
+  /* The old approximate fan segments are retired; the fan lines below are
+     anchored directly to each photo node instead. */
+  body.cs-scene-5 #scene-5 .board-connectors i {
+    display: none !important;
+  }
+
+  /* Larger, uniform photo nodes. */
+  body.cs-scene-5 #scene-5 .research-photo::after {
+    z-index: 5 !important;
+    width: 12px !important;
+    height: 12px !important;
+    bottom: -4px !important;
+    border: 3px solid #eb3d3d !important;
+    border-radius: 50% !important;
+    background: #ffc53d !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Each line begins at the centre of the corresponding photo node and ends
+     at the same convergence point. The symmetric geometry stays correct when
+     the whole 1440px scene is responsively scaled. */
+  body.cs-scene-5 #scene-5 .research-photo::before {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: calc(100% - 2px);
+    width: 1.5px;
+    height: var(--fan-length);
+    border-radius: 999px;
+    background: #eb3d3d;
+    transform: translateX(-50%) rotate(var(--fan-angle));
+    transform-origin: top center;
+    pointer-events: none;
+  }
+
+  body.cs-scene-5 #scene-5 .research-photo:nth-child(1) {
+    --fan-length: 170px;
+    --fan-angle: -77deg;
+  }
+  body.cs-scene-5 #scene-5 .research-photo:nth-child(2) {
+    --fan-length: 67px;
+    --fan-angle: -55.5deg;
+  }
+  body.cs-scene-5 #scene-5 .research-photo:nth-child(3) {
+    --fan-length: 67px;
+    --fan-angle: 55.5deg;
+  }
+  body.cs-scene-5 #scene-5 .research-photo:nth-child(4) {
+    --fan-length: 170px;
+    --fan-angle: 77deg;
+  }
+
+  /* Shared convergence node and a short straight stem into the insight note. */
+  body.cs-scene-5 #scene-5 .board-connectors b {
+    display: block !important;
+    position: absolute !important;
+    z-index: 5 !important;
+    left: 50% !important;
+    top: 227px !important;
+    bottom: auto !important;
+    width: 12px !important;
+    height: 12px !important;
+    border: 3px solid #eb3d3d !important;
+    border-radius: 50% !important;
+    background: #ffc53d !important;
+    box-sizing: border-box !important;
+    transform: translateX(-50%) !important;
+  }
+
+  body.cs-scene-5 #scene-5 .board-connectors::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    top: 233px;
+    width: 1.5px;
+    height: 11px;
+    border-radius: 999px;
+    background: #eb3d3d;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  /* Keep the shared narrator treatment at bottom-left; only retain the soft
+     portfolio-yellow ambient glow the user approved. */
+  body.cs-scene-5 #scene-5 .mini-narrator {
+    z-index: 6 !important;
+    isolation: isolate;
+    overflow: visible !important;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    bottom: 0;
+    width: 158px;
+    height: 146px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 43% 62%, rgba(255,197,61,.25) 0%, rgba(255,197,61,.13) 30%, rgba(255,197,61,.055) 50%, rgba(255,197,61,0) 74%);
+    filter: blur(14px);
+    pointer-events: none;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator img,
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote {
+    z-index: 1;
+    position: relative !important;
+  }
+}
+
+/* Subtle coordinated scene entrance. */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  body.cs-scene-5 #scene-5.is-current .native-title {
+    animation: s5r-title-in 520ms cubic-bezier(.22,.61,.36,1) 70ms both !important;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-main > .source-panel {
+    animation: s5r-content-in 520ms cubic-bezier(.22,.61,.36,1) 150ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-main > .research-board {
+    animation: s5r-content-in 560ms cubic-bezier(.22,.61,.36,1) 210ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-main > .funnel-panel {
+    animation: s5r-content-in 560ms cubic-bezier(.22,.61,.36,1) 270ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-bottom > * {
+    animation: s5r-content-in 520ms cubic-bezier(.22,.61,.36,1) both;
+  }
+  body.cs-scene-5 #scene-5.is-current .research-bottom > :nth-child(1) { animation-delay: 330ms; }
+  body.cs-scene-5 #scene-5.is-current .research-bottom > :nth-child(2) { animation-delay: 390ms; }
+  body.cs-scene-5 #scene-5.is-current .research-bottom > :nth-child(3) { animation-delay: 450ms; }
+
+  body.cs-scene-5 #scene-5.is-current .same-story {
+    animation: s5r-content-in 440ms cubic-bezier(.22,.61,.36,1) 410ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .research-photo::before {
+    animation: s5r-fan-draw 500ms cubic-bezier(.22,.61,.36,1) both;
+  }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(1)::before { animation-delay: 400ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(2)::before { animation-delay: 450ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(3)::before { animation-delay: 500ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(4)::before { animation-delay: 550ms; }
+
+  body.cs-scene-5 #scene-5.is-current .research-photo::after {
+    animation: s5r-node-in 360ms cubic-bezier(.22,.61,.36,1) both;
+  }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(1)::after { animation-delay: 430ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(2)::after { animation-delay: 490ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(3)::after { animation-delay: 550ms; }
+  body.cs-scene-5 #scene-5.is-current .research-photo:nth-child(4)::after { animation-delay: 610ms; }
+
+  body.cs-scene-5 #scene-5.is-current .board-connectors b {
+    animation: s5r-centre-node-in 300ms cubic-bezier(.22,.61,.36,1) 650ms both;
+  }
+  body.cs-scene-5 #scene-5.is-current .board-connectors::after {
+    animation: s5r-stem-draw 260ms cubic-bezier(.22,.61,.36,1) 700ms both;
+  }
+
+  body.cs-scene-5 #scene-5.is-current .mini-narrator img {
+    animation: s5r-narrator-in 520ms cubic-bezier(.22,.61,.36,1) 430ms both;
+  }
+  body.cs-scene-5 #scene-5.is-current .mini-narrator blockquote {
+    animation: s5r-content-in 480ms cubic-bezier(.22,.61,.36,1) 500ms both;
+  }
+  body.cs-scene-5 #scene-5.is-current .mini-narrator::before {
+    animation: s5r-glow-breathe 5.4s ease-in-out 760ms infinite alternate both;
+  }
+}
+
+@keyframes s5r-title-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes s5r-content-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes s5r-fan-draw {
+  from { opacity: 0; transform: translateX(-50%) rotate(var(--fan-angle)) scaleY(0); }
+  to   { opacity: 1; transform: translateX(-50%) rotate(var(--fan-angle)) scaleY(1); }
+}
+
+@keyframes s5r-node-in {
+  from { opacity: 0; transform: translateX(-50%) scale(.8); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes s5r-centre-node-in {
+  from { opacity: 0; transform: translateX(-50%) scale(.78); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes s5r-stem-draw {
+  from { opacity: 0; transform: translateX(-50%) scaleY(0); transform-origin: top center; }
+  to   { opacity: 1; transform: translateX(-50%) scaleY(1); transform-origin: top center; }
+}
+
+@keyframes s5r-narrator-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes s5r-glow-breathe {
+  0%   { opacity: .58; transform: scale(.985); filter: blur(14px); }
+  100% { opacity: .78; transform: scale(1.035); filter: blur(17px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.cs-scene-5 #scene-5 .native-title,
+  body.cs-scene-5 #scene-5 .research-main > *,
+  body.cs-scene-5 #scene-5 .research-bottom > *,
+  body.cs-scene-5 #scene-5 .same-story,
+  body.cs-scene-5 #scene-5 .research-photo::before,
+  body.cs-scene-5 #scene-5 .research-photo::after,
+  body.cs-scene-5 #scene-5 .board-connectors b,
+  body.cs-scene-5 #scene-5 .board-connectors::after,
+  body.cs-scene-5 #scene-5 .mini-narrator img,
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote,
+  body.cs-scene-5 #scene-5 .mini-narrator::before {
+    animation: none !important;
+  }
+}

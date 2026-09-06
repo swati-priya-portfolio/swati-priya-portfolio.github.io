@@ -1,38 +1,620 @@
-.sc-report-anatomy{padding:20px 48px 18px!important}
-.sc-report-anatomy .report-heading{text-align:center}
-.sc-report-anatomy .native-kicker{margin-bottom:5px}
-.sc-report-anatomy .native-title{font-size:35px;line-height:1.08}
-.sc-report-anatomy .native-title .hl{color:var(--accent)}
-.sc-report-anatomy .native-sub{margin-top:5px}
-.report-anatomy-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:300px 190px;gap:11px;margin-top:14px}
-.report-card{position:relative;overflow:hidden;border:1px solid rgba(128,151,205,.26);border-radius:11px;background:linear-gradient(155deg,rgba(15,20,38,.96),rgba(8,12,25,.97));box-shadow:inset 0 1px rgba(255,255,255,.025),0 14px 30px rgba(0,0,0,.18)}
-.report-card--answer,.report-card--journey,.report-card--split{grid-column:span 2;padding:10px}
-.report-card-heading{display:flex;align-items:center;gap:10px;min-width:0}
-.report-card-heading>b{display:grid;flex:0 0 30px;height:30px;place-items:center;border-radius:8px;background:var(--accent);color:#10131d;font:700 12px var(--font-mono)}
-.report-card-heading span,.report-card-heading strong,.report-card-heading small{display:block;min-width:0}
-.report-card-heading strong{color:var(--accent);font:700 10px/1.2 Inter,sans-serif;text-transform:uppercase}
-.report-card-heading small{margin-top:3px;color:#9ca5b9;font-size:8.5px;line-height:1.25}
-.report-ui{display:block;width:100%;object-fit:contain}
-.report-card--answer>.report-ui,.report-card--journey>.report-ui,.report-card--split>.report-ui{height:156px;margin:9px 0 7px;border-radius:8px;background:#f7f7f5}
-.report-card dl{display:grid;grid-template-columns:60px minmax(0,1fr);gap:3px 6px;margin:0;font-size:8.5px;line-height:1.25}
-.report-card dt{color:var(--accent);font-weight:700;text-transform:uppercase}
-.report-card dd{margin:0;color:#a7afc2}
-.report-card--recommendations{grid-column:span 3;display:grid;grid-template-columns:44% 56%;padding:10px}
-.report-card--action{grid-column:span 3;display:grid;grid-template-columns:46% 54%;padding:10px}
-.report-card--recommendations>.report-ui,.report-card--action>.report-ui{align-self:stretch;width:100%;height:168px;border-radius:7px;background:#f5f1e7;object-fit:cover;object-position:center}
-.report-card-copy{padding:4px 4px 4px 12px}
-.report-card-copy .report-card-heading{margin-bottom:11px}
-.report-card-copy dl{grid-template-columns:61px minmax(0,1fr);gap:5px 7px;font-size:8.2px}
-.report-narrator{left:-6px!important;bottom:-2px!important;width:486px;height:90px;gap:0!important}
-.report-narrator img{flex:0 0 79px;width:79px!important;height:79px!important}
-.report-narrator blockquote{position:relative;max-width:none;width:390px;margin:0 0 10px -1px!important;padding:10px 15px!important;border:0!important;border-radius:4px!important;background:#f5efe3!important;color:#17120b!important;font:400 17px/1.15 Caveat,cursive!important;box-shadow:2px 3px 0 rgba(0,0,0,.34)!important}
-.report-narrator blockquote::before{content:"";position:absolute;left:-9px;top:23px;border:8px solid transparent;border-right-color:#f5efe3;border-left:0}
-@media(max-width:1280px){
- .sc-report-anatomy{padding:34px 20px 42px!important}.sc-report-anatomy .native-title{font-size:29px;text-align:left}.report-heading{text-align:left!important}
- .report-anatomy-grid{display:grid;grid-template-columns:1fr;grid-template-rows:auto;gap:14px;margin-top:22px}
- .report-card--answer,.report-card--journey,.report-card--split,.report-card--recommendations,.report-card--action{grid-column:auto;min-height:0}
- .report-card--recommendations,.report-card--action{grid-template-columns:1fr;padding:12px}.report-card--recommendations>.report-ui,.report-card--action>.report-ui{height:auto;max-height:280px;object-fit:contain}
- .report-card--answer>.report-ui,.report-card--journey>.report-ui,.report-card--split>.report-ui{height:auto;max-height:260px}.report-card-copy{padding:14px 0 2px}
- .report-card dl,.report-card-copy dl{grid-template-columns:74px 1fr;font-size:10px;gap:5px 8px}
- .report-narrator{position:static!important;width:auto;height:auto;margin-top:24px;align-items:flex-end}.report-narrator img{width:70px!important;height:70px!important}.report-narrator blockquote{width:auto;max-width:320px;margin:0 0 7px!important;font-size:16px!important}
+/* Scene 12 — Suraksha Report · Anatomy
+   Figma source of truth: Final-Design node 5:10108. */
+
+@media (min-width:1281px) {
+  body.cs-scene-12 #scene-12.sc-report-anatomy {
+    padding:0 !important;
+    overflow:hidden !important;
+    background:
+      radial-gradient(ellipse 94% 130% at 50% 28%,rgba(31,47,112,.64) 0%,rgba(22,33,76,.42) 36%,rgba(9,11,23,0) 72%),
+      radial-gradient(ellipse 28% 34% at 0% 100%,rgba(255,197,61,.11) 0%,rgba(140,88,32,.05) 42%,rgba(9,11,23,0) 76%),
+      #090b17 !important;
+  }
+
+  /* Figma has NO extra yellow kicker above the title. */
+  body.cs-scene-12 #scene-12 .report-heading {
+    position:absolute;
+    z-index:2;
+    top:68px;
+    left:32px;
+    width:1376px;
+    height:72px;
+    margin:0;
+    text-align:center;
+  }
+
+  body.cs-scene-12 #scene-12 .report-heading .native-title {
+    width:1160px;
+    height:48px;
+    margin:0 auto;
+    color:#f5f2e8;
+    font:400 36px/48px "Archivo Black",sans-serif;
+    white-space:nowrap;
+  }
+
+  body.cs-scene-12 #scene-12 .report-heading .native-title>span {
+    display:inline-block;
+  }
+
+  body.cs-scene-12 #scene-12 .report-heading .native-title .hl {
+    color:#ffc53d;
+  }
+
+  body.cs-scene-12 #scene-12 .report-heading .native-sub {
+    width:1000px;
+    margin:4px auto 0;
+    color:#9ea6b8;
+    font:400 14px/20px Inter,sans-serif;
+  }
+
+  /* Exact Figma anatomy: 3 × ~416×278 over 2 × ~631×192. */
+  body.cs-scene-12 #scene-12 .report-anatomy-grid {
+    position:absolute;
+    z-index:2;
+    top:153.55px;
+    left:83.6px;
+    width:1272.8px;
+    height:477.9px;
+    margin:0;
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row {
+    display:flex;
+    align-items:flex-start;
+    overflow:visible;
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row--top {
+    width:1272.8px;
+    height:277.5px;
+    gap:12.025px;
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row--bottom {
+    width:1272.8px;
+    height:192.4px;
+    gap:11.1px;
+    margin-top:8px;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card {
+    position:relative;
+    box-sizing:border-box;
+    overflow:hidden;
+    border:1px solid #26304f;
+    border-radius:9.25px;
+    background:#0e1221;
+    box-shadow:none;
+    transform:translateY(0);
+    transition:
+      transform 240ms cubic-bezier(.2,.8,.2,1),
+      border-color 240ms cubic-bezier(.2,.8,.2,1),
+      box-shadow 240ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row--top .report-card {
+    flex:0 0 416.25px;
+    width:416.25px;
+    height:277.5px;
+    padding:9.25px;
+    display:grid;
+    grid-template-rows:37px 153.55px 1fr;
+    row-gap:5.55px;
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row--bottom .report-card {
+    flex:0 0 630.85px;
+    width:630.85px;
+    height:192.4px;
+    padding:9.25px;
+    display:grid;
+    grid-template-columns:370px 231.25px;
+    gap:11.1px;
+    align-items:center;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card:hover {
+    transform:translateY(-2px);
+    border-color:#3b4769;
+    box-shadow:0 12px 28px rgba(0,0,0,.15);
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-heading {
+    display:flex;
+    width:100%;
+    min-width:0;
+    height:37px;
+    margin:0;
+    align-items:center;
+    gap:9.25px;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-heading>b {
+    display:grid;
+    flex:0 0 25.9px;
+    width:25.9px;
+    height:25.9px;
+    place-items:center;
+    border-radius:7.4px;
+    background:#ffc53d;
+    color:#090b17;
+    font:600 12.025px/14.8px Inter,sans-serif;
+    transition:transform 220ms cubic-bezier(.2,.8,.2,1),box-shadow 220ms ease;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card:hover .report-card-heading>b {
+    transform:scale(1.035);
+    box-shadow:0 0 14px rgba(255,197,61,.15);
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-heading span,
+  body.cs-scene-12 #scene-12 .report-card-heading strong,
+  body.cs-scene-12 #scene-12 .report-card-heading small {
+    display:block;
+    min-width:0;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-heading strong {
+    color:#ffc53d;
+    font:600 10.175px/13.875px Inter,sans-serif;
+    text-transform:uppercase;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-heading small {
+    margin-top:.925px;
+    color:#abb0c2;
+    font:400 9.25px/12.95px Inter,sans-serif;
+  }
+
+  body.cs-scene-12 #scene-12 .report-ui {
+    display:block;
+    width:100%;
+    object-fit:contain;
+    transition:filter 230ms ease,transform 230ms cubic-bezier(.2,.8,.2,1),box-shadow 230ms ease;
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row--top .report-ui {
+    width:397.75px;
+    height:153.55px;
+    margin:0;
+    border-radius:7.4px;
+    background:#fff;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card:hover .report-ui {
+    filter:brightness(1.018) contrast(1.01);
+    box-shadow:0 0 0 1px rgba(255,197,61,.12);
+  }
+
+  body.cs-scene-12 #scene-12 .report-card dl {
+    display:grid;
+    width:100%;
+    margin:0;
+    grid-template-columns:57.35px minmax(0,1fr);
+    column-gap:5.55px;
+    row-gap:.925px;
+    color:#abb0c2;
+    font:400 9.25px/12.95px Inter,sans-serif;
+  }
+
+  body.cs-scene-12 #scene-12 .report-anatomy-row--top .report-card dl {
+    align-content:start;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card dt {
+    margin:0;
+    color:#ffc53d;
+    font-weight:600;
+    text-transform:uppercase;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card dd {
+    margin:0;
+    min-width:0;
+  }
+
+  /* Bottom modules preserve the Figma left-UI / right-annotation split. */
+  body.cs-scene-12 #scene-12 .report-card--recommendations>.report-ui,
+  body.cs-scene-12 #scene-12 .report-card--action>.report-ui {
+    grid-column:1;
+    width:370px;
+    height:173.9px;
+    align-self:center;
+    margin:0;
+    border-radius:7.4px;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-copy {
+    grid-column:2;
+    width:231.25px;
+    height:173.9px;
+    padding:0;
+    margin:0;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    gap:3.7px;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-copy .report-card-heading {
+    flex:0 0 37px;
+    margin:0;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-copy .report-card-heading span {
+    width:188.7px;
+  }
+
+  body.cs-scene-12 #scene-12 .report-card-copy dl {
+    grid-template-columns:57.35px 168.35px;
+    column-gap:5.55px;
+    row-gap:3.7px;
+    font-size:9.25px;
+    line-height:12.95px;
+    overflow:hidden;
+  }
+
+  /* Small Scene-12 narrator, matching the actual Figma rather than enlarging it. */
+  body.cs-scene-12 #scene-12 .report-narrator {
+    position:absolute !important;
+    z-index:5;
+    left:11px !important;
+    right:auto !important;
+    top:auto !important;
+    bottom:-11px !important;
+    width:458px !important;
+    height:89px !important;
+    margin:0 !important;
+    display:flex !important;
+    align-items:flex-end !important;
+    gap:2px !important;
+    overflow:visible !important;
+    isolation:isolate;
+  }
+
+  body.cs-scene-12 #scene-12 .report-narrator::before {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    left:-118px;
+    bottom:-66px;
+    width:330px;
+    height:205px;
+    border-radius:50%;
+    opacity:0;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 42% 58%,rgba(255,197,61,.22) 0%,rgba(255,197,61,.105) 34%,rgba(255,197,61,.035) 56%,rgba(255,197,61,0) 78%);
+    filter:blur(10px);
+    transform-origin:42% 68%;
+  }
+
+  body.cs-scene-12 #scene-12 .report-narrator img {
+    position:relative !important;
+    z-index:1;
+    flex:0 0 79px !important;
+    width:79px !important;
+    height:89px !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
+  }
+
+  body.cs-scene-12 #scene-12 .report-narrator blockquote {
+    position:relative !important;
+    z-index:2;
+    box-sizing:border-box;
+    flex:0 0 377px !important;
+    width:377px !important;
+    max-width:377px !important;
+    height:36px !important;
+    margin:0 0 25px 0 !important;
+    padding:7px 13px !important;
+    overflow:visible !important;
+    border:0 !important;
+    border-radius:3.6px !important;
+    background:#f5efe3 !important;
+    color:#1a170f !important;
+    white-space:nowrap !important;
+    font:400 16px/21px Caveat,cursive !important;
+    box-shadow:1.8px 2.4px 0 rgba(0,0,0,.35) !important;
+  }
+
+  body.cs-scene-12 #scene-12 .report-narrator blockquote::before {
+    content:"" !important;
+    position:absolute !important;
+    left:-8px !important;
+    top:10px !important;
+    border:7px solid transparent !important;
+    border-right-color:#f5efe3 !important;
+    border-left:0 !important;
+  }
+
+  /* Shared Up Next component, placed at the exact Scene-12 footer zone. */
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext {
+    left:auto !important;
+    right:32px !important;
+    top:auto !important;
+    bottom:6px !important;
+    width:353px !important;
+    height:46px !important;
+    box-sizing:border-box;
+    padding:14px !important;
+    gap:12px !important;
+    justify-content:flex-start !important;
+    border:1px solid #26304f !important;
+    border-radius:10px !important;
+    background:#0b0f1c !important;
+  }
+
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext .cs-upnext-label {
+    display:block !important;
+    width:58px !important;
+    padding:0 !important;
+    border:0 !important;
+    color:#ffc53d !important;
+    font:600 11px/14px Inter,sans-serif !important;
+    letter-spacing:0 !important;
+    text-transform:uppercase !important;
+  }
+
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext .cs-upnext-name {
+    width:235px !important;
+    color:#f5f2eb !important;
+    font:400 12px/16px Inter,sans-serif !important;
+    white-space:nowrap !important;
+  }
+
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext>span:last-child {
+    color:#f5f2eb !important;
+    font:400 13px/16px Inter,sans-serif !important;
+    transition:transform 220ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext:hover>span:last-child {
+    transform:translateX(4px);
+  }
+
+  /* Motion: inspect the report in reading order 01 → 02 → 03 → 04 → 05. */
+  body.cs-scene-12 #scene-12 .report-card--answer { --scene12-delay:260ms; }
+  body.cs-scene-12 #scene-12 .report-card--journey { --scene12-delay:380ms; }
+  body.cs-scene-12 #scene-12 .report-card--split { --scene12-delay:500ms; }
+  body.cs-scene-12 #scene-12 .report-card--recommendations { --scene12-delay:720ms; }
+  body.cs-scene-12 #scene-12 .report-card--action { --scene12-delay:850ms; }
+
+  body.cs-scene-12 #scene-12.is-current .report-heading .native-title>span:first-child {
+    animation:scene12TitleIn 500ms cubic-bezier(.16,1,.3,1) 80ms both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-heading .native-title>.hl {
+    animation:scene12TitleIn 500ms cubic-bezier(.16,1,.3,1) 145ms both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-heading .native-sub {
+    animation:scene12DetailIn 470ms cubic-bezier(.16,1,.3,1) 150ms both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-card {
+    animation:scene12CardIn 530ms cubic-bezier(.16,1,.3,1) var(--scene12-delay) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-anatomy-row--top .report-card .report-card-heading {
+    animation:scene12DetailIn 430ms cubic-bezier(.16,1,.3,1) calc(var(--scene12-delay) + 35ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-anatomy-row--top .report-card>.report-ui {
+    animation:scene12UiIn 470ms cubic-bezier(.16,1,.3,1) calc(var(--scene12-delay) + 85ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-anatomy-row--top .report-card>dl {
+    animation:scene12DetailIn 430ms cubic-bezier(.16,1,.3,1) calc(var(--scene12-delay) + 150ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-anatomy-row--bottom .report-card>.report-ui {
+    animation:scene12UiIn 470ms cubic-bezier(.16,1,.3,1) calc(var(--scene12-delay) + 35ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-anatomy-row--bottom .report-card-copy {
+    animation:scene12DetailIn 450ms cubic-bezier(.16,1,.3,1) calc(var(--scene12-delay) + 100ms) both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-card--recommendations>.report-ui {
+    animation:scene12RecommendationIn 520ms cubic-bezier(.16,1,.3,1) 755ms both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-narrator::before {
+    animation:
+      scene12GlowIn 520ms ease-out 1180ms forwards,
+      scene12GlowBreath 6.2s ease-in-out 1700ms infinite;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-narrator img {
+    animation:scene12NarratorIn 520ms cubic-bezier(.16,1,.3,1) 1200ms both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current .report-narrator blockquote {
+    animation:scene12BubbleIn 460ms cubic-bezier(.16,1,.3,1) 1300ms both;
+  }
+
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext {
+    animation:scene12NextIn 440ms cubic-bezier(.16,1,.3,1) 1400ms both;
+  }
+
+  @keyframes scene12TitleIn {
+    from { opacity:0; transform:translateY(10px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  @keyframes scene12DetailIn {
+    from { opacity:0; transform:translateY(6px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  @keyframes scene12CardIn {
+    from { opacity:0; transform:translateY(12px) scale(.99); }
+    to { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  @keyframes scene12UiIn {
+    from { opacity:0; transform:translateY(7px); filter:brightness(.96); }
+    to { opacity:1; transform:translateY(0); filter:brightness(1); }
+  }
+
+  @keyframes scene12RecommendationIn {
+    0% { opacity:0; transform:translateY(7px) scale(.992); filter:brightness(.96); }
+    70% { opacity:1; transform:translateY(0) scale(1.004); filter:brightness(1.025); }
+    100% { opacity:1; transform:translateY(0) scale(1); filter:brightness(1); }
+  }
+
+  @keyframes scene12NarratorIn {
+    from { opacity:0; transform:translateY(11px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  @keyframes scene12BubbleIn {
+    from { opacity:0; transform:translateX(-6px) scale(.992); }
+    to { opacity:1; transform:translateX(0) scale(1); }
+  }
+
+  @keyframes scene12GlowIn {
+    from { opacity:0; transform:scale(.96); }
+    to { opacity:1; transform:scale(1); }
+  }
+
+  @keyframes scene12GlowBreath {
+    0%,100% { opacity:.86; transform:scale(1); }
+    50% { opacity:1; transform:scale(1.035); }
+  }
+
+  @keyframes scene12NextIn {
+    from { opacity:0; transform:translateY(7px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+}
+
+@media (max-width:1280px) {
+  .sc-report-anatomy {
+    padding:34px 20px 42px !important;
+    background:#090b17;
+  }
+
+  .sc-report-anatomy .report-heading {
+    position:static;
+    width:auto;
+    height:auto;
+    margin:0;
+    text-align:left !important;
+  }
+
+  .sc-report-anatomy .report-heading .native-title {
+    width:auto;
+    height:auto;
+    margin:0;
+    color:#f5f2e8;
+    font:400 29px/1.12 "Archivo Black",sans-serif;
+    white-space:normal;
+  }
+
+  .sc-report-anatomy .report-heading .native-title .hl { color:#ffc53d; }
+  .sc-report-anatomy .report-heading .native-sub { width:auto;margin:7px 0 0;color:#9ea6b8; }
+
+  .sc-report-anatomy .report-anatomy-grid {
+    position:static;
+    width:auto;
+    height:auto;
+    margin-top:22px;
+  }
+
+  .sc-report-anatomy .report-anatomy-row {
+    display:grid;
+    width:auto;
+    height:auto;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .sc-report-anatomy .report-anatomy-row--bottom { margin-top:14px; }
+
+  .sc-report-anatomy .report-card,
+  .sc-report-anatomy .report-anatomy-row--top .report-card,
+  .sc-report-anatomy .report-anatomy-row--bottom .report-card {
+    width:auto;
+    height:auto;
+    min-height:0;
+    padding:12px;
+    display:block;
+    border:1px solid #26304f;
+    border-radius:10px;
+    background:#0e1221;
+  }
+
+  .sc-report-anatomy .report-card-heading { display:flex;align-items:center;gap:10px; }
+  .sc-report-anatomy .report-card-heading>b { display:grid;width:28px;height:28px;place-items:center;border-radius:7px;background:#ffc53d;color:#090b17; }
+  .sc-report-anatomy .report-card-heading strong { display:block;color:#ffc53d;font:600 10px/1.25 Inter,sans-serif;text-transform:uppercase; }
+  .sc-report-anatomy .report-card-heading small { display:block;margin-top:2px;color:#abb0c2;font:400 9px/1.3 Inter,sans-serif; }
+
+  .sc-report-anatomy .report-ui,
+  .sc-report-anatomy .report-anatomy-row--top .report-ui,
+  .sc-report-anatomy .report-card--recommendations>.report-ui,
+  .sc-report-anatomy .report-card--action>.report-ui {
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:280px;
+    margin:12px 0;
+    object-fit:contain;
+    border-radius:8px;
+  }
+
+  .sc-report-anatomy .report-card dl,
+  .sc-report-anatomy .report-card-copy dl {
+    display:grid;
+    grid-template-columns:74px 1fr;
+    gap:5px 8px;
+    margin:0;
+    color:#abb0c2;
+    font:400 10px/1.35 Inter,sans-serif;
+  }
+
+  .sc-report-anatomy .report-card dt { color:#ffc53d;font-weight:600;text-transform:uppercase; }
+  .sc-report-anatomy .report-card dd { margin:0; }
+  .sc-report-anatomy .report-card-copy { width:auto;height:auto;padding:0;margin:0; }
+
+  .sc-report-anatomy .report-narrator {
+    position:static !important;
+    width:auto !important;
+    height:auto !important;
+    margin-top:24px !important;
+    display:flex !important;
+    align-items:flex-end !important;
+    gap:0 !important;
+  }
+
+  .sc-report-anatomy .report-narrator::before { display:none; }
+  .sc-report-anatomy .report-narrator img { width:70px !important;height:70px !important;object-fit:contain !important; }
+  .sc-report-anatomy .report-narrator blockquote {
+    width:auto !important;
+    max-width:320px !important;
+    height:auto !important;
+    margin:0 0 7px !important;
+    padding:9px 13px !important;
+    white-space:normal !important;
+    background:#f5efe3 !important;
+    color:#1a170f !important;
+    font:400 16px/1.2 Caveat,cursive !important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  body.cs-scene-12 #scene-12 *,
+  body.cs-scene-12 #scene-12 *::before,
+  body.cs-scene-12 #scene-12 *::after,
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext {
+    animation:none !important;
+    transition-duration:.01ms !important;
+    animation-duration:.01ms !important;
+    animation-delay:0ms !important;
+  }
+
+  body.cs-scene-12 #scene-12 .report-narrator::before { opacity:.86 !important;transform:none !important; }
 }
