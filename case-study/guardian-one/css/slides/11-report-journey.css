@@ -1,51 +1,160 @@
-/* Scene 11 — report journey mapped from Figma node 5:8114. */
+/* Scene 11 — Suraksha Report journey. Figma source: Final-Design node 5:8114. */
 .sc-report-journey{padding:0}
-.sc-report-journey .journey-heading{position:absolute;top:68px;left:32px;width:1376px;height:72px;text-align:center}
-.sc-report-journey .journey-heading>p{margin:0;color:#ffc53d;font:500 11px/16px "IBM Plex Mono",monospace;letter-spacing:1.5px;text-transform:uppercase}
-.sc-report-journey .journey-heading h2{margin:3px 0 0;color:#f5f2eb;font:400 36px/43px "Archivo Black",sans-serif}
-.sc-report-journey .journey-heading>span{display:block;margin-top:4px;color:#a8b0c2;font:400 14px/20px Inter,sans-serif}
-.sc-report-journey .journey-body{position:absolute;top:158px;left:96px;display:grid;width:1248px;height:444px;grid-template-columns:895px 322px;gap:20px}
-.sc-report-journey .journey-left{height:424px}
 
-.sc-report-journey .journey-inputs{display:grid;height:304px;grid-template-columns:repeat(3,290px);gap:12.5px}
-.sc-report-journey .input-card{height:304px;padding:9px;border:1px solid #26304f;border-radius:12px;background:#0b0f1c;box-sizing:border-box;overflow:hidden}
-.sc-report-journey .input-card>header{display:grid;height:39px;grid-template-columns:33px 1fr;gap:9px;align-items:center}
-.sc-report-journey .input-card>header>b{display:grid;width:33px;height:33px;place-items:center;border-radius:7px;background:#ffc53d;color:#0a0d14;font:700 13px/1 Inter,sans-serif}
-.sc-report-journey .input-card>header h3{margin:0;color:#ffc53d;font:600 10.7px/14px Inter,sans-serif;text-transform:uppercase}
-.sc-report-journey .input-card>header p{margin:1px 0 0;color:#8f97aa;font:400 9.6px/13px Inter,sans-serif}
-.sc-report-journey .input-viewport{width:272px;height:187px;margin-top:5px;border-radius:8px;background:#fff;overflow:hidden}
-.sc-report-journey .input-viewport img{display:block;width:100%;height:100%;object-fit:fill}
-.sc-report-journey .input-card dl{display:grid;height:49px;margin:5px 0 0;grid-template-columns:43px 1fr;grid-template-rows:auto auto;column-gap:5px;row-gap:4px;color:#8f97aa;font:400 9.3px/12px Inter,sans-serif}
-.sc-report-journey .input-card dt{margin:0;color:#ffc53d;font-weight:700;text-transform:uppercase}.sc-report-journey .input-card dd{margin:0}
+/* Title: Figma has no extra eyebrow above this heading. */
+.sc-report-journey .journey-heading{position:absolute;top:68px;left:32px;width:1376px;height:85px;text-align:center}
+.sc-report-journey .journey-heading h2{width:1120px;height:48px;margin:0 auto;color:#f5f2eb;font:400 36px/48px "Archivo Black",sans-serif;white-space:nowrap}
+.sc-report-journey .journey-heading h2 span{display:inline-block}
+.sc-report-journey .journey-heading h2 span:last-child{color:#ffc53d}
+.sc-report-journey .journey-heading>span{display:block;width:1050px;height:20px;margin:4px auto 0;color:#9ea6b8;font:400 14px/20px Inter,sans-serif}
 
-.sc-report-journey .journey-principles{display:grid;height:100px;margin-top:12px;grid-template-columns:repeat(2,441px);gap:12px}
-.sc-report-journey .journey-principles article{display:grid;padding:11px;grid-template-columns:33px 1fr;gap:11px;align-items:start;border:1px solid #26304f;border-radius:12px;background:#0b0f1c;box-sizing:border-box}
-.sc-report-journey .journey-principles article:last-child{border-color:#24623c;background:#0d2118}
-.sc-report-journey .journey-principles img{display:block;width:33px;height:33px;object-fit:contain}
-.sc-report-journey .journey-principles b{display:block;color:#438cff;font:600 10px/13px Inter,sans-serif;text-transform:uppercase}
-.sc-report-journey .journey-principles article:last-child b{color:#43db91}
-.sc-report-journey .journey-principles h3{margin:2px 0 0;color:#f5f2eb;font:600 12px/16px Inter,sans-serif}
-.sc-report-journey .journey-principles p{margin:7px 0 0;color:#a8b0c2;font:400 10px/14px Inter,sans-serif}
+/* Figma body geometry: left journey ~895, report 322, tight ~15px relationship gap. */
+.sc-report-journey .journey-body{position:absolute;top:165px;left:92.5px;display:grid;width:1231.5px;height:447px;grid-template-columns:894.62px 322.06px;gap:14.82px}
+.sc-report-journey .journey-left{height:447px}
 
-.sc-report-journey .report-card{height:444px;border:1px solid #3f78e7;border-radius:12px;background:#0b0f1c;box-sizing:border-box;overflow:hidden}
-.sc-report-journey .report-card>header{height:53px;padding:11px 14px;text-align:center;box-sizing:border-box}
-.sc-report-journey .report-card>header h3{margin:0;color:#ffc53d;font:600 10px/14px Inter,sans-serif;text-transform:uppercase}
-.sc-report-journey .report-card>header p{margin:3px 0 0;color:#8f97aa;font:400 9.5px/13px Inter,sans-serif}
-.sc-report-journey .report-viewport{width:305px;height:352px;margin:0 auto;background:#050609;overflow:hidden}
-.sc-report-journey .report-viewport img{display:block;width:100%;height:100%;object-fit:fill}
-.sc-report-journey .report-caption{margin:8px 10px 0;color:#8f97aa;font:400 9.5px/13px Inter,sans-serif;text-align:center}
+.sc-report-journey .journey-inputs{display:grid;width:894.62px;height:304.17px;grid-template-columns:repeat(3,289.86px);gap:12.52px}
+.sc-report-journey .input-card{position:relative;height:304.17px;padding:8.95px;border:1px solid #26304f;border-radius:8.95px;background:#0e1221;box-sizing:border-box;overflow:hidden;transition:transform 240ms cubic-bezier(.2,.8,.2,1),border-color 240ms cubic-bezier(.2,.8,.2,1),box-shadow 240ms cubic-bezier(.2,.8,.2,1)}
+.sc-report-journey .input-card>header{display:grid;width:271.97px;height:39.36px;grid-template-columns:32.21px 1fr;gap:8.95px;align-items:center}
+.sc-report-journey .input-card>header>b{display:grid;width:32.21px;height:32.21px;place-items:center;border-radius:7.16px;background:#ffc53d;color:#090b17;font:600 11.63px/14.31px Inter,sans-serif;transition:transform 240ms cubic-bezier(.2,.8,.2,1),box-shadow 240ms cubic-bezier(.2,.8,.2,1),filter 240ms ease}
+.sc-report-journey .input-card>header h3{margin:0;color:#ffc53d;font:600 9.84px/13.42px Inter,sans-serif;text-transform:uppercase}
+.sc-report-journey .input-card>header p{margin:.9px 0 0;color:#abb0c2;font:400 8.95px/12.52px Inter,sans-serif}
+.sc-report-journey .input-viewport{position:relative;width:271.97px;height:186.98px;margin-top:5.37px;border-radius:7.16px;background:#fff;overflow:hidden}
+.sc-report-journey .input-viewport img{display:block;width:100%;height:100%;object-fit:fill;transition:filter 240ms ease,transform 240ms cubic-bezier(.2,.8,.2,1)}
+.sc-report-journey .input-card dl{display:grid;width:271.97px;height:49.2px;margin:5.37px 0 0;grid-template-columns:42.94px 1fr;grid-template-rows:28.63px 16.1px;column-gap:5.37px;row-gap:1.79px;color:#abb0c2;font:400 8.95px/12.52px Inter,sans-serif}
+.sc-report-journey .input-card dt{margin:0;color:#ffc53d;font-weight:600;text-transform:uppercase;transition:color 220ms ease,text-shadow 220ms ease}
+.sc-report-journey .input-card dd{margin:0}
 
-.sc-report-journey .journey-narrator{left:5px;bottom:-1px;gap:10px}
-.sc-report-journey .journey-narrator img{width:129px;height:131px}
-.sc-report-journey .journey-narrator blockquote{width:300px;max-width:none;margin-bottom:14px;padding:11px 15px;border:0;border-radius:5px;background:#f5efe3;color:#24180f;font:400 16px/19px Caveat,cursive;box-shadow:2px 3px 0 rgba(0,0,0,.34)}
-.sc-report-journey .journey-narrator blockquote::before{content:"";position:absolute;left:139px;bottom:39px;border:7px solid transparent;border-right-color:#f5efe3;border-left:0}
-.sc-report-journey.is-current~.cs-upnext{left:auto;right:45px;top:625px;bottom:auto;width:290px;height:42px;padding:0 14px;gap:11px;justify-content:center;border-color:#614d14;border-radius:10px;background:rgba(9,13,26,.9);box-sizing:border-box}
-.sc-report-journey.is-current~.cs-upnext .cs-upnext-label{padding-right:11px;border-right:1px solid #614d14;color:#ffc53d;font:600 10px/16px Inter,sans-serif;text-transform:uppercase}
-.sc-report-journey.is-current~.cs-upnext .cs-upnext-name{color:#f5f2e8;font:400 12px/17px Inter,sans-serif}.sc-report-journey.is-current~.cs-upnext>span:last-child{color:#ffc53d}
+/* Two wider principles sit ~21px below the input row, exactly as in Figma. */
+.sc-report-journey .journey-principles{display:grid;width:894.62px;height:100.2px;margin-top:21.47px;grid-template-columns:repeat(2,441.05px);gap:12.52px}
+.sc-report-journey .journey-principles article{display:grid;height:100.2px;padding:10.74px;grid-template-columns:32.21px 1fr;grid-template-rows:42.94px 1fr;column-gap:8.95px;border:1px solid #1f2e59;border-radius:8.95px;background:#0e1324;box-sizing:border-box;overflow:hidden;transition:transform 240ms cubic-bezier(.2,.8,.2,1),border-color 240ms ease,box-shadow 240ms ease}
+.sc-report-journey .journey-principles article:last-child{border-color:#1f4d33;background:#0d1a14}
+.sc-report-journey .journey-principles img{grid-column:1;grid-row:1;align-self:center;display:block;width:32.21px;height:32.21px;object-fit:contain}
+.sc-report-journey .journey-principles .principle-copy{grid-column:2;grid-row:1;align-self:center;min-width:0}
+.sc-report-journey .journey-principles b{display:block;color:#3b82f6;font:600 8.95px/11.63px Inter,sans-serif;text-transform:uppercase}
+.sc-report-journey .journey-principles article:last-child b{color:#59d18c}
+.sc-report-journey .journey-principles h3{margin:.9px 0 0;color:#f5f2eb;font:600 10.74px/14.31px Inter,sans-serif}
+.sc-report-journey .journey-principles>article>p{grid-column:1 / -1;grid-row:2;align-self:end;width:263px;margin:0;color:#abb0c2;font:400 10.74px/14.31px Inter,sans-serif}
+.sc-report-journey .journey-principles article:last-child>p{width:257px}
+
+/* Complete report is the visual destination/output. */
+.sc-report-journey .report-card{position:relative;display:flex;width:322.06px;height:447.31px;padding:8.95px;flex-direction:column;gap:5.37px;border:1px solid #42a6ff;border-radius:8.95px;background:#0e1221;box-sizing:border-box;overflow:hidden;transition:transform 240ms cubic-bezier(.2,.8,.2,1),border-color 240ms ease,box-shadow 240ms ease}
+.sc-report-journey .report-card>header{flex:0 0 39.36px;width:304.17px;height:39.36px;padding:0;text-align:center;box-sizing:border-box}
+.sc-report-journey .report-card>header h3{margin:0;color:#ffc53d;font:600 9.84px/13.42px Inter,sans-serif;text-transform:uppercase}
+.sc-report-journey .report-card>header p{margin:.9px 0 0;color:#9ea6b8;font:400 8.95px/12.52px Inter,sans-serif}
+.sc-report-journey .report-viewport{position:relative;flex:0 0 351.59px;width:304.17px;height:351.59px;border-radius:7.16px;background:#05060b;overflow:hidden}
+.sc-report-journey .report-viewport img{display:block;width:100%;height:100%;object-fit:fill;transition:filter 240ms ease}
+.sc-report-journey .report-viewport::after{content:"";position:absolute;inset:-20% 0 auto;height:42%;pointer-events:none;opacity:0;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.09),rgba(255,255,255,0));transform:translateY(-165%)}
+.sc-report-journey .report-caption{flex:0 0 13px;width:304.17px;height:13px;margin:0;color:#9ea6b8;font:400 8.95px/12.52px Inter,sans-serif;text-align:center}
+
+/* Grounded narrator: same bottom-left language as adjacent refined scenes. */
+.sc-report-journey .journey-narrator{position:absolute !important;left:5px !important;right:auto !important;top:auto !important;bottom:-1px !important;display:flex !important;align-items:flex-end !important;gap:1px !important;width:430px !important;height:132px !important;margin:0 !important;overflow:visible !important;isolation:isolate}
+.sc-report-journey .journey-narrator::before{content:"";position:absolute;z-index:-1;left:-78px;bottom:-74px;width:300px;height:244px;border-radius:50%;pointer-events:none;opacity:.72;background:radial-gradient(ellipse at 48% 52%,rgba(255,197,61,.30) 0%,rgba(255,197,61,.16) 34%,rgba(255,197,61,.065) 56%,rgba(255,197,61,0) 77%);filter:blur(10px)}
+.sc-report-journey .journey-narrator img{position:relative !important;z-index:1;flex:0 0 129px !important;width:129px !important;height:132px !important;object-fit:contain !important;object-position:center bottom !important}
+.sc-report-journey .journey-narrator blockquote{position:relative !important;z-index:2;width:290px !important;max-width:none !important;min-height:59px !important;margin:0 0 20px 0 !important;padding:8px 13px !important;border:0 !important;border-radius:5px !important;background:#f5efe3 !important;color:#24180f !important;font:400 16px/21px Caveat,cursive !important;box-sizing:border-box !important;box-shadow:2px 3px 0 rgba(0,0,0,.34),0 8px 24px rgba(0,0,0,.12) !important}
+.sc-report-journey .journey-narrator blockquote::before{content:"" !important;position:absolute !important;left:-9px !important;top:29px !important;bottom:auto !important;border:8px solid transparent !important;border-right-color:#f5efe3 !important;border-left:0 !important}
+
+/* Shared bottom-right next affordance. */
+.sc-report-journey.is-current~.cs-upnext{left:auto !important;right:24px !important;top:auto !important;bottom:17px !important;width:auto !important;height:auto !important;gap:10px !important;padding:10px 16px 10px 14px !important;justify-content:flex-start !important;border-color:#333645 !important;border-radius:8px !important;background:#13141c !important;font-size:12px !important;line-height:16px !important}
+.sc-report-journey.is-current~.cs-upnext .cs-upnext-label{display:flex !important;height:14px !important;align-items:center !important;padding-right:10px !important;border-right:1px solid #333645 !important;color:#ffc53d !important;font:500 10px/14px Inter,sans-serif !important;letter-spacing:.8px !important;text-transform:uppercase !important}
+.sc-report-journey.is-current~.cs-upnext .cs-upnext-name{color:#f5f2eb !important;font:500 12px/16px Inter,sans-serif !important}
+.sc-report-journey.is-current~.cs-upnext>span:last-child{color:#ffc53d !important;font:500 14px/20px Inter,sans-serif !important;transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
+.sc-report-journey.is-current~.cs-upnext:hover>span:last-child{transform:translateX(4px)}
+
+@media (min-width:1281px){
+  body.cs-scene-11 #scene-11{background:transparent !important;overflow:visible !important}
+  body.cs-scene-11 .cs-reader{background-color:#09090b !important;background-image:radial-gradient(ellipse 88% 88% at 50% 55%,rgba(36,54,126,.70) 0%,rgba(24,35,80,.52) 34%,rgba(15,20,42,.28) 58%,rgba(9,9,11,0) 82%),linear-gradient(180deg,#0e0f18 0%,#09090b 100%) !important}
+
+  /* Hover links input intent to report output without adding connectors. */
+  body.cs-scene-11 #scene-11 .input-card:hover{transform:translateY(-2px);border-color:#46516d;box-shadow:0 12px 30px rgba(0,0,0,.17)}
+  body.cs-scene-11 #scene-11 .input-card:hover>header>b{transform:scale(1.045);box-shadow:0 0 18px rgba(255,197,61,.18);filter:brightness(1.04)}
+  body.cs-scene-11 #scene-11 .input-card:hover dt{color:#ffd46b;text-shadow:0 0 12px rgba(255,197,61,.16)}
+  body.cs-scene-11 #scene-11 .input-card:hover .input-viewport img{transform:translateY(-1px);filter:contrast(1.015) brightness(1.015)}
+  body.cs-scene-11 #scene-11 .journey-body:has(.input-card:hover) .report-card{border-color:#68b8ff;box-shadow:0 0 0 1px rgba(66,166,255,.11),0 12px 34px rgba(0,0,0,.16)}
+  body.cs-scene-11 #scene-11 .report-card:hover{transform:translateY(-2px);border-color:#68b8ff;box-shadow:0 12px 34px rgba(0,0,0,.18)}
+  body.cs-scene-11 #scene-11 .report-card:hover .report-viewport img{filter:contrast(1.018) brightness(1.012)}
+  body.cs-scene-11 #scene-11 .journey-principles article:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.14)}
+
+  /* Stagger values: title → 01 → 02 → 03 → output → principles → narrator. */
+  body.cs-scene-11 #scene-11 .input-card:nth-child(1){--card-delay:280ms}
+  body.cs-scene-11 #scene-11 .input-card:nth-child(2){--card-delay:430ms}
+  body.cs-scene-11 #scene-11 .input-card:nth-child(3){--card-delay:580ms}
+
+  body.cs-scene-11 #scene-11.is-current .journey-heading h2 span:first-child{animation:scene11TitleIn 520ms cubic-bezier(.16,1,.3,1) 70ms both}
+  body.cs-scene-11 #scene-11.is-current .journey-heading h2 span:last-child{animation:scene11TitleIn 520ms cubic-bezier(.16,1,.3,1) 140ms both}
+  body.cs-scene-11 #scene-11.is-current .journey-heading>span{animation:scene11DetailIn 460ms cubic-bezier(.16,1,.3,1) 190ms both}
+
+  body.cs-scene-11 #scene-11.is-current .input-card{animation:scene11CardIn 560ms cubic-bezier(.16,1,.3,1) var(--card-delay) both}
+  body.cs-scene-11 #scene-11.is-current .input-card .input-viewport{animation:scene11ViewportIn 520ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 70ms) both}
+  body.cs-scene-11 #scene-11.is-current .input-card dl dt:first-of-type,
+  body.cs-scene-11 #scene-11.is-current .input-card dl dd:first-of-type{animation:scene11AnnotationIn 420ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 165ms) both}
+  body.cs-scene-11 #scene-11.is-current .input-card dl dt:last-of-type,
+  body.cs-scene-11 #scene-11.is-current .input-card dl dd:last-of-type{animation:scene11AnnotationIn 420ms cubic-bezier(.16,1,.3,1) calc(var(--card-delay) + 255ms) both}
+
+  /* Report shell is present early enough to receive each FEEDS response; document reveals after 03. */
+  body.cs-scene-11 #scene-11.is-current .report-card{animation:scene11ReportShellIn 520ms cubic-bezier(.16,1,.3,1) 360ms both,scene11ReportResponses 1040ms ease-out 600ms both}
+  body.cs-scene-11 #scene-11.is-current .report-viewport{animation:scene11ReportReveal 720ms cubic-bezier(.16,1,.3,1) 820ms both}
+  body.cs-scene-11 #scene-11.is-current .report-viewport::after{animation:scene11ReportScan 620ms cubic-bezier(.2,.8,.2,1) 1110ms 1 both}
+  body.cs-scene-11 #scene-11.is-current .report-caption{animation:scene11DetailIn 420ms cubic-bezier(.16,1,.3,1) 1040ms both}
+
+  body.cs-scene-11 #scene-11.is-current .journey-principles article:first-child{animation:scene11PrincipleIn 500ms cubic-bezier(.16,1,.3,1) 980ms both}
+  body.cs-scene-11 #scene-11.is-current .journey-principles article:last-child{animation:scene11PrincipleIn 500ms cubic-bezier(.16,1,.3,1) 1080ms both,scene11GreenResolve 460ms ease-out 1190ms both}
+
+  body.cs-scene-11 #scene-11.is-current .journey-narrator::before{animation:scene11GlowIn 560ms cubic-bezier(.16,1,.3,1) 1240ms both}
+  body.cs-scene-11 #scene-11.is-current .journey-narrator img{animation:scene11NarratorIn 580ms cubic-bezier(.16,1,.3,1) 1280ms both}
+  body.cs-scene-11 #scene-11.is-current .journey-narrator blockquote{animation:scene11BubbleIn 520ms cubic-bezier(.16,1,.3,1) 1390ms both}
+  body.cs-scene-11 #scene-11.is-current~.cs-upnext{animation:scene11NextIn 460ms cubic-bezier(.16,1,.3,1) 1490ms both}
+}
+
+@keyframes scene11TitleIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scene11DetailIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scene11CardIn{from{opacity:0;transform:translateY(14px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes scene11ViewportIn{from{opacity:.25;clip-path:inset(0 0 28% 0);transform:translateY(7px)}to{opacity:1;clip-path:inset(0);transform:translateY(0)}}
+@keyframes scene11AnnotationIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scene11ReportShellIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scene11ReportResponses{
+  0%,8%{border-color:#42a6ff;box-shadow:none}
+  16%{border-color:#72bdff;box-shadow:0 0 0 1px rgba(66,166,255,.12),0 0 22px rgba(66,166,255,.10)}
+  25%,37%{border-color:#42a6ff;box-shadow:none}
+  45%{border-color:#72bdff;box-shadow:0 0 0 1px rgba(66,166,255,.12),0 0 22px rgba(66,166,255,.10)}
+  54%,66%{border-color:#42a6ff;box-shadow:none}
+  74%{border-color:#72bdff;box-shadow:0 0 0 1px rgba(66,166,255,.12),0 0 22px rgba(66,166,255,.10)}
+  84%,100%{border-color:#42a6ff;box-shadow:none}
+}
+@keyframes scene11ReportReveal{from{opacity:.25;clip-path:inset(0 0 100% 0)}to{opacity:1;clip-path:inset(0)}}
+@keyframes scene11ReportScan{0%{opacity:0;transform:translateY(-165%)}20%{opacity:.55}100%{opacity:0;transform:translateY(410%)}}
+@keyframes scene11PrincipleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scene11GreenResolve{0%,100%{box-shadow:none;border-color:#1f4d33}50%{box-shadow:0 0 20px rgba(89,209,140,.10);border-color:#2d6b49}}
+@keyframes scene11GlowIn{from{opacity:0;transform:scale(.94)}to{opacity:.72;transform:scale(1)}}
+@keyframes scene11NarratorIn{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scene11BubbleIn{from{opacity:0;transform:translateX(-8px) translateY(5px)}to{opacity:1;transform:translate(0)}}
+@keyframes scene11NextIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 
 @media(max-width:1280px){
- .sc-report-journey{padding:34px 20px 42px}.sc-report-journey .journey-heading{position:static;width:auto;height:auto;text-align:left}.sc-report-journey .journey-heading h2{font-size:29px;line-height:1.08}.sc-report-journey .journey-heading>span{font-size:13px;line-height:1.45}
- .sc-report-journey .journey-body{position:static;display:grid;width:auto;height:auto;margin-top:26px;grid-template-columns:1fr;gap:24px}.sc-report-journey .journey-left{height:auto}.sc-report-journey .journey-inputs{display:grid;height:auto;grid-template-columns:1fr;gap:12px}.sc-report-journey .input-card{height:auto;min-height:304px}.sc-report-journey .input-viewport{width:100%;height:auto;aspect-ratio:272/187}
- .sc-report-journey .journey-principles{display:grid;height:auto;margin-top:20px;grid-template-columns:1fr;gap:10px}.sc-report-journey .journey-principles article{min-height:112px}.sc-report-journey .report-card{width:100%;height:auto;padding-bottom:12px}.sc-report-journey .report-viewport{width:min(305px,100%);height:auto;aspect-ratio:305/352}
- .sc-report-journey .journey-narrator{position:static;margin-top:22px}.sc-report-journey .journey-narrator blockquote{width:auto;max-width:250px;margin-bottom:9px}.sc-report-journey .journey-narrator blockquote::before{display:none}
+  .sc-report-journey{padding:34px 20px 42px}
+  .sc-report-journey .journey-heading{position:static;width:auto;height:auto;text-align:left}
+  .sc-report-journey .journey-heading h2{width:auto;height:auto;margin:0;white-space:normal;font-size:29px;line-height:1.08}
+  .sc-report-journey .journey-heading>span{width:auto;height:auto;margin-top:7px;font-size:13px;line-height:1.45}
+  .sc-report-journey .journey-body{position:static;display:grid;width:auto;height:auto;margin-top:26px;grid-template-columns:1fr;gap:24px}
+  .sc-report-journey .journey-left{height:auto}
+  .sc-report-journey .journey-inputs{display:grid;width:auto;height:auto;grid-template-columns:1fr;gap:12px}
+  .sc-report-journey .input-card{width:100%;height:auto;min-height:304px}
+  .sc-report-journey .input-card>header,.sc-report-journey .input-card dl{width:100%}
+  .sc-report-journey .input-viewport{width:100%;height:auto;aspect-ratio:272/187}
+  .sc-report-journey .journey-principles{display:grid;width:auto;height:auto;margin-top:20px;grid-template-columns:1fr;gap:10px}
+  .sc-report-journey .journey-principles article{width:100%;min-height:112px}
+  .sc-report-journey .report-card{width:100%;height:auto;padding-bottom:12px}
+  .sc-report-journey .report-card>header,.sc-report-journey .report-caption{width:100%}
+  .sc-report-journey .report-viewport{width:min(304px,100%);height:auto;margin:0 auto;aspect-ratio:304/352}
+  .sc-report-journey .journey-narrator{position:static !important;width:auto !important;height:auto !important;margin-top:22px !important}
+  .sc-report-journey .journey-narrator::before{display:none}
+  .sc-report-journey .journey-narrator img{width:110px !important;height:112px !important}
+  .sc-report-journey .journey-narrator blockquote{width:auto !important;max-width:290px !important;min-height:0 !important;margin:0 0 9px !important}
+  .sc-report-journey .journey-narrator blockquote::before{display:none}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .sc-report-journey *,
+  .sc-report-journey *::before,
+  .sc-report-journey *::after,
+  .sc-report-journey.is-current~.cs-upnext{animation:none !important;transition-duration:.01ms !important;animation-duration:.01ms !important;animation-delay:0ms !important;opacity:1 !important;transform:none !important;clip-path:none !important}
 }
