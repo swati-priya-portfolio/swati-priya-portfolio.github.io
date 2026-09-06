@@ -1,0 +1,32 @@
+/* Scene 07 hover polish: use independent translate/scale properties so hover
+   remains interactive after the entrance animations have filled forwards. */
+@media (min-width:1281px) {
+  body.cs-scene-7 #scene-7 .actual-question,
+  body.cs-scene-7 #scene-7 .question-reason,
+  body.cs-scene-7 #scene-7 .step-rail li {
+    translate:0 0;
+    scale:1;
+    transition:
+      translate 220ms cubic-bezier(.2,.8,.2,1),
+      scale 220ms cubic-bezier(.2,.8,.2,1),
+      border-color 220ms cubic-bezier(.2,.8,.2,1),
+      box-shadow 220ms cubic-bezier(.2,.8,.2,1),
+      filter 220ms cubic-bezier(.2,.8,.2,1),
+      background-color 220ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  body.cs-scene-7 #scene-7 .question-reason:hover,
+  body.cs-scene-7 #scene-7 .actual-question:hover { translate:0 -2px; }
+  body.cs-scene-7 #scene-7 .step-rail li:hover { scale:1.045; }
+
+  body.cs-scene-7 #scene-7 .questions-body:has(.q-grade:hover) .step-rail li:nth-of-type(1),
+  body.cs-scene-7 #scene-7 .questions-body:has(.question-reason:nth-child(1):hover) .step-rail li:nth-of-type(1),
+  body.cs-scene-7 #scene-7 .questions-body:has(.q-board:hover) .step-rail li:nth-of-type(2),
+  body.cs-scene-7 #scene-7 .questions-body:has(.question-reason:nth-child(2):hover) .step-rail li:nth-of-type(2),
+  body.cs-scene-7 #scene-7 .questions-body:has(.q-cost:hover) .step-rail li:nth-of-type(3),
+  body.cs-scene-7 #scene-7 .questions-body:has(.question-reason:nth-child(3):hover) .step-rail li:nth-of-type(3),
+  body.cs-scene-7 #scene-7 .questions-body:has(.q-optional:hover) .step-rail li:nth-of-type(4),
+  body.cs-scene-7 #scene-7 .questions-body:has(.question-reason:nth-child(4):hover) .step-rail li:nth-of-type(4) {
+    scale:1.05;
+  }
+}
