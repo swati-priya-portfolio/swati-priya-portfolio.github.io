@@ -37,6 +37,8 @@
     background-size:cover !important;
   }
 
+  /* The Figma rail lives at y=40 inside Scene 02. fullscreen-shell.js now
+     positions the real rail there, so it no longer consumes a second row. */
   body.cs-scene-2 .cs-topbar {
     top:var(--cs-rail-top) !important;
     width:var(--cs-bar,1340px) !important;
@@ -61,30 +63,65 @@
     background:#c9bfae !important;
     opacity:1 !important;
   }
-  body.cs-scene-2 .cs-fill { background:#ffc53d !important; }
-  body.cs-scene-2 .cs-crumb { color:#9a8f79 !important; }
-  body.cs-scene-2 .cs-crumb b { color:#9a8f79 !important;font-weight:500 !important; }
+  body.cs-scene-2 .cs-fill {
+    background:#ffc53d !important;
+  }
+  body.cs-scene-2 .cs-crumb {
+    color:#9a8f79 !important;
+  }
+  body.cs-scene-2 .cs-crumb b {
+    color:#9a8f79 !important;
+    font-weight:500 !important;
+  }
   body.cs-scene-2 .cs-view-design {
     font-family:var(--font-mono,"IBM Plex Mono",monospace) !important;
     font-size:10px !important;
     color:rgba(245,239,227,.68) !important;
   }
-  body.cs-scene-2 .cs-stage-shell { top:var(--cs-scene-top) !important;overflow:visible !important; }
-  body.cs-scene-2 #scene-2 { background-color:transparent !important;overflow:visible !important; }
+
+  /* Keep the 1440×700 geometry but let its background blend into the reader. */
+  body.cs-scene-2 .cs-stage-shell {
+    top:var(--cs-scene-top) !important;
+    overflow:visible !important;
+  }
+  body.cs-scene-2 #scene-2 {
+    background-color:transparent !important;
+    overflow:visible !important;
+  }
+
+  /* Match Figma Up Next: small, quiet and close to the bottom-right. */
   body.cs-scene-2 .cs-upnext {
-    right:52px !important;bottom:35px !important;min-height:40px !important;
-    padding:10px 16px 10px 14px !important;gap:10px !important;
-    border:1px solid #333645 !important;border-radius:8px !important;background:#13141c !important;
-    color:#f5f2eb !important;box-shadow:none !important;font-family:var(--font-body,Inter,sans-serif) !important;font-size:12px !important;
+    right:52px !important;
+    bottom:35px !important;
+    min-height:40px !important;
+    padding:10px 16px 10px 14px !important;
+    gap:10px !important;
+    border:1px solid #333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:12px !important;
   }
   body.cs-scene-2 .cs-upnext-label {
-    color:#ffcc47 !important;font-size:10px !important;font-weight:500 !important;line-height:14px !important;
-    letter-spacing:.08em !important;text-transform:uppercase !important;
+    color:#ffcc47 !important;
+    font-size:10px !important;
+    font-weight:500 !important;
+    line-height:14px !important;
+    letter-spacing:.08em !important;
+    text-transform:uppercase !important;
   }
-  body.cs-scene-2 .cs-upnext-name { font-size:12px !important;font-weight:500 !important;line-height:16px !important; }
+  body.cs-scene-2 .cs-upnext-name {
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+  }
   body.cs-scene-2 .cs-upnext:hover,
   body.cs-scene-2 .cs-upnext:focus-visible {
-    transform:translateY(-1px) !important;border-color:rgba(255,197,61,.52) !important;box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,197,61,.52) !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
   }
 }
 
@@ -101,53 +138,94 @@
     background-size:cover !important;
   }
 
-  /* The Figma rail lives at y=40 inside the 700px Scene 03 composition. */
+  /* Figma places Scene 03's rail at y=40 inside the scene. */
   body.cs-scene-3 .cs-topbar {
     top:var(--cs-rail-top) !important;
     width:var(--cs-bar,1340px) !important;
-    min-height:20px !important;height:20px !important;
+    min-height:20px !important;
+    height:20px !important;
     font-family:var(--font-body,Inter,sans-serif) !important;
-    font-size:12px !important;font-weight:400 !important;line-height:20px !important;
-    letter-spacing:.05em !important;color:#666e7a !important;
+    font-size:12px !important;
+    font-weight:400 !important;
+    line-height:20px !important;
+    letter-spacing:.05em !important;
+    color:#666e7a !important;
   }
   body.cs-scene-3 .cs-crumb { color:#666e7a !important; }
   body.cs-scene-3 .cs-crumb b { color:#666e7a !important;font-weight:400 !important; }
   body.cs-scene-3 .cs-count {
-    color:#666e7a !important;font-size:12px !important;font-weight:500 !important;line-height:20px !important;letter-spacing:.03em !important;
+    color:#666e7a !important;
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:20px !important;
+    letter-spacing:.03em !important;
   }
   body.cs-scene-3 .cs-track {
-    width:180px !important;height:4px !important;background:#c9bfae !important;opacity:1 !important;
+    width:180px !important;
+    height:4px !important;
+    background:#c9bfae !important;
+    opacity:1 !important;
   }
   body.cs-scene-3 .cs-fill { background:#ffc53d !important; }
   body.cs-scene-3 .cs-view-design { display:none !important; }
 
-  body.cs-scene-3 .cs-stage-shell { top:var(--cs-scene-top) !important;overflow:visible !important; }
-  body.cs-scene-3 #scene-3 { background-color:transparent !important;overflow:visible !important; }
+  body.cs-scene-3 .cs-stage-shell {
+    top:var(--cs-scene-top) !important;
+    overflow:visible !important;
+  }
+  body.cs-scene-3 #scene-3 {
+    background-color:transparent !important;
+    overflow:visible !important;
+  }
 
-  /* Match the small Figma Up Next pill at x≈1139 / y≈625. */
   body.cs-scene-3 .cs-upnext {
-    right:39px !important;bottom:35px !important;min-height:40px !important;
-    padding:10px 16px 10px 14px !important;gap:10px !important;
-    border:1px solid #333645 !important;border-radius:8px !important;background:#13141c !important;
-    color:#f5f2eb !important;box-shadow:none !important;font-family:var(--font-body,Inter,sans-serif) !important;font-size:12px !important;
+    right:39px !important;
+    bottom:35px !important;
+    min-height:40px !important;
+    padding:10px 16px 10px 14px !important;
+    gap:10px !important;
+    border:1px solid #333645 !important;
+    border-radius:8px !important;
+    background:#13141c !important;
+    color:#f5f2eb !important;
+    box-shadow:none !important;
+    font-family:var(--font-body,Inter,sans-serif) !important;
+    font-size:12px !important;
     animation:s3-upnext-in 320ms cubic-bezier(.22,.61,.36,1) 1080ms both;
   }
   body.cs-scene-3 .cs-upnext-label {
-    color:#ffc53d !important;font-size:10px !important;font-weight:500 !important;line-height:14px !important;
-    letter-spacing:.08em !important;text-transform:uppercase !important;
+    color:#ffc53d !important;
+    font-size:10px !important;
+    font-weight:500 !important;
+    line-height:14px !important;
+    letter-spacing:.08em !important;
+    text-transform:uppercase !important;
   }
-  body.cs-scene-3 .cs-upnext-name { font-size:12px !important;font-weight:500 !important;line-height:16px !important; }
-  body.cs-scene-3 .cs-upnext > span:last-child { color:#ffc53d !important;display:inline-block;transition:transform 180ms ease; }
+  body.cs-scene-3 .cs-upnext-name {
+    font-size:12px !important;
+    font-weight:500 !important;
+    line-height:16px !important;
+  }
+  body.cs-scene-3 .cs-upnext > span:last-child {
+    color:#ffc53d !important;
+    display:inline-block;
+    transition:transform 180ms ease;
+  }
   body.cs-scene-3 .cs-upnext:hover,
   body.cs-scene-3 .cs-upnext:focus-visible {
-    transform:translateY(-1px) !important;border-color:rgba(255,197,61,.52) !important;box-shadow:0 0 16px rgba(255,197,61,.06) !important;
+    transform:translateY(-1px) !important;
+    border-color:rgba(255,197,61,.52) !important;
+    box-shadow:0 0 16px rgba(255,197,61,.06) !important;
   }
   body.cs-scene-3 .cs-upnext:hover > span:last-child,
   body.cs-scene-3 .cs-upnext:focus-visible > span:last-child { transform:translateX(3px); }
 }
 
-@keyframes s3-upnext-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s3-upnext-in {
+  from { opacity:0;transform:translateY(5px); }
+  to { opacity:1;transform:translateY(0); }
+}
 
-@media (prefers-reduced-motion:reduce){
-  body.cs-scene-3 .cs-upnext{animation:none!important}
+@media (prefers-reduced-motion:reduce) {
+  body.cs-scene-3 .cs-upnext { animation:none !important; }
 }
