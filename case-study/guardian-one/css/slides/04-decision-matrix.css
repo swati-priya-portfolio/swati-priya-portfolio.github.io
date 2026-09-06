@@ -1,40 +1,209 @@
-/* Scene 04 — compact editorial matrix, matched to the Figma rhythm. */
-#scene-4{isolation:isolate;padding:34px 76px 26px}
-#scene-4 .cs-h2{font-size:34px;line-height:1.05}
-#scene-4 .cs-sub{margin-top:8px;color:rgba(245,239,227,.56)}
-#scene-4 .heads,#scene-4 .band{grid-template-columns:380px 28px 380px 28px 1fr;gap:8px}
-#scene-4 .heads{margin-top:16px}
-#scene-4 .band{margin-top:7px}
-#scene-4 .colhead{min-height:54px;padding:8px 12px;border-color:rgba(132,154,205,.27);box-shadow:inset 0 1px rgba(255,255,255,.025)}
-#scene-4 .colhead.tone-blue{background:linear-gradient(135deg,rgba(22,37,75,.72),rgba(13,24,52,.56))}
-#scene-4 .colhead.tone-green{background:linear-gradient(135deg,rgba(10,46,39,.76),rgba(8,30,28,.58));border-color:rgba(75,214,164,.26)}
-#scene-4 .colhead.tone-purple{background:linear-gradient(135deg,rgba(48,28,86,.74),rgba(27,18,57,.58));border-color:rgba(171,140,250,.26)}
-#scene-4 .cell{position:relative;min-height:72px;padding:9px 12px;border-color:rgba(132,154,205,.27);background:linear-gradient(145deg,rgba(11,16,31,.98),rgba(7,10,20,.97));overflow:hidden;box-shadow:inset 0 1px rgba(255,255,255,.025),0 10px 24px rgba(0,0,0,.12)}
-#scene-4 .cell.tone-green{border-color:rgba(75,214,164,.25)}
-#scene-4 .cell.tone-purple{padding-right:98px;border-color:rgba(139,92,246,.3);background:#000}
-#scene-4 .cell b{font-size:12.5px;line-height:1.18}
-#scene-4 .cell span{font-size:10px;line-height:1.34}
-#scene-4 .cell .rule{margin-top:4px;font-size:7.5px;letter-spacing:1px}
-#scene-4 .cs-ico{display:grid;place-items:center;align-content:center;justify-content:center;padding:0;line-height:0;box-sizing:border-box;overflow:hidden}
-#scene-4 .colhead .cs-ico{width:37px;height:37px;flex:0 0 37px}
-#scene-4 .cell .cs-ico{width:43px;height:43px;flex:0 0 43px}
-#scene-4 .guard .cs-ico{width:33px;height:33px;flex:0 0 33px}
-#scene-4 .arrow{color:#ffc53d;font-size:20px;opacity:.8}
-#scene-4 .cs-ico img{grid-area:1/1;display:block;margin:auto;object-fit:contain;object-position:50% 50%}
-#scene-4 .colhead .cs-ico img{width:20px;height:20px}
-#scene-4 .cell .cs-ico img{width:22px;height:22px}
-#scene-4 .guard .cs-ico img{width:20px;height:20px}
-#scene-4 .feature-illustration{position:absolute;right:8px;top:50%;display:block;width:78px;height:65px;object-fit:contain;transform:translateY(-50%)}
-#scene-4 .guards{grid-template-columns:222px repeat(4,1fr);gap:8px;margin-top:9px}
-#scene-4 .guard{min-height:64px;padding:8px 10px;align-items:center;border-color:rgba(255,197,61,.2);background:linear-gradient(145deg,rgba(10,14,27,.97),rgba(8,10,19,.96))}
-#scene-4 .guard b{font-size:8.5px}
-#scene-4 .guard span{font-size:9.6px;line-height:1.3}
-#scene-4 .cs-note{bottom:16px}
+/* Scene 04 — pixel-fidelity + restrained interaction for Figma node 5:7679. */
+#scene-4{isolation:isolate;padding:0}
 
+/* ---------- Exact Figma geometry ---------- */
+#scene-4 .cs-h2{
+  position:absolute;left:32px;top:60px;width:1376px;margin:0;
+  font-size:36px;line-height:43px;letter-spacing:-.36px;text-align:center;
+}
+#scene-4 .cs-sub{
+  position:absolute;left:32px;top:111px;width:1376px;margin:0;
+  color:#666e80;font-size:14px;line-height:18px;text-align:center;
+}
+
+#scene-4 .heads,
+#scene-4 .band{
+  position:absolute;left:81.515px;width:1276.97px;
+  display:grid;grid-template-columns:380.492px 29.697px 380.492px 29.697px 456.591px;
+  gap:0;align-items:start;margin:0;
+}
+#scene-4 .heads{top:166.985px;height:53.826px}
+#scene-4 .heads + .band{top:230.091px}
+#scene-4 .heads + .band + .band{top:322.894px}
+#scene-4 .heads + .band + .band + .band{top:415.697px}
+#scene-4 .band{height:85.379px}
+
+#scene-4 .colhead{
+  height:53.826px;padding:7.424px 11.136px;gap:9.28px;
+  border-width:.928px;border-style:solid;border-radius:11.136px;
+  box-shadow:none;box-sizing:border-box;overflow:hidden;
+}
+#scene-4 .colhead.tone-blue{
+  background:rgba(102,153,250,.07);border-color:rgba(102,153,250,.36);
+}
+#scene-4 .colhead.tone-green{
+  background:rgba(89,209,140,.07);border-color:rgba(89,209,140,.36);
+}
+#scene-4 .colhead.tone-purple{
+  background:rgba(139,92,246,.07);border-color:rgba(139,92,246,.36);
+}
+#scene-4 .colhead .cs-ico{
+  display:grid;place-items:center;width:37.122px;height:37.122px;flex:0 0 37.122px;
+  margin:0;padding:0;border-width:.928px;border-style:solid;border-radius:16.705px;
+}
+#scene-4 .colhead.tone-blue .cs-ico{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.55)}
+#scene-4 .colhead.tone-green .cs-ico{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.55)}
+#scene-4 .colhead.tone-purple .cs-ico{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.55)}
+#scene-4 .colhead .cs-ico img{display:block;width:20.417px;height:20.417px;object-fit:contain}
+#scene-4 .colhead b{display:block;font-size:12.992px;font-weight:600;line-height:16px;letter-spacing:0}
+#scene-4 .colhead.tone-blue b{color:#6699fa}
+#scene-4 .colhead.tone-green b{color:#59d18c}
+#scene-4 .colhead.tone-purple b{color:#8b5cf6}
+#scene-4 .colhead span{display:block;margin-top:1.856px;color:#adb2c2;font-size:10.672px;line-height:14px}
+
+#scene-4 .cell{
+  display:flex;height:74.242px;min-height:74.242px;padding:7.424px 11.136px;
+  gap:12.992px;align-items:center;border-width:.928px;border-style:solid;
+  border-radius:11.136px;background:#000;box-shadow:none;box-sizing:border-box;overflow:hidden;
+}
+#scene-4 .cell.tone-blue{border-color:rgba(102,153,250,.28)}
+#scene-4 .cell.tone-green{border-color:rgba(89,209,140,.28)}
+#scene-4 .cell.tone-purple{gap:11.136px;padding:7.424px;border-color:rgba(139,92,246,.30);background:#000}
+#scene-4 .cell .cs-ico{
+  display:grid;place-items:center;width:46.402px;height:46.402px;flex:0 0 46.402px;
+  margin:0;padding:0;border-width:.928px;border-style:solid;border-radius:22.273px;
+}
+#scene-4 .cell.tone-blue .cs-ico{background:rgba(102,153,250,.08);border-color:rgba(102,153,250,.68)}
+#scene-4 .cell.tone-green .cs-ico{background:rgba(89,209,140,.08);border-color:rgba(89,209,140,.68)}
+#scene-4 .cell.tone-purple .cs-ico{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.68)}
+#scene-4 .cell .cs-ico img{display:block;width:22.273px;height:22.273px;object-fit:contain}
+#scene-4 .cell .txt{display:flex;min-width:0;flex:1 1 auto;flex-direction:column;justify-content:center;gap:3.712px}
+#scene-4 .cell b{display:block;margin:0;color:#f5f2eb;font-size:14.384px;font-weight:600;line-height:18px}
+#scene-4 .cell.tone-purple b{color:#8b5cf6}
+#scene-4 .cell span{display:block;margin:0;color:#adb2c2;font-size:12.064px;line-height:15px}
+#scene-4 .cell.tone-purple .txt{gap:1.856px}
+#scene-4 .cell.tone-purple .txt>span:not(.rule){font-size:10.208px;line-height:12px}
+#scene-4 .cell .rule{
+  display:flex;align-items:center;gap:7.424px;margin-top:0;
+  color:#fff;font-family:var(--font-body,Inter,sans-serif);font-size:7.888px;
+  font-weight:500;line-height:12px;letter-spacing:0;text-transform:uppercase;
+}
+#scene-4 .cell .rule em{font-style:normal;color:#fff;font-size:8.352px;font-weight:600;line-height:12px;white-space:nowrap}
+#scene-4 .arrow{
+  display:grid;place-items:center;width:29.697px;height:74.242px;
+  color:#ffc53d;font-size:18.561px;line-height:19.489px;opacity:1;
+}
+#scene-4 .feature-illustration{
+  position:static;display:block;width:77.955px;height:64.962px;flex:0 0 77.955px;
+  object-fit:contain;transform:none;
+}
+
+/* ---------- Guardrails ---------- */
+#scene-4 .guards{
+  position:absolute;left:81.515px;top:510.356px;width:1276.97px;height:74.242px;
+  display:grid;grid-template-columns:278.409px repeat(4,238.504px);gap:11.136px;
+  margin:0;align-items:center;overflow:visible;
+}
+#scene-4 .guard{
+  display:flex;height:74.242px;min-height:74.242px;padding:9.28px;gap:9.28px;
+  align-items:center;border:.928px solid rgba(46,48,59,.5);border-radius:9.28px;
+  background:rgba(6,8,11,.92);box-sizing:border-box;overflow:hidden;
+}
+#scene-4 .guard:first-child{
+  padding:9.28px 7.424px 9.28px 11.136px;gap:11.136px;
+  border-color:transparent;background:transparent;
+}
+#scene-4 .guard .cs-ico{
+  display:grid;place-items:center;width:38.978px;height:38.978px;flex:0 0 38.978px;
+  margin:0;padding:0;border:.928px solid rgba(255,197,61,.55);border-radius:7.424px;
+  background:rgba(255,197,61,.07);
+}
+#scene-4 .guard .cs-ico img{display:block;width:20.417px;height:20.417px;object-fit:contain}
+#scene-4 .guard b{
+  display:block;margin:0;color:#ffc53d;font-family:var(--font-body,Inter,sans-serif);
+  font-size:10.672px;font-weight:600;line-height:14px;letter-spacing:0;text-transform:uppercase;
+}
+#scene-4 .guard:first-child b{font-size:12.064px;line-height:15px}
+#scene-4 .guard span{display:block;margin-top:4.64px;color:#adb2c2;font-size:10.394px;line-height:13px}
+#scene-4 .guard:first-child span{margin-top:5.568px;font-size:10.672px;line-height:13px}
+
+/* ---------- Narrator: exact lower-left Figma relationship ---------- */
+#scene-4 .cs-narrator{left:59px;top:548px;bottom:auto;width:148px;height:159px;background-size:contain;background-position:center bottom}
+#scene-4 .cs-narrator::before{
+  left:-145px;top:-83px;bottom:auto;width:431px;height:356px;
+  background:radial-gradient(ellipse at 50% 52%,rgba(156,101,40,.26) 0%,rgba(117,70,28,.15) 42%,rgba(55,32,16,.06) 66%,rgba(9,9,13,0) 83%);
+}
+#scene-4 .cs-note{
+  left:213px;top:616px;bottom:auto;width:428px;max-width:428px;height:61px;
+  padding:10px 16px;border-radius:6px;background:#f5efe3;color:#17120b;
+  font-size:18px;line-height:20px;box-shadow:3px 4px 0 rgba(0,0,0,.35);box-sizing:border-box;
+}
+#scene-4 .cs-note::before{top:26px}
+
+/* ---------- Entrance sequence + meaningful matrix interactions ---------- */
+@media (min-width:900px){
+  #scene-4.is-current .cs-h2{animation:s4-fade-up 420ms cubic-bezier(.22,.61,.36,1) 90ms both}
+  #scene-4.is-current .cs-sub{animation:s4-fade-up 340ms ease 190ms both}
+  #scene-4.is-current .heads{animation:s4-fade-up 360ms cubic-bezier(.22,.61,.36,1) 280ms both}
+
+  #scene-4.is-current .heads + .band>:nth-child(1){animation:s4-cell-left 330ms cubic-bezier(.22,.61,.36,1) 390ms both}
+  #scene-4.is-current .heads + .band>:nth-child(2){animation:s4-arrow-in 220ms ease 455ms both}
+  #scene-4.is-current .heads + .band>:nth-child(3){animation:s4-cell-up 330ms cubic-bezier(.22,.61,.36,1) 500ms both}
+  #scene-4.is-current .heads + .band>:nth-child(4){animation:s4-arrow-in 220ms ease 555ms both}
+  #scene-4.is-current .heads + .band>:nth-child(5){animation:s4-cell-right 330ms cubic-bezier(.22,.61,.36,1) 610ms both}
+
+  #scene-4.is-current .heads + .band + .band>*{animation:s4-fade-up 300ms cubic-bezier(.22,.61,.36,1) 710ms both}
+  #scene-4.is-current .heads + .band + .band + .band>*{animation:s4-fade-up 300ms cubic-bezier(.22,.61,.36,1) 820ms both}
+  #scene-4.is-current .guards{animation:s4-fade-up 340ms cubic-bezier(.22,.61,.36,1) 930ms both}
+  #scene-4.is-current .cs-narrator{animation:s4-fade-up 350ms cubic-bezier(.22,.61,.36,1) 1030ms both}
+  #scene-4.is-current .cs-note{animation:s4-note 340ms cubic-bezier(.22,.61,.36,1) 1110ms both}
+
+  #scene-4 .band,
+  #scene-4 .cell,
+  #scene-4 .arrow,
+  #scene-4 .colhead,
+  #scene-4 .guard,
+  #scene-4 .cs-ico{
+    transition:opacity 180ms ease,filter 180ms ease,transform 180ms cubic-bezier(.22,.61,.36,1),
+               border-color 180ms ease,background-color 180ms ease,box-shadow 180ms ease;
+  }
+
+  /* Hovering any card in a row reveals the complete Business → Parent → Rule path. */
+  #scene-4:has(.band:hover) .band{opacity:.88}
+  #scene-4 .band:hover{opacity:1}
+  #scene-4 .band:hover .cell{transform:translateY(-1px);filter:brightness(1.045)}
+  #scene-4 .band:hover .cell.tone-blue{border-color:rgba(102,153,250,.58)}
+  #scene-4 .band:hover .cell.tone-green{border-color:rgba(89,209,140,.56)}
+  #scene-4 .band:hover .cell.tone-purple{
+    border-color:rgba(139,92,246,.62);box-shadow:0 0 18px rgba(139,92,246,.10);
+  }
+  #scene-4 .band:hover .arrow{transform:translateX(3px);filter:brightness(1.12)}
+  #scene-4 .band:hover .cs-ico{filter:brightness(1.08)}
+
+  /* Header hover lets the viewer scan the matrix by column as well as by row. */
+  #scene-4:has(.heads .colhead:nth-child(1):hover) .band .cell:nth-child(1){
+    border-color:rgba(102,153,250,.58);filter:brightness(1.045);
+  }
+  #scene-4:has(.heads .colhead:nth-child(3):hover) .band .cell:nth-child(3){
+    border-color:rgba(89,209,140,.56);filter:brightness(1.045);
+  }
+  #scene-4:has(.heads .colhead:nth-child(5):hover) .band .cell:nth-child(5){
+    border-color:rgba(139,92,246,.62);filter:brightness(1.045);box-shadow:0 0 18px rgba(139,92,246,.08);
+  }
+  #scene-4 .guard:hover{border-color:rgba(255,197,61,.42);filter:brightness(1.05)}
+  #scene-4 .guard:hover .cs-ico{border-color:rgba(255,197,61,.78)}
+}
+
+@keyframes s4-fade-up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s4-cell-left{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s4-cell-right{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s4-cell-up{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes s4-arrow-in{from{opacity:0;transform:translateX(-2px)}to{opacity:1;transform:translateX(0)}}
+@keyframes s4-note{from{opacity:0;transform:translateY(5px) rotate(-.25deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+
+@media (prefers-reduced-motion:reduce){
+  #scene-4 *,#scene-4::before{animation:none!important;transition:none!important}
+}
+
+/* Existing reader rewrites this breakpoint to 899px at runtime. */
 @media(max-width:1280px){
- #scene-4{padding:26px 20px 34px}
- #scene-4 .band,#scene-4 .guards{grid-template-columns:1fr}
- #scene-4 .cell.tone-purple{padding-right:82px}
- #scene-4 .feature-illustration{right:4px;width:70px;height:58px}
- #scene-4 .guard{min-height:0}
+  #scene-4{padding:26px 20px 34px}
+  #scene-4 .cs-h2,#scene-4 .cs-sub,#scene-4 .heads,#scene-4 .band,#scene-4 .guards,
+  #scene-4 .cs-narrator,#scene-4 .cs-note{position:static;width:auto;height:auto;max-width:none}
+  #scene-4 .cs-h2{font-size:29px;line-height:1.12;text-align:left}
+  #scene-4 .cs-sub{margin-top:8px;text-align:left}
+  #scene-4 .heads,#scene-4 .band,#scene-4 .guards{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+  #scene-4 .heads>span,#scene-4 .band>.arrow{display:none}
+  #scene-4 .colhead,#scene-4 .cell,#scene-4 .guard{width:100%;height:auto;min-height:0}
+  #scene-4 .feature-illustration{width:70px;height:58px;margin-left:auto}
 }
