@@ -54,10 +54,12 @@
       scale=1;
       sceneTop=railTop+24+8;
     }else{
-      /* Keep that exact rail Y for every scene, but preserve the native Figma
-         relationship between each frame's own header and content. Most scenes
-         use y=40; Scene 13's Figma header is y=26. */
-      var nativeRailY=body.classList.contains("cs-scene-13") ? 26 : 40;
+      /* One visible rail baseline for every native scene. Treat the shared web
+         rail as native y=40 across Scenes 02–14, then let each scene keep its
+         own internal title/content coordinates. This prevents Scene 13 from
+         sitting lower than the rest simply because its Figma metadata row was
+         authored at y=26. */
+      var nativeRailY=40;
       var provisionalTop=railTop-nativeRailY;
       var usableH=Math.max(320,innerHeight-provisionalTop-bottomSafe);
       scale=Math.min(1,usableW/1440,usableH/700);
