@@ -50,18 +50,18 @@
     var sceneTop,scale;
 
     if(body.classList.contains("cs-scene-1")){
-      /* Keep the approved browser-native cover intact. */
+      /* Scene 01 defines the web rail spacing: 10px below the portfolio nav. */
       scale=1;
       sceneTop=railTop+24+8;
     }else{
-      /* All native Figma scenes share Scene 01's exact rail Y-position.
-         Their internal Figma rail sits at native y≈40, so lift the stage until
-         that native y aligns with the shared web rail. This keeps headlines
-         near their designed y≈60 rather than starting artificially low. */
-      var provisionalTop=navBottom-24;
+      /* Keep that exact rail Y for every scene, but preserve the native Figma
+         relationship between each frame's own header and content. Most scenes
+         use y=40; Scene 13's Figma header is y=26. */
+      var nativeRailY=body.classList.contains("cs-scene-13") ? 26 : 40;
+      var provisionalTop=railTop-nativeRailY;
       var usableH=Math.max(320,innerHeight-provisionalTop-bottomSafe);
       scale=Math.min(1,usableW/1440,usableH/700);
-      sceneTop=railTop-(40*scale);
+      sceneTop=railTop-(nativeRailY*scale);
     }
 
     var stageW=1440*scale;
