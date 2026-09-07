@@ -1,0 +1,194 @@
+/* Guardian One — final production polish preview.
+   Scope: stable rail, Retina asset overrides for 02–04, and Scene 13 CTA fidelity.
+   Loaded last so it resolves older scene-specific overrides without redesigning them. */
+
+@media (min-width:900px){
+  /* ------------------------------------------------------------
+     Stable case-study rail
+     One physical rail across Scenes 01–14. Right-side slots never collapse,
+     so VIEW DESIGN appearing/disappearing cannot move count/progress.
+     ------------------------------------------------------------ */
+  .cs-page .cs-topbar,
+  .cs-page.cs-scene-1 .cs-topbar{
+    box-sizing:border-box!important;
+    width:min(var(--cs-bar,1320px),calc(100vw - 80px))!important;
+    min-height:24px!important;
+    height:24px!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 108px 104px 180px!important;
+    column-gap:14px!important;
+    align-items:center!important;
+    transform:translateX(-50%)!important;
+    background:transparent!important;
+  }
+
+  .cs-page .cs-crumb{
+    min-width:0!important;
+    margin:0!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+
+  .cs-page .cs-view-design{
+    display:block!important;
+    width:108px!important;
+    margin:0!important;
+    justify-self:end!important;
+    text-align:right!important;
+    white-space:nowrap!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+  .cs-page .cs-view-design.is-on{
+    visibility:visible!important;
+    opacity:.82!important;
+    pointer-events:auto!important;
+  }
+  /* Figma 13/14 intentionally omit the design link; reserve the slot anyway. */
+  body.cs-scene-13 .cs-view-design,
+  body.cs-scene-14 .cs-view-design{
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+
+  .cs-page .cs-count{
+    width:104px!important;
+    margin:0!important;
+    justify-self:end!important;
+    text-align:right!important;
+    white-space:nowrap!important;
+  }
+
+  .cs-page .cs-track{
+    width:180px!important;
+    min-width:180px!important;
+    height:4px!important;
+    margin:0!important;
+    justify-self:end!important;
+  }
+
+  .cs-page .cs-fill{
+    transition:transform 400ms cubic-bezier(.22,.61,.36,1)!important;
+  }
+
+  /* ------------------------------------------------------------
+     Scene 02 — use original high-resolution Figma character sources.
+     Crops reproduce the Figma image-frame percentages instead of enlarging
+     the older portfolio PNGs at near-1× density.
+     ------------------------------------------------------------ */
+  #scene-2 .portrait::after{
+    background-image:url("https://www.figma.com/api/mcp/asset/07627014-9c42-488b-b2ec-82e72268c798.png")!important;
+    background-repeat:no-repeat!important;
+    background-size:291px 432px!important;
+    background-position:-83px -33px!important;
+  }
+  #scene-2 .av-parent::after{
+    background-image:url("https://www.figma.com/api/mcp/asset/07627014-9c42-488b-b2ec-82e72268c798.png")!important;
+    background-repeat:no-repeat!important;
+    background-size:259px 385px!important;
+    background-position:-80px -29px!important;
+  }
+  #scene-2 .av-design::after{
+    background-image:url("https://www.figma.com/api/mcp/asset/b60a38bd-772c-4a67-91a8-f5f2d03bfecf.png")!important;
+    background-repeat:no-repeat!important;
+    background-size:161px 161px!important;
+    background-position:-35px -28px!important;
+  }
+
+  /* Scene 03 / 04 Bitmoji sources from their actual Figma frames. */
+  #scene-3 .cs-narrator{
+    background-image:url("https://www.figma.com/api/mcp/asset/81f19980-4bc3-4b8a-a528-5adc29b2f41e.png")!important;
+    background-repeat:no-repeat!important;
+    background-position:center bottom!important;
+    background-size:contain!important;
+  }
+  #scene-4 .cs-narrator{
+    background-image:url("https://www.figma.com/api/mcp/asset/b8bfc10c-706e-4f8a-97dc-8a84dda138c2.png")!important;
+    background-repeat:no-repeat!important;
+    background-position:center bottom!important;
+    background-size:contain!important;
+  }
+
+  #scene-3 .cs-ico img,
+  #scene-3 .g1-mark img,
+  #scene-4 .cs-ico img,
+  #scene-4 .feature-illustration{
+    image-rendering:auto!important;
+    object-fit:contain!important;
+  }
+
+  /* ------------------------------------------------------------
+     Scene 13 — exact compact Figma Up Next treatment.
+     ------------------------------------------------------------ */
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext{
+    box-sizing:border-box!important;
+    left:auto!important;
+    right:40px!important;
+    top:auto!important;
+    bottom:22px!important;
+    width:243px!important;
+    min-width:243px!important;
+    height:46px!important;
+    min-height:46px!important;
+    margin:0!important;
+    padding:0 14px!important;
+    display:flex!important;
+    align-items:center!important;
+    gap:10px!important;
+    border:1px solid #1b2230!important;
+    border-radius:12px!important;
+    background:#0c121d!important;
+    box-shadow:none!important;
+    transform:none!important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext:hover{
+    transform:none!important;
+    border-color:#30394b!important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext .cs-upnext-label{
+    flex:0 0 auto!important;
+    width:auto!important;
+    margin:0!important;
+    padding:0 10px 0 0!important;
+    border:0!important;
+    border-right:1px solid #333645!important;
+    color:#ffc53d!important;
+    font:500 10px/14px Inter,sans-serif!important;
+    letter-spacing:.8px!important;
+    text-transform:uppercase!important;
+    white-space:nowrap!important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext .cs-upnext-name{
+    flex:1 1 auto!important;
+    width:auto!important;
+    min-width:0!important;
+    margin:0!important;
+    color:#f5f2eb!important;
+    font:500 12px/16px Inter,sans-serif!important;
+    white-space:nowrap!important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext>span:last-child{
+    flex:0 0 auto!important;
+    margin:0!important;
+    color:#ffc53d!important;
+    font-size:16px!important;
+    line-height:1!important;
+    transition:transform 220ms cubic-bezier(.2,.8,.2,1)!important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext:hover>span:last-child{
+    transform:translateX(4px)!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cs-page .cs-fill,
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext,
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext *{
+    transition:none!important;
+  }
+}
