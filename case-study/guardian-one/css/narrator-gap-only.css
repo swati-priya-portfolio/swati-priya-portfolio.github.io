@@ -1,97 +1,68 @@
 /* Guardian One — interview-safe narrator + CTA correction.
-   Scope: fix only the visible Bitmoji-to-note spacing problems and the Up Next CTA.
-   Scene 01 and all scene content geometry stay untouched. */
+   Scene 01 stays untouched. Narrator spacing is tuned per scene because each
+   Bitmoji export has different transparent canvas padding. */
 
 @media (min-width:900px){
-  /* -------------------------------------------------------------
-     NARRATOR SPACING
-     Important: do NOT force every narrator into one flex system. The exported
-     Bitmojis have different transparent canvas padding, so generic flex gaps
-     create the exact large visual gaps seen in Scene 08. Keep each scene's
-     original Figma geometry and only correct the problem scenes.
-     ------------------------------------------------------------- */
+  /* Scene 03 — preserve the compact approved relationship. */
+  body.cs-scene-3 #scene-3 .cs-note{left:158px!important}
 
-  /* Scene 08 — the PNG has substantial transparent space on its right side.
-     Pull the paper note over that transparent canvas so the VISIBLE character
-     and bubble have a small, natural gap like Scene 01. */
-  body.cs-scene-8 #scene-8 .mini-narrator{
-    display:block!important;
-  }
+  /* Scene 04 — keep a small physical box gap. */
+  body.cs-scene-4 #scene-4 .cs-note{left:213px!important}
+
+  /* Scene 05 — original overlap compensates for the PNG canvas and reads well. */
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote{left:143px!important}
+
+  /* Scene 06 — small deliberate gap. */
+  body.cs-scene-6 #scene-6 .mini-narrator blockquote{left:148px!important}
+
+  /* Scene 07 — original overlap keeps the tail attached to the visible avatar. */
+  body.cs-scene-7 #scene-7 .mini-narrator blockquote{left:117px!important}
+
+  /* Scene 08 — large transparent right side in the avatar PNG. Pull the note
+     over the transparent canvas so the visible character and bubble sit close. */
+  body.cs-scene-8 #scene-8 .mini-narrator{display:block!important}
   body.cs-scene-8 #scene-8 .mini-narrator>img{
-    position:absolute!important;
-    left:0!important;
-    right:auto!important;
-    top:auto!important;
-    bottom:0!important;
+    position:absolute!important;left:0!important;right:auto!important;
+    top:auto!important;bottom:0!important
   }
   body.cs-scene-8 #scene-8 .mini-narrator blockquote{
-    position:absolute!important;
-    left:104px!important;
-    right:auto!important;
-    top:80px!important;
-    bottom:auto!important;
-    margin:0!important;
+    position:absolute!important;left:108px!important;right:auto!important;
+    top:80px!important;bottom:auto!important;margin:0!important
   }
 
-  /* Scene 12 — keep the Figma-sized compact narrator, with a deliberate but
-     small breathing gap between the visible Bitmoji and the paper note. */
-  body.cs-scene-12 #scene-12 .report-narrator{
-    display:flex!important;
-    align-items:flex-end!important;
-    gap:8px!important;
-  }
-  body.cs-scene-12 #scene-12 .report-narrator>img{
-    position:relative!important;
-    left:auto!important;
-    right:auto!important;
-    top:auto!important;
-    bottom:auto!important;
-  }
-  body.cs-scene-12 #scene-12 .report-narrator blockquote{
-    position:relative!important;
-    left:auto!important;
-    right:auto!important;
-    top:auto!important;
-    bottom:auto!important;
-    margin-left:0!important;
-    margin-right:0!important;
-  }
+  /* Scene 09 — compact paired composition. */
+  body.cs-scene-9 #scene-9 .compare-narrator,
+  body.cs-scene-9 #scene-9 .mini-narrator{gap:7px!important}
+  body.cs-scene-9 #scene-9 .compare-narrator blockquote,
+  body.cs-scene-9 #scene-9 .mini-narrator blockquote{margin-left:0!important}
 
-  /* Scene 13 — same small air-gap. Remove the old negative margin that made the
-     speech note feel stuck to the character. */
-  body.cs-scene-13 #scene-13 .launch-narrator{
-    display:flex!important;
-    align-items:flex-end!important;
-    gap:8px!important;
-  }
-  body.cs-scene-13 #scene-13 .launch-narrator>img{
-    position:relative!important;
-    left:auto!important;
-    right:auto!important;
-    top:auto!important;
-    bottom:auto!important;
-  }
+  /* Scene 10 — slightly tighter than the old 10px gap. */
+  body.cs-scene-10 #scene-10 .table-narrator,
+  body.cs-scene-10 #scene-10 .mini-narrator{gap:8px!important}
+  body.cs-scene-10 #scene-10 .table-narrator blockquote,
+  body.cs-scene-10 #scene-10 .mini-narrator blockquote{margin-left:0!important}
+
+  /* Scene 11 — screenshot showed the card almost touching the avatar. */
+  body.cs-scene-11 #scene-11 .journey-narrator{gap:8px!important}
+  body.cs-scene-11 #scene-11 .journey-narrator blockquote{margin-left:0!important}
+
+  /* Scene 12 — add a small, visible air gap only; retain all original sizing. */
+  body.cs-scene-12 #scene-12 .report-narrator{gap:8px!important}
+  body.cs-scene-12 #scene-12 .report-narrator blockquote{margin-left:0!important}
+
+  /* Scene 13 — opposite problem: the raster canvas contains transparent pixels,
+     so the CSS boxes look close while the visible character looks far away.
+     Pull only the note left; do not resize either element. */
+  body.cs-scene-13 #scene-13 .launch-narrator{gap:0!important}
   body.cs-scene-13 #scene-13 .launch-narrator blockquote{
-    position:relative!important;
-    left:auto!important;
-    right:auto!important;
-    top:auto!important;
-    bottom:auto!important;
-    margin-left:0!important;
-    margin-right:0!important;
+    margin:0 0 13px -22px!important
   }
 
-  /* Scene 14 — preserve the Figma avatar size and give the final speech card a
-     visible ~18px box gap. The tail still bridges the relationship naturally. */
-  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{
-    left:151px!important;
-  }
+  /* Scene 14 — same transparent-canvas issue as 13. Bring the note left while
+     preserving the approved 133×136 avatar and 278px speech card. */
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{left:120px!important}
 
-  /* -------------------------------------------------------------
-     UP NEXT — Scenes 05–13
-     One consistent yellow-glow treatment. This is intentionally stronger than
-     the previous pass so it is actually visible at normal laptop brightness.
-     ------------------------------------------------------------- */
+  /* Up Next — Scenes 05–13: clearly visible warm yellow emphasis. */
   body.cs-scene-5 #scene-5.is-current~.cs-upnext,
   body.cs-scene-6 #scene-6.is-current~.cs-upnext,
   body.cs-scene-7 #scene-7.is-current~.cs-upnext,
@@ -101,17 +72,10 @@
   body.cs-scene-11 #scene-11.is-current~.cs-upnext,
   body.cs-scene-12 #scene-12.is-current~.cs-upnext,
   body.cs-scene-13 #scene-13.is-current~.cs-upnext{
-    display:flex!important;
-    align-items:center!important;
-    flex-wrap:nowrap!important;
-    border-color:rgba(255,197,61,.72)!important;
-    background:rgba(9,12,21,.96)!important;
-    box-shadow:
-      0 0 0 1px rgba(255,197,61,.15),
-      0 0 16px rgba(255,197,61,.20),
-      0 0 34px rgba(255,197,61,.08),
-      inset 0 1px rgba(255,255,255,.03)!important;
-    animation:guardianUpNextGlow 2.35s ease-in-out infinite!important;
+    display:flex!important;align-items:center!important;flex-wrap:nowrap!important;
+    border-color:#b58a28!important;background:rgba(9,12,21,.97)!important;
+    box-shadow:0 0 0 1px rgba(255,197,61,.18),0 0 20px rgba(255,197,61,.28),0 0 42px rgba(255,197,61,.10),inset 0 1px rgba(255,255,255,.035)!important;
+    animation:guardianUpNextGlow 2.2s ease-in-out infinite!important
   }
 
   body.cs-scene-5 #scene-5.is-current~.cs-upnext .cs-upnext-label,
@@ -123,17 +87,10 @@
   body.cs-scene-11 #scene-11.is-current~.cs-upnext .cs-upnext-label,
   body.cs-scene-12 #scene-12.is-current~.cs-upnext .cs-upnext-label,
   body.cs-scene-13 #scene-13.is-current~.cs-upnext .cs-upnext-label{
-    display:inline-flex!important;
-    align-items:center!important;
-    width:auto!important;
-    min-width:max-content!important;
-    flex:0 0 auto!important;
-    white-space:nowrap!important;
-    word-break:keep-all!important;
-    overflow-wrap:normal!important;
-    line-height:14px!important;
-    color:#ffc53d!important;
-    text-shadow:0 0 12px rgba(255,197,61,.38)!important;
+    display:inline-flex!important;align-items:center!important;flex:0 0 auto!important;
+    width:auto!important;min-width:max-content!important;white-space:nowrap!important;
+    word-break:keep-all!important;overflow-wrap:normal!important;color:#ffc53d!important;
+    line-height:14px!important;text-shadow:0 0 12px rgba(255,197,61,.48)!important
   }
 
   body.cs-scene-5 #scene-5.is-current~.cs-upnext .cs-upnext-name,
@@ -145,59 +102,40 @@
   body.cs-scene-11 #scene-11.is-current~.cs-upnext .cs-upnext-name,
   body.cs-scene-12 #scene-12.is-current~.cs-upnext .cs-upnext-name,
   body.cs-scene-13 #scene-13.is-current~.cs-upnext .cs-upnext-name{
-    min-width:0!important;
-    white-space:nowrap!important;
-    word-break:keep-all!important;
-    overflow-wrap:normal!important;
+    min-width:0!important;white-space:nowrap!important;word-break:keep-all!important;
+    overflow-wrap:normal!important
   }
 
-  /* Scene 08 + 09 — explicitly keep the complete CTA on ONE line. */
+  /* Scene 08 + 09 — complete CTA stays on ONE horizontal line. */
   body.cs-scene-8 #scene-8.is-current~.cs-upnext,
   body.cs-scene-9 #scene-9.is-current~.cs-upnext{
-    width:334px!important;
-    min-width:334px!important;
-    height:44px!important;
-    padding:0 15px!important;
-    gap:11px!important;
-    justify-content:flex-start!important;
+    width:360px!important;min-width:360px!important;height:44px!important;
+    padding:0 15px!important;gap:11px!important;justify-content:flex-start!important
   }
   body.cs-scene-8 #scene-8.is-current~.cs-upnext .cs-upnext-label,
   body.cs-scene-9 #scene-9.is-current~.cs-upnext .cs-upnext-label{
-    padding-right:11px!important;
-    border-right:1px solid rgba(255,197,61,.42)!important;
+    min-width:58px!important;padding-right:11px!important;
+    border-right:1px solid rgba(255,197,61,.46)!important;
+    font-size:9.5px!important;white-space:nowrap!important
   }
   body.cs-scene-8 #scene-8.is-current~.cs-upnext .cs-upnext-name,
   body.cs-scene-9 #scene-9.is-current~.cs-upnext .cs-upnext-name{
-    width:auto!important;
-    flex:1 1 auto!important;
-    overflow:visible!important;
-    text-overflow:clip!important;
+    width:auto!important;flex:1 1 auto!important;overflow:visible!important;
+    text-overflow:clip!important;white-space:nowrap!important
   }
   body.cs-scene-8 #scene-8.is-current~.cs-upnext>span:last-child,
   body.cs-scene-9 #scene-9.is-current~.cs-upnext>span:last-child{
-    flex:0 0 auto!important;
-    margin-left:auto!important;
-    color:#ffc53d!important;
+    flex:0 0 auto!important;margin-left:auto!important;color:#ffc53d!important
   }
 }
 
 @keyframes guardianUpNextGlow{
-  0%,100%{
-    box-shadow:0 0 0 1px rgba(255,197,61,.13),0 0 13px rgba(255,197,61,.16),0 0 28px rgba(255,197,61,.06),inset 0 1px rgba(255,255,255,.03)
-  }
-  50%{
-    box-shadow:0 0 0 1px rgba(255,197,61,.22),0 0 22px rgba(255,197,61,.30),0 0 44px rgba(255,197,61,.12),inset 0 1px rgba(255,255,255,.04)
-  }
+  0%,100%{box-shadow:0 0 0 1px rgba(255,197,61,.16),0 0 16px rgba(255,197,61,.22),0 0 34px rgba(255,197,61,.08),inset 0 1px rgba(255,255,255,.035)}
+  50%{box-shadow:0 0 0 1px rgba(255,197,61,.28),0 0 27px rgba(255,197,61,.38),0 0 52px rgba(255,197,61,.14),inset 0 1px rgba(255,255,255,.045)}
 }
 
 @media (prefers-reduced-motion:reduce){
-  body.cs-scene-5 .cs-upnext,
-  body.cs-scene-6 .cs-upnext,
-  body.cs-scene-7 .cs-upnext,
-  body.cs-scene-8 .cs-upnext,
-  body.cs-scene-9 .cs-upnext,
-  body.cs-scene-10 .cs-upnext,
-  body.cs-scene-11 .cs-upnext,
-  body.cs-scene-12 .cs-upnext,
-  body.cs-scene-13 .cs-upnext{animation:none!important}
+  body.cs-scene-5 .cs-upnext,body.cs-scene-6 .cs-upnext,body.cs-scene-7 .cs-upnext,
+  body.cs-scene-8 .cs-upnext,body.cs-scene-9 .cs-upnext,body.cs-scene-10 .cs-upnext,
+  body.cs-scene-11 .cs-upnext,body.cs-scene-12 .cs-upnext,body.cs-scene-13 .cs-upnext{animation:none!important}
 }
