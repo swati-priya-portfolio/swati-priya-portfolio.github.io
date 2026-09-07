@@ -1,5 +1,5 @@
 /* Guardian One — final production polish preview.
-   Scope: stable rail, Retina asset overrides for 02–04, and Scene 13 CTA fidelity.
+   Scope: stable rail, Retina asset overrides for 02–04, and Scene 13/14 closing-scene balance.
    Loaded last so it resolves older scene-specific overrides without redesigning them. */
 
 @media (min-width:900px){
@@ -50,7 +50,6 @@
     opacity:.82!important;
     pointer-events:auto!important;
   }
-  /* Figma 13/14 intentionally omit the design link; reserve the slot anyway. */
   body.cs-scene-13 .cs-view-design,
   body.cs-scene-14 .cs-view-design{
     visibility:hidden!important;
@@ -78,11 +77,7 @@
     transition:transform 400ms cubic-bezier(.22,.61,.36,1)!important;
   }
 
-  /* ------------------------------------------------------------
-     Scene 02 — use original high-resolution Figma character sources.
-     Crops reproduce the Figma image-frame percentages instead of enlarging
-     the older portfolio PNGs at near-1× density.
-     ------------------------------------------------------------ */
+  /* Scene 02 — high-resolution Figma character sources. */
   #scene-2 .portrait::after{
     background-image:url("https://www.figma.com/api/mcp/asset/07627014-9c42-488b-b2ec-82e72268c798.png")!important;
     background-repeat:no-repeat!important;
@@ -125,8 +120,52 @@
   }
 
   /* ------------------------------------------------------------
-     Scene 13 — exact compact Figma Up Next treatment.
+     Scene 13 — restore the actual Figma vertical rhythm now that the shared
+     rail overlays the native frame at y≈40 instead of pushing the whole slide
+     downward. The previous version compressed the scene too far upward.
      ------------------------------------------------------------ */
+  body.cs-scene-13 #scene-13 .launch-heading{
+    top:60px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-metrics{
+    top:138px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-body{
+    top:239px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-insights{
+    top:543px!important;
+  }
+
+  /* Remove the extra narrator blur layer. The scene-level lower-left warmth is
+     enough and avoids the dark/rectangular compositing patch seen in Chrome. */
+  body.cs-scene-13 #scene-13 .launch-narrator::before{
+    display:none!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-narrator{
+    left:8px!important;
+    bottom:-2px!important;
+    width:458px!important;
+    gap:4px!important;
+    align-items:flex-end!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-narrator>img{
+    flex:0 0 106px!important;
+    width:106px!important;
+    height:115px!important;
+    object-fit:contain!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-narrator blockquote{
+    flex:0 0 344px!important;
+    width:344px!important;
+    max-width:344px!important;
+    min-height:44px!important;
+    margin:0 0 9px!important;
+    padding:8px 12px!important;
+    font:400 15px/16px Caveat,cursive!important;
+  }
+
+  /* Scene 13 — compact Figma Up Next treatment. */
   body.cs-scene-13 #scene-13.is-current ~ .cs-upnext{
     box-sizing:border-box!important;
     left:auto!important;
@@ -184,6 +223,33 @@
   }
   body.cs-scene-13 #scene-13.is-current ~ .cs-upnext:hover>span:last-child{
     transform:translateX(4px)!important;
+  }
+
+  /* ------------------------------------------------------------
+     Scene 14 — keep the approved panels, but rebalance the closing narrator.
+     The previous avatar/bubble pair was too visually heavy compared with the
+     two-panel composition. This keeps the Bitmoji grounded and the note quiet.
+     ------------------------------------------------------------ */
+  body.cs-scene-14 #scene-14 .reflection-narrator{
+    left:20px!important;
+    top:579px!important;
+    width:395px!important;
+    height:121px!important;
+  }
+  body.cs-scene-14 #scene-14 .reflection-narrator>img{
+    width:118px!important;
+    height:121px!important;
+  }
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{
+    left:132px!important;
+    top:48px!important;
+    width:250px!important;
+    height:52px!important;
+    padding:8px 12px!important;
+    font:400 16px/18px Caveat,cursive!important;
+  }
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote::before{
+    top:19px!important;
   }
 }
 
