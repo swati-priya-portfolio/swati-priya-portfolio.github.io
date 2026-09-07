@@ -46,26 +46,15 @@
     var navBottom=Math.ceil(rect.bottom || rect.height || 66);
     var bottomSafe=12;
     var usableW=Math.min(1440,Math.max(720,innerWidth-80));
-    var sceneTop,railTop,usableH,scale;
 
-    if(body.classList.contains("cs-scene-1")){
-      /* Cover remains browser-native. Keep its rail close to the compact nav
-         without forcing the cover itself into the 1440×700 scaler. */
-      railTop=navBottom+10;
-      sceneTop=railTop+24+8;
-      scale=1;
-      root.style.removeProperty("--cs-bar");
-    }else{
-      /* Scenes 02–14 now share ONE presentation model. The 1440×700 Figma
-         frames place their rail at native y≈40, so the shared web rail is
-         overlaid at that same scaled position for every scene. This removes
-         the old 02/03/04/09 exception and keeps rail → headline spacing stable. */
-      sceneTop=navBottom+8;
-      usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
-      scale=Math.min(1,usableW/1440,usableH/700);
-      railTop=sceneTop+(40*scale);
-      root.style.setProperty("--cs-bar",Math.min(1340*scale,Math.max(720,innerWidth-100)).toFixed(2)+"px");
-    }
+    /* One rail position for the complete case study. This intentionally mirrors
+       Scene 01: the rail always sits 10px under the portfolio navbar, then the
+       stage begins 8px below the 24px rail. No scene gets an integrated-rail
+       exception, so nothing jumps when navigating. */
+    var railTop=navBottom+10;
+    var sceneTop=railTop+24+8;
+    var usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
+    var scale=Math.min(1,usableW/1440,usableH/700);
 
     var stageW=1440*scale;
     var stageH=700*scale;
@@ -76,15 +65,11 @@
     root.style.setProperty("--cs-scale",scale.toFixed(4));
     root.style.setProperty("--cs-stage-w",stageW.toFixed(2)+"px");
     root.style.setProperty("--cs-stage-h",stageH.toFixed(2)+"px");
+    root.style.setProperty("--cs-bar",Math.min(1320,Math.max(720,innerWidth-100)).toFixed(2)+"px");
 
     if(shell){
-      if(body.classList.contains("cs-scene-1")){
-        shell.style.width="";
-        shell.style.height="";
-      }else{
-        shell.style.width=stageW.toFixed(2)+"px";
-        shell.style.height=stageH.toFixed(2)+"px";
-      }
+      shell.style.width=stageW.toFixed(2)+"px";
+      shell.style.height=stageH.toFixed(2)+"px";
     }
   }
 
