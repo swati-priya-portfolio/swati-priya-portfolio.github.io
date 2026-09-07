@@ -8,9 +8,11 @@
      One physical rail across Scenes 01–14. Right-side slots never collapse,
      so VIEW DESIGN appearing/disappearing cannot move count/progress.
      ------------------------------------------------------------ */
-  .cs-page .cs-topbar,
-  .cs-page.cs-scene-1 .cs-topbar{
+  body.cs-page .cs-topbar,
+  body.cs-page.cs-scene-1 .cs-topbar{
     box-sizing:border-box!important;
+    left:50%!important;
+    top:var(--cs-rail-top,80px)!important;
     width:min(var(--cs-bar,1320px),calc(100vw - 80px))!important;
     min-height:24px!important;
     height:24px!important;
