@@ -1,16 +1,20 @@
-/* Guardian One — narrator pairing correction only.
-   Fixes the visible dead space between Bitmoji and speech bubble across scenes.
-   No rail, title, cards, CTA, or main scene geometry changes. */
+/* Guardian One — interview-safe narrator + CTA correction.
+   Scope: Scenes 03–14 narrator spacing and Scenes 05–13 Up Next treatment only.
+   Scene 01 is intentionally untouched. */
 
 @media (min-width:900px){
-  /* Coordinate-based scenes: overlap the note slightly into the transparent
-     right edge of the character export so the tail visually connects. */
-  body.cs-scene-3 #scene-3 .cs-note{left:148px!important}
-  body.cs-scene-4 #scene-4 .cs-note{left:190px!important}
+  /* -------------------------------------------------------------
+     NARRATORS
+     Keep a small, deliberate air-gap between the Bitmoji canvas and
+     the paper note. Reset old scene-specific left offsets that were
+     creating either a huge empty gap (Scene 08) or overlap (12–14).
+     ------------------------------------------------------------- */
 
-  /* Native scenes 05–13 are converted to a shared flex narrator by
-     narrator-navigation.css. Reset any old scene-specific relative left offsets,
-     then use one small negative margin to compensate for transparent PNG canvas. */
+  /* Coordinate-based scenes. */
+  body.cs-scene-3 #scene-3 .cs-note{left:172px!important}
+  body.cs-scene-4 #scene-4 .cs-note{left:222px!important}
+
+  /* Native narrator scenes 05–13 use one predictable horizontal pair. */
   body.cs-scene-5 #scene-5 .mini-narrator,
   body.cs-scene-6 #scene-6 .mini-narrator,
   body.cs-scene-7 #scene-7 .mini-narrator,
@@ -22,7 +26,27 @@
   body.cs-scene-11 #scene-11 .journey-narrator,
   body.cs-scene-12 #scene-12 .report-narrator,
   body.cs-scene-13 #scene-13 .launch-narrator{
-    gap:0!important;
+    display:flex!important;
+    align-items:flex-end!important;
+    gap:8px!important;
+  }
+
+  body.cs-scene-5 #scene-5 .mini-narrator>img,
+  body.cs-scene-6 #scene-6 .mini-narrator>img,
+  body.cs-scene-7 #scene-7 .mini-narrator>img,
+  body.cs-scene-8 #scene-8 .mini-narrator>img,
+  body.cs-scene-9 #scene-9 .mini-narrator>img,
+  body.cs-scene-9 #scene-9 .compare-narrator>img,
+  body.cs-scene-10 #scene-10 .mini-narrator>img,
+  body.cs-scene-10 #scene-10 .table-narrator>img,
+  body.cs-scene-11 #scene-11 .journey-narrator>img,
+  body.cs-scene-12 #scene-12 .report-narrator>img,
+  body.cs-scene-13 #scene-13 .launch-narrator>img{
+    position:static!important;
+    left:auto!important;
+    right:auto!important;
+    top:auto!important;
+    bottom:auto!important;
   }
 
   body.cs-scene-5 #scene-5 .mini-narrator blockquote,
@@ -36,12 +60,114 @@
   body.cs-scene-11 #scene-11 .journey-narrator blockquote,
   body.cs-scene-12 #scene-12 .report-narrator blockquote,
   body.cs-scene-13 #scene-13 .launch-narrator blockquote{
+    position:relative!important;
     left:auto!important;
     right:auto!important;
-    margin-left:-18px!important;
+    top:auto!important;
+    bottom:auto!important;
+    margin-left:0!important;
+    margin-right:0!important;
   }
 
-  /* Scene 14 keeps its own absolute composition. Keep the bubble just inside
-     the avatar canvas so it reads as one paired footer element. */
-  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{left:124px!important}
+  /* Keep a little more breathing room on 12 and 13, per review. */
+  body.cs-scene-12 #scene-12 .report-narrator,
+  body.cs-scene-13 #scene-13 .launch-narrator{gap:12px!important}
+
+  /* Final reflection keeps its Figma-sized avatar but restores a clean gap. */
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{left:150px!important}
+
+  /* -------------------------------------------------------------
+     UP NEXT — Scenes 05–13
+     Restore a visible yellow glow and keep the label itself on one line.
+     ------------------------------------------------------------- */
+  body.cs-scene-5 #scene-5.is-current~.cs-upnext,
+  body.cs-scene-6 #scene-6.is-current~.cs-upnext,
+  body.cs-scene-7 #scene-7.is-current~.cs-upnext,
+  body.cs-scene-8 #scene-8.is-current~.cs-upnext,
+  body.cs-scene-9 #scene-9.is-current~.cs-upnext,
+  body.cs-scene-10 #scene-10.is-current~.cs-upnext,
+  body.cs-scene-11 #scene-11.is-current~.cs-upnext,
+  body.cs-scene-12 #scene-12.is-current~.cs-upnext,
+  body.cs-scene-13 #scene-13.is-current~.cs-upnext{
+    flex-wrap:nowrap!important;
+    border-color:rgba(255,197,61,.56)!important;
+    box-shadow:
+      0 0 0 1px rgba(255,197,61,.08),
+      0 0 18px rgba(255,197,61,.13),
+      inset 0 1px rgba(255,255,255,.025)!important;
+    background:rgba(10,13,23,.94)!important;
+    animation:guardianUpNextGlow 2.8s ease-in-out infinite!important;
+  }
+
+  body.cs-scene-5 #scene-5.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-6 #scene-6.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-7 #scene-7.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-8 #scene-8.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-9 #scene-9.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-10 #scene-10.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-11 #scene-11.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-12 #scene-12.is-current~.cs-upnext .cs-upnext-label,
+  body.cs-scene-13 #scene-13.is-current~.cs-upnext .cs-upnext-label{
+    width:auto!important;
+    min-width:max-content!important;
+    white-space:nowrap!important;
+    color:#ffc53d!important;
+    text-shadow:0 0 10px rgba(255,197,61,.28)!important;
+  }
+
+  body.cs-scene-5 #scene-5.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-6 #scene-6.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-7 #scene-7.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-8 #scene-8.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-9 #scene-9.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-10 #scene-10.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-11 #scene-11.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-12 #scene-12.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-13 #scene-13.is-current~.cs-upnext .cs-upnext-name{
+    white-space:nowrap!important;
+  }
+
+  /* Scene 08 + 09: force the complete CTA onto one horizontal line. */
+  body.cs-scene-8 #scene-8.is-current~.cs-upnext{
+    width:330px!important;
+    min-width:330px!important;
+    justify-content:flex-start!important;
+    gap:12px!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+  body.cs-scene-9 #scene-9.is-current~.cs-upnext{
+    width:330px!important;
+    min-width:330px!important;
+    justify-content:flex-start!important;
+    gap:12px!important;
+    padding-left:16px!important;
+    padding-right:16px!important;
+  }
+
+  body.cs-scene-8 #scene-8.is-current~.cs-upnext .cs-upnext-name,
+  body.cs-scene-9 #scene-9.is-current~.cs-upnext .cs-upnext-name{
+    width:auto!important;
+    min-width:0!important;
+    flex:1 1 auto!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+}
+
+@keyframes guardianUpNextGlow{
+  0%,100%{box-shadow:0 0 0 1px rgba(255,197,61,.07),0 0 12px rgba(255,197,61,.10),inset 0 1px rgba(255,255,255,.025)}
+  50%{box-shadow:0 0 0 1px rgba(255,197,61,.13),0 0 22px rgba(255,197,61,.20),inset 0 1px rgba(255,255,255,.035)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  body.cs-scene-5 .cs-upnext,
+  body.cs-scene-6 .cs-upnext,
+  body.cs-scene-7 .cs-upnext,
+  body.cs-scene-8 .cs-upnext,
+  body.cs-scene-9 .cs-upnext,
+  body.cs-scene-10 .cs-upnext,
+  body.cs-scene-11 .cs-upnext,
+  body.cs-scene-12 .cs-upnext,
+  body.cs-scene-13 .cs-upnext{animation:none!important}
 }
