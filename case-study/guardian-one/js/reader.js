@@ -27,9 +27,11 @@
     return matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
+  /* Reader owns only reading-mode state. Desktop geometry/scaling is owned by
+     fullscreen-shell.js so there is one source of truth for the 1440×700 stage. */
   function fit(){
     var header=document.querySelector(".site-header");
-    var responsive=matchMedia("(max-width:1280px)").matches;
+    var responsive=matchMedia("(max-width:899px)").matches;
     var head=header ? Math.ceil(header.getBoundingClientRect().height) : 82;
 
     document.body.classList.toggle("is-flow",responsive);
@@ -39,18 +41,6 @@
     if(responsive){
       document.documentElement.style.setProperty("--cs-scale","1");
       if(shell){ shell.style.width=""; shell.style.height=""; }
-      return;
-    }
-
-    /* Browser-first rule: width controls scene scale; height never makes the
-       typography smaller. A short viewport simply gets a little vertical
-       scrolling below the fixed portfolio navbar and case-study rail. */
-    var usable=Math.min(1440,Math.max(960,innerWidth-48));
-    var scale=usable/1440;
-    document.documentElement.style.setProperty("--cs-scale",scale.toFixed(4));
-    if(shell){
-      shell.style.width=usable.toFixed(2)+"px";
-      shell.style.height=(700*scale).toFixed(2)+"px";
     }
   }
 
@@ -122,9 +112,6 @@
           scene.scrollIntoView({behavior:reducedMotion()?"auto":"smooth",block:"start"});
         },40);
       }else{
-        /* Desktop can be taller than the viewport. When the user advances from
-           a slightly scrolled position, return to the start of the new scene
-           rather than leaving its heading hidden behind the fixed navbar. */
         if(window.scrollY>12){
           window.scrollTo({top:0,behavior:reducedMotion()?"auto":"smooth"});
         }
@@ -172,7 +159,7 @@
   }
 
   Promise.all(manifests.map(function(item){
-    return fetch("slides/"+item[0]+"?v=16").then(function(r){if(!r.ok)throw new Error(item[0]);return r.text();});
+    return fetch("slides/"+item[0]+"?v=17").then(function(r){if(!r.ok)throw new Error(item[0]);return r.text();});
   })).then(function(parts){
     stage.querySelector(".cs-loading").remove();
     next.insertAdjacentHTML("beforebegin",parts.join("\n"));
