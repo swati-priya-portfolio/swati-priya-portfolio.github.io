@@ -1,9 +1,14 @@
 /* Guardian One — interview-ready visual balance pass.
-   Loaded last. Scope is intentionally narrow: one rail rhythm and final
-   Scene 13/14 narrator + CTA balance. */
+   Loaded last. Scope is intentionally narrow: one rail rhythm plus Scenes
+   05, 06, 13 and 14 title/footer balance. */
 
 @media (min-width:900px){
-  /* One rail, same physical distance under the navbar on every scene. */
+  /* ------------------------------------------------------------
+     ONE RAIL SYSTEM
+     Every scene uses the exact same physical rail distance below the navbar.
+     Keep right-side slots fixed so scene/topic changes never move the count or
+     progress bar. This intentionally follows the approved Scene 01 web rail.
+     ------------------------------------------------------------ */
   .cs-page .cs-topbar,
   .cs-page.cs-scene-1 .cs-topbar{
     top:var(--cs-rail-top,76px)!important;
@@ -19,11 +24,103 @@
   .cs-page .cs-count{width:104px!important}
   .cs-page .cs-track{width:180px!important;min-width:180px!important}
 
+  /* Scenes 05 / 06 / 13 / 14 had scene-specific rail rules that made their
+     topic line look different from Scene 01. Reset those four to the same
+     typography, colour and progress treatment as the shared reader rail. */
+  body.cs-scene-5 .cs-topbar,
+  body.cs-scene-6 .cs-topbar,
+  body.cs-scene-13 .cs-topbar,
+  body.cs-scene-14 .cs-topbar{
+    color:var(--cs-dim)!important;
+    font-family:var(--font-mono,"IBM Plex Mono",monospace)!important;
+    font-size:11.5px!important;
+    font-weight:400!important;
+    line-height:20px!important;
+    letter-spacing:1.1px!important;
+    text-transform:uppercase!important;
+  }
+  body.cs-scene-5 .cs-crumb,
+  body.cs-scene-6 .cs-crumb,
+  body.cs-scene-13 .cs-crumb,
+  body.cs-scene-14 .cs-crumb{
+    color:var(--cs-dim)!important;
+    font:inherit!important;
+    letter-spacing:inherit!important;
+  }
+  body.cs-scene-5 .cs-crumb b,
+  body.cs-scene-6 .cs-crumb b,
+  body.cs-scene-13 .cs-crumb b,
+  body.cs-scene-14 .cs-crumb b{
+    color:var(--accent,#ffc53d)!important;
+    font-weight:500!important;
+  }
+  body.cs-scene-5 .cs-count,
+  body.cs-scene-6 .cs-count,
+  body.cs-scene-13 .cs-count,
+  body.cs-scene-14 .cs-count{
+    color:var(--cs-dim)!important;
+    font:inherit!important;
+    letter-spacing:.55px!important;
+  }
+  body.cs-scene-5 .cs-track,
+  body.cs-scene-6 .cs-track,
+  body.cs-scene-13 .cs-track,
+  body.cs-scene-14 .cs-track{
+    width:180px!important;
+    height:4px!important;
+    border-radius:99px!important;
+    background:rgba(245,239,227,.16)!important;
+    opacity:1!important;
+  }
+  body.cs-scene-5 .cs-fill,
+  body.cs-scene-6 .cs-fill,
+  body.cs-scene-13 .cs-fill,
+  body.cs-scene-14 .cs-fill{
+    background:linear-gradient(90deg,var(--accent,#ffc53d),#ffe0a0)!important;
+  }
+
+  /* Figma does not show VIEW DESIGN in these four rail states. Keep the fixed
+     slot reserved, but visually empty so the topic/count/progress never jump. */
+  body.cs-scene-5 .cs-view-design,
+  body.cs-scene-6 .cs-view-design,
+  body.cs-scene-13 .cs-view-design,
+  body.cs-scene-14 .cs-view-design{
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+  }
+
   /* ------------------------------------------------------------
-     Scene 13 — keep the Figma launch composition, but make the footer feel
-     balanced: smaller narrator group, no separate blurred glow layer, and a
-     compact CTA with the same footer breathing room as the source frame.
+     SCENE 05 — exact Figma topic/title relationship.
+     Rail topic: RESEARCH EVIDENCE. Title begins at native y=60.
      ------------------------------------------------------------ */
+  body.cs-scene-5 #scene-5 .native-title{
+    top:60px!important;
+    width:533px!important;
+    font:400 36px/48px "Archivo Black",sans-serif!important;
+    letter-spacing:0!important;
+  }
+
+  /* ------------------------------------------------------------
+     SCENE 06 — exact Figma topic/title relationship.
+     Remove its older bespoke rail styling visually; content stays untouched.
+     ------------------------------------------------------------ */
+  body.cs-scene-6 #scene-6 .native-title{
+    top:60px!important;
+    width:522px!important;
+    font:400 36px/48px "Archivo Black",sans-serif!important;
+  }
+
+  /* ------------------------------------------------------------
+     SCENE 13 — keep the launch composition at its Figma rhythm. The shell now
+     respects this scene's native y=26 header while the visible web rail still
+     sits the same 10px below the navbar as Scene 01.
+     ------------------------------------------------------------ */
+  body.cs-scene-13 #scene-13 .launch-heading{top:60px!important}
+  body.cs-scene-13 #scene-13 .launch-metrics{top:138px!important}
+  body.cs-scene-13 #scene-13 .launch-body{top:239px!important}
+  body.cs-scene-13 #scene-13 .launch-insights{top:543px!important}
+
   body.cs-scene-13 #scene-13.sc-launch{
     background:
       radial-gradient(ellipse 178% 174% at 50% 39%,rgba(28,42,98,.56) 0%,rgba(19,28,66,.34) 34%,rgba(9,9,13,0) 66%),
@@ -58,10 +155,9 @@
     font:400 15.5px/16.5px Caveat,cursive!important;
     border-radius:4.5px!important;
   }
-  body.cs-scene-13 #scene-13 .launch-narrator blockquote::before{
-    top:14px!important;
-  }
+  body.cs-scene-13 #scene-13 .launch-narrator blockquote::before{top:14px!important}
 
+  /* Scene 13 CTA — source-Figma 243×46 footer card. */
   body.cs-scene-13 #scene-13.is-current ~ .cs-upnext{
     right:40px!important;
     bottom:22px!important;
@@ -90,9 +186,9 @@
   }
 
   /* ------------------------------------------------------------
-     Scene 14 — the previous avatar was visually much heavier than Scene 13.
-     Keep the approved no-extra-box ending, but reduce and re-anchor the final
-     narrator cluster so the two reflection panels remain the dominant mass.
+     SCENE 14 — preserve the approved reflection panels and make the closing
+     Bitmoji/note feel secondary, grounded and balanced rather than oversized.
+     Rail topic remains REFLECTION in the same shared position as Scene 01.
      ------------------------------------------------------------ */
   body.cs-scene-14 #scene-14.sc-reflection{
     background:
@@ -100,6 +196,8 @@
       radial-gradient(ellipse 430px 255px at 5% 108%,rgba(255,197,61,.18) 0%,rgba(255,197,61,.08) 38%,rgba(255,197,61,.025) 58%,rgba(255,197,61,0) 82%),
       #08080b!important;
   }
+  body.cs-scene-14 #scene-14 .reflection-heading{top:48px!important}
+  body.cs-scene-14 #scene-14 .reflection-grid{top:174px!important}
   body.cs-scene-14 #scene-14 .reflection-narrator{
     left:38px!important;
     top:auto!important;
@@ -124,9 +222,7 @@
     font:400 16px/19px Caveat,cursive!important;
     border-radius:4.8px!important;
   }
-  body.cs-scene-14 #scene-14 .reflection-narrator blockquote::before{
-    top:22px!important;
-  }
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote::before{top:22px!important}
 }
 
 @media (prefers-reduced-motion:reduce){
