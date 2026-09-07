@@ -44,17 +44,18 @@
 
     var rect=header ? header.getBoundingClientRect() : {bottom:66,height:54};
     var navBottom=Math.ceil(rect.bottom || rect.height || 66);
-    var bottomSafe=12;
+    var bottomSafe=10;
     var usableW=Math.min(1440,Math.max(720,innerWidth-80));
 
-    /* One rail position for the complete case study. This intentionally mirrors
-       Scene 01: the rail always sits 10px under the portfolio navbar, then the
-       stage begins 8px below the 24px rail. No scene gets an integrated-rail
-       exception, so nothing jumps when navigating. */
+    /* One stable rail for every scene: exactly 10px below the portfolio nav.
+       The scene canvas sits behind that shared rail, just like the Figma frame
+       where the rail is drawn around native y=40. This avoids adding 40px of
+       artificial empty space above every headline. */
     var railTop=navBottom+10;
-    var sceneTop=railTop+24+8;
-    var usableH=Math.max(320,innerHeight-sceneTop-bottomSafe);
+    var provisionalTop=navBottom-24;
+    var usableH=Math.max(320,innerHeight-provisionalTop-bottomSafe);
     var scale=Math.min(1,usableW/1440,usableH/700);
+    var sceneTop=railTop-(40*scale);
 
     var stageW=1440*scale;
     var stageH=700*scale;
