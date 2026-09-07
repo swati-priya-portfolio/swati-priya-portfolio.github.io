@@ -45,17 +45,24 @@
     var rect=header ? header.getBoundingClientRect() : {bottom:66,height:54};
     var navBottom=Math.ceil(rect.bottom || rect.height || 66);
     var bottomSafe=10;
-    var usableW=Math.min(1440,Math.max(720,innerWidth-80));
-
-    /* One stable rail for every scene: exactly 10px below the portfolio nav.
-       The scene canvas sits behind that shared rail, just like the Figma frame
-       where the rail is drawn around native y=40. This avoids adding 40px of
-       artificial empty space above every headline. */
     var railTop=navBottom+10;
-    var provisionalTop=navBottom-24;
-    var usableH=Math.max(320,innerHeight-provisionalTop-bottomSafe);
-    var scale=Math.min(1,usableW/1440,usableH/700);
-    var sceneTop=railTop-(40*scale);
+    var usableW=Math.min(1440,Math.max(720,innerWidth-80));
+    var sceneTop,scale;
+
+    if(body.classList.contains("cs-scene-1")){
+      /* Keep the approved browser-native cover intact. */
+      scale=1;
+      sceneTop=railTop+24+8;
+    }else{
+      /* All native Figma scenes share Scene 01's exact rail Y-position.
+         Their internal Figma rail sits at native y≈40, so lift the stage until
+         that native y aligns with the shared web rail. This keeps headlines
+         near their designed y≈60 rather than starting artificially low. */
+      var provisionalTop=navBottom-24;
+      var usableH=Math.max(320,innerHeight-provisionalTop-bottomSafe);
+      scale=Math.min(1,usableW/1440,usableH/700);
+      sceneTop=railTop-(40*scale);
+    }
 
     var stageW=1440*scale;
     var stageH=700*scale;
@@ -69,8 +76,13 @@
     root.style.setProperty("--cs-bar",Math.min(1320,Math.max(720,innerWidth-100)).toFixed(2)+"px");
 
     if(shell){
-      shell.style.width=stageW.toFixed(2)+"px";
-      shell.style.height=stageH.toFixed(2)+"px";
+      if(body.classList.contains("cs-scene-1")){
+        shell.style.width="";
+        shell.style.height="";
+      }else{
+        shell.style.width=stageW.toFixed(2)+"px";
+        shell.style.height=stageH.toFixed(2)+"px";
+      }
     }
   }
 
