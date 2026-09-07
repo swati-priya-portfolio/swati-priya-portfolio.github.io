@@ -1,0 +1,30 @@
+/* Guardian One — narrator gap correction only.
+   Purpose: close the visible dead space between each Bitmoji and its paper note.
+   No rail, title, card, CTA or scene geometry changes. */
+
+@media (min-width:900px){
+  /* Coordinate-based narrators. Pull the note slightly over the transparent
+     right-side pixels of the PNG so the speech tail visually meets the face/body. */
+  body.cs-scene-3 #scene-3 .cs-note{left:146px!important}
+  body.cs-scene-4 #scene-4 .cs-note{left:194px!important}
+
+  body.cs-scene-5 #scene-5 .mini-narrator blockquote{left:124px!important}
+  body.cs-scene-6 #scene-6 .mini-narrator blockquote{left:126px!important}
+  body.cs-scene-7 #scene-7 .mini-narrator blockquote{left:98px!important}
+  body.cs-scene-8 #scene-8 .mini-narrator blockquote{left:148px!important}
+
+  /* Flex narrators. Negative margin compensates for transparent pixels in the
+     exported character canvases without resizing or moving the Bitmoji itself. */
+  body.cs-scene-9 #scene-9 .mini-narrator blockquote,
+  body.cs-scene-9 #scene-9 .compare-narrator blockquote,
+  body.cs-scene-10 #scene-10 .mini-narrator blockquote,
+  body.cs-scene-10 #scene-10 .table-narrator blockquote{margin-left:-22px!important}
+
+  body.cs-scene-11 #scene-11 .journey-narrator blockquote{margin-left:-20px!important}
+  body.cs-scene-12 #scene-12 .report-narrator blockquote{margin-left:-18px!important}
+  body.cs-scene-13 #scene-13 .launch-narrator blockquote{margin-left:-18px!important}
+
+  /* Final reflection avatar has the largest transparent right-side canvas.
+     Bring the note closer while keeping its size/type exactly as approved. */
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{left:100px!important}
+}
