@@ -1,0 +1,103 @@
+/* Guardian One — global spacing polish preview.
+   Scope: consistent rail/title rhythm, footer CTA baseline, and narrator-to-bubble gaps.
+   Loaded last so it only resolves visible spacing inconsistencies. */
+
+@media (min-width:900px){
+  /* Keep the reader rail physically fixed across every scene. */
+  body.cs-page .cs-topbar{
+    top:var(--cs-rail-top,76px)!important;
+    margin:0!important;
+  }
+
+  /* Standard title rhythm. Scenes 05–08 and 13 are already at native y=60;
+     bring the late middle scenes onto that same visual baseline. */
+  body.cs-scene-9 #scene-9 .compare-heading{top:60px!important}
+  body.cs-scene-9 #scene-9 .compare-body{top:144px!important}
+
+  body.cs-scene-10 #scene-10 .table-heading{top:60px!important}
+  body.cs-scene-10 #scene-10 .comparison-body{top:144px!important}
+
+  body.cs-scene-11 #scene-11 .journey-heading{top:60px!important}
+  body.cs-scene-11 #scene-11 .journey-body{top:157px!important}
+
+  body.cs-scene-12 #scene-12 .report-heading{top:60px!important}
+  body.cs-scene-12 #scene-12 .report-anatomy-grid{top:145.55px!important}
+
+  body.cs-scene-13 #scene-13 .launch-heading{top:60px!important}
+  body.cs-scene-14 #scene-14 .reflection-heading{top:48px!important}
+
+  /* Narrator system: the PNG canvases include transparent pixels, so a
+     mathematically zero flex gap still looks visibly separated. Pull the paper
+     note slightly into the avatar's visual silhouette so the tail actually
+     connects, without moving the character itself. */
+  body.cs-scene-7 #scene-7 .mini-narrator blockquote{
+    left:107px!important;
+  }
+
+  body.cs-scene-8 #scene-8 .mini-narrator blockquote{
+    left:158px!important;
+  }
+
+  body.cs-scene-9 #scene-9 .mini-narrator,
+  body.cs-scene-9 #scene-9 .compare-narrator,
+  body.cs-scene-10 #scene-10 .mini-narrator,
+  body.cs-scene-10 #scene-10 .table-narrator{
+    gap:0!important;
+  }
+  body.cs-scene-9 #scene-9 .mini-narrator blockquote,
+  body.cs-scene-9 #scene-9 .compare-narrator blockquote,
+  body.cs-scene-10 #scene-10 .mini-narrator blockquote,
+  body.cs-scene-10 #scene-10 .table-narrator blockquote{
+    margin-left:-12px!important;
+  }
+
+  body.cs-scene-11 #scene-11 .journey-narrator{
+    gap:0!important;
+  }
+  body.cs-scene-11 #scene-11 .journey-narrator blockquote{
+    margin-left:-12px!important;
+  }
+
+  body.cs-scene-12 #scene-12 .report-narrator{
+    bottom:-2px!important;
+    gap:0!important;
+  }
+  body.cs-scene-12 #scene-12 .report-narrator blockquote{
+    margin-left:-10px!important;
+  }
+
+  body.cs-scene-13 #scene-13 .launch-narrator{
+    gap:0!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-narrator blockquote{
+    margin-left:-10px!important;
+  }
+
+  body.cs-scene-14 #scene-14 .reflection-narrator blockquote{
+    left:124px!important;
+  }
+
+  /* One footer CTA baseline. Existing scene-specific widths/styles stay intact;
+     only the inconsistent vertical gap is removed. */
+  body.cs-scene-9 #scene-9.is-current ~ .cs-upnext,
+  body.cs-scene-10 #scene-10.is-current ~ .cs-upnext,
+  body.cs-scene-11 #scene-11.is-current ~ .cs-upnext,
+  body.cs-scene-12 #scene-12.is-current ~ .cs-upnext,
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext{
+    top:auto!important;
+    bottom:17px!important;
+  }
+
+  /* Avoid a detached bottom strip: footer characters sit on the same native
+     bottom edge while their notes remain inside the safe area. */
+  body.cs-scene-11 #scene-11 .journey-narrator,
+  body.cs-scene-12 #scene-12 .report-narrator,
+  body.cs-scene-13 #scene-13 .launch-narrator,
+  body.cs-scene-14 #scene-14 .reflection-narrator{
+    bottom:-2px!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  body.cs-page .cs-upnext{transition:none!important}
+}
