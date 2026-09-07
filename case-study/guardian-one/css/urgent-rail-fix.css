@@ -1,0 +1,177 @@
+/* Urgent interview pass — only Scenes 06, 13 and 14.
+   Scene 05 is already approved; do not disturb it. */
+
+@media (min-width:900px){
+  /* Exact same visible rail geometry as the approved Scene 05 / shared reader. */
+  body.cs-scene-6 .cs-topbar,
+  body.cs-scene-13 .cs-topbar,
+  body.cs-scene-14 .cs-topbar{
+    box-sizing:border-box!important;
+    position:fixed!important;
+    left:50%!important;
+    top:var(--cs-rail-top,76px)!important;
+    width:min(var(--cs-bar,1320px),calc(100vw - 80px))!important;
+    max-width:1320px!important;
+    min-height:24px!important;
+    height:24px!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 108px 104px 180px!important;
+    column-gap:14px!important;
+    align-items:center!important;
+    transform:translateX(-50%)!important;
+    background:transparent!important;
+    color:var(--cs-dim)!important;
+    font-family:var(--font-mono,"IBM Plex Mono",monospace)!important;
+    font-size:11.5px!important;
+    font-weight:400!important;
+    line-height:20px!important;
+    letter-spacing:1.1px!important;
+    text-transform:uppercase!important;
+  }
+
+  body.cs-scene-6 .cs-crumb,
+  body.cs-scene-13 .cs-crumb,
+  body.cs-scene-14 .cs-crumb{
+    min-width:0!important;
+    margin:0!important;
+    color:var(--cs-dim)!important;
+    font:inherit!important;
+    letter-spacing:inherit!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+  }
+  body.cs-scene-6 .cs-crumb b,
+  body.cs-scene-13 .cs-crumb b,
+  body.cs-scene-14 .cs-crumb b{
+    color:var(--accent,#ffc53d)!important;
+    font-weight:500!important;
+  }
+
+  /* Keep the VIEW DESIGN column physically present even when the link is hidden.
+     This stops the scene count/progress from shifting between slides. */
+  body.cs-scene-6 .cs-view-design,
+  body.cs-scene-13 .cs-view-design,
+  body.cs-scene-14 .cs-view-design{
+    display:block!important;
+    width:108px!important;
+    margin:0!important;
+    justify-self:end!important;
+    text-align:right!important;
+    visibility:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
+    white-space:nowrap!important;
+  }
+
+  body.cs-scene-6 .cs-count,
+  body.cs-scene-13 .cs-count,
+  body.cs-scene-14 .cs-count{
+    display:block!important;
+    width:104px!important;
+    margin:0!important;
+    justify-self:end!important;
+    color:var(--cs-dim)!important;
+    font:inherit!important;
+    letter-spacing:.55px!important;
+    text-align:right!important;
+    white-space:nowrap!important;
+  }
+
+  body.cs-scene-6 .cs-track,
+  body.cs-scene-13 .cs-track,
+  body.cs-scene-14 .cs-track{
+    display:block!important;
+    width:180px!important;
+    min-width:180px!important;
+    height:4px!important;
+    margin:0!important;
+    justify-self:end!important;
+    border-radius:99px!important;
+    background:rgba(245,239,227,.16)!important;
+    opacity:1!important;
+    overflow:hidden!important;
+  }
+  body.cs-scene-6 .cs-fill,
+  body.cs-scene-13 .cs-fill,
+  body.cs-scene-14 .cs-fill{
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    border-radius:99px!important;
+    background:linear-gradient(90deg,var(--accent,#ffc53d),#ffe0a0)!important;
+  }
+
+  /* Scene 06 — Figma node 5:6817. Keep title/card/narrator positions exact. */
+  body.cs-scene-6 #scene-6 .native-title{
+    top:60px!important;
+    left:50%!important;
+    width:522px!important;
+    transform:translateX(-50%)!important;
+    font:400 36px/48px "Archivo Black",sans-serif!important;
+    letter-spacing:0!important;
+    text-align:center!important;
+  }
+  body.cs-scene-6 #scene-6 .audit-grid{
+    top:176px!important;
+    left:112.5px!important;
+  }
+  body.cs-scene-6 #scene-6 .mini-narrator{
+    left:4px!important;
+    top:555px!important;
+  }
+  body.cs-scene-6 #scene-6.is-current ~ .cs-upnext{
+    left:1162px!important;
+    right:auto!important;
+    top:632px!important;
+    bottom:auto!important;
+  }
+
+  /* Scene 13 — Figma node 146:413, but aligned to the same web rail baseline
+     as every other scene. Restore the actual content rhythm from the source. */
+  body.cs-scene-13 #scene-13 .launch-heading{
+    top:60px!important;
+    left:40px!important;
+    width:1360px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-metrics{
+    top:142px!important;
+    left:92.95px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-body{
+    top:261px!important;
+    left:92.3px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-insights{
+    top:547px!important;
+    left:92.35px!important;
+  }
+  body.cs-scene-13 #scene-13 .launch-narrator{
+    left:-5px!important;
+    top:590px!important;
+    bottom:auto!important;
+  }
+  body.cs-scene-13 #scene-13.is-current ~ .cs-upnext{
+    right:40px!important;
+    top:auto!important;
+    bottom:18px!important;
+    width:243px!important;
+    min-width:243px!important;
+    height:46px!important;
+    min-height:46px!important;
+  }
+
+  /* Scene 14 — preserve the approved no-extra-note treatment; only align the
+     rail/topic and native scene geometry. */
+  body.cs-scene-14 #scene-14 .reflection-heading{
+    top:48px!important;
+  }
+  body.cs-scene-14 #scene-14 .reflection-grid{
+    top:174px!important;
+  }
+  body.cs-scene-14 #scene-14 .reflection-intro{
+    display:none!important;
+  }
+}
