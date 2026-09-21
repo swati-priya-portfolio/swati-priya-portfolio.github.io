@@ -79,19 +79,19 @@
 
   /* Scene 02 — high-resolution Figma character sources. */
   #scene-2 .portrait::after{
-    background-image:url("https://www.figma.com/api/mcp/asset/07627014-9c42-488b-b2ec-82e72268c798.png")!important;
+    background-image:url("../../../images/priya_as_teacher.png")!important;
     background-repeat:no-repeat!important;
     background-size:291px 432px!important;
     background-position:-83px -33px!important;
   }
   #scene-2 .av-parent::after{
-    background-image:url("https://www.figma.com/api/mcp/asset/07627014-9c42-488b-b2ec-82e72268c798.png")!important;
+    background-image:url("../../../images/priya_as_teacher.png")!important;
     background-repeat:no-repeat!important;
     background-size:259px 385px!important;
     background-position:-80px -29px!important;
   }
   #scene-2 .av-design::after{
-    background-image:url("https://www.figma.com/api/mcp/asset/b60a38bd-772c-4a67-91a8-f5f2d03bfecf.png")!important;
+    background-image:url("../../../images/priya_as_design.png")!important;
     background-repeat:no-repeat!important;
     background-size:161px 161px!important;
     background-position:-35px -28px!important;
@@ -99,13 +99,13 @@
 
   /* Scene 03 / 04 Bitmoji sources from their actual Figma frames. */
   #scene-3 .cs-narrator{
-    background-image:url("https://www.figma.com/api/mcp/asset/81f19980-4bc3-4b8a-a528-5adc29b2f41e.png")!important;
+    background-image:url("../../../images/priya_as_smiling.png")!important;
     background-repeat:no-repeat!important;
     background-position:center bottom!important;
     background-size:contain!important;
   }
   #scene-4 .cs-narrator{
-    background-image:url("https://www.figma.com/api/mcp/asset/b8bfc10c-706e-4f8a-97dc-8a84dda138c2.png")!important;
+    background-image:url("../../../images/priya_as_smiling.png")!important;
     background-repeat:no-repeat!important;
     background-position:center bottom!important;
     background-size:contain!important;
