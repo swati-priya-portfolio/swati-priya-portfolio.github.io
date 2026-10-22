@@ -1,0 +1,197 @@
+[
+  {
+    "file": "aadhaar@3x.webp",
+    "width": 1072,
+    "height": 1206
+  },
+  {
+    "file": "agreement-screen@3x.webp",
+    "width": 1908,
+    "height": 3084
+  },
+  {
+    "file": "applicant@3x.webp",
+    "width": 1872,
+    "height": 1692
+  },
+  {
+    "file": "bank-details@3x.webp",
+    "width": 1554,
+    "height": 2418
+  },
+  {
+    "file": "bank-error@3x.webp",
+    "width": 861,
+    "height": 780
+  },
+  {
+    "file": "bank-upi@3x.webp",
+    "width": 1788,
+    "height": 2425
+  },
+  {
+    "file": "business@3x.webp",
+    "width": 1728,
+    "height": 1266
+  },
+  {
+    "file": "challenge-cost@3x.webp",
+    "width": 1562,
+    "height": 810
+  },
+  {
+    "file": "challenge-progress@3x.webp",
+    "width": 1614,
+    "height": 726
+  },
+  {
+    "file": "documents@3x.webp",
+    "width": 1072,
+    "height": 1206
+  },
+  {
+    "file": "income-error@3x.webp",
+    "width": 1072,
+    "height": 684
+  },
+  {
+    "file": "income@2x.webp",
+    "width": 1408,
+    "height": 2294
+  },
+  {
+    "file": "journey-checks@3x.webp",
+    "width": 969,
+    "height": 562
+  },
+  {
+    "file": "journey-choose@3x.webp",
+    "width": 969,
+    "height": 499
+  },
+  {
+    "file": "journey-review@3x.webp",
+    "width": 969,
+    "height": 533
+  },
+  {
+    "file": "journey-track@3x.webp",
+    "width": 969,
+    "height": 496
+  },
+  {
+    "file": "mandate-error@3x.webp",
+    "width": 990,
+    "height": 1113
+  },
+  {
+    "file": "mandate-methods@3x.webp",
+    "width": 1560,
+    "height": 1902
+  },
+  {
+    "file": "mandate@3x.webp",
+    "width": 1040,
+    "height": 1410
+  },
+  {
+    "file": "otp-error@3x.webp",
+    "width": 1320,
+    "height": 251
+  },
+  {
+    "file": "otp@3x.webp",
+    "width": 1344,
+    "height": 1095
+  },
+  {
+    "file": "parent@3x.webp",
+    "width": 264,
+    "height": 288
+  },
+  {
+    "file": "payment-success@2x.webp",
+    "width": 1140,
+    "height": 1560
+  },
+  {
+    "file": "payment@2x.webp",
+    "width": 1140,
+    "height": 1560
+  },
+  {
+    "file": "plan-b@3x.webp",
+    "width": 2352,
+    "height": 743
+  },
+  {
+    "file": "plan-c@3x.webp",
+    "width": 2352,
+    "height": 743
+  },
+  {
+    "file": "problem-kyc@3x.webp",
+    "width": 555,
+    "height": 375
+  },
+  {
+    "file": "problem-plan@3x.webp",
+    "width": 771,
+    "height": 352
+  },
+  {
+    "file": "problem-status@3x.webp",
+    "width": 779,
+    "height": 390
+  },
+  {
+    "file": "reflection@3x.webp",
+    "width": 753,
+    "height": 762
+  },
+  {
+    "file": "register@3x.webp",
+    "width": 1344,
+    "height": 984
+  },
+  {
+    "file": "review-excerpt@3x.webp",
+    "width": 713,
+    "height": 630
+  },
+  {
+    "file": "review-screen@3x.webp",
+    "width": 1908,
+    "height": 3084
+  },
+  {
+    "file": "salaried@3x.webp",
+    "width": 1728,
+    "height": 690
+  },
+  {
+    "file": "self-employed@3x.webp",
+    "width": 1044,
+    "height": 202
+  },
+  {
+    "file": "selfie@3x.webp",
+    "width": 1518,
+    "height": 1995
+  },
+  {
+    "file": "status-excerpt@3x.webp",
+    "width": 579,
+    "height": 657
+  },
+  {
+    "file": "status@3x.webp",
+    "width": 1410,
+    "height": 1602
+  },
+  {
+    "file": "student@3x.webp",
+    "width": 1344,
+    "height": 2394
+  }
+]
