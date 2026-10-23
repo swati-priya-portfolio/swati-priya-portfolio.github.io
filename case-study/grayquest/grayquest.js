@@ -57,13 +57,14 @@
   const offset=Math.ceil(header.getBoundingClientRect().height+parseFloat(getComputedStyle(header).top)+16);
   document.documentElement.style.setProperty('--anchor-offset',offset+'px');
   const max=document.documentElement.scrollHeight-innerHeight;progress.style.width=`${max>0?scrollY/max*100:0}%`;
-  let active=chapters[0];chapters.forEach(c=>{if(c.getBoundingClientRect().top<=offset+2)active=c;});
-  if(max>0&&scrollY>=max-2)active=chapters[chapters.length-1];
-  links.forEach(a=>{if(a.hash==='#'+active.id)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});pending=false;
+  const visible=chapters.filter(c=>c.offsetParent!==null);let active=visible[0];visible.forEach(c=>{if(c.getBoundingClientRect().top<=offset+2)active=c;});
+  if(max>0&&scrollY>=max-2)active=visible[visible.length-1];
+  links.forEach(a=>{if(a.hash==='#'+(active.dataset.nav||active.id))a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});pending=false;
  }
  addEventListener('scroll',()=>{if(!pending){pending=true;requestAnimationFrame(update);}},{passive:true});
  addEventListener('resize',()=>{if(innerWidth>760&&menu.open)closeMenu();update();if(dialog.open&&ready)render(mode==='fit'?fitScale():scale);});
  new ResizeObserver(update).observe(header);update();
+ document.querySelector('.skip-link').addEventListener('click',e=>{if(innerWidth>760){e.preventDefault();const main=document.getElementById('desktop-main');main.tabIndex=-1;main.focus();}});
  document.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{update();if(d.open&&!reduced.matches)d.querySelector('.supporting-content').animate([{opacity:.5,transform:'translateY(-5px)'},{opacity:1,transform:'none'}],{duration:200,easing:'ease-out'});}));
  if(!reduced.matches&&'IntersectionObserver'in window){const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.animate([{opacity:.55,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:400,easing:'cubic-bezier(.22,.61,.36,1)'});io.unobserve(e.target);}}),{threshold:.08});document.querySelectorAll('main>section .gq-section-head,.journey>li,.paired-screen,.hero-feature').forEach(e=>io.observe(e));}
 })();
