@@ -161,6 +161,7 @@ html{scroll-padding-top:var(--anchor-offset,120px)}
 }
 
 /* Final polish: shared spacing, a compact feature and useful motion. */
+@media(max-width:760px){
 .gq-page .case-header{background:var(--gq-ink);backdrop-filter:none;isolation:isolate;top:max(8px,env(safe-area-inset-top))}
 .gq-page .case-header:before{content:"";position:absolute;z-index:-1;left:-26px;right:-26px;bottom:-8px;top:calc(-1 * max(18px,env(safe-area-inset-top)));background:var(--gq-ink);pointer-events:none}
 .gq-page .gq-hero{grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);align-items:center;gap:48px}
@@ -193,3 +194,8 @@ html{scroll-padding-top:var(--anchor-offset,120px)}
  .gq-page .viewer-status{top:180px}
 }
 @media(prefers-reduced-motion:reduce){.gq-page .chapter-nav a:after,.gq-page .explore-link span{transition:none}}
+
+}
+/* Preserve the approved mobile layout; restore the previous desktop composition. */
+.gq-page .desktop-cover{display:none}
+@media(min-width:761px){.gq-page .hero-feature{display:none}.gq-page .desktop-cover{display:block}}
