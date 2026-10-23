@@ -340,3 +340,41 @@ body.gq-page {margin:0;--font-display:'Archivo Black','Arial Black',sans-serif;-
 .gq-page #d-section-13 .screen-pair>.paired-screen>.evidence{height:clamp(440px,48vw,700px)}
 .gq-page .paired-screen>.caption{min-height:48px}
 }
+
+/* Desktop case-study context; original product screenshots remain unchanged. */
+@media(min-width:761px){
+ .desktop-case .applicant-route{margin-top:40px;padding:28px;border:1px solid #665a4b;border-radius:16px;background:#24201a}
+ .desktop-case .route-heading h3{margin:18px 0 12px;font-size:26px;line-height:1.3}
+ .desktop-case .route-heading p,.desktop-case .applicant-branches p,.desktop-case .employment-layout p{font-size:16px;line-height:1.65;color:#c9bfae}
+ .desktop-case .applicant-branches{display:grid;grid-template-columns:1fr 36px 1fr;align-items:stretch;gap:20px;margin-top:24px}
+ .desktop-case .applicant-branches article{padding:24px;background:var(--gq-paper);color:var(--gq-ink);border-radius:12px}
+ .desktop-case .applicant-branches article p{color:#4e473d;margin-bottom:0}
+ .desktop-case .route-label{font-size:12px;font-weight:800;letter-spacing:.06em}
+ .desktop-case .applicant-branches h4,.desktop-case .employment-layout h4{font-size:21px;line-height:1.4;margin:12px 0}
+ .desktop-case .route-or{align-self:center;text-align:center;font-size:13px;font-weight:800;color:var(--gq-accent)}
+ .desktop-case .route-note{font-size:14px;line-height:1.6;margin:20px 0 0;color:#c9bfae}
+ .desktop-case .employment-story{margin-top:40px;padding-top:32px}
+ .desktop-case .employment-story>h3{font-size:28px;line-height:1.3}
+ .desktop-case .employment-story>p{max-width:800px;line-height:1.6}
+ .desktop-case .employment-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:40px;margin-top:28px;align-items:start}
+ .desktop-case .employment-example{padding:24px;background:#fff;color:var(--gq-ink);border-radius:12px;border:1px solid #665a4b}
+ .desktop-case .selection-context{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px solid #ddd5c7}
+ .desktop-case .selection-context>span{font-size:11px;font-weight:800;letter-spacing:.06em}
+ .desktop-case .selection-context>strong{font-size:14px;line-height:1.4;background:var(--gq-accent);padding:10px 14px;border-radius:8px}
+ .gq-page #d-checks .employment-example .evidence{width:100%;padding:0;border:0;background:#fff;box-shadow:none;max-height:none}
+ .gq-page #d-checks .employment-example .evidence img{display:block;width:100%;height:auto;max-height:none}
+ .desktop-case .employment-example p.caption{font-size:12px;color:#62594d;margin:14px 0 0}
+ .desktop-case .employment-explanation{padding-top:12px}
+ .desktop-case .employment-explanation>.route-label{color:var(--gq-accent)}
+ .desktop-case .employment-alternative{margin:24px 0;padding:20px 0;border-top:1px solid #665a4b;border-bottom:1px solid #665a4b}
+ .desktop-case .employment-alternative h4{font-size:18px;margin-top:0}
+ .desktop-case .journey-applicant-branch{padding:24px;margin:24px 0;border:1.5px dashed #6d6251;border-radius:12px}
+ .desktop-case .journey-applicant-branch strong{font-size:18px}.desktop-case .journey-applicant-branch p{font-size:16px;line-height:1.6;margin:10px 0}
+ .desktop-case .journey-applicant-branch a{font-size:14px;font-weight:700;text-underline-offset:4px}
+}
+@media(min-width:761px) and (max-width:1000px){
+ .desktop-case .applicant-branches{gap:12px;grid-template-columns:1fr 24px 1fr}
+ .desktop-case .applicant-branches article{padding:20px}
+ .desktop-case .employment-layout{gap:24px;grid-template-columns:1.2fr 1fr}
+ .desktop-case .selection-context{flex-direction:column;align-items:flex-start}
+}
