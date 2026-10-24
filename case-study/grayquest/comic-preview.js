@@ -28,27 +28,14 @@ scene.innerHTML=`<div class="world-kicker">A GRAYQUEST STORY <span>VOL. 02</span
 <g stroke="#f5efe3" stroke-width="2"><path d="M68 100v16m-8-8h16M330 65v12m-6-6h12M540 140v14m-7-7h14"/></g>
 </svg><div class="world-question"><img src="assets/parent@3x.webp" alt=""/><p>“Where do we<br>go from here?”<small>ILLUSTRATIVE PARENT QUESTION</small></p></div><figcaption>EVERY CLEAR CHOICE OPENS THE NEXT CHAPTER.</figcaption>`;
 hero.querySelector('.cover').replaceWith(scene);
-// Compact, keyboard-operable chapter atlas. Keep the original route content.
-const journey=root.querySelector('.journey'),rows=[...journey.children];
-const atlas=document.createElement('div');atlas.className='chapter-atlas';atlas.setAttribute('role','tablist');atlas.setAttribute('aria-label','Explore the four journey chapters');
-const chapterNames=['Choose a plan','Complete checks','Review & pay','Set up & track'];
-const destinations=['#d-section-6','#d-checks','#d-pay','#d-section-13'];
-const symbols=['chart-no-axes-column-increasing.svg','user-round.svg','credit-card.svg','settings.svg'];
-rows.forEach((row,i)=>{
- const b=document.createElement('button');b.type='button';b.id='atlas-tab-'+i;b.setAttribute('role','tab');b.setAttribute('aria-controls','atlas-panel-'+i);b.innerHTML=`<span class="atlas-index">CHAPTER 0${i+1}</span><img src="assets/${symbols[i]}" alt=""/><strong>${chapterNames[i]}</strong><span class="atlas-action">Explore chapter <span aria-hidden="true">↗</span></span>`;atlas.append(b);
- row.id='atlas-panel-'+i;row.setAttribute('role','tabpanel');row.setAttribute('aria-labelledby',b.id);row.tabIndex=0;
- const link=document.createElement('a');link.className='chapter-read';link.href=destinations[i];link.textContent='Read this chapter ↗';row.querySelector('.journey-actions').append(link);
- b.addEventListener('click',()=>selectChapter(i));b.addEventListener('keydown',e=>{let n=i;if(e.key==='ArrowRight')n=(i+1)%4;else if(e.key==='ArrowLeft')n=(i+3)%4;else if(e.key==='Home')n=0;else if(e.key==='End')n=3;else return;e.preventDefault();selectChapter(n);atlas.children[n].focus()});
-});
-function selectChapter(index){rows.forEach((row,i)=>{row.hidden=i!==index;const b=atlas.children[i];b.setAttribute('aria-selected',String(i===index));b.tabIndex=i===index?0:-1});atlas.style.setProperty('--chapter-progress',`${index*33.333}%`)}
-journey.before(atlas);journey.setAttribute('role','presentation');selectChapter(0);
+root.querySelectorAll('.journey-question').forEach(question=>{const br=question.querySelector('br');const text=br?.nextSibling;if(text?.nodeType===Node.TEXT_NODE){const mark=document.createElement('span');mark.className='question-highlight';mark.textContent=text.textContent.trim();text.replaceWith(mark)}});
 // Consistent evidence stages; enlarge controls remain bound to the existing viewer.
 const moments=root.querySelector('#d-section-2');
-const destinations2=['#d-section-6','#d-pay','#d-section-14'];
+
 moments.querySelectorAll('.grid.three>.paper-card').forEach((card,i)=>{
  const stage=document.createElement('div');stage.className='moment-stage';const content=card.querySelector('.mini-plans')||card.querySelector('.evidence');content.before(stage);stage.append(content);
- const explain=card.querySelector('.evidence-explanation');explain.querySelectorAll('.small-label').forEach(el=>el.remove());
- const a=document.createElement('a');a.className='moment-link';a.href=destinations2[i];a.innerHTML='Explore decision <span aria-hidden="true">↗</span>';card.append(a);
+
+
 });
 // No permanent movement: one reveal, then a quiet reading state.
 if(!reduced.matches){scene.animate([{opacity:0,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0 0 0)'}],{duration:850,easing:'cubic-bezier(.2,.7,.3,1)'});scene.addEventListener('pointermove',e=>{const box=scene.getBoundingClientRect();scene.style.setProperty('--light-x',`${(e.clientX-box.left)/box.width*100}%`);scene.style.setProperty('--light-y',`${(e.clientY-box.top)/box.height*100}%`)});}
