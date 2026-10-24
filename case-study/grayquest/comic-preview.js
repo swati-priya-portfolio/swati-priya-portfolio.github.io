@@ -11,23 +11,9 @@ hero.querySelector('h1').innerHTML='SCHOOL FEES.<span>CLEAR CHOICES.</span>';
 const actions=document.createElement('div');actions.className='comic-actions';actions.innerHTML='<a class="comic-btn" href="#d-section-1">Read the story <span class="comic-arrow" aria-hidden="true">↗</span></a><a class="comic-btn secondary" href="#d-journey">Explore the journey <span class="comic-arrow" aria-hidden="true">↓</span></a>';
 copy.querySelector('.project-facts').before(actions);
 
-// One continuous illustrated world; all product content remains upright.
-const scene=document.createElement('figure');scene.className='story-world';
-scene.innerHTML=`<div class="world-kicker">A GRAYQUEST STORY <span>VOL. 02</span></div>
-<svg viewBox="0 0 600 560" role="img" aria-label="An illustrated education city connected by a golden path, from school to college">
-<defs><radialGradient id="world-light"><stop stop-color="#ffc53d" stop-opacity=".3"/><stop offset="1" stop-color="#ffc53d" stop-opacity="0"/></radialGradient><pattern id="world-dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#f5efe3" opacity=".15"/></pattern></defs>
-<rect width="600" height="560" fill="#17120b"/><circle cx="340" cy="235" r="240" fill="url(#world-light)"/><rect width="600" height="560" fill="url(#world-dots)"/>
-<g stroke="#ffc53d" opacity=".2"><path d="M310 270L0 60M310 270L95 0M310 270L280 0M310 270L490 0M310 270L600 80M310 270L600 260M310 270L600 490M310 270L120 560M310 270L0 390"/></g>
-<circle cx="440" cy="100" r="42" fill="#f5efe3"/><path d="M60 370V230H112V190H165V260H195V170H250V270H290V210H350V300H400V220H460V180H510V250H560V370Z" fill="#342b20"/>
-<g fill="#f5efe3" stroke="#17120b" stroke-width="4"><path d="M55 300L160 232L265 300Z"/><path d="M72 300H248V438H72Z"/><path d="M355 248L460 182L565 248Z"/><path d="M370 248H550V390H370Z"/></g>
-<g fill="#ffc53d" stroke="#17120b" stroke-width="3"><path d="M138 438V370H182V438"/><path d="M438 390V315H482V390"/><path d="M90 321H118V351H90ZM140 321H168V351H140ZM190 321H218V351H190ZM390 269H417V299H390ZM446 269H473V299H446ZM502 269H529V299H502Z"/></g>
-<g font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="#17120b" text-anchor="middle"><text x="160" y="290">SCHOOL</text><text x="460" y="238">COLLEGE</text></g>
-<path d="M0 480Q130 412 265 465T600 420V560H0Z" fill="#251f17"/>
-<path class="world-path" d="M155 440C150 490 340 508 330 420S449 440 460 392" fill="none" stroke="#ffc53d" stroke-width="5" stroke-linecap="round"/>
-<g fill="#ffc53d"><circle cx="155" cy="440" r="8"/><circle cx="330" cy="420" r="8"/><circle cx="460" cy="392" r="8"/></g>
-<g stroke="#f5efe3" stroke-width="2"><path d="M68 100v16m-8-8h16M330 65v12m-6-6h12M540 140v14m-7-7h14"/></g>
-</svg><div class="world-question"><img src="assets/parent@3x.webp" alt=""/><p>“Where do we<br>go from here?”<small>ILLUSTRATIVE PARENT QUESTION</small></p></div><figcaption>EVERY CLEAR CHOICE OPENS THE NEXT CHAPTER.</figcaption>`;
-hero.querySelector('.cover').replaceWith(scene);
+// Preserve the original comic cover and its source artwork.
+const scene=hero.querySelector('.cover');scene.classList.add('cinema-cover');
+scene.querySelector('img').setAttribute('fetchpriority','high');
 root.querySelectorAll('.journey-question').forEach(question=>{const br=question.querySelector('br');const text=br?.nextSibling;if(text?.nodeType===Node.TEXT_NODE){const mark=document.createElement('span');mark.className='question-highlight';mark.textContent=text.textContent.trim();text.replaceWith(mark)}});
 // Consistent evidence stages; enlarge controls remain bound to the existing viewer.
 const moments=root.querySelector('#d-section-2');
@@ -37,9 +23,6 @@ moments.querySelectorAll('.grid.three>.paper-card').forEach((card,i)=>{
 
 
 });
-// No permanent movement: one reveal, then a quiet reading state.
-if(!reduced.matches){scene.animate([{opacity:0,clipPath:'inset(0 100% 0 0)'},{opacity:1,clipPath:'inset(0 0 0 0)'}],{duration:850,easing:'cubic-bezier(.2,.7,.3,1)'});scene.addEventListener('pointermove',e=>{const box=scene.getBoundingClientRect();scene.style.setProperty('--light-x',`${(e.clientX-box.left)/box.width*100}%`);scene.style.setProperty('--light-y',`${(e.clientY-box.top)/box.height*100}%`)});}
-
 const section=root.querySelector('#d-section-6'),board=section.querySelector('.compare-grid>.paper-card');
 const controls=document.createElement('div');controls.className='comic-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Highlight comparable plan details');
 controls.innerHTML='<span>COMPARE THE DETAILS</span><button type="button" data-focus="monthly" aria-pressed="false">Monthly amount</button><button type="button" data-focus="today" aria-pressed="false">Payable today</button><button type="button" data-focus="duration" aria-pressed="false">Duration</button>';
@@ -51,9 +34,33 @@ section.querySelectorAll('.reason').forEach((reason,i)=>{const key=['monthly','t
 const routes=root.querySelector('.applicant-route'),articles=routes.querySelectorAll('.applicant-branches article'),routeControls=document.createElement('div');routeControls.className='comic-controls';routeControls.setAttribute('role','group');routeControls.setAttribute('aria-label','Highlight applicant route');routeControls.innerHTML='<span>FOLLOW A ROUTE</span><button type="button" aria-pressed="false">Parent / guardian</button><button type="button" aria-pressed="false">Student</button>';
 routes.querySelector('.applicant-branches').before(routeControls);
 routeControls.querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{const selected=b.getAttribute('aria-pressed')!=='true';routeControls.querySelectorAll('button').forEach((el,j)=>el.setAttribute('aria-pressed',String(selected&&i===j)));articles.forEach((a,j)=>a.classList.toggle('is-highlighted',selected&&i===j))}));
-const closing=root.querySelector('.closing-links'),outro=document.createElement('aside');outro.className='comic-outro';outro.setAttribute('aria-label','Next case study');outro.innerHTML='<div><span class="small-label">THE STORY CONTINUES / ISSUE 01</span><h3>WHAT IF EDUCATION<br>HAD A SAFETY NET?</h3><p>Explore Guardian One: the next story in making complex financial decisions easier to understand.</p><a class="comic-btn" href="../guardian-one/">Explore Guardian One <span class="comic-arrow" aria-hidden="true">↗</span></a></div><img src="../../images/case-guardian-one.png" alt="Guardian One comic cover" loading="lazy">';closing.before(outro);closing.querySelector('a').remove();
+const closing=root.querySelector('.closing-links'),outro=document.createElement('aside');outro.className='comic-outro';outro.setAttribute('aria-label','Next case study');outro.innerHTML='<div><span class="small-label">THE STORY CONTINUES / ISSUE 01</span><h3>WHAT IF EDUCATION<br>HAD A SAFETY NET?</h3><p>Explore Guardian One: the next story in making complex financial decisions easier to understand.</p><a class="comic-btn" href="../guardian-one/">Explore Guardian One <span class="comic-arrow" aria-hidden="true">↗</span></a></div><img src="../../images/case-guardian-one.png" alt="Guardian One comic cover" loading="lazy">';closing.before(outro);closing.querySelector('a').remove();const allWork=document.createElement('a');allWork.className='comic-btn secondary';allWork.href='../../index.html#case-studies';allWork.textContent='Back to all work ↗';closing.prepend(allWork);
 root.querySelectorAll('.comic-actions a').forEach(a=>a.addEventListener('click',e=>{const target=document.querySelector(a.hash);if(!target)return;e.preventDefault();history.pushState(null,'',a.hash);target.setAttribute('tabindex','-1');target.focus({preventScroll:true});target.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'})}));
-if(!reduced.matches){[hero.querySelector('h1'),hero.querySelector('.hero-subtitle'),actions,scene].forEach((el,i)=>el.animate([{opacity:0,translate:'0 16px'},{opacity:1,translate:'0 0'}],{duration:550,delay:i*100,easing:'cubic-bezier(.2,.7,.3,1)',fill:'backwards'}));const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.animate([{opacity:.4,translate:'0 14px'},{opacity:1,translate:'0 0'}],{duration:350,easing:'ease-out'});io.unobserve(e.target)}}),{threshold:.15});root.querySelectorAll('.chapter-tag,.parent-question,.comic-outro').forEach(el=>io.observe(el));}
+// Decorative motion has no bearing on content visibility or reading order.
+const chapterIds=['d-section-1','d-journey','d-choose','d-checks','d-pay','d-section-13','d-section-16'];
+chapterIds.forEach((id,i)=>{const el=root.querySelector('#'+id);if(el){el.classList.add('cinema-chapter');el.dataset.act=String(i+1).padStart(2,'0')}});
+const journeyRows=[...root.querySelectorAll('.journey>li')];
+const observers=[];let activeAnimations=[];
+function play(el,frames,options){if(!el||!desktop.matches||reduced.matches)return;const animation=el.animate(frames,options);activeAnimations.push(animation);animation.finished.catch(()=>{}).finally(()=>{activeAnimations=activeAnimations.filter(a=>a!==animation)})}
+const enter=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;const el=entry.target;el.classList.add('scene-entered');
+if(el.classList.contains('cinema-chapter')){play(el.querySelector('h2'),[{opacity:.6,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:480,easing:'cubic-bezier(.2,.7,.3,1)'});}
+else play(el,[{opacity:.65,transform:'translateY(8px) scale(.98)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.2,.7,.3,1)'});
+enter.unobserve(el);});},{threshold:.1});observers.push(enter);
+root.querySelectorAll('.cinema-chapter,.parent-question,.narrator,.comic-outro').forEach(el=>enter.observe(el));
+const rowObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){journeyRows.forEach(row=>row.classList.toggle('reading-panel',row===entry.target));}})},{rootMargin:'-22% 0px -48% 0px',threshold:0});observers.push(rowObserver);journeyRows.forEach(row=>rowObserver.observe(row));
+const quick=document.createElement('nav');quick.className='journey-quick';quick.setAttribute('aria-label','Jump from journey to product screens');quick.innerHTML='<span>EXPLORE THE SCREENS</span>'+['Choose a plan','Complete checks','Review & pay','Set up & track'].map((label,i)=>`<a href="${['#d-choose','#d-checks','#d-pay','#d-section-13'][i]}">${String(i+1).padStart(2,'0')} / ${label} <span aria-hidden="true">↗</span></a>`).join('');root.querySelector('.journey').after(quick);
+const finale=root.querySelector('#d-section-16');finale.classList.add('cinema-finale');
+// Intro is a non-blocking reveal, never a timed loading gate.
+if(!location.hash){play(scene,[{opacity:.55,clipPath:'inset(0 0 100% 0)'},{opacity:1,clipPath:'inset(0)'}],{duration:750,easing:'cubic-bezier(.2,.7,.3,1)'});play(hero.querySelector('h1'),[{opacity:.6,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.3,1)'});}
+let pointerFrame=0;
+function resetLight(){hero.style.removeProperty('--glow-x');hero.style.removeProperty('--glow-y');}
+function pointerMove(e){if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'||pointerFrame)return;pointerFrame=requestAnimationFrame(()=>{pointerFrame=0;const rect=hero.getBoundingClientRect();hero.style.setProperty('--glow-x',`${(e.clientX-rect.left)/rect.width*100}%`);hero.style.setProperty('--glow-y',`${(e.clientY-rect.top)/rect.height*100}%`);});}
+hero.addEventListener('pointermove',pointerMove,{passive:true});hero.addEventListener('pointerleave',resetLight);
+function stopMotion(){activeAnimations.forEach(a=>a.cancel());activeAnimations=[];cancelAnimationFrame(pointerFrame);pointerFrame=0;resetLight();}
+reduced.addEventListener('change',()=>{if(reduced.matches)stopMotion()});desktop.addEventListener('change',()=>{if(!desktop.matches)stopMotion()});
+addEventListener('pagehide',()=>{stopMotion();observers.forEach(o=>o.disconnect())});
+addEventListener('pageshow',e=>{if(e.persisted){journeyRows.forEach(row=>rowObserver.observe(row));root.querySelectorAll('.cinema-chapter:not(.scene-entered),.parent-question:not(.scene-entered),.narrator:not(.scene-entered),.comic-outro:not(.scene-entered)').forEach(el=>enter.observe(el));}});
+
 }
 build();desktop.addEventListener('change',build);
 })();
