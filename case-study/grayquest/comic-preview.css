@@ -1,0 +1,75 @@
+/* Isolated desktop experiment. The approved mobile presentation is unchanged. */
+@media(min-width:761px){
+.gq-page{--comic-ink:#17120b;--comic-yellow:#ffc53d;--comic-paper:#f5efe3}
+#desktop-main{overflow:clip}
+#desktop-main .gq-hero{position:relative;isolation:isolate;max-width:1440px;min-height:720px;padding:72px 80px 64px;gap:50px;grid-template-columns:1.25fr 1fr;border-bottom:2px solid #ffc53d}
+#desktop-main .gq-hero:before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(circle,#ffc53d30 1px,transparent 1.7px) 0 0/9px 9px;mask-image:linear-gradient(110deg,transparent 40%,#000);pointer-events:none}
+#desktop-main .hero-copy{position:relative;gap:20px}
+#desktop-main .hero-copy .eyebrow{font:700 11px/1.4 Inter,sans-serif;letter-spacing:.16em;color:#ffc53d;border:0;padding:0}
+#desktop-main .gq-hero h1{font-family:'Luckiest Guy','Archivo Black',sans-serif;font-weight:400;font-size:clamp(58px,6.2vw,88px);line-height:.99;letter-spacing:.005em;max-width:750px;transform:rotate(-1deg);text-shadow:3px 4px 0 #000}
+#desktop-main .gq-hero h1 span{display:block;color:#ffc53d}
+#desktop-main .hero-subtitle{font:700 19px/1.4 Inter,sans-serif;letter-spacing:.03em;color:#f5efe3;margin:0}
+#desktop-main .hero-subtitle br{display:none}
+#desktop-main .hero-copy>p:not([class]){font-size:15px;line-height:1.65;max-width:590px;color:#c9bfae}
+#desktop-main .hero-note{background:transparent;color:#ffc53d;padding:0;font-size:25px;box-shadow:none;transform:rotate(-2deg);margin:0}
+#desktop-main .project-facts{border-top:1px solid #ffc53d40;padding-top:18px;gap:18px}
+#desktop-main .project-facts dd{font-size:12px}
+#desktop-main .tenure{font-size:11px;letter-spacing:.08em}
+#desktop-main .cover{position:relative;transform:rotate(3deg);max-width:420px;background:#ffc53d;border:2px solid #17120b;box-shadow:10px 10px 0 #000;justify-self:center;padding:14px}
+#desktop-main .cover:after{content:'THE CLARITY ISSUE';position:absolute;right:-20px;top:24px;background:#f5efe3;color:#17120b;border:2px solid #17120b;padding:10px 14px;font:700 10px Inter,sans-serif;letter-spacing:.08em;transform:rotate(-6deg);box-shadow:3px 3px 0 #17120b}
+#desktop-main .cover img{width:100%;height:auto}
+#desktop-main .comic-actions{display:flex;gap:12px;flex-wrap:wrap}
+#desktop-main .comic-btn,#desktop-main .closing-links .cta{display:inline-flex;align-items:center;gap:10px;padding:13px 16px 13px 24px;border-radius:100px;border:1.5px solid #ffc53d;background:#ffc53d;color:#17120b;font:700 15px/1 Inter,sans-serif;text-decoration:none;box-shadow:none;transition:transform .25s cubic-bezier(.2,.7,.3,1),background .25s}
+#desktop-main .comic-btn.secondary{background:transparent;color:#ffc53d}
+#desktop-main .comic-arrow{display:grid;place-items:center;width:26px;height:26px;border-radius:100px;background:#17120b;color:#ffc53d;font:700 14px Inter,sans-serif}
+#desktop-main .secondary .comic-arrow{background:#ffc53d;color:#17120b}
+#desktop-main .comic-btn:hover,#desktop-main .comic-btn:focus-visible,#desktop-main .closing-links .cta:hover{transform:translateY(-4px);box-shadow:none}
+#desktop-main .comic-btn:active{transform:translateY(1px)}
+#desktop-main .chapter{position:relative}
+#desktop-main .chapter-inner{padding:52px 80px;gap:28px}
+#desktop-main .chapter-tag{align-self:flex-start;border-radius:3px;padding:8px 14px;border:1.5px solid #17120b;box-shadow:3px 3px 0 currentColor;font:800 11px/1.4 Inter,sans-serif;letter-spacing:.06em;transform:rotate(-1deg)}
+#desktop-main .dark .chapter-tag{box-shadow:3px 3px 0 #f5efe3}
+#desktop-main .gq-section-head h2{font-size:clamp(30px,3.5vw,49px);line-height:1.08;max-width:1100px}
+#desktop-main .gq-section-head .intro{max-width:850px;font-size:16px;line-height:1.65}
+#desktop-main .paper-card{border:2px solid #17120b;border-radius:8px;box-shadow:5px 5px 0 #17120b;padding:24px}
+#desktop-main .dark .paper-card{box-shadow:5px 5px 0 #ffc53d}
+#desktop-main .problem-grid{gap:24px}
+#desktop-main .problem-grid .paper-card{background:#f5efe3;color:#17120b;position:relative}
+#desktop-main .problem-grid .small-label{border-radius:0;margin:-24px -24px 0;padding:12px 16px;background:#ffc53d;color:#17120b;border-bottom:2px solid #17120b}
+#desktop-main .problem-grid h3{font:400 22px/1.2 'Archivo Black',sans-serif;min-height:0}
+#desktop-main .problem-grid .art{height:155px}
+#desktop-main .problem-grid .art img{height:100%;object-fit:contain}
+#desktop-main .parent-question{position:relative;border:2px solid #17120b;border-radius:16px 16px 16px 3px;box-shadow:4px 4px 0 #17120b;background:#ffc53d}
+#desktop-main .parent-question:after{content:'';position:absolute;bottom:-10px;left:36px;width:18px;height:18px;background:#ffc53d;border-right:2px solid #17120b;border-bottom:2px solid #17120b;transform:skewY(-35deg);clip-path:polygon(0 0,100% 0,100% 100%)}
+#desktop-main .parent-question p{font-size:25px}
+#desktop-main .takeaway{font-family:Inter,sans-serif;font-size:17px;font-weight:600;border-left:4px solid #ffc53d;padding:12px 20px}
+#desktop-main .journey>li{border:2px solid #17120b;border-radius:6px;box-shadow:5px 5px 0 #17120b;min-height:170px}
+#desktop-main .journey-story{background:#ffc53d;border-radius:4px 0 0 4px}
+#desktop-main .journey-story img{max-height:95px;object-fit:contain}
+#desktop-main .journey-question{font-size:24px}
+#desktop-main .comic-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+#desktop-main .comic-controls>span{font:700 10px Inter,sans-serif;letter-spacing:.08em;margin-right:4px}
+#desktop-main .comic-controls button{border:1.5px solid currentColor;background:transparent;color:inherit;border-radius:100px;padding:10px 14px;min-height:42px;font:600 12px Inter,sans-serif;cursor:pointer}
+#desktop-main .comic-controls button[aria-pressed=true]{background:#ffc53d;color:#17120b;border-color:#17120b;box-shadow:2px 2px 0 #17120b}
+#desktop-main .compare-grid .evidence{position:relative}
+#desktop-main .comic-spot{pointer-events:none;position:absolute;border:2px solid #7153a2;border-radius:7px;background:#ffc53d14;opacity:0;transition:opacity .2s}
+#desktop-main [data-focus=monthly] .comic-spot.monthly{opacity:1;left:10%;top:7%;width:63%;height:29%}
+#desktop-main [data-focus=today] .comic-spot.today{opacity:1;left:52%;top:43%;width:35%;height:42%}
+#desktop-main [data-focus=duration] .comic-spot.duration{opacity:1;left:39%;top:7%;width:34%;height:29%}
+#desktop-main .compare-grid .reason{padding:12px 12px 12px 44px;border-radius:6px;transition:background .2s}
+#desktop-main .compare-grid .reason:before{top:14px;left:8px}
+#desktop-main .compare-grid .reason:focus-visible,#desktop-main .compare-grid .reason:hover{background:#ffc53d33;outline:2px solid #17120b}
+#desktop-main .applicant-branches article{transition:box-shadow .2s,border-color .2s}
+#desktop-main .applicant-branches article.is-highlighted{box-shadow:0 0 0 3px #ffc53d;border-color:#ffc53d}
+#desktop-main .comic-outro{position:relative;display:grid;grid-template-columns:1fr 240px;gap:40px;background:#ffc53d;color:#17120b;padding:40px;border:2px solid #17120b;box-shadow:7px 7px 0 #17120b;margin-top:24px;overflow:hidden}
+#desktop-main .comic-outro h3{font:400 clamp(34px,4vw,56px)/1.06 'Archivo Black',sans-serif;margin:15px 0}
+#desktop-main .comic-outro p{max-width:600px;font-size:16px;line-height:1.6;margin-bottom:24px}
+#desktop-main .comic-outro .comic-btn{background:#17120b;color:#ffc53d;border-color:#17120b}
+#desktop-main .comic-outro .comic-arrow{background:#ffc53d;color:#17120b}
+#desktop-main .comic-outro img{width:220px;align-self:center;transform:rotate(5deg);box-shadow:7px 7px 0 #17120b}
+#desktop-main .closing-links{border-top:1px solid #17120b40;padding-top:24px}
+#desktop-main .closing-links .cta{background:#17120b;color:#f5efe3;border-color:#17120b}
+#desktop-main :focus-visible{outline:3px solid #a861cb;outline-offset:5px}
+@media(max-width:1100px){#desktop-main .gq-hero{padding:48px 40px;gap:32px;min-height:0}#desktop-main .gq-hero h1{font-size:60px}#desktop-main .chapter-inner{padding:44px 40px}#desktop-main .cover:after{right:-8px}#desktop-main .comic-outro{grid-template-columns:1fr 180px}#desktop-main .comic-outro img{width:180px}}
+@media(prefers-reduced-motion:reduce){#desktop-main *,#desktop-main *:before,#desktop-main *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+}
