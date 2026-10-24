@@ -1,0 +1,2782 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>
+   GrayQuest — School fees, clear choices · Swati Priya
+  </title>
+  <meta content="A product design case study by Swati Priya: making school-fee plans, verification, payment and repayment setup understandable for parents." name="description">
+  <link href="https://swati-priya-portfolio.github.io/case-study/grayquest/" rel="canonical">
+  <meta content="#171310" name="theme-color">
+  <link href="../../images/favicon.svg" rel="icon" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Caveat:wght@400;700&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="grayquest.css?v=2" rel="stylesheet">
+  <link href="refinements.css?v=2" rel="stylesheet">
+ <link rel="stylesheet" href="compact.css?v=6" media="(max-width:760px)">
+ <link rel="stylesheet" href="desktop.css?v=2">
+</head>
+ <body class="gq-page">
+  <a class="skip-link" href="#main">
+   Skip to case study
+  </a>
+  <header class="case-header">
+   <a class="identity" href="../../index.html#home">
+    <img alt="" height="128" src="../../images/avatar-nav.png" width="128">
+    <span>
+     SWATI PRIYA
+    </span>
+   </a>
+   <a class="all-work" href="../../index.html#case-studies">
+    ← ALL WORK
+   </a>
+   <a class="contact-link" href="mailto:swatipriya4422@gmail.com">
+    LET’S TALK ↗
+   </a>
+  <button class="menu-toggle" type="button" aria-haspopup="dialog" aria-controls="page-menu" aria-expanded="false">Menu <span aria-hidden="true">☰</span></button><nav class="chapter-nav" aria-label="Case study chapters"><a href="#section-1">Overview</a><a href="#journey">Journey</a><a href="#choose">Plans</a><a href="#checks">Checks</a><a href="#pay">Payment</a><a href="#setup">Setup</a><a href="#section-16">Reflection</a></nav><nav class="chapter-nav desktop-nav" aria-label="Desktop case study chapters"><a href="#d-section-1">Overview</a><a href="#d-journey">Journey</a><a href="#d-choose">Plans</a><a href="#d-checks">Checks</a><a href="#d-pay">Payment</a><a href="#d-section-13">Setup</a><a href="#d-section-16">Reflection</a></nav></header>
+  <div aria-hidden="true" class="reading-progress">
+  </div>
+  <main id="main">
+   <section aria-labelledby="chapter-title-0" class="gq-hero" id="top">
+    <div class="hero-copy">
+     <span class="eyebrow">
+      GRAYQUEST / SCHOOL-FEE PAYMENT EXPERIENCE
+     </span>
+     <h1 id="chapter-title-0">
+      SCHOOL FEES.
+      <br>
+      CLEAR CHOICES.
+     </h1>
+     <p>I designed the school-fee payment journey—from parent and institute research to flows, final UI, stakeholder reviews and developer handoff.</p>
+     <dl class="project-facts">
+      <div>
+       <dt>
+        ROLE
+       </dt>
+       <dd>
+        Senior Product Designer
+       </dd>
+      </div>
+      <div>
+       <dt>
+        SCOPE
+       </dt>
+       <dd>
+        End-to-end UX &amp; UI
+       </dd>
+      </div>
+      <div>
+       <dt>
+        PLATFORM
+       </dt>
+       <dd>
+        Responsive web
+       </dd>
+      </div>
+     </dl>
+     <p class="tenure">
+      AT GRAYQUEST · FEB 2025 – JUN 2026
+     </p>
+    </div>
+    <figure class="cover desktop-cover">
+     <div class="art">
+      <img alt="GrayQuest comic cover: turning complexity into clarity" decoding="async" fetchpriority="high" height="500" loading="eager" src="assets/cover.png" width="410">
+     </div>
+     <figcaption>
+      A STORY ABOUT CHOICE &amp; CLARITY
+     </figcaption>
+    </figure>
+    <div class="hero-feature">
+    <figure class="cover">
+     <img alt="GrayQuest comic cover: turning complexity into clarity" decoding="async" fetchpriority="high" height="1044" loading="eager" src="../../images/case-grayquest.png" width="784">
+    </figure>
+    <div class="feature-copy"><p class="small-label">A STORY ABOUT CHOICE &amp; CLARITY</p><p>From choosing a plan to knowing what happens next.</p><a class="explore-link" href="#choose">Explore the design <span aria-hidden="true">↓</span></a></div>
+    </div>
+   </section>
+   <section aria-labelledby="chapter-title-1" class="chapter dark" id="section-1">
+    <div class="chapter-inner">
+     <span class="chapter-tag">01 / PROBLEM &amp; APPROACH</span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="chapter-title-1">SCHOOL FEES WERE THE GOAL.
+THE APPLICATION WAS THE CHALLENGE.</h2>
+<p class="intro">Parents needed to compare a financial commitment, understand verification, and know what remained after payment. I explored these questions through parent and institute calls, then iterated with product managers and the CEO.</p>
+</div>
+     </div>
+     <div class="grid three problem-grid">
+      <article class="paper-card">
+       <span class="small-label">
+        01 / CHOOSING A PLAN
+       </span>
+       <div class="art">
+        <img alt="Illustration of choosing a plan" decoding="async" height="352" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/problem-plan@3x.webp" srcset="assets/problem-plan@3x.webp 771w" width="771">
+       </div>
+       <h3 class="">
+        What do I pay today and every month?
+       </h3>
+       <p>
+        Payable today, monthly instalments, duration and applicable fees needed to be easy to compare.
+       </p>
+      </article>
+      <article class="paper-card">
+       <span class="small-label">
+        02 / VERIFICATION
+       </span>
+       <div class="art">
+        <img alt="Illustration of verification" decoding="async" height="375" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/problem-kyc@3x.webp" srcset="assets/problem-kyc@3x.webp 555w" width="555">
+       </div>
+       <h3 class="">
+        Why are these details needed now?
+       </h3>
+       <p>
+        Sharing financial details needed an explanation of the check and a route forward if it failed.
+       </p>
+      </article>
+      <article class="paper-card">
+       <span class="small-label">
+        03 / REPAYMENT SETUP
+       </span>
+       <div class="art">
+        <img alt="Illustration of repayment setup" decoding="async" height="390" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/problem-status@3x.webp" srcset="assets/problem-status@3x.webp 779w" width="779">
+       </div>
+       <h3 class="">
+        It says pending. What should I do?
+       </h3>
+       <p>
+        Payment success, repayment setup and application review needed to communicate different states.
+       </p>
+      </article>
+     </div>
+     <div class="grid two collaboration">
+      <div class="reason">
+       <h3>
+        REQUIREMENTS → EARLY FLOWS
+       </h3>
+       <p>
+        I gathered requirements with product managers and spoke with parents and institutes. I explored ideas through flowcharts and low-fidelity wireframes, then reviewed the sequence with the PM and CEO.
+       </p>
+      </div>
+      <div class="reason">
+       <h3>
+        FEEDBACK → FINAL UI
+       </h3>
+       <p>
+        Stakeholder feedback guided further research. I studied banking journeys to understand similar checks, refined the flow and screens with the PM and CEO, and handed the designs to developers.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="chapter-title-2" class="chapter cream" id="journey">
+    <div class="chapter-inner">
+     <span class="chapter-tag">02 / THE JOURNEY</span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="chapter-title-2">FOUR CHAPTERS. ONE CLEAR NEXT STEP.</h2>
+<p class="intro">From choosing a plan to tracking the application, every stage needed a clear purpose.</p>
+</div>
+     </div>
+     <p class="source-note">
+      Representative EMI journey. Requirements vary by applicant and plan.
+     </p>
+     <ol class="journey">
+      <li>
+       <div class="journey-story">
+        <span class="chapter-number">
+        01
+       </span>
+       <h3>
+         CHOOSE
+         <br>
+         A PLAN
+        </h3>
+        <img alt="Parent considering this stage" height="499" src="assets/journey-choose@3x.webp" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/smartphone.svg">
+          <span>
+           Verify
+           <br>
+           mobile
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/file-text.svg">
+          <span>
+           Student &amp;
+           <br>
+           fee details
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/chart-no-axes-column-increasing.svg">
+          <span>
+           Select
+           <br>
+           EMI plan
+          </span>
+         </li>
+        </ol>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Connect fee details to a manageable payment commitment.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “Which plan
+        <br>
+        works for us?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+      <li>
+       <div class="journey-story">
+        <span class="chapter-number">
+        02
+       </span>
+       <h3>
+         COMPLETE
+         <br>
+         CHECKS
+        </h3>
+        <img alt="Parent considering this stage" decoding="async" height="562" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/journey-checks@3x.webp" srcset="assets/journey-checks@3x.webp 969w" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/user-round.svg">
+          <span>
+           Applicant
+           <br>
+           details
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/file-text.svg">
+          <span>
+           Applicable
+           <br>
+           income check
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/shield-check.svg">
+          <span>
+           KYC
+          </span>
+         </li>
+        </ol>
+        <span class="conditional-note">
+         Requirements depend on the applicant.
+        </span>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Explain which details are needed and why.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “Why do you
+        <br>
+        need this?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+      <li>
+       <div class="journey-story">
+        <span class="chapter-number">
+        03
+       </span>
+       <h3>
+         REVIEW
+         <br>
+         &amp; PAY
+        </h3>
+        <img alt="Parent considering this stage" decoding="async" height="533" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/journey-review@3x.webp" srcset="assets/journey-review@3x.webp 969w" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/file-text.svg">
+          <span>
+           Review
+           <br>
+           details
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/square-check.svg">
+          <span>
+           Accept
+           <br>
+           terms
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/credit-card.svg">
+          <span>
+           Upfront payment,
+           <br>
+           if applicable
+          </span>
+         </li>
+        </ol>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Understand the commitment before making a payment.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “What am I
+        <br>
+        paying now?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+      <li>
+       <div class="journey-story">
+        <span class="chapter-number">
+        04
+       </span>
+       <h3>
+         SET UP
+         <br>
+         &amp; TRACK
+        </h3>
+        <img alt="Parent considering this stage" decoding="async" height="496" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/journey-track@3x.webp" srcset="assets/journey-track@3x.webp 969w" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/settings.svg">
+          <span>
+           Set up
+           <br>
+           repayment
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/clock.svg">
+          <span>
+           Pending
+           <br>
+           checks
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/file-search.svg">
+          <span>
+           Track
+           <br>
+           application
+          </span>
+         </li>
+        </ol>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Make completed steps and remaining actions visible.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “What happens
+        <br>
+        after I pay?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+     </ol>
+     <div class="milestones">
+      <span>
+       Payment
+       <br>
+       received
+      </span>
+      <span>
+       Repayment
+       <br>
+       setup complete
+      </span>
+      <span>
+       Application
+       <br>
+       approved
+      </span>
+     </div>
+     </div>
+   </section>
+   <section aria-labelledby="chapter-title-3" class="chapter cream" id="choose">
+    <div class="chapter-inner">
+     <span class="chapter-tag">03 / CHOOSE A PLAN</span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="chapter-title-3">
+        MAKE THE OPTIONS COMPARABLE.
+       </h2>
+       <p class="intro">
+        With the fee amount confirmed, parents needed to compare what they would pay today and over time.
+       </p>
+      </div>
+     </div>
+     <div class="grid compare-grid">
+      <div class="plan-evidence stack">
+       <h3>
+        Comparing EMI plans
+       </h3>
+       <button aria-label="Enlarge: Plan B: monthly EMI, duration and payable today" class="evidence" data-full-src="assets/plan-b-vector.svg" data-zoom="" type="button" data-plan="true">
+        <img alt="Plan B: monthly EMI, duration and payable today" decoding="async" height="743" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/plan-b-vector.svg" width="2352">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+       <button aria-label="Enlarge: Plan C: monthly EMI, duration and payable today" class="evidence" data-full-src="assets/plan-c-vector.svg" data-zoom="" type="button" data-plan="true">
+        <img alt="Plan C: monthly EMI, duration and payable today" decoding="async" height="743" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/plan-c-vector.svg" width="2352">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+       <p>
+        Two plan options from the original interface. Amounts shown are historical examples.
+       </p>
+      </div>
+      <div class="stack">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         What do I pay today—and every month?
+        </p>
+       </aside>
+       <div class="reason" data-marker="01">
+        <h3>
+         OVER TIME
+        </h3>
+        <p>
+         Monthly amount and duration sit together so parents can weigh a smaller instalment against a longer commitment.
+        </p>
+       </div>
+       <div class="reason" data-marker="02">
+        <h3>
+         TODAY
+        </h3>
+        <p>
+         Payable today makes the immediate payment visible before selection.
+        </p>
+       </div>
+       <div class="reason" data-marker="03">
+        <h3>
+         COMPARE
+        </h3>
+        <p>
+         Consistent placement helps parents scan the same details across plans.
+        </p>
+       </div>
+      </div>
+     </div>
+    <details class="supporting"><summary>See how parents get started · registration, OTP &amp; student details</summary><div class="supporting-content">
+<div class="grid start-grid">
+      <div class="stack">
+       <article class="screen-card">
+        <h3>
+         Register &amp; verify
+        </h3>
+        <button aria-label="Enlarge: Original GrayQuest mobile registration" class="evidence" data-full-src="assets/register@3x.webp" data-zoom="" type="button">
+         <img alt="Original GrayQuest mobile registration" decoding="async" height="984" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/register@3x.webp" srcset="assets/register@3x.webp 1344w" width="1344">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+         <span class="screen-marker" style="--marker-top:52%">
+          1
+         </span>
+        </button>
+        <div class="caption">
+         <p>
+          Enter the number used for banking.
+         </p>
+        </div>
+       </article>
+       <article class="screen-card">
+        <h3>
+         Verify before continuing
+        </h3>
+        <button aria-label="Enlarge: Original GrayQuest OTP screen" class="evidence" data-full-src="assets/otp@3x.webp" data-zoom="" type="button">
+         <img alt="Original GrayQuest OTP screen" decoding="async" height="1095" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/otp@3x.webp" srcset="assets/otp@3x.webp 1344w" width="1344">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+         <span class="screen-marker" style="--marker-top:87%">
+          2
+         </span>
+        </button>
+        <div class="caption">
+         <p>
+          Verify the code before student details.
+         </p>
+        </div>
+       </article>
+      </div>
+      <article class="screen-card">
+       <h3>
+        Student &amp; fee details
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest student and annual fee form" class="evidence" data-full-src="assets/student-vector.svg" data-zoom="" type="button">
+        <img alt="Original GrayQuest student and annual fee form" decoding="async" height="2394" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/student-vector.svg" width="1344">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        <span class="screen-marker" style="--marker-top:85%">
+         3
+        </span>
+       </button>
+       <div class="caption">
+        <p>
+         Original filled state · sample values from source
+        </p>
+       </div>
+      </article>
+      <div class="stack reasons">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         Where do I begin?
+        </p>
+       </aside>
+       <div class="reason" data-marker="1">
+        <h3>
+         Explain which number to use
+        </h3>
+        <p>
+         The banking-number note helps parents choose the appropriate contact before requesting an OTP.
+        </p>
+       </div>
+       <div class="reason" data-marker="2">
+        <h3>
+         Verify before continuing
+        </h3>
+        <p>
+         The OTP screen makes verification a separate action. Sending a code does not complete this step.
+        </p>
+       </div>
+       <div class="reason" data-marker="3">
+        <h3>
+         Confirm student &amp; fee details
+        </h3>
+        <p>
+         Institute, student and annual fee details establish the application before the parent selects a plan.
+        </p>
+       </div>
+      </div>
+     </div>
+     </div></details><details class="supporting"><summary>Explore OTP recovery · original validation &amp; proposed improvement</summary><div class="supporting-content">
+<div class="recovery grid two">
+      <div>
+       <span class="small-label">
+        ORIGINAL VALIDATION
+       </span>
+       <h3>
+        Keep the next action visible.
+       </h3>
+       <button aria-label="Enlarge: Original OTP validation message" class="evidence" data-full-src="assets/otp-error@3x.webp" data-zoom="" type="button">
+        <img alt="Original OTP validation message" decoding="async" height="251" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/otp-error@3x.webp" srcset="assets/otp-error@3x.webp 1320w" width="1320">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <p>
+        The source prompts the parent to enter an OTP.
+       </p>
+      </div>
+      <div>
+       <span class="small-label accent">
+        PROPOSED RECOVERY · CONCEPT
+       </span>
+       <div class="proposal">
+        <strong>
+         This OTP has expired.
+        </strong>
+        <p>
+         Request a new code to continue.
+        </p>
+        <div aria-hidden="true" class="otp-boxes">
+         <span>
+          –
+         </span>
+         <span>
+          –
+         </span>
+         <span>
+          –
+         </span>
+         <span>
+          –
+         </span>
+        </div>
+        <span class="sample-cta">
+         Resend OTP
+        </span>
+        <span>
+         Change mobile number
+        </span>
+       </div>
+       <p>
+        A proposed improvement: explain the issue first, then show how to recover. Not presented as shipped work.
+       </p>
+      </div>
+     </div>
+    </div></details>
+</div>
+   </section>
+   <section aria-labelledby="chapter-title-4" class="chapter dark" id="checks">
+    <div class="chapter-inner">
+     <span class="chapter-tag">04 / COMPLETE CHECKS</span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="chapter-title-4">EXPLAIN THE CHECK. KEEP A ROUTE FORWARD.</h2>
+<p class="intro">Each check asks for different information. The design explains the requirements before parents begin and makes available routes visible.</p>
+</div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        What if Aadhaar doesn’t work for me?
+       </p>
+      </aside>
+     </div>
+     <div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Verify with Aadhaar OTP
+       </h3>
+       <p class="screen-intro">
+        Aadhaar OTP requires the Aadhaar number and access to its linked mobile number.
+       </p>
+       <button aria-label="Enlarge: Original Aadhaar OTP KYC screen" class="evidence" data-full-src="assets/aadhaar@3x.webp" data-zoom="" type="button">
+        <img alt="Original Aadhaar OTP KYC screen" decoding="async" height="1206" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/aadhaar@3x.webp" srcset="assets/aadhaar@3x.webp 1072w" width="1072">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         The linked-number note reveals a blocker before OTP is requested.
+        </p>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Verify with documents
+       </h3>
+       <p class="screen-intro">
+        The upload route names PAN and an accepted second identity document before parents begin.
+       </p>
+       <button aria-label="Enlarge: Original document-upload KYC screen" class="evidence" data-full-src="assets/documents@3x.webp" data-zoom="" type="button">
+        <img alt="Original document-upload KYC screen" decoding="async" height="1206" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/documents@3x.webp" srcset="assets/documents@3x.webp 1072w" width="1072">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         Both required documents are named before upload starts.
+        </p>
+       </div>
+      </article>
+     </div>
+    <details class="supporting"><summary>See applicant &amp; income verification screens</summary><div class="supporting-content">
+<ol class="context-steps">
+      <li>
+       <span>
+        01
+       </span>
+       Choose applicant
+      </li>
+      <li>
+       <span>
+        02
+       </span>
+       Applicant details
+      </li>
+      <li>
+       <span>
+        03
+       </span>
+       Employment &amp; income
+      </li>
+      <li>
+       <span>
+        04
+       </span>
+       Applicable verification
+      </li>
+     </ol>
+     <div class="grid two">
+      <article class="screen-card">
+       <h3>
+        Who is applying?
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest applicant definition and choices" class="evidence" data-full-src="assets/applicant@3x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest applicant definition and choices" decoding="async" height="1692" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/applicant@3x.webp" srcset="assets/applicant@3x.webp 1872w" width="1872">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+      <div class="stack">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         Should I enter my details or my child’s?
+        </p>
+       </aside>
+       <div class="reason">
+        <h3>
+         01 / DEFINE THE APPLICANT
+        </h3>
+        <p>
+         The definition appears before the choices to clarify whose personal and financial details are needed.
+        </p>
+       </div>
+       <div class="reason">
+        <h3>
+         MAKE THE CHOICE EXPLICIT
+        </h3>
+        <p>
+         Separate options distinguish a parent or guardian applying from a student applying for themselves.
+        </p>
+       </div>
+       <div class="reason">
+        <h3>
+         KEEP THE APPLICANT CONSISTENT
+        </h3>
+        <p>
+         Keep the selected applicant as the subject of every detail that follows.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="subsection">
+      <h3>
+       One applicant. Consistent details.
+      </h3>
+      <p>
+       Income details belong to the selected applicant—including the student when they are applying for themselves.
+      </p>
+      <div class="grid two screen-pair">
+       <article class="screen-card paired-screen">
+        <h3>
+         Salaried applicant
+        </h3>
+        <button aria-label="Enlarge: Original salaried applicant fields" class="evidence" data-full-src="assets/salaried@3x.webp" data-zoom="" type="button">
+         <img alt="Original salaried applicant fields" decoding="async" height="690" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/salaried@3x.webp" srcset="assets/salaried@3x.webp 1728w" width="1728">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+        <div class="caption">
+         <p>
+          Company name and monthly in-hand income.
+         </p>
+        </div>
+       </article>
+       <article class="screen-card paired-screen">
+        <h3>
+         Self-employed applicant
+        </h3>
+        <button aria-label="Enlarge: Original business applicant fields" class="evidence" data-full-src="assets/business@3x.webp" data-zoom="" type="button">
+         <img alt="Original business applicant fields" decoding="async" height="1266" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/business@3x.webp" srcset="assets/business@3x.webp 1728w" width="1728">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+        <div class="caption">
+         <p>
+          Business name, total revenue, years operating, and a business description.
+         </p>
+        </div>
+       </article>
+      </div>
+     </div>
+    <div class="grid income-grid">
+      <article class="screen-card">
+       <h3>
+        Income verification
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest salaried income verification screen" class="evidence source-framed" data-full-src="assets/income@2x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest salaried income verification screen" decoding="async" height="2294" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/income@2x.webp" srcset="assets/income@2x.webp 1408w" width="1408">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+      <div class="stack">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         “Why do you need to check my income?”
+        </p>
+       </aside>
+       <div class="reason">
+        <h3>
+         EXPLAIN THE ACCOUNT TO USE
+        </h3>
+        <p>
+         To assess income for this application, use the account that receives salary. If self-employed, use the account for business transactions.
+        </p>
+       </div>
+       <button aria-label="Enlarge: Original self-employed account guidance" class="evidence" data-full-src="assets/self-employed@3x.webp" data-zoom="" type="button">
+        <img alt="Original self-employed account guidance" decoding="async" height="202" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/self-employed@3x.webp" srcset="assets/self-employed@3x.webp 1044w" width="1044">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="reason">
+        <h3>
+         OFFER THE AVAILABLE ROUTES
+        </h3>
+        <p>
+         Account Aggregator OTP, netbanking, and six-month statement upload are shown together within this check.
+        </p>
+       </div>
+       <div class="reason">
+        <h3>
+         IF VERIFICATION FAILS
+        </h3>
+        <p>
+         Keep a visible retry action within the verification check.
+        </p>
+       </div>
+       <button aria-label="Enlarge: Original income verification failure and Retry" class="evidence" data-full-src="assets/income-error@3x.webp" data-zoom="" type="button">
+        <img alt="Original income verification failure and Retry" decoding="async" height="684" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/income-error@3x.webp" srcset="assets/income-error@3x.webp 1072w" width="1072">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </div>
+     </div>
+    </div></details>
+</div>
+   </section>
+   <section aria-labelledby="chapter-title-5" class="chapter cream compact-evidence" id="pay">
+    <div class="chapter-inner">
+     <span class="chapter-tag">05 / REVIEW &amp; PAY</span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="chapter-title-5">CONFIRM THE COMMITMENT. THEN PAY.</h2>
+<p class="intro">Parents review the amount and terms before paying. The confirmation then explains what is still required.</p>
+</div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        “Is this the commitment I meant to make?”
+       </p>
+      </aside>
+     </div>
+     <div class="grid three screen-pair payment-overview">
+<article class="screen-card paired-screen">
+       <h3>
+        Review details
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest review screen and declarations" class="evidence source-framed" data-full-alt="GrayQuest review details and declarations" data-full-src="assets/review-screen@3x.webp" data-zoom="" type="button">
+        <img alt="Excerpt: EMI amount, duration and payable today" decoding="async" height="630" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/review-excerpt@3x.webp" width="713">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          CHECK &amp; CORRECT
+         </h3>
+         <p>The EMI amount, duration and payable-today figure appear together, with Edit available before continuing.</p>
+        </div>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Choose a payment method
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest payment amount and method choices" class="evidence" data-full-src="assets/payment@2x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest payment amount and method choices" decoding="async" height="1560" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/payment@2x.webp" srcset="assets/payment@2x.webp 1140w" width="1140">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         The ₹20,000 amount, a separate ₹300 fee label, and route limits appear before selection.
+        </p>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Payment received. Setup remains.
+       </h3>
+       <button aria-label="Enlarge: Original downpayment confirmation and remaining setup tasks" class="evidence" data-full-src="assets/payment-success@2x.webp" data-zoom="" type="button">
+        <img alt="Original downpayment confirmation and remaining setup tasks" decoding="async" height="1560" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/payment-success@2x.webp" srcset="assets/payment-success@2x.webp 1140w" width="1140">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         Downpayment success is followed by repayment setup and a live-selfie task.
+        </p>
+       </div>
+      </article>
+     </div>
+<p class="source-note">
+      Separate GrayQuest source examples · Plan terms differ; these screens do not depict one continuous application.
+     </p>
+    <details class="supporting"><summary>Read the full review &amp; agreement screens</summary><div class="supporting-content">
+<div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Review details
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest review screen and declarations" class="evidence source-framed" data-full-alt="GrayQuest review details and declarations" data-full-src="assets/review-screen@3x.webp" data-zoom="" type="button">
+        <img alt="Original full GrayQuest review screen and declarations" decoding="async" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/review-screen@3x.webp">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          CHECK &amp; CORRECT
+         </h3>
+         <p>The EMI amount, duration and payable-today figure appear together, with Edit available before continuing.</p>
+        </div>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Read &amp; accept terms
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest agreement and consent" class="evidence source-framed" data-full-src="assets/agreement-screen@3x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest agreement and consent" decoding="async" height="3084" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/agreement-screen@3x.webp" srcset="assets/agreement-screen@3x.webp 1908w" width="1908">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          READ &amp; ACCEPT
+         </h3>
+         <p>
+          The debit date and lender appear before a separate agreement acceptance.
+         </p>
+        </div>
+       </div>
+      </article>
+     </div>
+     </div></details>
+</div>
+   </section>
+   <section aria-labelledby="chapter-title-6" class="chapter cream compact-evidence" id="setup">
+    <div class="chapter-inner">
+     <span class="chapter-tag">06 / SET UP &amp; TRACK</span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="chapter-title-6">PAYMENT IS A MILESTONE. MAKE THE REST CLEAR.</h2>
+<p class="intro">Account verification, repayment authorisation and application review are separate steps. Each needs its own explanation and next action.</p>
+</div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        “Why ₹1—and is this my account?”
+       </p>
+      </aside>
+     </div>
+     <div class="grid three setup-overview">
+<article class="screen-card paired-screen">
+       <h3>01 / Verify the account</h3>
+       <button aria-label="Enlarge: Original fetched account details" class="evidence" data-full-src="assets/bank-details@3x.webp" data-zoom="" type="button">
+        <img alt="Original fetched account details" decoding="async" height="2418" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/bank-details@3x.webp" srcset="assets/bank-details@3x.webp 1554w" width="1554">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          CHECK BEFORE CONTINUING
+         </h3>
+         <p>
+          The fetched bank, account holder, masked number, IFSC and account type appear before “Proceed with this account.”
+         </p>
+        </div>
+       </div>
+      </article>
+     <article class="screen-card paired-screen">
+       <h3>02 / Authorise repayments</h3>
+       <button aria-label="Enlarge: Original e-mandate explanation" class="evidence" data-full-src="assets/mandate@3x.webp" data-zoom="" type="button">
+        <img alt="Original e-mandate explanation" decoding="async" height="1410" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/mandate@3x.webp" srcset="assets/mandate@3x.webp 1040w" width="1040">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      <p class="caption">
+        The source explains recurring EMI debit and asks parents to proceed with debit-card or net-banking details.
+       </p>
+       </article>
+      <article class="screen-card paired-screen">
+       <h3>03 / Track the review</h3>
+       <button aria-label="Enlarge: Original GrayQuest application under-review status" class="evidence" data-full-src="assets/status@3x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest application under-review status" decoding="async" height="1602" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/status@3x.webp" srcset="assets/status@3x.webp 1410w" width="1410">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          APPLICATION STATUS
+         </h3>
+         <p>
+          The dashboard says the form is under review. View Details offers further context.
+         </p>
+        </div>
+       </div>
+      </article>
+     </div>
+<details class="supporting"><summary>Understand the ₹1 check · UPI, account details &amp; recovery</summary><div class="supporting-content">
+<div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Fetch account with UPI
+       </h3>
+       <button aria-label="Enlarge: Original ₹1 UPI bank verification instructions" class="evidence" data-full-src="assets/bank-upi@3x.webp" data-zoom="" type="button">
+        <img alt="Original ₹1 UPI bank verification instructions" decoding="async" height="2425" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/bank-upi@3x.webp" srcset="assets/bank-upi@3x.webp 1788w" width="1788">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          WHY THE ₹1 APPEARS
+         </h3>
+         <p>
+          The original screen asks for a ₹1 UPI transaction to fetch bank details and says it will be refunded after verification.
+         </p>
+        </div>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Review bank details
+       </h3>
+       <button aria-label="Enlarge: Original fetched account details" class="evidence" data-full-src="assets/bank-details@3x.webp" data-zoom="" type="button">
+        <img alt="Original fetched account details" decoding="async" height="2418" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/bank-details@3x.webp" srcset="assets/bank-details@3x.webp 1554w" width="1554">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          CHECK BEFORE CONTINUING
+         </h3>
+         <p>
+          The fetched bank, account holder, masked number, IFSC and account type appear before “Proceed with this account.”
+         </p>
+        </div>
+       </div>
+      </article>
+     </div>
+     <div class="recovery recovery-row">
+      <div>
+       <h3>
+        If the account check fails
+       </h3>
+       <p>
+        The actual error offers Retry or Provide details manually. Parents can stay in the bank-details step and use another route.
+       </p>
+      </div>
+      <button aria-label="Enlarge: Original bank verification failure with retry and manual entry" class="evidence" data-full-src="assets/bank-error@3x.webp" data-zoom="" type="button">
+       <img alt="Original bank verification failure with retry and manual entry" decoding="async" height="780" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/bank-error@3x.webp" srcset="assets/bank-error@3x.webp 861w" width="861">
+       <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+      </button>
+     </div>
+    </div></details><details class="supporting"><summary>Explore repayment methods &amp; mandate recovery</summary><div class="supporting-content">
+<div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Choose another repayment route
+       </h3>
+       <p class="screen-intro">
+        When debit card or net banking is unavailable, the source offers another bank account, UPI AutoPay, or a signed mandate PDF.
+       </p>
+       <button aria-label="Enlarge: Original alternative repayment-authorisation routes" class="evidence" data-full-src="assets/mandate-methods@3x.webp" data-zoom="" type="button">
+        <img alt="Original alternative repayment-authorisation routes" decoding="async" height="1902" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/mandate-methods@3x.webp" srcset="assets/mandate-methods@3x.webp 1560w" width="1560">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+     </div>
+     <div class="recovery recovery-row">
+      <div>
+       <h3>
+        Retry or change account
+       </h3>
+       <p>
+        The original GrayQuest failure screen offers Retry and Change bank account, keeping recovery within repayment setup.
+       </p>
+      </div>
+      <button aria-label="Enlarge: Original mandate failure with retry or change-bank recovery" class="evidence" data-full-src="assets/mandate-error@3x.webp" data-zoom="" type="button">
+       <img alt="Original mandate failure with retry or change-bank recovery" decoding="async" height="1113" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/mandate-error@3x.webp" srcset="assets/mandate-error@3x.webp 990w" width="990">
+       <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+      </button>
+     </div>
+     </div></details><details class="supporting"><summary>See the live-selfie step</summary><div class="supporting-content">
+<article class="screen-card paired-screen">
+       <h3>
+        Complete the selfie
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest live-selfie screen" class="evidence" data-full-src="assets/selfie@3x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest live-selfie screen" decoding="async" height="1995" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/selfie@3x.webp" srcset="assets/selfie@3x.webp 1518w" width="1518">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          LIVE SELFIE
+         </h3>
+         <p>
+          The camera permission, alternate-device link and selfie action are shown together.
+         </p>
+        </div>
+       </div>
+      </article>
+      </div></details>
+</div>
+   </section>
+   <section aria-labelledby="chapter-title-7" class="chapter cream" id="section-16">
+    <div class="chapter-inner">
+     <span class="chapter-tag">07 / REFLECTION &amp; NEXT STEPS</span>
+     <div class="reflection-header">
+      <div class="gq-section-head">
+       <div>
+        <h2 id="chapter-title-7">
+         CLARITY DOESN’T END
+         <br>
+         AT PAYMENT.
+        </h2>
+       </div>
+      </div>
+      <div class="reflection-intro">
+       <div>
+        <span class="small-label">
+         MY DESIGN TAKEAWAY
+        </span>
+        <p>
+         The key distinction is between paying now, authorising future repayments and receiving approval. The interface needs to explain each milestone separately.
+        </p>
+        <p class="handwritten">
+         Every step needs an explanation.
+        </p>
+       </div>
+       <div class="art">
+        <img alt="Parent and child considering their next step" decoding="async" height="762" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/reflection@3x.webp" srcset="assets/reflection@3x.webp 753w" width="753">
+       </div>
+      </div>
+     </div>
+     <p class="takeaway">
+      The design constraint: identity checks, account verification and repayment authorisation each need their own explanation.
+     </p>
+     <div class="subsection">
+      <span class="small-label">
+       WHAT I’D VALIDATE NEXT
+      </span>
+      <div class="grid two">
+       <article class="paper-card">
+        <span class="small-label">
+         01 / BEFORE PAYMENT
+        </span>
+        <h3>
+         Can parents explain the commitment?
+        </h3>
+        <p>
+         Ask them to identify payable today, fees, future EMIs and duration from the actual screens.
+        </p>
+        <p class="small-label">
+         TODAY · FEES · FUTURE EMIs
+        </p>
+       </article>
+       <article class="paper-card">
+        <span class="small-label">
+         02 / AFTER PAYMENT
+        </span>
+        <h3>
+         Can parents tell whose turn it is?
+        </h3>
+        <p>
+         Ask them to distinguish action required from under review—and identify what happens next.
+        </p>
+        <p class="small-label">
+         ACTION · REVIEW · OWNERSHIP
+        </p>
+       </article>
+      </div>
+     </div>
+     <div class="closing-links">
+      <a class="cta primary" href="../guardian-one/">
+       NEXT CASE STUDY · GUARDIAN ONE ↗
+      </a>
+      <a class="cta" href="mailto:swatipriya4422@gmail.com">
+       LET’S TALK ↗
+      </a>
+      <a class="back-top" href="#top">
+       Back to top ↑
+      </a>
+     </div>
+    </div>
+   </section>
+  </main>
+<main id="desktop-main" class="desktop-case">
+   <section aria-labelledby="d-hero-title" class="gq-hero" id="d-top" data-nav="d-top">
+    <div class="hero-copy">
+     <span class="eyebrow">
+      GRAYQUEST / SCHOOL-FEE PAYMENT EXPERIENCE
+     </span>
+     <h1 id="d-hero-title">
+      SCHOOL FEES.
+      <br>
+      CLEAR CHOICES.
+     </h1>
+     <p class="hero-subtitle">
+      A JOURNEY PARENTS
+      <br>
+      COULD TRUST.
+     </p>
+     <p>
+      As Senior Product Designer, I took the journey from requirements and parent research through flowcharts, low-fidelity exploration and final UI. I reviewed the work with product managers and the CEO, then handed the designs to developers.
+     </p>
+     <dl class="project-facts">
+      <div>
+       <dt>
+        ROLE
+       </dt>
+       <dd>
+        Senior Product Designer
+       </dd>
+      </div>
+      <div>
+       <dt>
+        SCOPE
+       </dt>
+       <dd>
+        End-to-end UX &amp; UI
+       </dd>
+      </div>
+      <div>
+       <dt>
+        PLATFORM
+       </dt>
+       <dd>
+        Responsive web
+       </dd>
+      </div>
+     </dl>
+     <p class="tenure">
+      AT GRAYQUEST · FEB 2025 – JUN 2026
+     </p>
+     <p class="handwritten hero-note">
+      Make the next decision clear.
+      <br>
+      Then make the next step obvious.
+     </p>
+    </div>
+    <figure class="cover">
+     <div class="art">
+      <img alt="GrayQuest comic cover: turning complexity into clarity" decoding="async" fetchpriority="high" height="1044" loading="eager" src="../../images/case-grayquest.png" width="784">
+     </div>
+     <figcaption>
+      A STORY ABOUT CHOICE &amp; CLARITY
+     </figcaption>
+    </figure>
+   </section>
+   <section aria-labelledby="d-title-1" class="chapter dark" id="d-section-1" data-nav="d-section-1">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      01 / THE PROBLEM
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-1">
+        PARENTS CAME TO PAY SCHOOL FEES.
+        <span class="accent">
+         BUT FIRST, THEY HAD TO NAVIGATE A FINANCIAL APPLICATION.
+        </span>
+       </h2>
+       <p class="intro">
+        Choosing a plan was only the beginning. Parents then had to provide personal and financial details, complete checks, and authorise repayments. Each stage introduced another question about money, information, or what came next.
+       </p>
+      </div>
+     </div>
+     <span class="small-label moments-label">
+      THREE KEY MOMENTS IN THE JOURNEY
+     </span>
+     <div class="grid three problem-grid">
+      <article class="paper-card">
+       <span class="small-label">
+        01 / CHOOSING A PLAN
+       </span>
+       <div class="art">
+        <img alt="Illustration of choosing a plan" decoding="async" height="352" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/problem-plan@3x.webp" srcset="assets/problem-plan@3x.webp 771w" width="771">
+       </div>
+       <h3 class="">
+        What do I pay today and every month?
+       </h3>
+       <p>
+        Payable today, monthly instalments, duration and applicable fees needed to be easy to compare.
+       </p>
+      </article>
+      <article class="paper-card">
+       <span class="small-label">
+        02 / VERIFICATION
+       </span>
+       <div class="art">
+        <img alt="Illustration of verification" decoding="async" height="375" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/problem-kyc@3x.webp" srcset="assets/problem-kyc@3x.webp 555w" width="555">
+       </div>
+       <h3 class="">
+        Why are these details needed now?
+       </h3>
+       <p>
+        Sharing financial details needed an explanation of the check and a route forward if it failed.
+       </p>
+      </article>
+      <article class="paper-card">
+       <span class="small-label">
+        03 / REPAYMENT SETUP
+       </span>
+       <div class="art">
+        <img alt="Illustration of repayment setup" decoding="async" height="390" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/problem-status@3x.webp" srcset="assets/problem-status@3x.webp 779w" width="779">
+       </div>
+       <h3 class="">
+        It says pending. What should I do?
+       </h3>
+       <p>
+        Payment success, repayment setup and application review needed to communicate different states.
+       </p>
+      </article>
+     </div>
+     <p class="takeaway handwritten">
+      Each step asked parents to act. The journey needed to explain why.
+     </p>
+     <div class="narrator">
+      <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+      <p>
+       My focus was to make each commitment understandable—and make the next action clear.
+      </p>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-2" class="chapter cream" id="d-section-2" data-nav="d-section-1">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      02 / THE STARTING POINT
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-2">
+        WHERE CLARITY MATTERED MOST.
+       </h2>
+       <p class="intro">
+        <strong>
+         GrayQuest helps parents split school fees into monthly instalments.
+        </strong>
+        <span class="intro-detail">
+         Three GrayQuest excerpts locate the choices, commitment, and status questions explored in this case study.
+        </span>
+       </p>
+      </div>
+     </div>
+     <div class="grid three">
+      <article class="paper-card">
+       <span class="chapter-tag">
+        01 / CHOOSE
+       </span>
+       <h3>
+        Compare payment plans
+       </h3>
+       <div class="mini-plans">
+        <button aria-label="Enlarge: GrayQuest plan B — standardised sample amounts" class="evidence" data-full-src="assets/plan-b-sample.svg" data-zoom="" type="button">
+         <img alt="GrayQuest plan B — standardised sample amounts" decoding="async" height="743" loading="lazy" src="assets/plan-b-sample.svg" width="2352">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+        <button aria-label="Enlarge: GrayQuest plan C — standardised sample amounts" class="evidence" data-full-src="assets/plan-c-sample.svg" data-zoom="" type="button">
+         <img alt="GrayQuest plan C — standardised sample amounts" decoding="async" height="743" loading="lazy" src="assets/plan-c-sample.svg" width="2352">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+       </div>
+       <p class="handwritten evidence-caption">
+        Monthly amount and payable today
+       </p>
+       <div class="evidence-explanation">
+        <span class="small-label">
+         QUESTION TO EXAMINE
+        </span>
+        <p>
+         Can parents compare monthly amount, duration and payable today across plans?
+        </p>
+        <span class="small-label">
+         WHY IT MATTERS
+        </span>
+        <p>
+         A plan choice connects what is due now to a longer repayment commitment.
+        </p>
+       </div>
+      </article>
+      <article class="paper-card">
+       <span class="chapter-tag">
+        02 / UNDERSTAND
+       </span>
+       <h3>
+        Review the commitment
+       </h3>
+       <button aria-label="Enlarge: GrayQuest review summary — standardised sample amounts" class="evidence" data-full-src="assets/review-excerpt-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest review summary — standardised sample amounts" decoding="async" height="630" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/review-excerpt-sample.svg" width="713">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <p class="handwritten evidence-caption">
+        EMI, duration and payable today
+       </p>
+       <div class="evidence-explanation">
+        <span class="small-label">
+         QUESTION TO EXAMINE
+        </span>
+        <p>
+         Can parents identify the EMI, duration and amount due today before confirming?
+        </p>
+        <span class="small-label">
+         WHY IT MATTERS
+        </span>
+        <p>
+         Applicants need a final chance to check the numbers and correct them.
+        </p>
+       </div>
+      </article>
+      <article class="paper-card">
+       <span class="chapter-tag">
+        03 / CONTINUE
+       </span>
+       <h3>
+        Recognise the application status
+       </h3>
+       <button aria-label="Enlarge: GrayQuest application under review — standardised sample amounts" class="evidence" data-full-src="assets/status-excerpt-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest application under review — standardised sample amounts" decoding="async" height="657" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/status-excerpt-sample.svg" width="579">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <p class="handwritten evidence-caption">
+        Review status and next action
+       </p>
+       <div class="evidence-explanation">
+        <span class="small-label">
+         QUESTION TO EXAMINE
+        </span>
+        <p>
+         Can parents tell what is under review and whether they need to act?
+        </p>
+        <span class="small-label">
+         WHY IT MATTERS
+        </span>
+        <p>
+         Payment received and application review are distinct milestones.
+        </p>
+       </div>
+      </article>
+     </div>
+     <p class="source-note">
+      Original interface; sample amounts standardised for this case study. Fee amount: ₹1,00,000. Selected plan: 5 instalments of ₹20,000, with the first included in today’s payment. A ₹300 processing fee is additional. Other source-screen details may differ.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-3" class="chapter dark" id="d-section-3" data-nav="d-section-1">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      03 / DESIGN CHALLENGE
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-3">
+        HELP PARENTS CHOOSE WITH CONFIDENCE.
+        <br>
+        <span class="accent">
+         THEN HELP THEM FINISH.
+        </span>
+       </h2>
+       <p class="intro">
+        Two priorities guided the journey: make the financial commitment understandable, and make the next required action visible.
+       </p>
+      </div>
+     </div>
+     <div class="grid two">
+      <article class="paper-card">
+       <span class="small-label black-tab">
+        01 / CHOOSE
+       </span>
+       <h3>
+        Make payment terms clear
+       </h3>
+       <div class="art diagram-art">
+        <img alt="Illustrative cost breakdown" decoding="async" height="810" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/challenge-cost@3x.webp" srcset="assets/challenge-cost@3x.webp 1562w" width="1562">
+       </div>
+       <p>
+        Show payable today, monthly instalments, duration and any applicable fee in a scannable breakdown.
+       </p>
+      </article>
+      <article class="paper-card">
+       <span class="small-label black-tab">
+        02 / COMPLETE
+       </span>
+       <h3>
+        Make every next step clear
+       </h3>
+       <div class="art diagram-art">
+        <img alt="Simplified journey showing progress and recovery" decoding="async" height="726" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/challenge-progress@3x.webp" srcset="assets/challenge-progress@3x.webp 1614w" width="1614">
+       </div>
+       <p>
+        Explain why details are needed, show progress, and give pending or failed steps a clear next action. Preserve completed work wherever possible.
+       </p>
+      </article>
+     </div>
+     <div class="grid two collaboration">
+      <div class="reason">
+       <h3>
+        REQUIREMENTS → EARLY FLOWS
+       </h3>
+       <p>
+        I gathered requirements with product managers and spoke with parents and institutes. I explored ideas through flowcharts and low-fidelity wireframes, then reviewed the sequence with the PM and CEO.
+       </p>
+      </div>
+      <div class="reason">
+       <h3>
+        FEEDBACK → FINAL UI
+       </h3>
+       <p>
+        Stakeholder feedback guided further research. I studied banking journeys to understand similar checks, refined the flow and screens with the PM and CEO, and handed the designs to developers.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-4" class="chapter cream" id="d-journey" data-nav="d-journey">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      04 / THE JOURNEY BEFORE THE SCREENS
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-4">
+        ONE JOURNEY.
+        <br>
+        A REASON FOR EVERY NEXT STEP.
+       </h2>
+       <p class="intro journey-intro">
+        The story follows three priorities: compare plans, explain checks and recovery, and distinguish payment success from application completion.
+       </p>
+      </div>
+     </div>
+     <p class="source-note">
+      Representative EMI journey. Requirements vary by applicant and plan.
+     </p>
+     <ol class="journey">
+      <li>
+       <span class="chapter-number">
+        01
+       </span>
+       <div class="journey-story">
+        <h3>
+         CHOOSE
+         <br>
+         A PLAN
+        </h3>
+        <img alt="Parent considering this stage" height="499" src="assets/journey-choose@3x.webp" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/smartphone.svg">
+          <span>
+           Verify
+           <br>
+           mobile
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/file-text.svg">
+          <span>
+           Student &amp;
+           <br>
+           fee details
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/chart-no-axes-column-increasing.svg">
+          <span>
+           Select
+           <br>
+           EMI plan
+          </span>
+         </li>
+        </ol>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Connect fee details to a manageable payment commitment.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “Which plan
+        <br>
+        works for us?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+      <li>
+       <span class="chapter-number">
+        02
+       </span>
+       <div class="journey-story">
+        <h3>
+         COMPLETE
+         <br>
+         CHECKS
+        </h3>
+        <img alt="Parent considering this stage" decoding="async" height="562" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/journey-checks@3x.webp" srcset="assets/journey-checks@3x.webp 969w" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/user-round.svg">
+          <span>
+           Applicant
+           <br>
+           details
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/file-text.svg">
+          <span>
+           Applicable
+           <br>
+           income check
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/shield-check.svg">
+          <span>
+           KYC
+          </span>
+         </li>
+        </ol>
+        <span class="conditional-note">
+         Requirements depend on the applicant.
+        </span>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Explain which details are needed and why.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “Why do you
+        <br>
+        need this?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+      <li>
+       <span class="chapter-number">
+        03
+       </span>
+       <div class="journey-story">
+        <h3>
+         REVIEW
+         <br>
+         &amp; PAY
+        </h3>
+        <img alt="Parent considering this stage" decoding="async" height="533" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/journey-review@3x.webp" srcset="assets/journey-review@3x.webp 969w" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/file-text.svg">
+          <span>
+           Review
+           <br>
+           details
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/square-check.svg">
+          <span>
+           Accept
+           <br>
+           terms
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/credit-card.svg">
+          <span>
+           Upfront payment,
+           <br>
+           if applicable
+          </span>
+         </li>
+        </ol>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Understand the commitment before making a payment.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “What am I
+        <br>
+        paying now?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+      <li>
+       <span class="chapter-number">
+        04
+       </span>
+       <div class="journey-story">
+        <h3>
+         SET UP
+         <br>
+         &amp; TRACK
+        </h3>
+        <img alt="Parent considering this stage" decoding="async" height="496" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/journey-track@3x.webp" srcset="assets/journey-track@3x.webp 969w" width="969">
+       </div>
+       <div class="journey-actions">
+        <ol class="action-tiles">
+         <li>
+          <img alt="" src="assets/settings.svg">
+          <span>
+           Set up
+           <br>
+           repayment
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/clock.svg">
+          <span>
+           Pending
+           <br>
+           checks
+          </span>
+         </li>
+         <li>
+          <img alt="" src="assets/file-search.svg">
+          <span>
+           Track
+           <br>
+           application
+          </span>
+         </li>
+        </ol>
+        <p class="purpose">
+         <strong>
+          Purpose:
+         </strong>
+         Make completed steps and remaining actions visible.
+        </p>
+       </div>
+       <p class="handwritten journey-question">
+        “What happens
+        <br>
+        after I pay?”
+        <img alt="" src="assets/question-flourish.svg">
+       </p>
+      </li>
+     </ol>
+     <aside class="journey-applicant-branch"><strong>If an application cannot proceed with the selected applicant</strong><p>Return to applicant selection → another parent/guardian or the student applies → complete the new applicant’s details and applicable checks.</p><a href="#d-checks">Explore applicant routes ↗</a></aside>
+     <div class="milestones">
+      <span>
+       Payment
+       <br>
+       received
+      </span>
+      <span>
+       Repayment
+       <br>
+       setup complete
+      </span>
+      <span>
+       Application
+       <br>
+       approved
+      </span>
+     </div>
+     <div class="narrator">
+      <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+      <p>
+       Payment wasn’t the finish line.
+       <br>
+       Parents needed a clear next step.
+      </p>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-5" class="chapter dark" id="d-choose" data-nav="d-choose">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      05 / CHOOSE A PLAN · GETTING STARTED
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-5">
+        A CLEAR FIRST STEP,
+        <br>
+        BEFORE THE FINANCIAL CHOICE.
+       </h2>
+       <p class="intro">
+        Verify the contact, establish the student and fee details, then move into plan comparison.
+       </p>
+      </div>
+     </div>
+     <div class="grid start-grid">
+      <div class="stack">
+       <article class="screen-card">
+        <h3>
+         Register &amp; verify
+        </h3>
+        <button aria-label="Enlarge: Original GrayQuest mobile registration" class="evidence" data-full-src="assets/register@3x.webp" data-zoom="" type="button">
+         <img alt="Original GrayQuest mobile registration" decoding="async" height="984" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/register@3x.webp" srcset="assets/register@3x.webp 1344w" width="1344">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+         <span class="screen-marker" style="--marker-top:52%">
+          1
+         </span>
+        </button>
+        <div class="caption">
+         <p>
+          Enter the number used for banking.
+         </p>
+        </div>
+       </article>
+       <article class="screen-card">
+        <h3>
+         Verify before continuing
+        </h3>
+        <button aria-label="Enlarge: Original GrayQuest OTP screen" class="evidence" data-full-src="assets/otp@3x.webp" data-zoom="" type="button">
+         <img alt="Original GrayQuest OTP screen" decoding="async" height="1095" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/otp@3x.webp" srcset="assets/otp@3x.webp 1344w" width="1344">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+         <span class="screen-marker" style="--marker-top:87%">
+          2
+         </span>
+        </button>
+        <div class="caption">
+         <p>
+          Verify the code before student details.
+         </p>
+        </div>
+       </article>
+      </div>
+      <article class="screen-card">
+       <h3>
+        Student &amp; fee details
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest student and annual fee form" class="evidence" data-full-src="assets/student-vector.svg" data-zoom="" type="button">
+        <img alt="Original GrayQuest student and annual fee form" decoding="async" height="2394" loading="lazy" src="assets/student-vector.svg" width="1344">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        <span class="screen-marker" style="--marker-top:85%">
+         3
+        </span>
+       </button>
+       <div class="caption">
+        <p>
+         Original filled state · sample values from source
+        </p>
+       </div>
+      </article>
+      <div class="stack reasons">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         Where do I begin?
+        </p>
+       </aside>
+       <div class="reason" data-marker="1">
+        <h3>
+         Explain which number to use
+        </h3>
+        <p>
+         The banking-number note helps parents choose the appropriate contact before requesting an OTP.
+        </p>
+       </div>
+       <div class="reason" data-marker="2">
+        <h3>
+         Verify before continuing
+        </h3>
+        <p>
+         The OTP screen makes verification a separate action. Sending a code does not complete this step.
+        </p>
+       </div>
+       <div class="reason" data-marker="3">
+        <h3>
+         Confirm student &amp; fee details
+        </h3>
+        <p>
+         Institute, student and annual fee details establish the application before the parent selects a plan.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="recovery grid two">
+      <div>
+       <span class="small-label">
+        ORIGINAL VALIDATION
+       </span>
+       <h3>
+        Keep the next action visible.
+       </h3>
+       <button aria-label="Enlarge: Original OTP validation message" class="evidence" data-full-src="assets/otp-error@3x.webp" data-zoom="" type="button">
+        <img alt="Original OTP validation message" decoding="async" height="251" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/otp-error@3x.webp" srcset="assets/otp-error@3x.webp 1320w" width="1320">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <p>
+        The source prompts the parent to enter an OTP.
+       </p>
+      </div>
+      <div>
+       <span class="small-label accent">
+        PROPOSED RECOVERY · CONCEPT
+       </span>
+       <div class="proposal">
+        <strong>
+         This OTP has expired.
+        </strong>
+        <p>
+         Request a new code to continue.
+        </p>
+        <div aria-hidden="true" class="otp-boxes">
+         <span>
+          –
+         </span>
+         <span>
+          –
+         </span>
+         <span>
+          –
+         </span>
+         <span>
+          –
+         </span>
+        </div>
+        <span class="sample-cta">
+         Resend OTP
+        </span>
+        <span>
+         Change mobile number
+        </span>
+       </div>
+       <p>
+        A proposed improvement: explain the issue first, then show how to recover. Not presented as shipped work.
+       </p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-6" class="chapter cream" id="d-section-6" data-nav="d-choose">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      06 / CHOOSE A PLAN
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-6">
+        MAKE THE OPTIONS COMPARABLE.
+       </h2>
+       <p class="intro">
+        With the fee amount confirmed, parents needed to compare what they would pay today and over time.
+       </p>
+      </div>
+     </div>
+     <div class="grid compare-grid">
+      <div class="paper-card">
+       <h3>
+        Comparing EMI plans
+       </h3>
+       <button aria-label="Enlarge: Plan B: monthly EMI, duration and payable today — standardised sample amounts" class="evidence" data-full-src="assets/plan-b-sample.svg" data-zoom="" type="button">
+        <img alt="Plan B: monthly EMI, duration and payable today — standardised sample amounts" decoding="async" height="743" loading="lazy" src="assets/plan-b-sample.svg" width="2352">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        <span class="screen-marker plan-marker" style="left:80%;--marker-top:19%">
+         01
+        </span>
+        <span class="screen-marker plan-marker" style="left:91%;--marker-top:56%">
+         02
+        </span>
+       </button>
+       <button aria-label="Enlarge: Plan C: monthly EMI, duration and payable today — standardised sample amounts" class="evidence" data-full-src="assets/plan-c-sample.svg" data-zoom="" type="button">
+        <img alt="Plan C: monthly EMI, duration and payable today — standardised sample amounts" decoding="async" height="743" loading="lazy" src="assets/plan-c-sample.svg" width="2352">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        <span class="screen-marker plan-marker" style="left:91%;--marker-top:56%">
+         03
+        </span>
+       </button>
+       <p>
+        Original interface; sample amounts standardised. Plan B selected: ₹20,000 × 5 instalments. Today includes the first instalment plus a ₹300 fee; 4 instalments remain. Plan C offers ₹10,000 × 10 instalments, with ₹10,300 payable today.
+       </p>
+      </div>
+      <div class="stack">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         What do I pay today—and every month?
+        </p>
+       </aside>
+       <div class="reason" data-marker="01">
+        <h3>
+         OVER TIME
+        </h3>
+        <p>
+         Monthly amount and duration sit together so parents can weigh a smaller instalment against a longer commitment.
+        </p>
+       </div>
+       <div class="reason" data-marker="02">
+        <h3>
+         TODAY
+        </h3>
+        <p>
+         Payable today makes the immediate payment visible before selection.
+        </p>
+       </div>
+       <div class="reason" data-marker="03">
+        <h3>
+         COMPARE
+        </h3>
+        <p>
+         Consistent placement helps parents scan the same details across plans.
+        </p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-7" class="chapter dark" id="d-checks" data-nav="d-checks">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      07 / COMPLETE CHECKS
+     </span>
+     <span class="section-kicker">
+      IDENTIFY THE APPLICANT
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-7">
+        THE RIGHT APPLICANT. A ROUTE TO CONTINUE.
+       </h2>
+       <p class="intro">
+        Parents, guardians and students can apply. If an application cannot proceed with one applicant, the journey needs to make the alternative applicant route clear.
+       </p>
+      </div>
+     </div>
+     <ol class="context-steps">
+      <li>
+       <span>
+        01
+       </span>
+       Choose applicant
+      </li>
+      <li>
+       <span>
+        02
+       </span>
+       Applicant details
+      </li>
+      <li>
+       <span>
+        03
+       </span>
+       Employment &amp; income
+      </li>
+      <li>
+       <span>
+        04
+       </span>
+       Applicable verification
+      </li>
+     </ol>
+     <div class="grid two">
+      <article class="screen-card">
+       <h3>
+        Who is applying?
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest applicant definition and choices" class="evidence" data-full-src="assets/applicant@3x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest applicant definition and choices" decoding="async" height="1692" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/applicant@3x.webp" srcset="assets/applicant@3x.webp 1872w" width="1872">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+      <div class="stack">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         Can someone else in our family apply?
+        </p>
+       </aside>
+       <div class="reason">
+        <h3>
+         PARENTS &amp; GUARDIANS
+        </h3>
+        <p>
+         For education up to Class 12, parents typically managed the application and repayments for their child.
+        </p>
+       </div>
+       <div class="reason">
+        <h3>
+         STUDENTS APPLYING FOR THEMSELVES
+        </h3>
+        <p>
+         Undergraduate and postgraduate students also used the platform, more proactively choosing “I am the Student” and completing their own education-loan journey.
+        </p>
+       </div>
+       <div class="reason">
+        <h3>
+         ANOTHER APPLICANT, ANOTHER ASSESSMENT
+        </h3>
+        <p>
+         An unsuccessful application need not end the journey. Another parent, guardian or the student can apply with their own details and applicable checks; approval is assessed separately.
+        </p>
+       </div>
+      </div>
+     </div>
+     <div class="applicant-route" aria-labelledby="applicant-route-title">
+      <div class="route-heading"><span class="chapter-tag">IF THE APPLICATION CANNOT PROCEED</span><h3 id="applicant-route-title">Change the applicant. Keep the route clear.</h3><p>Illustrative route: an application cannot proceed with the mother as guardian.</p></div>
+      <div class="applicant-branches">
+       <article><span class="route-label">PARENT / GUARDIAN ROUTE</span><h4>Another parent or guardian applies</h4><p>For example, the father can apply using his own applicant, income and verification details.</p></article>
+       <span class="route-or" aria-hidden="true">OR</span>
+       <article><span class="route-label">STUDENT ROUTE</span><h4>The student applies for their own loan</h4><p>If the guardian route cannot proceed, the student can use “I am the Student” and complete the applicable assessment.</p></article>
+      </div>
+      <p class="route-note">Both routes return to applicant details and applicable checks. The diagram explains the journey; the screen above is the original applicant-selection design.</p>
+     </div>
+     <div class="subsection employment-story">
+      <h3>The employment choice determines the next screen.</h3>
+      <p>Here, the applicant has selected <strong>Self-employed</strong>. The next step asks for business details, rather than salary details.</p>
+      <div class="employment-layout">
+       <article class="employment-example">
+        <div class="selection-context"><span>EMPLOYMENT TYPE</span><strong>✓ Self-employed selected</strong></div>
+        <h4>Next: enter business details</h4>
+        <button aria-label="Enlarge: Original business applicant fields" class="evidence" data-full-src="assets/business@3x.webp" data-zoom="" type="button">
+         <img alt="Original business applicant fields" decoding="async" height="1266" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/business@3x.webp" srcset="assets/business@3x.webp 1728w" width="1728">
+         <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+        </button>
+        <p class="caption">Original business-details screen · selection label added as case-study context.</p>
+       </article>
+       <aside class="employment-explanation">
+        <span class="route-label">WHY THIS SCREEN APPEARS</span>
+        <h4>Ask about the applicant’s source of income.</h4>
+        <p>The self-employed route asks for business name, revenue, years operating and a description of the business.</p>
+        <div class="employment-alternative"><h4>If Salaried is selected</h4><p>The alternative route asks for company name and monthly in-hand income.</p></div>
+        <p>These details always belong to the selected applicant—parent, guardian or student.</p>
+       </aside>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-8" class="chapter cream" id="d-section-8" data-nav="d-checks">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      08 / COMPLETE CHECKS
+     </span>
+     <span class="section-kicker">
+      INCOME VERIFICATION
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-8">
+        EXPLAIN THE CHECK.
+        <br>
+        THEN OFFER A ROUTE.
+       </h2>
+       <p class="intro">
+        When income verification is required, applicants need the reason, the right account, and a clear route if the check fails.
+       </p>
+      </div>
+     </div>
+     <ol class="context-steps">
+      <li>
+       <span>
+        01
+       </span>
+       Choose bank
+      </li>
+      <li>
+       <span>
+        02
+       </span>
+       Choose method
+      </li>
+      <li>
+       <span>
+        03
+       </span>
+       Complete check
+      </li>
+      <li>
+       <span>
+        04
+       </span>
+       See status
+      </li>
+     </ol>
+     <div class="grid income-grid">
+      <article class="screen-card">
+       <h3>
+        Income verification
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest salaried income verification screen" class="evidence source-framed" data-full-src="assets/income@2x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest salaried income verification screen" decoding="async" height="2294" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/income@2x.webp" srcset="assets/income@2x.webp 1408w" width="1408">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+      <div class="stack">
+       <aside class="parent-question">
+        <div class="art">
+         <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+        </div>
+        <p>
+         “Why do you need to check my income?”
+        </p>
+       </aside>
+       <div class="reason">
+        <h3>
+         EXPLAIN THE ACCOUNT TO USE
+        </h3>
+        <p>
+         To assess income for this application, use the account that receives salary. If self-employed, use the account for business transactions.
+        </p>
+       </div>
+       <button aria-label="Enlarge: Original self-employed account guidance" class="evidence" data-full-src="assets/self-employed@3x.webp" data-zoom="" type="button">
+        <img alt="Original self-employed account guidance" decoding="async" height="202" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/self-employed@3x.webp" srcset="assets/self-employed@3x.webp 1044w" width="1044">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="reason">
+        <h3>
+         OFFER THE AVAILABLE ROUTES
+        </h3>
+        <p>
+         Account Aggregator OTP, netbanking, and six-month statement upload are shown together within this check.
+        </p>
+       </div>
+       <div class="reason">
+        <h3>
+         IF VERIFICATION FAILS
+        </h3>
+        <p>
+         Keep a visible retry action within the verification check.
+        </p>
+       </div>
+       <button aria-label="Enlarge: Original income verification failure and Retry" class="evidence" data-full-src="assets/income-error@3x.webp" data-zoom="" type="button">
+        <img alt="Original income verification failure and Retry" decoding="async" height="684" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/income-error@3x.webp" srcset="assets/income-error@3x.webp 1072w" width="1072">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-9" class="chapter dark" id="d-section-9" data-nav="d-checks">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      09 / COMPLETE CHECKS
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-9">
+        KEEP IDENTITY CHECKS
+        <br>
+        FROM BECOMING A DEAD END.
+       </h2>
+       <p class="intro">
+        My focus was to make KYC requirements understandable before parents started. Each route explains what they need, so a missing linked number or document is visible earlier.
+       </p>
+      </div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        What if Aadhaar doesn’t work for me?
+       </p>
+      </aside>
+     </div>
+     <div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Verify with Aadhaar OTP
+       </h3>
+       <p class="screen-intro">
+        Aadhaar OTP requires the Aadhaar number and access to its linked mobile number.
+       </p>
+       <button aria-label="Enlarge: Original Aadhaar OTP KYC screen" class="evidence" data-full-src="assets/aadhaar@3x.webp" data-zoom="" type="button">
+        <img alt="Original Aadhaar OTP KYC screen" decoding="async" height="1206" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/aadhaar@3x.webp" srcset="assets/aadhaar@3x.webp 1072w" width="1072">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         The linked-number note reveals a blocker before OTP is requested.
+        </p>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Verify with documents
+       </h3>
+       <p class="screen-intro">
+        The upload route names PAN and an accepted second identity document before parents begin.
+       </p>
+       <button aria-label="Enlarge: Original document-upload KYC screen" class="evidence" data-full-src="assets/documents@3x.webp" data-zoom="" type="button">
+        <img alt="Original document-upload KYC screen" decoding="async" height="1206" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/documents@3x.webp" srcset="assets/documents@3x.webp 1072w" width="1072">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         Both required documents are named before upload starts.
+        </p>
+       </div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-10" class="chapter cream compact-evidence" id="d-pay" data-nav="d-pay">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      10 / REVIEW &amp; PAY
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-10">
+        REVIEW THE DETAILS.
+        <br>
+        UNDERSTAND THE AGREEMENT.
+       </h2>
+       <p class="intro">
+        Before payment, parents check the application and understand the agreement they will accept.
+       </p>
+      </div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        “Is this the commitment I meant to make?”
+       </p>
+      </aside>
+     </div>
+     <div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Review details
+       </h3>
+       <button aria-label="Enlarge: GrayQuest review screen and declarations — standardised sample amounts" class="evidence source-framed" data-full-src="assets/review-screen-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest review screen and declarations — standardised sample amounts" decoding="async" height="3084" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/review-screen-sample.svg" width="1908">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          CHECK &amp; CORRECT
+         </h3>
+         <p>
+          The warning and nearby Edit control make the last chance to correct details clear.
+         </p>
+        </div>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Read &amp; accept terms
+       </h3>
+       <button aria-label="Enlarge: GrayQuest agreement and consent — standardised sample amounts" class="evidence source-framed" data-full-src="assets/agreement-screen-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest agreement and consent — standardised sample amounts" decoding="async" height="3084" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/agreement-screen-sample.svg" width="1908">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          READ &amp; ACCEPT
+         </h3>
+         <p>
+          The debit date and lender appear before a separate agreement acceptance.
+         </p>
+        </div>
+       </div>
+      </article>
+     </div>
+     <p class="source-note">
+      Original interface; sample amounts standardised: ₹1,00,000 fees · ₹0 interest · 5 instalments of ₹20,000 · ₹20,300 payable today, including the ₹300 fee.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-11" class="chapter dark compact-evidence" id="d-section-11" data-nav="d-pay">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      11 / REVIEW &amp; PAY
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-11">
+        SHOW WHAT IS DUE.
+        <br>
+        SHOW HOW TO PAY.
+       </h2>
+       <p class="intro">
+        The amount due and method constraints appear before payment; confirmation then shows what remains.
+       </p>
+      </div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        “What do I pay now, and what comes next?”
+       </p>
+      </aside>
+     </div>
+     <div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Choose a payment method
+       </h3>
+       <p class="screen-intro">
+        Review the amount due and method restrictions before paying.
+       </p>
+       <button aria-label="Enlarge: GrayQuest payment amount and method choices — standardised sample amounts" class="evidence" data-full-src="assets/payment-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest payment amount and method choices — standardised sample amounts" decoding="async" height="1560" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/payment-sample.svg" width="1140">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         Today’s ₹20,300 combines the first ₹20,000 instalment and a ₹300 processing fee. Four ₹20,000 instalments remain.
+        </p>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Payment received. Setup remains.
+       </h3>
+       <p class="screen-intro">
+        The first instalment and fee are confirmed; repayment setup and a live selfie are still required.
+       </p>
+       <button aria-label="Enlarge: GrayQuest first-instalment confirmation; standardised sample amounts" class="evidence" data-full-src="assets/payment-success-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest first-instalment confirmation; standardised sample amounts" decoding="async" height="1560" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/payment-success-sample.svg" width="1140">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <p>
+         Payment of ₹20,300 is followed by repayment setup and a live-selfie task. The fee total remains ₹1,00,000; total payable including the processing fee is ₹1,00,300.
+        </p>
+       </div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-13" class="chapter dark compact-evidence" id="d-section-13" data-nav="d-section-13">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      12 / SET UP &amp; TRACK
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-13">
+        SET UP YOUR EMI REPAYMENTS.
+       </h2>
+       <p class="intro">
+        Provide bank details and authorise the EMI mandate so future instalments can be collected from the chosen account.
+       </p>
+      </div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        Will money be taken every month?
+       </p>
+      </aside>
+     </div>
+     <div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Authorise EMI repayment
+       </h3>
+       <p class="screen-intro">
+        The source explains recurring EMI debit and asks parents to proceed with debit-card or net-banking details.
+       </p>
+       <button aria-label="Enlarge: Original e-mandate explanation" class="evidence" data-full-src="assets/mandate@3x.webp" data-zoom="" type="button">
+        <img alt="Original e-mandate explanation" decoding="async" height="1410" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/mandate@3x.webp" srcset="assets/mandate@3x.webp 1040w" width="1040">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Choose another repayment route
+       </h3>
+       <p class="screen-intro">
+        When debit card or net banking is unavailable, the source offers another bank account, UPI AutoPay, or a signed mandate PDF.
+       </p>
+       <button aria-label="Enlarge: Original alternative repayment-authorisation routes" class="evidence" data-full-src="assets/mandate-methods@3x.webp" data-zoom="" type="button">
+        <img alt="Original alternative repayment-authorisation routes" decoding="async" height="1902" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/mandate-methods@3x.webp" srcset="assets/mandate-methods@3x.webp 1560w" width="1560">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+      </article>
+     </div>
+     <div class="recovery recovery-row">
+      <div>
+       <h3>
+        Retry or change account
+       </h3>
+       <p>
+        The original GrayQuest failure screen offers Retry and Change bank account, keeping recovery within repayment setup.
+       </p>
+      </div>
+      <button aria-label="Enlarge: Original mandate failure with retry or change-bank recovery" class="evidence" data-full-src="assets/mandate-error@3x.webp" data-zoom="" type="button">
+       <img alt="Original mandate failure with retry or change-bank recovery" decoding="async" height="1113" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/mandate-error@3x.webp" srcset="assets/mandate-error@3x.webp 990w" width="990">
+       <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+      </button>
+     </div>
+     <p class="takeaway">
+      PAYMENT RECEIVED IS ONE MILESTONE. EMI REPAYMENT SETUP IS THE NEXT.
+     </p>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-14" class="chapter cream compact-evidence" id="d-section-14" data-nav="d-section-13">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      13 / SET UP &amp; TRACK
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-14">
+        COMPLETE THE SELFIE.
+        <br>
+        TRACK THE REVIEW.
+       </h2>
+       <p class="intro">
+        Parents need to distinguish the live-selfie action from an application status awaiting review.
+       </p>
+      </div>
+      <aside class="parent-question">
+       <div class="art">
+        <img alt="" decoding="async" height="288" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/parent@3x.webp" srcset="assets/parent@3x.webp 264w" width="264">
+       </div>
+       <p>
+        “What happens after my selfie?”
+       </p>
+      </aside>
+     </div>
+     <div class="grid two screen-pair">
+      <article class="screen-card paired-screen">
+       <h3>
+        Complete the selfie
+       </h3>
+       <button aria-label="Enlarge: Original GrayQuest live-selfie screen" class="evidence" data-full-src="assets/selfie@3x.webp" data-zoom="" type="button">
+        <img alt="Original GrayQuest live-selfie screen" decoding="async" height="1995" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/selfie@3x.webp" srcset="assets/selfie@3x.webp 1518w" width="1518">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          LIVE SELFIE
+         </h3>
+         <p>
+          The camera permission, alternate-device link and selfie action are shown together.
+         </p>
+        </div>
+       </div>
+      </article>
+      <article class="screen-card paired-screen">
+       <h3>
+        Track the application
+       </h3>
+       <button aria-label="Enlarge: GrayQuest application under-review status — standardised sample amounts" class="evidence" data-full-src="assets/status-sample.svg" data-zoom="" type="button">
+        <img alt="GrayQuest application under-review status — standardised sample amounts" decoding="async" height="1602" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/status-sample.svg" width="1410">
+        <span aria-hidden="true" class="zoom-hint">Enlarge screen ↗</span>
+       </button>
+       <div class="caption">
+        <div class="reason">
+         <h3>
+          APPLICATION STATUS
+         </h3>
+         <p>
+          The dashboard says the form is under review. View Details offers further context.
+         </p>
+        </div>
+       </div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-15" class="chapter dark" id="d-section-15" data-nav="d-section-16">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      14 / DESIGN RESPONSE
+     </span>
+     <div class="gq-section-head">
+      <div>
+       <h2 id="d-title-15">
+        WHAT THE DESIGN RESOLVES.
+       </h2>
+       <p class="intro">
+        Three decisions balance comparison, commitment and progress. Each leaves a specific question to validate.
+       </p>
+      </div>
+     </div>
+     <div class="grid three decision-summary">
+      <article>
+       <span class="chapter-tag">
+        COMPARE
+       </span>
+       <p class="handwritten">
+        “Which plan works for me?”
+       </p>
+       <div class="reason">
+        <h3>
+         MAKE PLANS COMPARABLE
+        </h3>
+        <p>
+         A lower EMI can mean a longer commitment. Amount and duration support comparison; total cost and fees also need to be clear before commitment.
+        </p>
+       </div>
+      </article>
+      <article>
+       <span class="chapter-tag">
+        PAYMENT
+       </span>
+       <p class="handwritten">
+        “What do I pay today?”
+       </p>
+       <div class="reason">
+        <h3>
+         SHOW THE IMMEDIATE COST
+        </h3>
+        <p>
+         The amount due today belongs before payment-method selection. Parents still need to understand how that payment relates to future instalments.
+        </p>
+       </div>
+      </article>
+      <article>
+       <span class="chapter-tag">
+        STATUS
+       </span>
+       <p class="handwritten">
+        “Am I actually done?”
+       </p>
+       <div class="reason">
+        <h3>
+         SEPARATE ACTION FROM REVIEW
+        </h3>
+        <p>
+         Payment, repayment setup and approval are distinct milestones. A pending state needs to explain whose action comes next.
+        </p>
+       </div>
+      </article>
+     </div>
+    </div>
+   </section>
+   <section aria-labelledby="d-title-16" class="chapter cream" id="d-section-16" data-nav="d-section-16">
+    <div class="chapter-inner">
+     <span class="chapter-tag">
+      15 / REFLECTION
+     </span>
+     <div class="reflection-header">
+      <div class="gq-section-head">
+       <div>
+        <h2 id="d-title-16">
+         CLARITY DOESN’T END
+         <br>
+         AT PAYMENT.
+        </h2>
+       </div>
+      </div>
+      <div class="reflection-intro">
+       <div>
+        <span class="small-label">
+         MY DESIGN TAKEAWAY
+        </span>
+        <p>
+         The key distinction is between paying now, authorising future repayments and receiving approval. The interface needs to explain each milestone separately.
+        </p>
+        <p class="handwritten">
+         Every step needs an explanation.
+        </p>
+       </div>
+       <div class="art">
+        <img alt="Parent and child considering their next step" decoding="async" height="762" loading="lazy" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1100px) 44vw, 600px" src="assets/reflection@3x.webp" srcset="assets/reflection@3x.webp 753w" width="753">
+       </div>
+      </div>
+     </div>
+     <p class="takeaway">
+      The design constraint: applicant choice, identity checks and repayment authorisation each need a clear explanation.
+     </p>
+     <div class="subsection">
+      <span class="small-label">
+       WHAT I’D VALIDATE NEXT
+      </span>
+      <div class="grid two">
+       <article class="paper-card">
+        <span class="small-label">
+         01 / BEFORE PAYMENT
+        </span>
+        <h3>
+         Can parents explain the commitment?
+        </h3>
+        <p>
+         Ask them to identify payable today, fees, future EMIs and duration from the actual screens.
+        </p>
+        <p class="small-label">
+         TODAY · FEES · FUTURE EMIs
+        </p>
+       </article>
+       <article class="paper-card">
+        <span class="small-label">
+         02 / AFTER PAYMENT
+        </span>
+        <h3>
+         Can parents tell whose turn it is?
+        </h3>
+        <p>
+         Ask them to distinguish action required from under review—and identify what happens next.
+        </p>
+        <p class="small-label">
+         ACTION · REVIEW · OWNERSHIP
+        </p>
+       </article>
+      </div>
+     </div>
+     <div class="grid two validation">
+      <div class="reason">
+       <h3>
+        HOW I’D TEST IT
+       </h3>
+       <p>
+        Next, test the real plan, payment and status screens with parents. Ask them to explain each state without prompting, and record confusion and requests for help.
+       </p>
+      </div>
+      <div class="reason">
+       <h3>
+        ALSO TEST RECOVERY
+       </h3>
+       <p>
+        When a check or mandate fails, can parents find a route to continue without help?
+       </p>
+      </div>
+     </div>
+     <div class="closing-links">
+      <a class="cta primary" href="../guardian-one/">
+       NEXT CASE STUDY · GUARDIAN ONE ↗
+      </a>
+      <a class="cta" href="mailto:swatipriya4422@gmail.com">
+       LET’S TALK ↗
+      </a>
+      <a class="back-top" href="#d-top">
+       Back to top ↑
+      </a>
+     </div>
+    </div>
+   </section>
+  </main>
+
+  <footer class="site-footer">
+   © 2026 Swati Priya · Designed with clarity. Built with care.
+  </footer>
+  <dialog id="page-menu" aria-labelledby="menu-title">
+<div class="menu-heading"><strong id="menu-title">On this page</strong><button class="menu-close" type="button" aria-label="Close menu">Close ×</button></div>
+<nav aria-label="Mobile case study chapters"><a href="#top">Introduction</a><a href="#section-1">01 / Problem &amp; approach</a><a href="#journey">02 / The journey</a><a href="#choose">03 / Choose a plan</a><a href="#checks">04 / Complete checks</a><a href="#pay">05 / Review &amp; pay</a><a href="#setup">06 / Set up &amp; track</a><a href="#section-16">07 / Reflection</a></nav>
+<div class="menu-footer"><a href="../../index.html#case-studies">← All work</a><a href="mailto:swatipriya4422@gmail.com">Let’s talk ↗</a></div>
+</dialog>
+  <dialog id="evidence-dialog" aria-labelledby="viewer-title"><div class="viewer-toolbar">
+<strong id="viewer-title">Screen details</strong><div class="viewer-controls">
+<button type="button" data-view="fit">Fit screen</button><button type="button" data-view="actual">Actual size</button><button type="button" data-view="out" aria-label="Zoom out">−</button><output aria-live="polite" id="zoom-level">100%</output><button type="button" data-view="in" aria-label="Zoom in">+</button>
+</div>
+<button type="button" class="dialog-close" aria-label="Close screen details">Close ×</button>
+</div>
+<div class="viewer-status" role="status" aria-live="polite" hidden></div><div class="dialog-scroll" tabindex="0" aria-label="Screen image; scroll to explore when zoomed"><img alt="" draggable="false"></div>
+<p class="dialog-caption"></p></dialog><script defer src="grayquest.js?v=6">
+  </script>
+ </body>
+</html>
