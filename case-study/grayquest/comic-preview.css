@@ -73,3 +73,85 @@
 @media(max-width:1100px){#desktop-main .gq-hero{padding:48px 40px;gap:32px;min-height:0}#desktop-main .gq-hero h1{font-size:60px}#desktop-main .chapter-inner{padding:44px 40px}#desktop-main .cover:after{right:-8px}#desktop-main .comic-outro{grid-template-columns:1fr 180px}#desktop-main .comic-outro img{width:180px}}
 @media(prefers-reduced-motion:reduce){#desktop-main *,#desktop-main *:before,#desktop-main *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 }
+/* Living graphic novel revision: upright composition, connected scenes. */
+@media(min-width:761px){
+#desktop-main .gq-hero{min-height:0;padding:48px 64px 56px;gap:48px;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);background:radial-gradient(ellipse at 85% 40%,#4d361c55,transparent 65%)}
+#desktop-main .gq-hero:before{display:none}
+#desktop-main .gq-hero h1{font-family:'Archivo Black',sans-serif;font-size:clamp(40px,4.8vw,68px);line-height:1.04;transform:none;text-shadow:none;letter-spacing:-.035em}
+#desktop-main .hero-copy{gap:18px}
+#desktop-main .hero-note{transform:none;font-size:23px}
+#desktop-main .hero-copy>p:not([class]){font-size:14px;line-height:1.7}
+#desktop-main .chapter-inner{padding:48px 64px;gap:24px}
+#desktop-main .chapter-tag{transform:none;box-shadow:none!important;border-radius:4px;padding:7px 11px;letter-spacing:.08em;font-size:10px}
+#desktop-main .gq-section-head h2{font-size:clamp(30px,3.1vw,44px);max-width:1000px}
+#desktop-main .gq-section-head h2 .accent{margin-top:10px}
+#desktop-main .paper-card{border:1px solid #17120b55;border-radius:8px;box-shadow:none!important;gap:18px;overflow:hidden}
+#desktop-main .paper-card h3{line-height:1.3}
+#desktop-main .parent-question{box-shadow:none}
+#desktop-main .story-world{position:relative;margin:0;align-self:center;isolation:isolate;border:1px solid #ffc53d60;border-radius:8px;overflow:hidden;background:#17120b;box-shadow:0 25px 65px #0005}
+#desktop-main .story-world:after{content:'';position:absolute;inset:40px 0 45px;pointer-events:none;background:radial-gradient(circle at var(--light-x,70%) var(--light-y,30%),#ffc53d18,transparent 45%);z-index:2}
+#desktop-main .world-kicker{display:flex;justify-content:space-between;color:#ffc53d;font:700 10px/1.4 Inter,sans-serif;letter-spacing:.12em;padding:16px 20px;border-bottom:1px solid #ffc53d40}
+#desktop-main .story-world svg{width:100%;height:auto;display:block}
+#desktop-main .story-world figcaption{font:700 9px/1.4 Inter,sans-serif;letter-spacing:.1em;color:#ffc53d;padding:16px;text-align:center;border-top:1px solid #ffc53d40}
+#desktop-main .world-question{position:absolute;top:23%;left:5%;display:flex;align-items:center;gap:12px;background:#f5efe3;padding:12px 16px;border:2px solid #17120b;border-radius:8px;box-shadow:4px 4px 0 #17120b;z-index:3}
+#desktop-main .world-question img{width:48px;height:58px;object-fit:contain;mix-blend-mode:multiply}
+#desktop-main .world-question p{font:700 25px/1.05 Caveat,cursive;color:#17120b;margin:0}
+#desktop-main .world-question small{display:block;font:700 7px/1.5 Inter,sans-serif;letter-spacing:.06em;margin-top:7px}
+#desktop-main .world-path{stroke-dasharray:800;stroke-dashoffset:0;animation:world-route 1.4s ease-out both}
+@keyframes world-route{from{stroke-dashoffset:800}to{stroke-dashoffset:0}}
+#desktop-main #d-section-3 .grid.two:not(.collaboration){gap:0;border-block:1px solid #f5efe330}
+#desktop-main #d-section-3 .paper-card{background:transparent;color:#f5efe3;border:0;border-radius:0;padding:26px 28px 26px 0}
+#desktop-main #d-section-3 .paper-card+.paper-card{border-left:1px solid #f5efe330;padding-left:28px;padding-right:0}
+#desktop-main #d-section-3 .diagram-art{background:#f5efe3;border:0;border-radius:6px;box-shadow:none;padding:12px;height:180px}
+#desktop-main #d-section-3 .diagram-art img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+#desktop-main #d-section-3 .black-tab{background:transparent;color:#ffc53d;padding:0}
+#desktop-main #d-section-3 .collaboration{gap:32px}
+#desktop-main #d-section-2 .grid.three{gap:20px}
+#desktop-main #d-section-2 .paper-card{display:flex;flex-direction:column;padding:22px;gap:16px;background:#fffaf0;transition:border-color .2s,box-shadow .2s}
+#desktop-main #d-section-2 .paper-card:focus-within,#desktop-main #d-section-2 .paper-card:hover{border-color:#96700a;box-shadow:0 8px 24px #17120b12!important}
+#desktop-main #d-section-2 .paper-card h3{font:700 19px/1.3 Inter,sans-serif;min-height:50px;margin:0}
+#desktop-main #d-section-2 .moment-stage{display:flex;align-items:center;justify-content:center;height:250px;min-height:250px;width:100%;background:#eee7da;border-radius:5px;padding:14px;overflow:hidden}
+#desktop-main #d-section-2 .mini-plans{display:flex;flex-direction:column;width:100%;gap:14px;transform:none;margin:0;height:auto}
+#desktop-main #d-section-2 .moment-stage .evidence{position:relative;height:auto;max-height:222px;width:100%;max-width:none;margin:0;transform:none;padding:0;border:0;border-radius:3px;box-shadow:none;background:transparent}
+#desktop-main #d-section-2 .moment-stage img{display:block;max-height:222px;max-width:100%;width:100%;height:auto;object-fit:contain;transform:none}
+#desktop-main #d-section-2 .mini-plans .evidence img{max-height:95px}
+#desktop-main #d-section-2 .evidence-caption{font:600 12px/1.5 Inter,sans-serif;min-height:36px;margin:0;color:#655b4a}
+#desktop-main #d-section-2 .evidence-explanation{display:block;padding:0;border:0;background:none;margin:0}
+#desktop-main #d-section-2 .evidence-explanation p{font-size:14px;margin:0 0 10px;line-height:1.55}
+#desktop-main .moment-link{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #17120b30;padding-top:16px;margin-top:auto;font:700 13px Inter,sans-serif}
+#desktop-main .moment-link span,#desktop-main .comic-arrow{transition:translate .2s}
+#desktop-main .moment-link:hover span,#desktop-main .moment-link:focus-visible span,#desktop-main .comic-btn:hover .comic-arrow{translate:3px -2px}
+#desktop-main .chapter-atlas{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding-bottom:20px;border-bottom:3px solid #17120b22}
+#desktop-main .chapter-atlas:after{content:'';position:absolute;bottom:-3px;left:0;width:calc(25% + var(--chapter-progress,0%)*.75);height:3px;background:#94700e;transition:width .3s}
+#desktop-main .chapter-atlas button{display:flex;flex-direction:column;align-items:flex-start;gap:18px;padding:20px;color:#17120b;background:#fffaf0;border:1.5px solid #17120b40;border-radius:6px;text-align:left;cursor:pointer;transition:background .2s,border-color .2s}
+#desktop-main .chapter-atlas button:hover,#desktop-main .chapter-atlas button:focus-visible{background:#ffe5a0;border-color:#17120b}
+#desktop-main .chapter-atlas button[aria-selected=true]{background:#ffc53d;border-color:#17120b}
+#desktop-main .atlas-index{font:700 10px Inter,sans-serif;letter-spacing:.08em}
+#desktop-main .chapter-atlas img{width:34px;height:34px}
+#desktop-main .chapter-atlas strong{font:400 19px/1.2 'Archivo Black',sans-serif;min-height:46px}
+#desktop-main .atlas-action{display:flex;justify-content:space-between;width:100%;font:600 11px Inter,sans-serif;gap:8px}
+#desktop-main .journey{display:block;gap:0;margin:0}
+#desktop-main .journey>li{display:grid;grid-template-columns:190px minmax(0,1fr) 210px;gap:24px;align-items:center;border:0;border-radius:0;box-shadow:none;min-height:220px;padding:12px 0;background:transparent}
+#desktop-main .journey>li[hidden]{display:none}
+#desktop-main .journey .chapter-number{display:none}
+#desktop-main .journey-story{background:transparent;padding:0;display:flex;flex-direction:column;gap:12px}
+#desktop-main .journey-story h3{font:400 18px/1.2 'Archivo Black',sans-serif}
+#desktop-main .journey-story img{width:180px;max-height:100px;object-fit:contain;mix-blend-mode:multiply}
+#desktop-main .journey-actions{padding:0}
+#desktop-main .action-tiles{gap:14px}
+#desktop-main .action-tiles li{background:transparent;border:0;padding:8px 0;box-shadow:none;font-size:12px}
+#desktop-main .journey-question{font-size:27px;padding:0;max-width:200px}
+#desktop-main .chapter-read{display:inline-block;font:700 12px Inter,sans-serif;padding:9px 0;border-bottom:1px solid #17120b;margin-top:10px}
+#desktop-main .journey-applicant-branch{padding:18px 20px;margin:0;border-radius:5px}
+#desktop-main .comic-outro{box-shadow:none;border-radius:8px}
+#desktop-main .comic-outro img{transform:none;box-shadow:none}
+#desktop-main .evidence:hover{outline:2px solid #b78b24;outline-offset:4px}
+#desktop-main .comic-btn:hover,#desktop-main .comic-btn:focus-visible{transform:translateY(-2px)}
+@media(max-width:1100px){#desktop-main .gq-hero{padding:32px;gap:28px}#desktop-main .chapter-inner{padding:40px 32px}#desktop-main .gq-hero h1{font-size:43px}#desktop-main .chapter-atlas button{padding:15px}#desktop-main .chapter-atlas strong{font-size:16px}#desktop-main .journey>li{grid-template-columns:150px 1fr;gap:20px}#desktop-main .journey-question{display:none}#desktop-main #d-section-2 .paper-card{padding:16px}#desktop-main #d-section-2 .moment-stage{height:210px;min-height:210px;padding:8px}#desktop-main #d-section-2 .moment-stage img{max-height:190px}#desktop-main .world-question{padding:8px;gap:8px}#desktop-main .world-question p{font-size:21px}}
+}
+@media(min-width:761px){
+#desktop-main .journey:before,#desktop-main .journey>li:before,#desktop-main .journey>li:after{display:none}
+#desktop-main .journey-story,#desktop-main .journey-actions,#desktop-main .journey-question{border:0}
+#desktop-main .journey-story img{mix-blend-mode:multiply}
+@media(prefers-reduced-motion:reduce){#desktop-main .world-path{animation:none}#desktop-main .chapter-atlas:after,#desktop-main .moment-link span,#desktop-main .comic-arrow{transition:none}}
+}
