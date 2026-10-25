@@ -297,3 +297,26 @@
 }
 @media(min-width:761px){#desktop-main .ink-landscape{height:350px}@media(max-width:1100px){#desktop-main .ink-landscape{height:280px}}}
 @media(min-width:761px){#desktop-main .gq-hero .hero-note{background:#101010;padding:10px 14px;border-left:2px solid #ffc53d;width:fit-content;max-width:360px;font-size:21px}}
+/* A luminous story world: sparse lights lead from the cover into the landscape. */
+@media(min-width:761px){
+#desktop-main .ink-landscape{filter:brightness(1.24) saturate(.82)}
+#desktop-main .landscape-bridge:before{filter:brightness(1.15) saturate(.85)}
+#desktop-main .comic-outro:before{opacity:.48;filter:brightness(1.15) saturate(.85)}
+#desktop-main .story-atmosphere{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+#desktop-main .story-halo{position:absolute;left:56%;top:-2%;width:47%;height:76%;background:radial-gradient(ellipse,#ffe9a63b 0%,#ffc53d26 32%,#ffc53d10 49%,transparent 70%);transform-origin:50% 55%;animation:story-breathe 12s ease-in-out infinite alternate}
+#desktop-main .story-halo:after{content:'';position:absolute;inset:13% 7%;border:1px solid #ffe8a82b;border-radius:50%;box-shadow:0 0 35px #ffc53d0d,inset 0 0 35px #ffc53d0d;mask-image:linear-gradient(110deg,transparent 20%,#000 45%,transparent 90%)}
+#desktop-main .story-light-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;fill:none;stroke-linecap:round}
+#desktop-main .light-base{stroke:#ffe3a0;stroke-width:1;opacity:.38;filter:drop-shadow(0 0 5px #ffc53d)}
+#desktop-main .light-tracer{stroke:#ffe8b5;stroke-width:2;stroke-dasharray:30 900;filter:drop-shadow(0 0 5px #ffc53d);animation:story-travel 9s linear infinite;opacity:.8}
+#desktop-main .story-mote{position:absolute;width:var(--size);height:var(--size);background:#ffe9b4;border-radius:50%;box-shadow:0 0 7px 2px #ffc53d60;animation:story-float var(--duration) var(--delay) ease-in-out infinite alternate;opacity:.65}
+#desktop-main .atmosphere-control{position:absolute;right:32px;bottom:24px;z-index:3;background:#101010d9;color:#f7f2e7;border:1px solid #f7f2e74d;border-radius:20px;padding:9px 14px;font:500 10px Inter,sans-serif;letter-spacing:.04em;cursor:pointer;transition:border-color .2s}
+#desktop-main .atmosphere-control:hover{border-color:#ffc53d;color:#ffc53d}
+#desktop-main .atmosphere-control:focus-visible{outline:2px solid #ffc53d;outline-offset:4px}
+#desktop-main .atmosphere-control[hidden]{display:none}
+#desktop-main .atmosphere-paused .story-atmosphere *,#desktop-main .atmosphere-offscreen .story-atmosphere *{animation-play-state:paused!important}
+@keyframes story-breathe{from{transform:scale(.95);opacity:.65}to{transform:scale(1.04);opacity:1}}
+@keyframes story-travel{from{stroke-dashoffset:930}to{stroke-dashoffset:0}}
+@keyframes story-float{0%{transform:translate(0,6px);opacity:.2}50%{opacity:.85}100%{transform:translate(10px,-18px);opacity:.35}}
+@media(prefers-reduced-motion:reduce){#desktop-main .story-atmosphere *{animation:none!important}#desktop-main .light-tracer{display:none}#desktop-main .story-mote{opacity:.4}}
+}
+@media(min-width:761px){#desktop-main .story-mote:nth-of-type(3n):after{content:'';position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);background:#ffe9b4;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);opacity:.7}}

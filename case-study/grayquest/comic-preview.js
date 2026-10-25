@@ -14,6 +14,15 @@ copy.querySelector('.project-facts').before(actions);
 // Original panoramic illustration: three deliberate atmospheric beats.
 const landscape=document.createElement('div');landscape.className='ink-landscape';landscape.setAttribute('aria-hidden','true');hero.prepend(landscape);
 const bridge=document.createElement('div');bridge.className='landscape-bridge';bridge.setAttribute('aria-hidden','true');bridge.innerHTML='<span>THE NEXT CHAPTER</span><p>From choosing a plan<br>to knowing what comes next.</p>';root.querySelector('#d-checks').before(bridge);
+// Light travels from the comic cover toward the landscape, connecting story to setting.
+const atmosphere=document.createElement('div');atmosphere.className='story-atmosphere';atmosphere.setAttribute('aria-hidden','true');
+atmosphere.innerHTML='<div class="story-halo"></div><svg class="story-light-path" viewBox="0 0 1200 800" preserveAspectRatio="none"><path class="light-base" d="M950 360 C1120 470 1050 600 825 625 S555 705 725 758"/><path class="light-tracer" d="M950 360 C1120 470 1050 600 825 625 S555 705 725 758"/></svg>';
+[[68,18],[92,22],[64,37],[94,46],[86,64],[73,70],[57,78],[92,78],[47,85],[81,88]].forEach(([x,y],i)=>{const dot=document.createElement('i');dot.className='story-mote';dot.style.cssText=`left:${x}%;top:${y}%;--delay:${-i*1.7}s;--duration:${7+i%4*2}s;--size:${i%3===0?4:2}px`;atmosphere.append(dot)});hero.prepend(atmosphere);
+const motionControl=document.createElement('button');motionControl.className='atmosphere-control';motionControl.type='button';motionControl.setAttribute('aria-pressed','false');motionControl.textContent='Pause atmosphere';hero.append(motionControl);
+let userPaused=false;function setAtmosphere(){const paused=userPaused||reduced.matches;hero.classList.toggle('atmosphere-paused',paused);motionControl.setAttribute('aria-pressed',String(paused));motionControl.textContent=paused?'Play atmosphere':'Pause atmosphere';motionControl.hidden=reduced.matches;}
+motionControl.addEventListener('click',()=>{userPaused=!userPaused;setAtmosphere()});reduced.addEventListener('change',setAtmosphere);setAtmosphere();
+const atmosphereObserver=new IntersectionObserver(entries=>entries.forEach(e=>hero.classList.toggle('atmosphere-offscreen',!e.isIntersecting)),{threshold:0});atmosphereObserver.observe(hero);
+addEventListener('pagehide',()=>atmosphereObserver.disconnect());addEventListener('pageshow',e=>{if(e.persisted)atmosphereObserver.observe(hero)});
 // A short first-entry flourish, never a readiness or network gate.
 let seenIntro=false;try{seenIntro=sessionStorage.getItem('gq-ink-intro')==='1'}catch{}
 const backEntry=performance.getEntriesByType('navigation')[0]?.type==='back_forward';

@@ -59,3 +59,6 @@ This is an isolated preview, not a main-site deployment. Physical mobile/tablet 
 - Hero is upright, retains original cover, shares the existing fonts and CTA design. No new framework or animation dependency.
 - Mobile HTML/CSS and live main unchanged. New CSS stays inside min-width:761px; new DOM is built only for desktop.
 - Verification: JavaScript syntax, desktop screenshot and horizontal-overflow check. Physical mobile/tablet and OS reduced-motion testing not performed.
+
+## Luminous background refinement
+Landscape brightness increased 24% with slightly softer saturation; bridge and closing artwork also lifted. Added a warm animated cover halo, a fine moving light trail from cover to landscape, and ten sparse drifting lights. Background is decorative and confined to the hero, with Pause/Play, offscreen suspension, and reduced-motion static state. Mobile and evidence content unchanged.
