@@ -51,3 +51,11 @@ No new animation libraries, video, image payloads, fake progress or blocking loa
 ## Limits
 
 This is an isolated preview, not a main-site deployment. Physical mobile/tablet device testing and a performance benchmark were not run. Reduced-motion handling is implemented but was not toggled through OS settings during browser QA. Screen image quality remains limited by the original exports; no AI sharpening or invented replacement UI was introduced. The intro is deliberately non-blocking rather than a full-screen loader. No audio, page-turn simulation or forced scrolling was added.
+
+## Illustrated landscape edition — 25 October 2026
+- Original generated panoramic education-neighbourhood artwork, black/cream/gold ink drawing. Prompt: richly detailed Indian schools, colleges, homes, trees and paths at dusk; layered silhouettes, engraved linework and comic halftone; calm black upper sky, golden horizon, no text or proprietary characters. Generated with built-in image generation, converted to WebP at quality 88.
+- Three environmental placements only: hero, a compact transition before applicant checks, and next-project closing. Original screenshots and financial/sample content untouched.
+- Desktop-only ~1-second comic-page intro with skip/Escape, automatic removal, reduced-motion bypass, session repeat/hash/back-navigation bypass. Page is rendered beneath and remains interactive.
+- Hero is upright, retains original cover, shares the existing fonts and CTA design. No new framework or animation dependency.
+- Mobile HTML/CSS and live main unchanged. New CSS stays inside min-width:761px; new DOM is built only for desktop.
+- Verification: JavaScript syntax, desktop screenshot and horizontal-overflow check. Physical mobile/tablet and OS reduced-motion testing not performed.

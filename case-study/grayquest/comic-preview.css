@@ -260,3 +260,40 @@
 #desktop-main .cinema-finale .closing-links .comic-btn.secondary{color:#17120b;border-color:#17120b;background:transparent}
 #desktop-main .cinema-finale{background-size:auto}
 }
+/* Illustrated landscape edition. Desktop only: approved mobile stays intact. */
+@media(min-width:761px){
+#desktop-main .gq-hero{overflow:hidden;background:#101010;min-height:790px;padding-top:64px;padding-bottom:218px;gap:72px;align-items:start}
+#desktop-main .gq-hero:before{background:radial-gradient(ellipse at var(--glow-x,78%) var(--glow-y,40%),#ffc53d15,transparent 60%);mask-image:none;z-index:0}
+#desktop-main .gq-hero .hero-copy,#desktop-main .gq-hero .cinema-cover{z-index:2;position:relative}
+#desktop-main .ink-landscape{position:absolute;inset:auto 0 0;height:440px;background:url('assets/education-landscape.webp') center bottom/cover no-repeat;pointer-events:none;z-index:0;mask-image:linear-gradient(transparent,#000 30%)}
+#desktop-main .gq-hero .hero-copy{max-width:650px}
+#desktop-main .gq-hero h1{font-size:clamp(44px,4.9vw,70px);line-height:1.04}
+#desktop-main .gq-hero .project-facts{background:#101010bb;border-top:1px solid #f7f2e730;padding-top:16px}
+#desktop-main .cover.cinema-cover{max-width:310px;padding:10px;box-shadow:0 28px 65px #000a;border-color:#ffc53d;border-radius:2px;transition:box-shadow .25s}
+#desktop-main .cover.cinema-cover:hover{box-shadow:0 28px 65px #000a,0 0 40px #ffc53d20}
+#desktop-main .landscape-bridge{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:center;min-height:270px;padding:40px 80px;background:#101010;overflow:hidden;color:#f7f2e7}
+#desktop-main .landscape-bridge:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#101010 5%,#101010aa 40%,transparent 80%),url('assets/education-landscape.webp') center 65%/cover}
+#desktop-main .landscape-bridge span{font:700 10px/1.4 Inter,sans-serif;letter-spacing:.16em;color:#ffc53d}
+#desktop-main .landscape-bridge p{font:400 clamp(24px,3vw,40px)/1.15 'Archivo Black',sans-serif;margin:16px 0 0;max-width:640px}
+#desktop-main .comic-outro{position:relative;isolation:isolate;overflow:hidden;padding-bottom:100px;background:#101010}
+#desktop-main .comic-outro:before{content:'';position:absolute;inset:0;z-index:-1;opacity:.38;background:linear-gradient(#101010 5%,transparent 100%),url('assets/education-landscape.webp') center bottom/cover}
+#desktop-main .comic-outro>div,#desktop-main .comic-outro>img{position:relative;z-index:1}
+#desktop-main .ink-intro{position:fixed;inset:0;z-index:9999;pointer-events:none;display:grid;place-items:center;color:#f7f2e7}
+#desktop-main .ink-shutter{position:absolute;inset:0;background:#101010;animation:ink-open .5s .5s cubic-bezier(.7,0,.2,1) both}
+#desktop-main .ink-shutter.left{clip-path:polygon(0 0,57% 0,43% 100%,0 100%);--exit:-65%}
+#desktop-main .ink-shutter.right{clip-path:polygon(56.9% 0,100% 0,100% 100%,42.9% 100%);--exit:65%}
+#desktop-main .intro-mark{display:flex;flex-direction:column;align-items:center;gap:12px;z-index:1;animation:ink-mark .85s both}
+#desktop-main .intro-mark svg{width:76px;height:64px;fill:none;stroke:#f7f2e7;stroke-width:1.8}
+#desktop-main .intro-mark .spine{stroke:#ffc53d;stroke-width:3;stroke-dasharray:46;stroke-dashoffset:46;animation:ink-trace .45s .05s forwards}
+#desktop-main .intro-mark span{font:400 20px 'Archivo Black',sans-serif;letter-spacing:.06em}
+#desktop-main .intro-mark small{font:600 9px Inter,sans-serif;letter-spacing:.18em;color:#ffc53d}
+#desktop-main .ink-intro button{position:absolute;right:32px;bottom:32px;pointer-events:auto;color:#f7f2e7;background:#101010;border:1px solid #f7f2e760;border-radius:4px;padding:12px 18px;font:600 12px Inter,sans-serif;cursor:pointer}
+#desktop-main .ink-intro button:focus-visible{outline:3px solid #ffc53d;outline-offset:4px}
+@keyframes ink-open{to{transform:translateX(var(--exit))}}
+@keyframes ink-trace{to{stroke-dashoffset:0}}
+@keyframes ink-mark{0%{opacity:0;transform:translateY(5px)}20%,65%{opacity:1;transform:none}100%{opacity:0}}
+@media(max-width:1100px){#desktop-main .gq-hero{padding:44px 40px 180px;gap:38px;min-height:740px}#desktop-main .gq-hero h1{font-size:44px}#desktop-main .ink-landscape{height:330px}#desktop-main .landscape-bridge{padding:32px 40px;min-height:230px}}
+@media(prefers-reduced-motion:reduce){#desktop-main .ink-intro{display:none}#desktop-main .cover.cinema-cover{transition:none}}
+}
+@media(min-width:761px){#desktop-main .ink-landscape{height:350px}@media(max-width:1100px){#desktop-main .ink-landscape{height:280px}}}
+@media(min-width:761px){#desktop-main .gq-hero .hero-note{background:#101010;padding:10px 14px;border-left:2px solid #ffc53d;width:fit-content;max-width:360px;font-size:21px}}

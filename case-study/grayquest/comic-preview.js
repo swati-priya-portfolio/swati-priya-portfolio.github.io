@@ -11,6 +11,23 @@ hero.querySelector('h1').innerHTML='SCHOOL FEES.<span>CLEAR CHOICES.</span>';
 const actions=document.createElement('div');actions.className='comic-actions';actions.innerHTML='<a class="comic-btn" href="#d-section-1">Read the story <span class="comic-arrow" aria-hidden="true">↗</span></a><a class="comic-btn secondary" href="#d-journey">Explore the journey <span class="comic-arrow" aria-hidden="true">↓</span></a>';
 copy.querySelector('.project-facts').before(actions);
 
+// Original panoramic illustration: three deliberate atmospheric beats.
+const landscape=document.createElement('div');landscape.className='ink-landscape';landscape.setAttribute('aria-hidden','true');hero.prepend(landscape);
+const bridge=document.createElement('div');bridge.className='landscape-bridge';bridge.setAttribute('aria-hidden','true');bridge.innerHTML='<span>THE NEXT CHAPTER</span><p>From choosing a plan<br>to knowing what comes next.</p>';root.querySelector('#d-checks').before(bridge);
+// A short first-entry flourish, never a readiness or network gate.
+let seenIntro=false;try{seenIntro=sessionStorage.getItem('gq-ink-intro')==='1'}catch{}
+const backEntry=performance.getEntriesByType('navigation')[0]?.type==='back_forward';
+if(!seenIntro&&!location.hash&&!backEntry&&!reduced.matches){
+ const intro=document.createElement('div');intro.className='ink-intro';intro.setAttribute('aria-label','Opening the GrayQuest story');
+ intro.innerHTML='<div class="ink-shutter left"></div><div class="ink-shutter right"></div><div class="intro-mark" aria-hidden="true"><svg viewBox="0 0 80 64"><path d="M40 10Q24 2 8 8V53Q24 47 40 56Q56 47 72 53V8Q56 2 40 10Z"/><path class="spine" d="M40 10V56"/></svg><span>GRAYQUEST</span><small>THE STORY UNFOLDS</small></div><button type="button">Skip intro ↗</button>';
+ root.append(intro);let closeTimer,failSafe;
+ const dismiss=()=>{clearTimeout(closeTimer);clearTimeout(failSafe);const focused=intro.contains(document.activeElement);intro.remove();if(focused){const a=hero.querySelector('.comic-actions a');a?.focus({preventScroll:true})}};
+ intro.querySelector('button').addEventListener('click',dismiss);intro.addEventListener('keydown',e=>{if(e.key==='Escape')dismiss()});
+ closeTimer=setTimeout(dismiss,1050);failSafe=setTimeout(dismiss,1500);
+ reduced.addEventListener('change',dismiss,{once:true});desktop.addEventListener('change',dismiss,{once:true});addEventListener('pagehide',dismiss,{once:true});
+ try{sessionStorage.setItem('gq-ink-intro','1')}catch{}
+}
+
 // Preserve the original comic cover and its source artwork.
 const scene=hero.querySelector('.cover');scene.classList.add('cinema-cover');
 scene.querySelector('img').setAttribute('fetchpriority','high');
