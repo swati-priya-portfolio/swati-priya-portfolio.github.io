@@ -71,3 +71,11 @@ Landscape brightness increased 24% with slightly softer saturation; bridge and c
 - Removed gold screenshot hover outlines; kept visible keyboard focus. Aligned setup evidence sizing.
 - Added opt-in original synthesized ambience with mute and volume controls, paused on hidden page/mobile breakpoint. This is not Harry Potter music. No audio autoplays.
 - QA: syntax and whitespace checks passed; desktop 1363px screenshots checked for hero, applicant portraits and reflection; no horizontal overflow or broken loaded desktop images. Sound control toggles verified. Physical mobile/tablet, audio listening and full breakpoint testing not performed. Mobile source and homepage untouched.
+
+## Printed comic edition
+- Replaced full-width scenic banner with scenery confined behind an upright layered-paper cover. Reduced hero height and moved project facts into a four-column editorial strip.
+- Reused the existing homepage SVG torn-edge silhouette at seven major chapter boundaries; brief reveal animation respects reduced motion and never hides content by default.
+- Cream opening chapter with open illustrated columns and readable dark text. Original evidence screenshots unchanged.
+- Added desktop-only pointer-revealed halftone/illustration texture to case study and homepage on this preview branch. Main remains unchanged; mobile content/styles untouched.
+- Retained opt-in original synthesized audio; no Harry Potter recording added.
+- QA: 1363px desktop hero, paper opening, homepage, no horizontal overflow; screen viewer opens and Escape closes; JS syntax and diff whitespace checks pass. Physical mobile and other viewport sizes not visually tested.

@@ -1,0 +1,8 @@
+@media(min-width:761px){
+.ink-interactive{position:relative;isolation:isolate}
+.ink-reveal-layer{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .5s;background:repeating-conic-gradient(from 7deg at 78% 45%,#ffc53d18 0deg 2deg,transparent 2deg 13deg),radial-gradient(circle,#f7f2e768 1px,transparent 1.4px) 0 0/8px 8px;mask-image:radial-gradient(circle 220px at var(--ink-x,78%) var(--ink-y,40%),#000,transparent 100%)}
+.ink-interactive.ink-hover .ink-reveal-layer{opacity:1}
+.ink-interactive>.hero-inner{position:relative;z-index:1}
+.ink-interactive .ink-reveal-layer:after{content:'';position:absolute;inset:5% 0 5% 50%;background:url('images/case-grayquest.png') center/contain no-repeat;filter:grayscale(1);opacity:.15}
+@media(prefers-reduced-motion:reduce){.ink-reveal-layer{display:none}}
+}

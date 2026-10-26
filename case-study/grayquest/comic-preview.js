@@ -13,18 +13,11 @@ copy.querySelector('.project-facts').before(actions);
 const tenure=copy.querySelector('.tenure');const date=document.createElement('div');date.innerHTML='<dt>AT GRAYQUEST</dt><dd>FEB 2025 – JUN 2026</dd>';copy.querySelector('.project-facts').append(date);tenure.remove();
 
 
-// Original panoramic illustration: three deliberate atmospheric beats.
+// The paper edition uses printed scenery confined to the cover composition.
 const landscape=document.createElement('div');landscape.className='ink-landscape';landscape.setAttribute('aria-hidden','true');hero.prepend(landscape);
-const bridge=document.createElement('div');bridge.className='landscape-bridge';bridge.setAttribute('aria-hidden','true');bridge.innerHTML='<span>THE NEXT CHAPTER</span><p>From choosing a plan<br>to knowing what comes next.</p>';root.querySelector('#d-checks').before(bridge);
-// Light travels from the comic cover toward the landscape, connecting story to setting.
-const atmosphere=document.createElement('div');atmosphere.className='story-atmosphere';atmosphere.setAttribute('aria-hidden','true');
-atmosphere.innerHTML='<div class="story-halo"></div><div class="story-haze"></div>';
-[[68,18],[92,22],[64,37],[94,46],[86,64],[73,70],[57,78],[92,78],[47,85],[81,88]].forEach(([x,y],i)=>{const dot=document.createElement('i');dot.className='story-mote';dot.style.cssText=`left:${x}%;top:${y}%;--delay:${-i*1.7}s;--duration:${7+i%4*2}s;--size:${i%3===0?4:2}px`;atmosphere.append(dot)});hero.prepend(atmosphere);
-const motionControl=document.createElement('button');motionControl.className='atmosphere-control';motionControl.type='button';motionControl.setAttribute('aria-pressed','false');motionControl.textContent='Pause atmosphere';hero.append(motionControl);
-let userPaused=false;function setAtmosphere(){const paused=userPaused||reduced.matches;hero.classList.toggle('atmosphere-paused',paused);motionControl.setAttribute('aria-pressed',String(paused));motionControl.textContent=paused?'Play atmosphere':'Pause atmosphere';motionControl.hidden=reduced.matches;}
-motionControl.addEventListener('click',()=>{userPaused=!userPaused;setAtmosphere()});reduced.addEventListener('change',setAtmosphere);setAtmosphere();
-const atmosphereObserver=new IntersectionObserver(entries=>entries.forEach(e=>hero.classList.toggle('atmosphere-offscreen',!e.isIntersecting)),{threshold:0});atmosphereObserver.observe(hero);
-addEventListener('pagehide',()=>atmosphereObserver.disconnect());addEventListener('pageshow',e=>{if(e.persisted)atmosphereObserver.observe(hero)});
+const facts=copy.querySelector('.project-facts');hero.append(facts);
+const opening=root.querySelector('#d-section-1');opening.classList.remove('dark');opening.classList.add('cream','paper-opening');
+['d-section-1','d-journey','d-choose','d-checks','d-pay','d-section-13','d-section-16'].forEach(id=>{const section=root.querySelector('#'+id);if(!section)return;section.classList.add('printed-sheet');const edge=document.createElement('div');edge.className='printed-edge';edge.setAttribute('aria-hidden','true');section.prepend(edge)});
 // Original quiet pentatonic ambience. Audio starts only from its own control.
 const sound=document.createElement('div');sound.className='story-sound';sound.innerHTML='<button type="button" aria-pressed="false">Enable sound</button><label hidden>Volume <input type="range" min="0" max="0.3" step="0.01" value="0.12" aria-label="Ambient sound volume"></label><span class="sound-status" role="status"></span>';root.append(sound);
 const soundButton=sound.querySelector('button'),volume=sound.querySelector('input');let audioContext,master,soundTimer,soundOn=false,noteIndex=0;const voices=new Set();
@@ -80,7 +73,7 @@ const journeyRows=[...root.querySelectorAll('.journey>li')];
 const observers=[];let activeAnimations=[];
 function play(el,frames,options){if(!el||!desktop.matches||reduced.matches)return;const animation=el.animate(frames,options);activeAnimations.push(animation);animation.finished.catch(()=>{}).finally(()=>{activeAnimations=activeAnimations.filter(a=>a!==animation)})}
 const enter=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;const el=entry.target;el.classList.add('scene-entered');
-if(el.classList.contains('cinema-chapter')){play(el.querySelector('h2'),[{opacity:.6,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:480,easing:'cubic-bezier(.2,.7,.3,1)'});}
+if(el.classList.contains('cinema-chapter')){play(el.querySelector('.printed-edge'),[{transform:'translateY(18px) rotate(180deg)'},{transform:'translateY(0) rotate(180deg)'}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'});play(el.querySelector('h2'),[{opacity:.6,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:480,easing:'cubic-bezier(.2,.7,.3,1)'});}
 else play(el,[{opacity:.65,transform:'translateY(8px) scale(.98)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.2,.7,.3,1)'});
 enter.unobserve(el);});},{threshold:.1});observers.push(enter);
 root.querySelectorAll('.cinema-chapter,.parent-question,.narrator,.comic-outro').forEach(el=>enter.observe(el));
