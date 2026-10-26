@@ -62,3 +62,12 @@ This is an isolated preview, not a main-site deployment. Physical mobile/tablet 
 
 ## Luminous background refinement
 Landscape brightness increased 24% with slightly softer saturation; bridge and closing artwork also lifted. Added a warm animated cover halo, a fine moving light trail from cover to landscape, and ten sparse drifting lights. Background is decorative and confined to the hero, with Pause/Play, offscreen suspension, and reduced-motion static state. Mobile and evidence content unchanged.
+
+
+## Readability and illustration refinement — 26 October 2026
+- Desktop hero separates metadata and handwritten note from the landscape; cleaner 2-column facts and quieter secondary CTA. Replaced the gold light trail with restrained atmospheric haze.
+- Reflection follows the inspected Figma frame 635:838: cream background, compact editorial heading, original parent illustration and two white validation panels.
+- Applicant alternatives use original character crops with both routes visible, without nested cards or redundant selector pills.
+- Removed gold screenshot hover outlines; kept visible keyboard focus. Aligned setup evidence sizing.
+- Added opt-in original synthesized ambience with mute and volume controls, paused on hidden page/mobile breakpoint. This is not Harry Potter music. No audio autoplays.
+- QA: syntax and whitespace checks passed; desktop 1363px screenshots checked for hero, applicant portraits and reflection; no horizontal overflow or broken loaded desktop images. Sound control toggles verified. Physical mobile/tablet, audio listening and full breakpoint testing not performed. Mobile source and homepage untouched.
