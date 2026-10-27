@@ -52,14 +52,7 @@ moments.querySelectorAll('.grid.three>.paper-card').forEach((card,i)=>{
 
 
 });
-const section=root.querySelector('#d-section-6'),board=section.querySelector('.compare-grid>.paper-card');
-const controls=document.createElement('div');controls.className='comic-controls';controls.setAttribute('role','group');controls.setAttribute('aria-label','Highlight comparable plan details');
-controls.innerHTML='<span>COMPARE THE DETAILS</span><button type="button" data-focus="monthly" aria-pressed="false">Monthly amount</button><button type="button" data-focus="today" aria-pressed="false">Payable today</button><button type="button" data-focus="duration" aria-pressed="false">Duration</button>';
-board.querySelector('h3').after(controls);
-board.querySelectorAll('.evidence').forEach(screen=>['monthly','today','duration'].forEach(key=>{const spot=document.createElement('span');spot.className='comic-spot '+key;spot.setAttribute('aria-hidden','true');screen.append(spot)}));
-function highlight(key){board.dataset.focus=key;controls.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===key)))}
-controls.addEventListener('click',e=>{const b=e.target.closest('button');if(b)highlight(board.dataset.focus===b.dataset.focus?'':b.dataset.focus)});
-section.querySelectorAll('.reason').forEach((reason,i)=>{const key=['monthly','today','today'][i];reason.tabIndex=0;reason.addEventListener('mouseenter',()=>highlight(key));reason.addEventListener('focus',()=>highlight(key));});
+// Screen evidence remains unaltered: no simulated field selection or hover overlays.
 const routes=root.querySelector('.applicant-route');
 routes.classList.add('illustrated-routes');
 routes.querySelectorAll('.applicant-branches article').forEach((article,i)=>{const portrait=document.createElement('div');portrait.className='route-portrait '+(i?'student':'guardian');portrait.setAttribute('aria-hidden','true');article.prepend(portrait)});
@@ -82,6 +75,34 @@ const quick=document.createElement('nav');quick.className='journey-quick';quick.
 const finale=root.querySelector('#d-section-16');finale.classList.add('cinema-finale');
 finale.querySelector('.takeaway').remove();
 finale.querySelector('.reflection-intro p:not(.handwritten)').textContent='Payment, repayment setup and approval are separate milestones. Each needs a clear next action.';
+
+
+// One purpose per spread; retain all product evidence and supporting material.
+opening.querySelector('.intro').textContent='Before paying school fees, parents had to compare plans, share financial details and complete checks. Each step needed a clear reason and next action.';
+opening.querySelector('.takeaway')?.remove();
+opening.querySelector('.gq-section-head h2').innerHTML='PAYING SCHOOL FEES.<span class="accent">Navigating a financial application.</span>';
+// Each sheet becomes stationary only after its bottom is readable; the next
+// sheet then covers it through native scrolling. No extra scroll runway.
+const sheets=[hero,...root.querySelectorAll(':scope > .chapter')];
+sheets.forEach((sheet,i)=>{sheet.classList.add('turning-sheet');sheet.style.setProperty('--sheet-order',i+1);if(i&&!sheet.querySelector(':scope > .printed-edge')){const edge=document.createElement('div');edge.className='printed-edge';edge.setAttribute('aria-hidden','true');sheet.prepend(edge)}});
+const anchors=new Map();sheets.forEach(sheet=>{const marker=document.createElement('div');marker.className='sheet-anchor';marker.setAttribute('aria-hidden','true');sheet.before(marker);anchors.set(sheet,marker)});
+function scrollToSheet(target,smooth=false){const sheet=target.closest('.turning-sheet');const marker=anchors.get(sheet);if(!marker)return;const offset=target===sheet?0:target.getBoundingClientRect().top-sheet.getBoundingClientRect().top;window.scrollTo({top:scrollY+marker.getBoundingClientRect().top+offset-(parseFloat(document.documentElement.style.getPropertyValue("--anchor-offset"))||88),behavior:smooth&&!reduced.matches?'smooth':'instant'})}
+document.addEventListener('click',e=>{if(!desktop.matches)return;const link=e.target.closest('a[href^="#d-"]');if(!link)return;const target=document.querySelector(link.hash);if(!target||!root.contains(target))return;e.preventDefault();e.stopImmediatePropagation();history.pushState(null,'',link.hash);target.setAttribute('tabindex','-1');target.focus({preventScroll:true});scrollToSheet(target,true)},true);
+function restoreFragment(){if(!desktop.matches||!location.hash.startsWith('#d-'))return;const target=document.querySelector(location.hash);if(target)scrollToSheet(target)}
+addEventListener('popstate',restoreFragment);addEventListener('hashchange',restoreFragment);
+addEventListener('load',restoreFragment,{once:true});
+root.addEventListener('focusin',e=>{if(!desktop.matches||!e.target.matches(':focus-visible'))return;const sheet=e.target.closest('.turning-sheet');if(!sheet)return;const i=sheets.indexOf(sheet),next=anchors.get(sheets[i+1]);if(next&&next.getBoundingClientRect().top<100)scrollToSheet(e.target)});
+let measureFrame=0;
+function measureSheets(){cancelAnimationFrame(measureFrame);measureFrame=requestAnimationFrame(()=>{measureFrame=0;sheets.forEach(sheet=>sheet.style.setProperty('--sheet-top',Math.min(88,innerHeight-sheet.offsetHeight-24)+'px'))})}
+const sheetResize=new ResizeObserver(measureSheets);sheets.forEach(sheet=>sheetResize.observe(sheet));
+addEventListener('resize',measureSheets,{passive:true});document.fonts?.ready.then(measureSheets);measureSheets();
+addEventListener('pagehide',()=>{sheetResize.disconnect();cancelAnimationFrame(measureFrame)});
+addEventListener('pageshow',e=>{if(e.persisted){sheets.forEach(sheet=>sheetResize.observe(sheet));measureSheets()}});
+// The next issue is a real cover link with the same depth language as the hero.
+const nextCover=outro.querySelector('img');const nextLink=document.createElement('a');nextLink.className='next-cover-link';nextLink.href='../guardian-one/';nextLink.setAttribute('aria-label','Explore Guardian One case study');nextCover.before(nextLink);nextLink.append(nextCover);
+outro.querySelector('.small-label').textContent='NEXT ISSUE / GUARDIAN ONE';
+outro.querySelector('h3').innerHTML='EVERY EDUCATION.<br>A SAFETY NET.';
+outro.querySelector('p').textContent='Continue into Guardian One—the story of making education protection easier to understand.';
 
 // Intro is a non-blocking reveal, never a timed loading gate.
 if(!location.hash){play(scene,[{opacity:.55,clipPath:'inset(0 0 100% 0)'},{opacity:1,clipPath:'inset(0)'}],{duration:750,easing:'cubic-bezier(.2,.7,.3,1)'});play(hero.querySelector('h1'),[{opacity:.6,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.3,1)'});}

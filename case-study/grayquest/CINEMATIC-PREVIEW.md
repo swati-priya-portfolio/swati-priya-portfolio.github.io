@@ -79,3 +79,10 @@ Landscape brightness increased 24% with slightly softer saturation; bridge and c
 - Added desktop-only pointer-revealed halftone/illustration texture to case study and homepage on this preview branch. Main remains unchanged; mobile content/styles untouched.
 - Retained opt-in original synthesized audio; no Harry Potter recording added.
 - QA: 1363px desktop hero, paper opening, homepage, no horizontal overflow; screen viewer opens and Escape closes; JS syntax and diff whitespace checks pass. Physical mobile and other viewport sizes not visually tested.
+
+## Paper spread refinement — 27 October
+- Desktop sheets overlap with native scrolling; long sheets remain readable before holding. Anchor markers support backward chapter navigation; reduced motion disables sticky sheets.
+- Compact opening, consistent speech bubbles, smaller applicant alternatives, and stronger linked next-issue cover.
+- Removed purple comparison field overlays and heavy evidence hover boxes; preserved source screenshots and keyboard focus indicators.
+- Confined sheet painting to the case-study root. Main branch and mobile source unchanged. No commercial recording added.
+- QA: desktop visual inspection at 1363px, backward chapter navigation, no horizontal overflow, JavaScript syntax and diff checks. Other viewport sizes and physical devices not visually tested. Dense evidence sections remain longer than one viewport to preserve readability.
