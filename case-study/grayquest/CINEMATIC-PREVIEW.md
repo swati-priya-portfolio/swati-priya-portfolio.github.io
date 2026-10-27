@@ -86,3 +86,11 @@ Landscape brightness increased 24% with slightly softer saturation; bridge and c
 - Removed purple comparison field overlays and heavy evidence hover boxes; preserved source screenshots and keyboard focus indicators.
 - Confined sheet painting to the case-study root. Main branch and mobile source unchanged. No commercial recording added.
 - QA: desktop visual inspection at 1363px, backward chapter navigation, no horizontal overflow, JavaScript syntax and diff checks. Other viewport sizes and physical devices not visually tested. Dense evidence sections remain longer than one viewport to preserve readability.
+
+## Editorial simplification — 28 October
+- Removed sticky sheet stacking and its resize/focus machinery; normal scrolling with header-aware anchors and history restoration.
+- Reduced paper separators to one introduction boundary. Preserved the hero cover.
+- Rebuilt the journey as four open editorial panels, with live labels, original illustrations, a compact applicant branch, and neutral numbered milestones.
+- Added direct links to three key design decisions. Removed the repeated journey narrator and moved opt-in sound to the footer.
+- Slimmed desktop navigation; aligned desktop CTA hover/press feedback between homepage and case study.
+- QA: 1363px visual inspection, no horizontal overflow, no sticky chapters, correct chapter/header clearance, viewer opens and Escape closes, reverse chapter and browser Back tested. Mobile sources untouched and all new shared CSS desktop-scoped; physical mobile and additional viewport visual checks remain unperformed.

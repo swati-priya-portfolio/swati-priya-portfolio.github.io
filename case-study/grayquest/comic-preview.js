@@ -17,7 +17,7 @@ const tenure=copy.querySelector('.tenure');const date=document.createElement('di
 const landscape=document.createElement('div');landscape.className='ink-landscape';landscape.setAttribute('aria-hidden','true');hero.prepend(landscape);
 const facts=copy.querySelector('.project-facts');hero.append(facts);
 const opening=root.querySelector('#d-section-1');opening.classList.remove('dark');opening.classList.add('cream','paper-opening');
-['d-section-1','d-journey','d-choose','d-checks','d-pay','d-section-13','d-section-16'].forEach(id=>{const section=root.querySelector('#'+id);if(!section)return;section.classList.add('printed-sheet');const edge=document.createElement('div');edge.className='printed-edge';edge.setAttribute('aria-hidden','true');section.prepend(edge)});
+['d-section-1'].forEach(id=>{const section=root.querySelector('#'+id);if(!section)return;section.classList.add('printed-sheet');const edge=document.createElement('div');edge.className='printed-edge';edge.setAttribute('aria-hidden','true');section.prepend(edge)});
 // Original quiet pentatonic ambience. Audio starts only from its own control.
 const sound=document.createElement('div');sound.className='story-sound';sound.innerHTML='<button type="button" aria-pressed="false">Enable sound</button><label hidden>Volume <input type="range" min="0" max="0.3" step="0.01" value="0.12" aria-label="Ambient sound volume"></label><span class="sound-status" role="status"></span>';root.append(sound);
 const soundButton=sound.querySelector('button'),volume=sound.querySelector('input');let audioContext,master,soundTimer,soundOn=false,noteIndex=0;const voices=new Set();
@@ -81,23 +81,21 @@ finale.querySelector('.reflection-intro p:not(.handwritten)').textContent='Payme
 opening.querySelector('.intro').textContent='Before paying school fees, parents had to compare plans, share financial details and complete checks. Each step needed a clear reason and next action.';
 opening.querySelector('.takeaway')?.remove();
 opening.querySelector('.gq-section-head h2').innerHTML='PAYING SCHOOL FEES.<span class="accent">Navigating a financial application.</span>';
-// Each sheet becomes stationary only after its bottom is readable; the next
-// sheet then covers it through native scrolling. No extra scroll runway.
-const sheets=[hero,...root.querySelectorAll(':scope > .chapter')];
-sheets.forEach((sheet,i)=>{sheet.classList.add('turning-sheet');sheet.style.setProperty('--sheet-order',i+1);if(i&&!sheet.querySelector(':scope > .printed-edge')){const edge=document.createElement('div');edge.className='printed-edge';edge.setAttribute('aria-hidden','true');sheet.prepend(edge)}});
-const anchors=new Map();sheets.forEach(sheet=>{const marker=document.createElement('div');marker.className='sheet-anchor';marker.setAttribute('aria-hidden','true');sheet.before(marker);anchors.set(sheet,marker)});
-function scrollToSheet(target,smooth=false){const sheet=target.closest('.turning-sheet');const marker=anchors.get(sheet);if(!marker)return;const offset=target===sheet?0:target.getBoundingClientRect().top-sheet.getBoundingClientRect().top;window.scrollTo({top:scrollY+marker.getBoundingClientRect().top+offset-(parseFloat(document.documentElement.style.getPropertyValue("--anchor-offset"))||88),behavior:smooth&&!reduced.matches?'smooth':'instant'})}
-document.addEventListener('click',e=>{if(!desktop.matches)return;const link=e.target.closest('a[href^="#d-"]');if(!link)return;const target=document.querySelector(link.hash);if(!target||!root.contains(target))return;e.preventDefault();e.stopImmediatePropagation();history.pushState(null,'',link.hash);target.setAttribute('tabindex','-1');target.focus({preventScroll:true});scrollToSheet(target,true)},true);
-function restoreFragment(){if(!desktop.matches||!location.hash.startsWith('#d-'))return;const target=document.querySelector(location.hash);if(target)scrollToSheet(target)}
-addEventListener('popstate',restoreFragment);addEventListener('hashchange',restoreFragment);
-addEventListener('load',restoreFragment,{once:true});
-root.addEventListener('focusin',e=>{if(!desktop.matches||!e.target.matches(':focus-visible'))return;const sheet=e.target.closest('.turning-sheet');if(!sheet)return;const i=sheets.indexOf(sheet),next=anchors.get(sheets[i+1]);if(next&&next.getBoundingClientRect().top<100)scrollToSheet(e.target)});
-let measureFrame=0;
-function measureSheets(){cancelAnimationFrame(measureFrame);measureFrame=requestAnimationFrame(()=>{measureFrame=0;sheets.forEach(sheet=>sheet.style.setProperty('--sheet-top',Math.min(88,innerHeight-sheet.offsetHeight-24)+'px'))})}
-const sheetResize=new ResizeObserver(measureSheets);sheets.forEach(sheet=>sheetResize.observe(sheet));
-addEventListener('resize',measureSheets,{passive:true});document.fonts?.ready.then(measureSheets);measureSheets();
-addEventListener('pagehide',()=>{sheetResize.disconnect();cancelAnimationFrame(measureFrame)});
-addEventListener('pageshow',e=>{if(e.persisted){sheets.forEach(sheet=>sheetResize.observe(sheet));measureSheets()}});
+// Normal document flow keeps chapter links and browser history predictable.
+function scrollToChapter(target,smooth=false){const header=document.querySelector('.case-header');const offset=header.getBoundingClientRect().bottom+14;window.scrollTo({top:scrollY+target.getBoundingClientRect().top-offset,behavior:smooth&&!reduced.matches?'smooth':'instant'})}
+document.addEventListener('click',e=>{if(!desktop.matches)return;const link=e.target.closest('a[href^="#d-"]');if(!link)return;const target=document.querySelector(link.hash);if(!target||!root.contains(target))return;e.preventDefault();e.stopImmediatePropagation();history.pushState(null,'',link.hash);target.setAttribute('tabindex','-1');target.focus({preventScroll:true});scrollToChapter(target,true)},true);
+function restoreFragment(){if(!desktop.matches||!location.hash.startsWith('#d-'))return;const target=document.querySelector(location.hash);if(target)scrollToChapter(target)}
+addEventListener('popstate',restoreFragment);addEventListener('hashchange',restoreFragment);addEventListener('load',restoreFragment,{once:true});
+// Three decisions offer a short route into the evidence.
+const brief=document.createElement('nav');brief.className='decision-index';brief.setAttribute('aria-label','Key design decisions');brief.innerHTML='<span class="small-label">THREE DECISIONS TO EXPLORE</span><a href="#d-section-6"><span>01</span> Make plans comparable <b aria-hidden="true">↗</b></a><a href="#d-checks"><span>02</span> Keep a route forward <b aria-hidden="true">↗</b></a><a href="#d-section-13"><span>03</span> Explain what remains <b aria-hidden="true">↗</b></a>';opening.querySelector('.chapter-inner').append(brief);
+const journey=root.querySelector('#d-journey');
+journey.querySelector('.journey-intro').textContent='From choosing a plan to tracking the application, each stage needed a clear purpose and next action.';
+journey.querySelector('.journey-applicant-branch').innerHTML='<strong>If an application cannot proceed</strong><p>Another parent, guardian or the student can apply with their own details and applicable checks.</p><a href="#d-checks">Explore applicant routes ↗</a>';
+const milestone=journey.querySelector('.milestones');milestone.setAttribute('aria-label','Three separate milestones, not a completed application');milestone.querySelectorAll('span').forEach((el,i)=>el.dataset.milestone=String(i+1).padStart(2,'0'));
+const caption=document.createElement('p');caption.className='milestone-caption';caption.textContent='Three separate milestones—not automatic completion after payment.';milestone.before(caption);
+journey.querySelector('.narrator').remove();
+// Sound stays available as a quiet footer utility, outside reading content.
+closing.after(sound);
 // The next issue is a real cover link with the same depth language as the hero.
 const nextCover=outro.querySelector('img');const nextLink=document.createElement('a');nextLink.className='next-cover-link';nextLink.href='../guardian-one/';nextLink.setAttribute('aria-label','Explore Guardian One case study');nextCover.before(nextLink);nextLink.append(nextCover);
 outro.querySelector('.small-label').textContent='NEXT ISSUE / GUARDIAN ONE';
