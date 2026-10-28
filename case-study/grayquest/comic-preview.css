@@ -528,3 +528,54 @@
 @media(max-width:1100px){.case-header,.case-header.is-reading{left:12px;right:12px;gap:12px;padding:8px 12px}.case-header .desktop-nav{gap:12px}.case-header .all-work{display:none}#desktop-main #d-journey .journey>li{grid-template-columns:110px minmax(0,1fr);gap:14px}#desktop-main #d-journey .journey-story img{width:105px}#desktop-main .decision-index{gap:12px}}
 @media(prefers-reduced-motion:reduce){#desktop-main .comic-btn:hover,.case-header .contact-link:hover,#desktop-main .comic-btn:hover .comic-arrow{transform:none}}
 }
+
+/* October refinement: desktop-only evidence, research and book treatment. */
+@media(min-width:761px){
+#desktop-main .dark h3,#desktop-main .dark h4{color:#ffc53d}
+#desktop-main .dark .paper-card h3{color:inherit}
+#desktop-main #d-pay .paired-screen,#desktop-main #d-section-14 .paired-screen{display:grid;grid-template-rows:auto auto 1fr;align-content:start;min-width:0}
+#desktop-main #d-pay .paired-screen>.evidence,#desktop-main #d-section-14 .paired-screen>.evidence{height:460px;min-height:0;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;padding:0;border:0;box-shadow:none;background:transparent}
+#desktop-main #d-pay .paired-screen>.evidence>img,#desktop-main #d-section-14 .paired-screen>.evidence>img{width:auto!important;height:auto!important;max-width:100%;max-height:100%;object-fit:contain;flex-shrink:0}
+#desktop-main .paper-opening .gq-section-head h2{font-size:clamp(32px,3.3vw,46px);line-height:1.15}
+#desktop-main .paper-opening .intro{max-width:760px;font:400 18px/1.65 Inter,sans-serif}
+#desktop-main .audience-spread{display:grid;grid-template-columns:110px 1fr 1.2fr;gap:30px;align-items:center;padding:28px 0;border-block:1px solid #17120b30}
+#desktop-main .audience-spread>img{width:110px;height:130px;object-fit:contain;mix-blend-mode:multiply}
+#desktop-main .audience-spread h3{font:400 25px/1.25 'Archivo Black',sans-serif;margin:12px 0 0}
+#desktop-main .audience-types{display:grid;gap:20px}
+#desktop-main .audience-types h4{font:700 13px/1.4 Inter,sans-serif;margin:0 0 6px}
+#desktop-main .audience-types p{font:400 15px/1.6 Inter,sans-serif;margin:0}
+#desktop-main .paper-opening .problem-grid{gap:24px}
+#desktop-main .paper-opening .problem-grid .paper-card{padding:20px;background:#fff9;border:1px solid #17120b30;border-radius:8px;display:flex;flex-direction:column;gap:14px}
+#desktop-main .paper-opening .problem-grid .paper-card+.paper-card{padding:20px;border-left:1px solid #17120b30}
+#desktop-main .paper-opening .problem-grid .art{height:100px;min-height:0;display:flex;justify-content:flex-start}
+#desktop-main .paper-opening .problem-grid .art img{height:100px;width:auto;max-width:100%;object-fit:contain}
+#desktop-main .paper-opening .problem-grid h3{font:700 19px/1.35 Inter,sans-serif}
+#desktop-main .paper-opening .problem-grid p{font:400 15px/1.6 Inter,sans-serif}
+#desktop-main .evidence-jump{margin-top:auto;font:600 13px/1.5 Inter,sans-serif;text-underline-offset:5px}
+#desktop-main .project-ownership{display:flex;align-items:center;gap:22px;max-width:900px;padding:24px 0}
+#desktop-main .project-ownership img{width:64px;height:64px;border-radius:50%;flex-shrink:0}
+#desktop-main .project-ownership p{font:400 15px/1.65 Inter,sans-serif;margin:8px 0 0}
+#desktop-main .design-note{border:0;border-top:1px solid #17120b33;padding-top:14px;margin-top:0}
+#desktop-main .design-note summary{font:600 13px/1.5 Inter,sans-serif;cursor:pointer}
+#desktop-main .design-note .supporting-content{padding-top:16px}
+#desktop-main #d-journey .journey{gap:24px}
+#desktop-main #d-journey .journey>li{padding:24px;grid-template-columns:160px minmax(0,1fr);gap:18px 24px;border:1px solid #17120b;border-radius:8px;background:#fff8;align-items:start}
+#desktop-main #d-journey .chapter-number{font:700 12px/1.4 Inter,sans-serif;background:#ffc53d;padding:5px 10px;justify-self:start;border-radius:3px}
+#desktop-main #d-journey .journey-story img{width:160px;height:105px;max-height:105px}
+#desktop-main #d-journey .journey-story h3{font-size:18px;line-height:1.25}
+#desktop-main #d-journey .journey-question{padding-top:14px;border-top:1px solid #17120b25;font-size:23px}
+#desktop-main .comic-outro{background:#111;grid-template-columns:200px minmax(0,1fr);padding:36px 48px;gap:56px;overflow:visible;border-radius:8px}
+#desktop-main .comic-outro:after{display:none}
+#desktop-main .comic-outro h3{font-size:clamp(28px,3vw,42px);color:#f7f2e7}
+#desktop-main .comic-outro .book-cover{perspective:1000px;filter:none;transform:none;isolation:isolate}
+#desktop-main .book-cover:before{content:'';position:absolute;inset:5px -8px 5px 7px;background:repeating-linear-gradient(0deg,#e5ddcb 0 1px,#fffaf0 1px 3px);border:1px solid #978b76;box-shadow:10px 18px 26px #0008;z-index:-1}
+#desktop-main .comic-outro .book-cover img{display:block;transform-origin:left center;transition:transform .35s ease,box-shadow .35s ease;box-shadow:inset 4px 0 6px #0004;position:relative}
+#desktop-main .comic-outro .book-cover:hover,#desktop-main .comic-outro .book-cover:focus-visible{transform:none;filter:none}
+#desktop-main .comic-outro .book-cover:hover img,#desktop-main .comic-outro .book-cover:focus-visible img{transform:rotateY(-14deg);box-shadow:12px 8px 20px #0005}
+#evidence-dialog .dialog-scroll{scrollbar-gutter:stable}
+@media(max-width:1100px){
+#desktop-main .audience-spread{grid-template-columns:90px 1fr;gap:22px}#desktop-main .audience-types{grid-column:1/-1;grid-template-columns:1fr 1fr}
+#desktop-main #d-journey .journey>li{grid-template-columns:1fr;padding:20px}#desktop-main #d-journey .journey-story{flex-direction:row;align-items:center;justify-content:space-between}#desktop-main #d-journey .journey-story img{width:130px;height:80px}
+}
+@media(prefers-reduced-motion:reduce){#desktop-main .comic-outro .book-cover img{transition:none}#desktop-main .comic-outro .book-cover:hover img,#desktop-main .comic-outro .book-cover:focus-visible img{transform:none}}
+}

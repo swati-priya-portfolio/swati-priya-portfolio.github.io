@@ -99,8 +99,22 @@ closing.after(sound);
 // The next issue is a real cover link with the same depth language as the hero.
 const nextCover=outro.querySelector('img');const nextLink=document.createElement('a');nextLink.className='next-cover-link';nextLink.href='../guardian-one/';nextLink.setAttribute('aria-label','Explore Guardian One case study');nextCover.before(nextLink);nextLink.append(nextCover);
 outro.querySelector('.small-label').textContent='NEXT ISSUE / GUARDIAN ONE';
-outro.querySelector('h3').innerHTML='EVERY EDUCATION.<br>A SAFETY NET.';
-outro.querySelector('p').textContent='Continue into Guardian One—the story of making education protection easier to understand.';
+outro.querySelector('h3').textContent='GUARDIAN ONE.';
+outro.querySelector('p').textContent='A new issue. A different design challenge. Explore the next case study.';
+
+// Research context and ownership use only the designer's confirmed account.
+opening.querySelector('.gq-section-head h2').innerHTML='THE PEOPLE BEHIND<span class="accent">THE PAYMENT.</span>';
+opening.querySelector('.intro').textContent='I spoke with parents and institutes to understand the school-fee journey. The platform also served undergraduate and postgraduate students applying for themselves.';
+const audience=document.createElement('div');audience.className='audience-spread';audience.innerHTML='<img src="assets/parent@3x.webp" alt="Illustration of a parent considering the application" width="264" height="288" loading="lazy"><div><span class="small-label">UNDERSTANDING USERS</span><h3>Different applicants.<br>A clear route for each.</h3></div><div class="audience-types"><article><h4>PARENTS &amp; GUARDIANS</h4><p>Parents commonly managed education payments for children through Class 12.</p></article><article><h4>STUDENT APPLICANTS</h4><p>Undergraduate and postgraduate students also used the student route to complete their own application.</p></article></div>';
+opening.querySelector('.moments-label').before(audience);
+opening.querySelector('.moments-label').textContent='THREE QUESTIONS THAT SHAPED THE DESIGN';
+const ownership=opening.querySelector('.narrator');ownership.className='project-ownership';ownership.innerHTML='<img src="../../images/avatar-nav.png" alt="Swati Priya" width="128" height="128" loading="lazy"><div><span class="small-label">MY ROLE IN THIS PROJECT</span><p>I worked with product managers on requirements, spoke with parents and institutes, explored flows and low-fidelity concepts, and refined the designs through PM and CEO feedback before developer handoff.</p></div>';
+// Essential explanations stay visible; supporting notes are available on demand.
+const destinations=['#d-section-6','#d-checks','#d-section-13'];
+brief.remove();
+opening.querySelectorAll('.problem-grid .paper-card').forEach((card,i)=>{const link=document.createElement('a');link.className='evidence-jump';link.href=destinations[i];link.textContent='See the design response ↗';card.append(link)});
+root.querySelectorAll('#d-section-2 .evidence-explanation').forEach(note=>{const details=document.createElement('details');details.className='design-note';const summary=document.createElement('summary');summary.textContent='Read the design considerations';const content=document.createElement('div');content.className='supporting-content';note.before(details);details.append(summary,content);content.append(note)});
+nextLink.classList.add('book-cover');
 
 // Intro is a non-blocking reveal, never a timed loading gate.
 if(!location.hash){play(scene,[{opacity:.55,clipPath:'inset(0 0 100% 0)'},{opacity:1,clipPath:'inset(0)'}],{duration:750,easing:'cubic-bezier(.2,.7,.3,1)'});play(hero.querySelector('h1'),[{opacity:.6,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.3,1)'});}

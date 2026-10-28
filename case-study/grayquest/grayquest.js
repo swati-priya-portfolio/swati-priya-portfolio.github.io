@@ -15,7 +15,7 @@
   dialog.querySelector('[data-view="actual"]').setAttribute('aria-pressed',String(mode==='actual'));
   if(reset){stage.scrollTop=0;stage.scrollLeft=0;}
  }
- image.addEventListener('load',()=>{ready=true;status.hidden=true;controls.forEach(b=>b.disabled=false);mode='fit';render(fitScale(),true);});
+ image.addEventListener('load',()=>{ready=true;status.hidden=true;controls.forEach(b=>b.disabled=false);mode=innerWidth>760?'readable':'fit';render(mode==='readable'?Math.min(1,Math.min(680,stage.clientWidth-32)/image.naturalWidth):fitScale(),true);});
  image.addEventListener('error',()=>{ready=false;loading('This screen could not load. Close and try again.');});
  document.querySelectorAll('[data-zoom]').forEach(button=>button.addEventListener('click',()=>{
   opener=button;ready=false;loading('Loading original screen…');level.value='—';const source=button.querySelector('img');image.style.width='0px';image.style.height='0px';
