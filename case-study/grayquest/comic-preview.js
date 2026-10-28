@@ -116,6 +116,19 @@ opening.querySelectorAll('.problem-grid .paper-card').forEach((card,i)=>{const l
 root.querySelectorAll('#d-section-2 .evidence-explanation').forEach(note=>{const details=document.createElement('details');details.className='design-note';const summary=document.createElement('summary');summary.textContent='Read the design considerations';const content=document.createElement('div');content.className='supporting-content';note.before(details);details.append(summary,content);content.append(note)});
 nextLink.classList.add('book-cover');
 
+// Homepage cursor vocabulary, enabled only for desktop mouse input.
+const cursor=document.createElement('div');cursor.className='gq-cursor';cursor.setAttribute('aria-hidden','true');cursor.innerHTML='<i></i><b></b><span></span>';document.body.append(cursor);
+let cursorFrame=0;
+document.addEventListener('pointermove',e=>{if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'){cursor.hidden=true;return}cursor.hidden=false;cancelAnimationFrame(cursorFrame);cursorFrame=requestAnimationFrame(()=>{cursor.style.transform=`translate3d(${e.clientX}px,${e.clientY}px,0)`});const target=e.target.closest('a,button');cursor.classList.toggle('active',!!target);cursor.querySelector('span').textContent=target?.hasAttribute('data-zoom')?'VIEW SCREEN':target?'EXPLORE ↗':'';},{passive:true});
+document.addEventListener('pointerleave',()=>cursor.hidden=true);desktop.addEventListener('change',()=>{if(!desktop.matches)cursor.hidden=true});
+// Restore the supplied Figma composition instead of adding another research spread.
+opening.classList.remove('cream','paper-opening','printed-sheet');opening.classList.add('dark','figma-problem');
+opening.querySelector('.printed-edge')?.remove();audience.remove();ownership.remove();
+opening.querySelector('h2').innerHTML='PARENTS CAME TO PAY SCHOOL FEES.<span class="accent">BUT FIRST, THEY HAD TO NAVIGATE A FINANCIAL APPLICATION.</span>';
+opening.querySelector('.intro').textContent='Choosing a plan was only the beginning. Parents then had to provide personal and financial details, complete checks, and authorise repayments. Each stage introduced another question about money, information, or what came next.';
+opening.querySelector('.moments-label').textContent='THREE KEY MOMENTS IN THE JOURNEY';
+const endNote=document.createElement('p');endNote.className='figma-caption';endNote.textContent='Each step asked parents to act. The journey needed to explain why.';opening.querySelector('.problem-grid').after(endNote);
+const conclusion=document.createElement('div');conclusion.className='case-conclusion';conclusion.innerHTML='<span class="small-label">CONCLUSION</span><h3>Clarity is knowing what comes next.</h3><p>The design connects plan comparison, verification, payment and repayment setup into a more explicit journey. My central learning: explain the commitment before asking for it, and distinguish completed actions from pending review.</p><p class="source-note">Post-release outcomes remain unverified. The next step is to test comprehension and recovery with parents.</p>';outro.before(conclusion);
 // Intro is a non-blocking reveal, never a timed loading gate.
 if(!location.hash){play(scene,[{opacity:.55,clipPath:'inset(0 0 100% 0)'},{opacity:1,clipPath:'inset(0)'}],{duration:750,easing:'cubic-bezier(.2,.7,.3,1)'});play(hero.querySelector('h1'),[{opacity:.6,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.3,1)'});}
 let pointerFrame=0;
