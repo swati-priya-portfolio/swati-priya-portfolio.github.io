@@ -26,20 +26,17 @@ function soundNote(){if(!soundOn||document.hidden)return;const now=audioContext.
 soundButton.addEventListener('click',async()=>{if(soundOn){stopSound();return}try{audioContext??=new (window.AudioContext||window.webkitAudioContext)();if(!master){master=audioContext.createGain();master.connect(audioContext.destination)}master.gain.value=Number(volume.value);await audioContext.resume();soundOn=true;soundButton.textContent='Mute sound';soundButton.setAttribute('aria-pressed','true');sound.querySelector('label').hidden=false;sound.querySelector('.sound-status').textContent='';soundNote();soundTimer=setInterval(soundNote,2100)}catch{stopSound();sound.querySelector('.sound-status').textContent='Sound unavailable in this browser.'}});
 volume.addEventListener('input',()=>{if(master)master.gain.setTargetAtTime(Number(volume.value),audioContext.currentTime,.1)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSound()});addEventListener('pagehide',stopSound);desktop.addEventListener('change',()=>{if(!desktop.matches)stopSound()});
-// A short first-entry flourish, never a readiness or network gate.
-let seenIntro=false;try{seenIntro=sessionStorage.getItem('gq-ink-intro')==='1'}catch{}
-const backEntry=performance.getEntriesByType('navigation')[0]?.type==='back_forward';
-if(!seenIntro&&!location.hash&&!backEntry&&!reduced.matches){
- const intro=document.createElement('div');intro.className='ink-intro';intro.setAttribute('aria-label','Opening the GrayQuest story');
- intro.innerHTML='<div class="ink-shutter left"></div><div class="ink-shutter right"></div><div class="intro-mark" aria-hidden="true"><svg viewBox="0 0 80 64"><path d="M40 10Q24 2 8 8V53Q24 47 40 56Q56 47 72 53V8Q56 2 40 10Z"/><path class="spine" d="M40 10V56"/></svg><span>GRAYQUEST</span><small>THE STORY UNFOLDS</small></div><button type="button">Skip intro ↗</button>';
- root.append(intro);let closeTimer,failSafe;
- const dismiss=()=>{clearTimeout(closeTimer);clearTimeout(failSafe);const focused=intro.contains(document.activeElement);intro.remove();if(focused){const a=hero.querySelector('.comic-actions a');a?.focus({preventScroll:true})}};
- intro.querySelector('button').addEventListener('click',dismiss);intro.addEventListener('keydown',e=>{if(e.key==='Escape')dismiss()});
- closeTimer=setTimeout(dismiss,1050);failSafe=setTimeout(dismiss,1500);
- reduced.addEventListener('change',dismiss,{once:true});desktop.addEventListener('change',dismiss,{once:true});addEventListener('pagehide',dismiss,{once:true});
- try{sessionStorage.setItem('gq-ink-intro','1')}catch{}
+// Reuse the homepage spider-hero artwork; short, skippable first-entry flourish.
+let introSeen=false;try{introSeen=sessionStorage.getItem('gq-snack-intro')==='1'}catch{}
+if(!introSeen&&!location.hash&&!reduced.matches){
+ const mount=document.createElement('div');mount.className='gq-loader-host';mount.innerHTML='<div class="sp-loader" aria-hidden="true">\n    <div class="sp-loader-scene">\n      <svg class="sp-loader-mask" viewBox="0 0 80 80" role="presentation">\n        <path class="mask-head" d="M40 5C20 5 10 20 10 40c0 21 12 35 30 35s30-14 30-35C70 20 60 5 40 5z" />\n        <path class="mask-web" d="M40 7v34M18 20l22 21 22-21M11 39h58M17 59l23-18 23 18M25 10c9 8 13 18 15 31M55 10c-9 8-13 18-15 31" />\n        <path class="mask-eye" d="M19 30c7-7 13-9 18-8-2 9-7 15-15 18zM61 30c-7-7-13-9-18-8 2 9 7 15 15 18z" />\n        <path class="mask-mouth" d="M28 53c8 7 16 7 24 0-2 12-22 12-24 0z" />\n      </svg>\n      <div class="spider-stream" aria-hidden="true">\n        <span class="spider-snack" style="--i:0"><i></i></span>\n        <span class="spider-snack" style="--i:1"><i></i></span>\n        <span class="spider-snack" style="--i:2"><i></i></span>\n        <span class="spider-snack" style="--i:3"><i></i></span>\n        <span class="spider-snack" style="--i:4"><i></i></span>\n        <span class="spider-snack" style="--i:5"><i></i></span>\n      </div>\n    </div>\n    <p class="sp-loader-sub">OPENING THE GRAYQUEST ISSUE…</p>\n    <p class="sp-loader-caption">Good stories are worth the wait.</p>\n  </div>';
+ const loader=mount.firstElementChild;loader.removeAttribute('aria-hidden');loader.setAttribute('role','status');loader.setAttribute('aria-label','Opening GrayQuest');
+ const skip=document.createElement('button');skip.textContent='Skip intro';skip.type='button';loader.append(skip);document.body.append(mount);
+ const escapeIntro=e=>{if(e.key==='Escape')dismiss()};
+ const dismiss=()=>{document.removeEventListener('keydown',escapeIntro);mount.remove();try{sessionStorage.setItem('gq-snack-intro','1')}catch{}};
+ skip.addEventListener('click',dismiss);document.addEventListener('keydown',escapeIntro);
+ setTimeout(dismiss,1200);desktop.addEventListener('change',dismiss,{once:true});reduced.addEventListener('change',dismiss,{once:true});
 }
-
 // Preserve the original comic cover and its source artwork.
 const scene=hero.querySelector('.cover');scene.classList.add('cinema-cover');
 scene.querySelector('img').setAttribute('fetchpriority','high');
@@ -100,7 +97,7 @@ closing.after(sound);
 const nextCover=outro.querySelector('img');const nextLink=document.createElement('a');nextLink.className='next-cover-link';nextLink.href='../guardian-one/';nextLink.setAttribute('aria-label','Explore Guardian One case study');nextCover.before(nextLink);nextLink.append(nextCover);
 outro.querySelector('.small-label').textContent='NEXT ISSUE / GUARDIAN ONE';
 outro.querySelector('h3').textContent='GUARDIAN ONE.';
-outro.querySelector('p').textContent='A new issue. A different design challenge. Explore the next case study.';
+outro.querySelector('p').textContent='The next chapter in my product design work.';
 
 // Research context and ownership use only the designer's confirmed account.
 opening.querySelector('.gq-section-head h2').innerHTML='THE PEOPLE BEHIND<span class="accent">THE PAYMENT.</span>';
@@ -117,10 +114,10 @@ root.querySelectorAll('#d-section-2 .evidence-explanation').forEach(note=>{const
 nextLink.classList.add('book-cover');
 
 // Homepage cursor vocabulary, enabled only for desktop mouse input.
-const cursor=document.createElement('div');cursor.className='gq-cursor';cursor.setAttribute('aria-hidden','true');cursor.innerHTML='<i></i><b></b><span></span>';document.body.append(cursor);
+const cursor=document.createElement('div');cursor.className='gq-cursor';cursor.hidden=true;cursor.setAttribute('aria-hidden','true');cursor.innerHTML='<i></i><b></b><span></span>';document.body.append(cursor);
 let cursorFrame=0;
-document.addEventListener('pointermove',e=>{if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'){cursor.hidden=true;return}cursor.hidden=false;cancelAnimationFrame(cursorFrame);cursorFrame=requestAnimationFrame(()=>{cursor.style.transform=`translate3d(${e.clientX}px,${e.clientY}px,0)`});const target=e.target.closest('a,button');cursor.classList.toggle('active',!!target);cursor.querySelector('span').textContent=target?.hasAttribute('data-zoom')?'VIEW SCREEN':target?'EXPLORE ↗':'';},{passive:true});
-document.addEventListener('pointerleave',()=>cursor.hidden=true);desktop.addEventListener('change',()=>{if(!desktop.matches)cursor.hidden=true});
+document.addEventListener('pointermove',e=>{if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'){cursor.hidden=true;return}cursor.hidden=false;document.documentElement.classList.add('gq-pointer-active');cancelAnimationFrame(cursorFrame);cursorFrame=requestAnimationFrame(()=>{cursor.style.transform=`translate3d(${e.clientX}px,${e.clientY}px,0)`});const target=e.target.closest('a,button');cursor.classList.toggle('active',!!target);cursor.querySelector('span').textContent=target?.hasAttribute('data-zoom')?'VIEW SCREEN':target?'EXPLORE ↗':'';},{passive:true});
+const hideCursor=()=>{cursor.hidden=true;document.documentElement.classList.remove('gq-pointer-active')};document.addEventListener('pointerleave',hideCursor);desktop.addEventListener('change',hideCursor);reduced.addEventListener('change',hideCursor);
 // Restore the supplied Figma composition instead of adding another research spread.
 opening.classList.remove('cream','paper-opening','printed-sheet');opening.classList.add('dark','figma-problem');
 opening.querySelector('.printed-edge')?.remove();audience.remove();ownership.remove();
@@ -128,7 +125,7 @@ opening.querySelector('h2').innerHTML='PARENTS CAME TO PAY SCHOOL FEES.<span cla
 opening.querySelector('.intro').textContent='Choosing a plan was only the beginning. Parents then had to provide personal and financial details, complete checks, and authorise repayments. Each stage introduced another question about money, information, or what came next.';
 opening.querySelector('.moments-label').textContent='THREE KEY MOMENTS IN THE JOURNEY';
 const endNote=document.createElement('p');endNote.className='figma-caption';endNote.textContent='Each step asked parents to act. The journey needed to explain why.';opening.querySelector('.problem-grid').after(endNote);
-const conclusion=document.createElement('div');conclusion.className='case-conclusion';conclusion.innerHTML='<span class="small-label">CONCLUSION</span><h3>Clarity is knowing what comes next.</h3><p>The design connects plan comparison, verification, payment and repayment setup into a more explicit journey. My central learning: explain the commitment before asking for it, and distinguish completed actions from pending review.</p><p class="source-note">Post-release outcomes remain unverified. The next step is to test comprehension and recovery with parents.</p>';outro.before(conclusion);
+const conclusion=document.createElement('div');conclusion.className='case-conclusion';conclusion.innerHTML='<span class="small-label">CONCLUSION / THE CLARITY ISSUE</span><h3>A clear choice.<br>A clear next step.</h3><div class="conclusion-points"><article><strong>COMPARE</strong><p>See today’s payment alongside the monthly commitment.</p></article><article><strong>CONTINUE</strong><p>Understand the check and find an applicable route forward.</p></article><article><strong>KNOW WHAT’S NEXT</strong><p>Separate payment received, repayment setup and review.</p></article></div><p class="source-note">Design takeaways · Post-release outcomes pending verification.</p>' ;outro.before(conclusion);
 // Intro is a non-blocking reveal, never a timed loading gate.
 if(!location.hash){play(scene,[{opacity:.55,clipPath:'inset(0 0 100% 0)'},{opacity:1,clipPath:'inset(0)'}],{duration:750,easing:'cubic-bezier(.2,.7,.3,1)'});play(hero.querySelector('h1'),[{opacity:.6,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.3,1)'});}
 let pointerFrame=0;
