@@ -63,7 +63,7 @@ const journeyRows=[...root.querySelectorAll('.journey>li')];
 const observers=[];let activeAnimations=[];
 function play(el,frames,options){if(!el||!desktop.matches||reduced.matches)return;const animation=el.animate(frames,options);activeAnimations.push(animation);animation.finished.catch(()=>{}).finally(()=>{activeAnimations=activeAnimations.filter(a=>a!==animation)})}
 const enter=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;const el=entry.target;el.classList.add('scene-entered');
-if(el.classList.contains('cinema-chapter')){play(el.querySelector('.printed-edge'),[{transform:'translateY(18px) rotate(180deg)'},{transform:'translateY(0) rotate(180deg)'}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'});play(el.querySelector('h2'),[{opacity:.6,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:480,easing:'cubic-bezier(.2,.7,.3,1)'});}
+if(el.classList.contains('cinema-chapter')){play(el.querySelector('.printed-edge'),[{transform:'translateY(18px) rotate(180deg)'},{transform:'translateY(0) rotate(180deg)'}],{duration:650,easing:'cubic-bezier(.2,.7,.3,1)'});play(el.querySelector('h2'),[{opacity:.6,transform:'translateY(12px)'},{opacity:1,transform:'none'}],{duration:300,easing:'cubic-bezier(.2,.7,.3,1)'});}
 else play(el,[{opacity:.65,transform:'translateY(8px) scale(.98)'},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.2,.7,.3,1)'});
 enter.unobserve(el);});},{threshold:.1});observers.push(enter);
 root.querySelectorAll('.cinema-chapter,.parent-question,.narrator,.comic-outro').forEach(el=>enter.observe(el));
@@ -116,7 +116,7 @@ nextLink.classList.add('book-cover');
 // Homepage cursor vocabulary, enabled only for desktop mouse input.
 const cursor=document.createElement('div');cursor.className='gq-cursor';cursor.hidden=true;cursor.setAttribute('aria-hidden','true');cursor.innerHTML='<i></i><b></b><span></span>';document.body.append(cursor);
 let cursorFrame=0;
-document.addEventListener('pointermove',e=>{if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'){cursor.hidden=true;return}cursor.hidden=false;document.documentElement.classList.add('gq-pointer-active');cancelAnimationFrame(cursorFrame);cursorFrame=requestAnimationFrame(()=>{cursor.style.transform=`translate3d(${e.clientX}px,${e.clientY}px,0)`});const target=e.target.closest('a,button');cursor.classList.toggle('active',!!target);cursor.querySelector('span').textContent=target?.hasAttribute('data-zoom')?'VIEW SCREEN':target?'EXPLORE ↗':'';},{passive:true});
+document.addEventListener('pointermove',e=>{if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'||e.target.closest('.case-header')){hideCursor();return}cursor.hidden=false;document.documentElement.classList.add('gq-pointer-active');cancelAnimationFrame(cursorFrame);cursorFrame=requestAnimationFrame(()=>{cursor.style.transform=`translate3d(${e.clientX}px,${e.clientY}px,0)`});const target=e.target.closest('a,button');cursor.classList.toggle('active',!!target);cursor.querySelector('span').textContent=target?.hasAttribute('data-zoom')?'VIEW SCREEN':target?'EXPLORE ↗':'';},{passive:true});
 const hideCursor=()=>{cursor.hidden=true;document.documentElement.classList.remove('gq-pointer-active')};document.addEventListener('pointerleave',hideCursor);desktop.addEventListener('change',hideCursor);reduced.addEventListener('change',hideCursor);
 // Restore the supplied Figma composition instead of adding another research spread.
 opening.classList.remove('cream','paper-opening','printed-sheet');opening.classList.add('dark','figma-problem');
@@ -155,6 +155,66 @@ const responseNote=document.createElement('p');responseNote.className='response-
 conclusion.className='closing-principle';conclusion.innerHTML='<span class="small-label">MY DESIGN PRINCIPLE</span><h3>Make the commitment clear.<br>Then make the next action obvious.</h3><p>Payment, repayment setup and approval each need their own explanation.</p>';
 outro.className='next-issue';outro.innerHTML='<a class="issue-primary" href="../guardian-one/" aria-label="Explore Guardian One case study"><div class="issue-book" aria-hidden="true"><span class="issue-page page-back"></span><span class="issue-page page-middle"></span><span class="issue-inside"><b>NEXT ISSUE</b><strong>GUARDIAN<br>ONE</strong><span>Explore the next case study ↗</span></span><img class="issue-front" src="../../images/case-guardian-one.png" alt="" width="600" height="800" loading="lazy"></div><div class="issue-copy"><span class="small-label">UP NEXT / CASE STUDY</span><h3>GUARDIAN<br>ONE.</h3><p>Explore the next case study.</p><span class="issue-cta">Explore Guardian One <b aria-hidden="true">↗</b></span><span class="issue-annotation" aria-hidden="true">Turn the page.<svg viewBox="0 0 100 60"><path d="M90 5 Q85 43 12 45 M12 45 L29 31 M12 45 L31 55"/></svg></span></div></a><a class="issue-back" href="../../index.html#case-studies">Back to all work ↗</a>';
 const revealIssue=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){outro.classList.add('issue-visible');revealIssue.disconnect()}},{threshold:.15});observers.push(revealIssue);revealIssue.observe(outro);
+
+// Edited desktop reading edition. Original mobile DOM and source screenshots stay intact.
+root.classList.add('edited-story');
+const overview=opening.querySelector('.chapter-inner');
+opening.querySelector('h2').textContent='SCHOOL FEES. FINANCIAL DECISIONS.';
+opening.querySelector('.intro').textContent='GrayQuest lets families spread education fees over monthly instalments. The design challenge was to explain the commitment, the required checks and what still remained after payment.';
+opening.querySelector('.chapter-tag').textContent='OVERVIEW / THE CLARITY ISSUE';
+endNote.remove();
+const priorities=document.createElement('div');priorities.className='editorial-priorities';priorities.innerHTML='<div><span class="small-label">DESIGN PRIORITY / 01</span><h3>Make the commitment clear.</h3><p>Explain today’s payment alongside instalments, duration and fees.</p></div><div><span class="small-label">DESIGN PRIORITY / 02</span><h3>Make the next action obvious.</h3><p>Explain requirements, recovery routes and pending states.</p></div>';
+overview.append(priorities);
+const collaboration=root.querySelector('#d-section-3 .collaboration');if(collaboration){collaboration.classList.add('editorial-collaboration');overview.append(collaboration)}
+// Preserve old fragment destinations while removing repeated introductions.
+function retire(section,destination){const anchor=document.createElement('span');anchor.id=section.id;anchor.className='legacy-anchor';destination.prepend(anchor);section.remove()}
+retire(moments,overview);retire(root.querySelector('#d-section-3'),priorities);
+journey.querySelector('h2').textContent='FOUR CHAPTERS. ONE APPLICATION.';
+journey.querySelector('.chapter-tag').textContent='THE JOURNEY';
+journey.querySelector('.journey-intro').textContent='A quick map of the parent’s journey. Explore a chapter to see the decisions and product evidence.';
+const chapterMap=document.createElement('nav');chapterMap.className='chapter-map';chapterMap.setAttribute('aria-label','Four chapters of the application');
+const mapData=[['Choose a plan','Verify contact, confirm fees and compare the commitment.','choose','#d-choose'],['Complete checks','Identify the applicant and explain the applicable checks.','checks','#d-checks'],['Review & pay','Confirm details and understand the amount due today.','review','#d-pay'],['Set up & track','Authorise repayments and understand the next action.','track','#d-section-13']];
+chapterMap.innerHTML=mapData.map((d,i)=>`<a href="${d[3]}"><span class="small-label">CHAPTER 0${i+1} <b aria-hidden="true">↗</b></span><img src="assets/journey-${d[2]}@3x.webp" alt="" width="260" height="130"><h3>${d[0]}</h3><p>${d[1]}</p></a>`).join('');storyboard.replaceWith(chapterMap);milestoneBlock.remove();
+// Important distinctions belong with repayment setup, not a second journey introduction.
+const setup=root.querySelector('#d-section-13');const states=document.createElement('aside');states.className='state-distinction';states.innerHTML='<strong>Payment received ≠ application approved.</strong><p>Payment confirms today’s amount. Repayment setup authorises future collections. Approval follows the application assessment.</p>';setup.querySelector('.gq-section-head').after(states);
+function disclosure(node,label,extra=[]){if(!node)return;const details=document.createElement('details');details.className='editorial-detail';const summary=document.createElement('summary');summary.textContent=label;const body=document.createElement('div');body.className='editorial-detail-body';node.before(details);details.append(summary,body);body.append(node,...extra);details.addEventListener('toggle',()=>{if(details.open)play(body,[{opacity:.5,transform:'translateY(-4px)'},{opacity:1,transform:'none'}],{duration:180})});return details}
+const start=root.querySelector('#d-choose'),startGrid=start.querySelector('.start-grid');
+const startCards=[...startGrid.querySelectorAll('.screen-card')];
+const recovery=start.querySelector('.recovery');const otpDetail=disclosure(recovery,'OTP verification & proposed recovery',[startCards[1]]);otpDetail.querySelector('.editorial-detail-body').prepend(startCards[1]);
+const evidencePair=document.createElement('div');evidencePair.className='entry-evidence';startGrid.before(evidencePair);evidencePair.append(startCards[0],startCards[2]);startGrid.remove();
+const entryNote=document.createElement('p');entryNote.className='editorial-caption';entryNote.textContent='Use the banking-linked contact, verify the OTP, then confirm the student and annual fee details. Full screens are available through Enlarge.';evidencePair.after(entryNote);
+// Keep the employment branch visible; an alternative applicant is secondary context.
+disclosure(routes,'If the application cannot proceed with this applicant');
+const checks=root.querySelector('#d-checks');checks.querySelectorAll('.reason').forEach(el=>{if(el.textContent.includes('ANOTHER APPLICANT'))el.remove()});
+const employment=checks.querySelector('.employment-layout');if(employment){const screen=employment.querySelector('.evidence');screen?.classList.add('business-crop')}
+const labels={'d-choose':['CHAPTER 01 / CHOOSE A PLAN','Start with the right details.'],'d-section-6':['PLAN COMPARISON','Make the options comparable.'],'d-checks':['CHAPTER 02 / COMPLETE CHECKS','Make the applicant clear.'],'d-section-8':['INCOME VERIFICATION','Explain the check. Offer a route.'],'d-section-9':['IDENTITY VERIFICATION','Make identity requirements clear.'],'d-pay':['CHAPTER 03 / REVIEW & PAY','Review the commitment.'],'d-section-11':['PAYMENT','Show what is due. Show how to pay.'],'d-section-13':['CHAPTER 04 / SET UP & TRACK','Set up your EMI repayments.'],'d-section-14':['STATUS','Complete the selfie. Track the review.']};
+for(const [id,[tag,title]] of Object.entries(labels)){const section=root.querySelector('#'+id);section.querySelector('.chapter-tag').textContent=tag;section.querySelector('h2').textContent=title;section.classList.remove('dark','cream');section.classList.add(['d-choose','d-section-6','d-pay','d-section-11'].includes(id)?'cream':'dark');if(!tag.startsWith('CHAPTER'))section.classList.add('chapter-continuation')}
+// Fewer large bubbles: use the four chapter openings as narrative beats.
+for(const id of ['d-choose','d-checks','d-pay','d-section-13']){const section=root.querySelector('#'+id);let question=section.querySelector('.parent-question');if(!question&&id==='d-choose'){question=document.createElement('aside');question.className='parent-question';question.innerHTML='<p>What do I pay today—and every month?</p>'}if(question)section.querySelector('.gq-section-head').append(question)}
+root.querySelectorAll('.chapter-continuation .parent-question').forEach(q=>{q.className='editorial-question';q.querySelector('.art')?.remove()});
+// Collapse only extra evidence; the main verification rationale and recovery remain visible.
+const income=root.querySelector('#d-section-8');income.querySelectorAll('.reason').forEach(reason=>{const button=reason.querySelector('.evidence');if(button&&reason.textContent.includes('ACCOUNT TO USE'))disclosure(button,'See self-employed account guidance')});
+// One ending with lessons and honest validation questions.
+const ending=finale.querySelector('.chapter-inner');[...ending.children].forEach(child=>{if(![outro,closing,sound].includes(child))child.remove()});
+const reflection=document.createElement('div');reflection.className='edited-reflection';reflection.innerHTML='<span class="chapter-tag">REFLECTION / WHAT I’D TAKE FORWARD</span><h2 id="d-title-16">Clarity is a sequence,<br>not a single screen.</h2><p class="intro">The central lesson: explain the commitment before asking for it, and distinguish a completed action from a pending review.</p><div class="reflection-points"><article><span class="small-label">WHAT I PRIORITISED</span><h3>Cost, requirements, next action.</h3><p>Comparable plans, explanations at verification, and distinct payment and application states.</p></article><article><span class="small-label">WHAT I’D VALIDATE</span><h3>Can parents explain it back?</h3><p>Test real screens with parents: ask them to explain total cost, recover from a failed check and identify whose action comes next.</p></article><article><span class="small-label">WHAT REMAINS UNKNOWN</span><h3>Post-release outcomes.</h3><p>Measured improvements are not verified here. Recovery concepts remain labelled as proposed work.</p></article></div>';
+ending.prepend(reflection);retire(response,reflection);outro.querySelector('.issue-back')?.remove();
+// Replace misleading cybersecurity cover text with an honest, editable comic cover.
+const oldCover=outro.querySelector('.issue-front');const honestCover=document.createElement('div');honestCover.className='issue-front insurance-cover';honestCover.innerHTML='<span>G1 / PRODUCT DESIGN CASE STUDY</span><strong>GUARDIAN<br>ONE.</strong><svg viewBox="0 0 160 160" aria-hidden="true"><path d="M80 12 139 36v43c0 34-30 58-59 70C51 137 21 113 21 79V36Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="m51 78 20 20 39-42" fill="none" stroke="currentColor" stroke-width="6"/></svg><em>A clearer picture<br>of family protection.</em><span>UNDERSTAND · COMPARE · PROTECT</span>';oldCover.replaceWith(honestCover);outro.querySelector('.issue-copy>p').textContent='Helping families understand protection and compare their options.';
+// Precise disclosure for illustrative values; original screen colours stay untouched.
+const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode()){const n=walker.currentNode;if(n.parentElement.closest('script,style'))continue;n.textContent=n.textContent.replace(/Original interface; sample amounts standardised(?: for this case study)?/g,'Original layout with illustrative values')}
+root.querySelectorAll('img[alt*="standardised"],button[aria-label*="standardised"]').forEach(el=>{for(const attr of ['alt','aria-label'])if(el.hasAttribute(attr))el.setAttribute(attr,el.getAttribute(attr).replace(/standardised sample amounts/g,'illustrative values'))});
+const chooseNav=document.querySelector('.desktop-nav a[href="#d-choose"]');if(chooseNav)chooseNav.textContent='Choose';
+root.querySelectorAll('.printed-edge,.section-kicker').forEach(el=>el.remove());
+const incomeGuidance=income.querySelector('button[data-full-src*="self"]');
+const incomeEvidence=[...income.querySelectorAll('.evidence')];
+const guidance=incomeEvidence.find(el=>el.querySelector('img')?.alt.includes('self-employed account guidance'));
+if(guidance&&!guidance.closest('details'))disclosure(guidance,'See self-employed account guidance');
+const failedIncome=incomeEvidence.find(el=>el.querySelector('img')?.alt.includes('failure and Retry'));
+if(failedIncome)failedIncome.classList.add('income-recovery-screen');
+
+// Real image dimensions prevent lazy-load shifts, then correct initial hash once assets settle.
+let userNavigated=false;const markNavigation=()=>{userNavigated=true};['wheel','touchstart','pointerdown','keydown'].forEach(event=>addEventListener(event,markNavigation,{once:true,passive:true}));
+Promise.all([document.fonts.ready,new Promise(resolve=>{if(document.readyState==='complete')resolve();else addEventListener('load',resolve,{once:true})})]).then(()=>requestAnimationFrame(()=>{if(!userNavigated)restoreFragment()}));
 
 // Intro is a non-blocking reveal, never a timed loading gate.
 if(!location.hash){play(scene,[{opacity:.55,clipPath:'inset(0 0 100% 0)'},{opacity:1,clipPath:'inset(0)'}],{duration:750,easing:'cubic-bezier(.2,.7,.3,1)'});play(hero.querySelector('h1'),[{opacity:.6,transform:'translateY(16px)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.2,.7,.3,1)'});}
