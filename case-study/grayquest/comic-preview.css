@@ -902,3 +902,63 @@
 #desktop-main .hero-torn-edge{position:absolute;top:-22px;left:0;right:0;height:26px;background:#f5efe3;mask:url('assets/paper-edge.svg') 0 0/100% 100%;pointer-events:none;z-index:2}
 @media(prefers-reduced-motion:reduce){#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:none}}
 }
+
+/* Figma-inspired desktop consistency refinements. */
+@media(min-width:761px){
+#desktop-main .chapter .chapter-tag,#desktop-main #d-section-2 .chapter-tag,#desktop-main #d-journey .chapter-tag{font:700 11px/1.4 Inter,sans-serif;letter-spacing:.06em;border:1.5px solid #17130e;border-radius:8px!important;padding:8px 14px;box-shadow:none;transform:none;background:#ffc53d;color:#17130e}
+#desktop-main #d-section-1 .hero-torn-edge{--tear-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 120' preserveAspectRatio='none'%3E%3Cpath d='M0 29.76 L10.67 32.73 L21.33 34.69 L32 35.7 L42.67 36.26 L53.33 36.19 L64 37.81 L74.67 36.99 L85.33 33.57 L96 34.62 L106.7 30.88 L117.3 31.93 L128 35.11 L138.7 33.99 L149.3 33.12 L160 32.54 L170.7 35.88 L181.3 37.3 L192 38.31 L202.7 23.99 L213.3 41.35 L224 46.06 L234.7 48.53 L245.3 51.94 L256 50.77 L266.7 63.19 L277.3 80.06 L288 67.36 L298.7 57.32 L309.3 56.01 L320 55.84 L330.7 60.96 L341.3 61 L352 62.53 L362.7 51.53 L373.3 66.85 L384 61.32 L394.7 52.14 L405.3 63.22 L416 72.34 L426.7 71.59 L437.3 72.81 L448 72.72 L458.7 71.3 L469.3 71.06 L480 67.14 L490.7 63.09 L501.3 54.9 L512 43.88 L522.7 49.28 L533.3 55.38 L544 55.54 L554.7 53.71 L565.3 52.16 L576 49.68 L586.7 48.73 L597.3 56.87 L608 69.93 L618.7 59.85 L629.3 49.75 L640 50.4 L650.7 48.01 L661.3 45.94 L672 47.84 L682.7 44.36 L693.3 47.23 L704 46.29 L714.7 42 L725.3 41.89 L736 44.92 L746.7 47.63 L757.3 47.14 L768 48.27 L778.7 46.59 L789.3 46.8 L800 45.9 L810.7 47.89 L821.3 44.75 L832 48.18 L842.7 48.7 L853.3 35.77 L864 57.29 L874.7 59.78 L885.3 63.17 L896 58.14 L906.7 56.21 L917.3 54.05 L928 52.76 L938.7 53.27 L949.3 50.9 L960 47.22 L970.7 46.54 L981.3 42.67 L992 40.93 L1003 40.88 L1013 40.87 L1024 41.14 L1035 43.53 L1045 46.22 L1056 46.86 L1067 50 L1077 51.5 L1088 62.47 L1099 73.28 L1109 65.34 L1120 57.81 L1131 58.66 L1141 56.32 L1152 59.1 L1163 61.1 L1173 59.95 L1184 58.46 L1195 58.16 L1205 55.62 L1216 52.58 L1227 52.12 L1237 49.12 L1248 49.02 L1259 45.71 L1269 44.05 L1280 47 L1291 47.64 L1301 44.75 L1312 45.23 L1323 44.58 L1333 44.21 L1344 43.96 L1355 42.38 L1365 42.39 L1376 44.43 L1387 43.95 L1397 42.47 L1408 44.96 L1419 44.67 L1429 35.89 L1440 25.05 L1451 36.69 L1461 46.31 L1472 47.34 L1483 50.93 L1493 50.64 L1504 52.71 L1515 52.99 L1525 53.72 L1536 53.57 L1547 58.19 L1557 61.09 L1568 63.89 L1579 65.54 L1589 63.23 L1600 65.78 L1600 120 L0 120 Z' fill='black'/%3E%3C/svg%3E"); top:-24px;height:32px;background:transparent;mask:none;-webkit-mask:none;overflow:hidden}
+#desktop-main #d-section-1 .hero-torn-edge:before,#desktop-main #d-section-1 .hero-torn-edge:after{content:"";position:absolute;inset:0;-webkit-mask-image:var(--tear-mask);mask-image:var(--tear-mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;background:#f5efe3}
+#desktop-main #d-section-1 .hero-torn-edge:after{transform:translateY(3px);background:#17120b}
+#desktop-main #d-checks .alternative-cards article{grid-template-columns:minmax(0,1fr) 126px;align-items:center;gap:24px;min-height:160px}
+#desktop-main #d-checks .applicant-portrait{display:block!important;width:126px;height:112px;background-size:contain;background-repeat:no-repeat;background-position:center;margin:0;opacity:1}
+#desktop-main #d-checks .applicant-portrait.guardian{background-image:url('assets/parent@3x.webp')}
+#desktop-main #d-checks .applicant-portrait.student{background-image:url('assets/journey-checks@3x.webp')}
+#desktop-main #d-pay .reference-screen>.reference-evidence{width:100%;height:600px;justify-self:stretch;box-sizing:border-box;border-radius:12px;border:1.5px solid #17130e;box-shadow:4px 4px 0 #17130e;background:white}
+#desktop-main #d-pay .reference-screen .caption{width:100%}
+#desktop-main #d-pay .reference-screen>.reference-evidence img{max-height:100%;max-width:100%;object-fit:contain}
+#desktop-main .next-issue .issue-copy:after{content:"✦     ↗    ✧";position:absolute;right:4%;top:35%;font:32px Caveat,cursive;letter-spacing:20px;color:#ffc53d;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none}
+#desktop-main .next-issue:hover .issue-copy:after,#desktop-main .next-issue:focus-within .issue-copy:after{opacity:.8;transform:translateY(0)}
+@media(max-width:1100px){#desktop-main #d-checks .alternative-cards article{grid-template-columns:minmax(0,1fr) 85px}#desktop-main #d-checks .applicant-portrait{width:85px;height:85px}#desktop-main #d-pay .reference-screen>.reference-evidence{height:500px}}
+@media(prefers-reduced-motion:reduce){#desktop-main .next-issue .issue-copy:after{transition:none;transform:none}}
+}
+
+/* Desktop evidence frames and the supplied paper texture. */
+@media (min-width:761px){
+#desktop-main #d-checks > .chapter-inner > .grid.two .evidence{display:flex;align-items:center;justify-content:center;width:100%;max-height:none;box-sizing:border-box;padding:18px;background:#fff;border:1.5px solid #f5efe3;border-radius:12px;overflow:hidden}
+#desktop-main #d-checks > .chapter-inner > .grid.two .evidence img{display:block;width:100%;height:auto;max-height:none;border:0;box-shadow:none}
+#desktop-main #d-pay .reference-screen > button.reference-evidence{display:flex!important;align-items:center;justify-content:center;width:100%!important;max-width:none!important;height:clamp(520px,48vw,720px);padding:0!important;overflow:hidden;background:#fff!important;border:1.5px solid #17130e!important;border-radius:12px!important;box-shadow:4px 4px 0 #17130e!important}
+#desktop-main #d-pay .reference-screen > button.reference-evidence > img{display:block;width:auto!important;height:100%!important;max-width:100%;max-height:100%;object-fit:contain;border:0!important;border-radius:0!important;box-shadow:none!important}
+#desktop-main #d-pay .reference-screen .caption{width:100%;max-width:none}
+#desktop-main #d-section-1 .hero-torn-edge{top:-40px;height:70px;background:#111 url('assets/torn-paper-texture.png') center top / 100% 100% no-repeat;mask:none;-webkit-mask:none}
+#desktop-main #d-section-1 .hero-torn-edge:before,#desktop-main #d-section-1 .hero-torn-edge:after{content:none}
+#desktop-main .next-issue .issue-copy:after{content:none}
+#desktop-main .next-issue,#desktop-main .next-issue:hover,#desktop-main .next-issue:focus-within{background:radial-gradient(ellipse 45% 90% at var(--footer-x,30%) var(--footer-y,50%),rgba(255,197,61,.12),transparent 72%),#17120b}
+}
+@media (prefers-reduced-motion:reduce){#desktop-main .next-issue,#desktop-main .next-issue:hover,#desktop-main .next-issue:focus-within{background:#17120b}}
+@media (min-width:761px){
+/* Source images contain their own frame; conceal only that edge in the panel. */
+#desktop-main #d-pay .reference-screen > button.reference-evidence > img{clip-path:inset(1% 1% 1% 1%)}
+}
+
+/* The next issue follows the same editorial balance and motion as the hero. */
+@media (min-width:761px){
+#desktop-main #d-section-1 .hero-torn-edge{transform:translateY(var(--tear-lift,0px));will-change:transform}
+#desktop-main .next-issue{padding:36px 48px;isolation:isolate}
+#desktop-main .next-issue::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at var(--footer-x,75%) var(--footer-y,50%),#ffc53d30,transparent 53%),url('assets/education-landscape.webp') right center/auto 150% no-repeat;opacity:.25;transition:opacity .4s}
+#desktop-main .next-issue:hover::before,#desktop-main .next-issue:focus-within::before{opacity:.7}
+#desktop-main .issue-primary{grid-template-columns:minmax(0,1fr) 220px;gap:48px;align-items:center}
+#desktop-main .issue-copy{grid-column:1;grid-row:1;max-width:620px}
+#desktop-main .issue-book{grid-column:2;grid-row:1;width:210px;justify-self:center;perspective:1200px;transform-style:preserve-3d}
+#desktop-main .issue-copy>.small-label{font:700 11px/1.4 Inter,sans-serif;letter-spacing:.06em;border:1.5px solid #17130e;border-radius:8px;padding:8px 14px}
+#desktop-main .issue-copy h3{font:400 clamp(30px,2.6vw,38px)/1.16 'Archivo Black',sans-serif;white-space:nowrap;margin:16px 0 12px}
+#desktop-main .issue-copy>p{max-width:440px;font:400 16px/1.55 Inter,sans-serif;margin:0 0 22px}
+#desktop-main .issue-cta{gap:14px;padding:13px 20px;border-radius:999px;font:700 15px/1.2 Inter,sans-serif}
+#desktop-main .issue-front{transform-origin:left center;transition:transform .45s cubic-bezier(.2,.7,.3,1),box-shadow .45s}
+#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:rotateY(-28deg);box-shadow:14px 8px 20px #0007}
+}
+@media (prefers-reduced-motion:reduce){#desktop-main #d-section-1 .hero-torn-edge{transform:none}#desktop-main .next-issue::before{transition:none;opacity:.25}#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:none}}
+/* Lift the entire first sheet and its torn edge together, so the movement reads as paper revealing the next scene. */
+@media (min-width:761px) and (prefers-reduced-motion:no-preference){
+#desktop-main #d-section-1{position:relative;z-index:2;transform:translateY(var(--paper-lift,0px));margin-bottom:-110px;padding-bottom:110px;will-change:transform}
+#desktop-main #d-section-1 .hero-torn-edge{transform:none;will-change:auto}
+}
