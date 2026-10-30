@@ -1,0 +1,18 @@
+@media(min-width:761px){
+.ink-interactive{position:relative;isolation:isolate}
+.ink-reveal-layer{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .5s;background:repeating-conic-gradient(from 7deg at 78% 45%,#ffc53d18 0deg 2deg,transparent 2deg 13deg),radial-gradient(circle,#f7f2e768 1px,transparent 1.4px) 0 0/8px 8px;mask-image:radial-gradient(circle 220px at var(--ink-x,78%) var(--ink-y,40%),#000,transparent 100%)}
+.ink-interactive.ink-hover .ink-reveal-layer{opacity:1}
+.ink-interactive>.hero-inner{position:relative;z-index:1}
+.ink-interactive .ink-reveal-layer:after{content:'';position:absolute;inset:5% 0 5% 50%;background:url('images/case-grayquest.png') center/contain no-repeat;filter:grayscale(1);opacity:.15}
+@media(prefers-reduced-motion:reduce){.ink-reveal-layer{display:none}}
+}
+/* Shared desktop CTA feedback; mobile retains its approved styling. */
+@media(min-width:761px){
+.site-header .btn-primary,.hero .btn-primary,.btn.btn-primary{transition:transform .2s ease,box-shadow .2s ease;box-shadow:0 2px 0 #17120b}
+.btn.btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 0 #17120b,0 8px 14px #0002}
+.btn.btn-primary:active{transform:translateY(1px);box-shadow:none}
+.btn.btn-primary .btn-arrow{transition:transform .2s ease}
+.btn.btn-primary:hover .btn-arrow{transform:translate(3px,-3px)}
+.btn:focus-visible{outline:3px solid #7255b5;outline-offset:5px}
+@media(prefers-reduced-motion:reduce){.btn.btn-primary:hover,.btn.btn-primary:hover .btn-arrow{transform:none}}
+}
