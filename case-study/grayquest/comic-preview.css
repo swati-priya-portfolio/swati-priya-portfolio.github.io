@@ -957,3 +957,8 @@
 #desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:rotateY(-28deg);box-shadow:14px 8px 20px #0007}
 }
 @media (prefers-reduced-motion:reduce){#desktop-main #d-section-1 .hero-torn-edge{transform:none}#desktop-main .next-issue::before{transition:none;opacity:.25}#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:none}}
+/* Lift the entire first sheet and its torn edge together, so the movement reads as paper revealing the next scene. */
+@media (min-width:761px) and (prefers-reduced-motion:no-preference){
+#desktop-main #d-section-1{position:relative;z-index:2;transform:translateY(var(--paper-lift,0px));margin-bottom:-110px;padding-bottom:110px;will-change:transform}
+#desktop-main #d-section-1 .hero-torn-edge{transform:none;will-change:auto}
+}

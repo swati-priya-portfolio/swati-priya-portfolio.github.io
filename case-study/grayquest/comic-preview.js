@@ -172,7 +172,7 @@ const replacementCover=outro.querySelector('.issue-custom-cover');replacementCov
 const torn=document.createElement('div');torn.className='hero-torn-edge';torn.setAttribute('aria-hidden','true');opening.prepend(torn);
 // Lift the paper edge gently as the reader leaves the hero, without hijacking scroll.
 let tearFrame=0;
-function updateTear(){tearFrame=0;if(!desktop.matches||reduced.matches){torn.style.removeProperty('--tear-lift');return}const distance=Math.min(55,Math.max(0,window.scrollY*.14));torn.style.setProperty('--tear-lift',`${-distance}px`)}
+function updateTear(){tearFrame=0;if(!desktop.matches||reduced.matches){opening.style.removeProperty('--paper-lift');return}const distance=Math.min(110,Math.max(0,window.scrollY*.38));opening.style.setProperty('--paper-lift',`${-distance}px`)}
 addEventListener('scroll',()=>{if(!tearFrame)tearFrame=requestAnimationFrame(updateTear)},{passive:true});updateTear();reduced.addEventListener('change',updateTear);
 
 const revealIssue=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){outro.classList.add('issue-visible');revealIssue.disconnect()}},{threshold:.15});observers.push(revealIssue);revealIssue.observe(outro);
