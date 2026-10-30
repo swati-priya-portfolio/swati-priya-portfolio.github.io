@@ -939,3 +939,21 @@
 /* Source images contain their own frame; conceal only that edge in the panel. */
 #desktop-main #d-pay .reference-screen > button.reference-evidence > img{clip-path:inset(1% 1% 1% 1%)}
 }
+
+/* The next issue follows the same editorial balance and motion as the hero. */
+@media (min-width:761px){
+#desktop-main #d-section-1 .hero-torn-edge{transform:translateY(var(--tear-lift,0px));will-change:transform}
+#desktop-main .next-issue{padding:36px 48px;isolation:isolate}
+#desktop-main .next-issue::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at var(--footer-x,75%) var(--footer-y,50%),#ffc53d30,transparent 53%),url('assets/education-landscape.webp') right center/auto 150% no-repeat;opacity:.25;transition:opacity .4s}
+#desktop-main .next-issue:hover::before,#desktop-main .next-issue:focus-within::before{opacity:.7}
+#desktop-main .issue-primary{grid-template-columns:minmax(0,1fr) 220px;gap:48px;align-items:center}
+#desktop-main .issue-copy{grid-column:1;grid-row:1;max-width:620px}
+#desktop-main .issue-book{grid-column:2;grid-row:1;width:210px;justify-self:center;perspective:1200px;transform-style:preserve-3d}
+#desktop-main .issue-copy>.small-label{font:700 11px/1.4 Inter,sans-serif;letter-spacing:.06em;border:1.5px solid #17130e;border-radius:8px;padding:8px 14px}
+#desktop-main .issue-copy h3{font:400 clamp(30px,2.6vw,38px)/1.16 'Archivo Black',sans-serif;white-space:nowrap;margin:16px 0 12px}
+#desktop-main .issue-copy>p{max-width:440px;font:400 16px/1.55 Inter,sans-serif;margin:0 0 22px}
+#desktop-main .issue-cta{gap:14px;padding:13px 20px;border-radius:999px;font:700 15px/1.2 Inter,sans-serif}
+#desktop-main .issue-front{transform-origin:left center;transition:transform .45s cubic-bezier(.2,.7,.3,1),box-shadow .45s}
+#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:rotateY(-28deg);box-shadow:14px 8px 20px #0007}
+}
+@media (prefers-reduced-motion:reduce){#desktop-main #d-section-1 .hero-torn-edge{transform:none}#desktop-main .next-issue::before{transition:none;opacity:.25}#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:none}}
