@@ -34,3 +34,9 @@
 @keyframes mobile-next-reveal{from{opacity:.25;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .gq-page #main .mobile-next-issue.mobile-enter{animation:mobile-next-reveal .65s cubic-bezier(.2,.7,.3,1) both}
 }
+/* Mobile scroll reveals: content remains available if motion or JavaScript is disabled. */
+@media(max-width:760px) and (prefers-reduced-motion:no-preference){
+.gq-page #main #section-1{transform:translateY(var(--mobile-paper-lift,0px));margin-bottom:-56px;padding-bottom:56px;z-index:1}
+@keyframes mobile-story-reveal{from{opacity:.3;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.gq-page #main .chapter-tag.mobile-enter,.gq-page #main .gq-section-head.mobile-enter,.gq-page #main .problem-grid>.paper-card.mobile-enter,.gq-page #main .journey>li.mobile-enter,.gq-page #main .screen-card.mobile-enter,.gq-page #main .reason.mobile-enter,.gq-page #main .parent-question.mobile-enter{animation:mobile-story-reveal .52s cubic-bezier(.2,.7,.3,1) both}
+}
