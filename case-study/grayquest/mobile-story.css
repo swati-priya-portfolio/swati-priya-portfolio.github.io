@@ -1,0 +1,22 @@
+/* Mobile-only adaptation of the desktop case-study language. */
+@media (max-width:760px){
+.gq-page #main{overflow:clip}
+.gq-page #main #section-1{position:relative;overflow:visible}
+.gq-page #main #section-1::before{content:"";position:absolute;pointer-events:none;left:0;right:0;top:-28px;height:42px;background:#111 url('assets/torn-paper-texture.png') center/100% 100% no-repeat;z-index:1}
+.gq-page #main .chapter-inner{padding-left:20px;padding-right:20px}
+.gq-page #main .chapter-tag,.mobile-next-label{font:700 11px/1.4 Inter,sans-serif;letter-spacing:.04em;border:1.5px solid #17120b;border-radius:8px;background:#ffc53d;color:#17120b;padding:7px 11px}
+.gq-page #main .screen-pair,.gq-page #main .paired-screen,.gq-page #main .screen-card{min-width:0}
+.gq-page #main .paired-screen>.evidence,.gq-page #main #checks .paired-screen>.evidence{width:100%;max-width:100%}
+.gq-page #main .paired-screen>.evidence img{width:100%;height:auto;object-fit:contain}
+.gq-page #main .context-steps{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px}
+.gq-page #main .context-steps li:after{display:none}
+.mobile-applicant-route{border:1px solid #8f8373;border-radius:12px;padding:18px;margin:20px 0;color:#f5efe3;background:#17120b}
+.mobile-applicant-route span{font:700 10px/1.4 Inter,sans-serif;color:#ffc53d;letter-spacing:.04em}
+.mobile-applicant-route h3{font:700 19px/1.3 Inter,sans-serif;margin:10px 0}.mobile-applicant-route p{font:400 15px/1.5 Inter,sans-serif;margin:0}
+.mobile-next-issue{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:16px;align-items:center;position:relative;overflow:hidden;isolation:isolate;padding:22px 18px;border-radius:12px;background:#17120b;color:#f5efe3;text-decoration:none}
+.mobile-next-issue:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#17120bf2,#17120b99),url('assets/education-landscape.webp') center/cover;opacity:.8}
+.mobile-next-label{display:inline-block;font-size:9px;padding:6px 8px}.mobile-next-copy{min-width:0}.mobile-next-copy h3{font:400 clamp(20px,5vw,25px)/1.1 'Archivo Black',sans-serif;margin:14px 0 10px}.mobile-next-copy p{font:400 14px/1.45 Inter,sans-serif;margin:0 0 14px}.mobile-next-cta{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 14px;border-radius:999px;background:#ffc53d;color:#17120b;font:700 12px/1.2 Inter,sans-serif}.mobile-next-cover img{display:block;width:100%;height:auto;border:5px solid #f5efe3;box-shadow:4px 5px 0 #ffc53d}
+.mobile-next-issue:focus-visible{outline:3px solid #ffc53d;outline-offset:4px}
+.gq-page #main .closing-links{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}.gq-page #main .closing-links .cta{flex:1 1 auto;min-height:44px;padding:12px;font-size:11px}.gq-page #main .closing-links .back-top{margin:0;min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:360px){.mobile-next-issue{grid-template-columns:minmax(0,1fr) 82px;padding:18px 14px;gap:10px}.mobile-next-copy h3{font-size:19px}}
+}
