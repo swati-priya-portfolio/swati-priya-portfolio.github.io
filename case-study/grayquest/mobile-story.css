@@ -20,3 +20,17 @@
 .gq-page #main .closing-links{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}.gq-page #main .closing-links .cta{flex:1 1 auto;min-height:44px;padding:12px;font-size:11px}.gq-page #main .closing-links .back-top{margin:0;min-height:44px;display:inline-flex;align-items:center}
 @media(max-width:360px){.mobile-next-issue{grid-template-columns:minmax(0,1fr) 82px;padding:18px 14px;gap:10px}.mobile-next-copy h3{font-size:19px}}
 }
+/* A dark card inside a cream section needs its own explicit text colours. */
+@media(max-width:760px){
+.gq-page #main .mobile-next-issue{grid-template-columns:minmax(0,1fr) 100px;align-items:center;background:#17120b;color:#f5efe3}
+.gq-page #main .mobile-next-issue:before{background:linear-gradient(90deg,rgba(23,18,11,.97) 0%,rgba(23,18,11,.90) 57%,rgba(23,18,11,.72) 100%),url('assets/education-landscape.webp') center/cover;opacity:1}
+.gq-page #main .mobile-next-copy h3{color:#f5efe3;opacity:1;font-size:clamp(18px,5vw,24px);white-space:nowrap}
+.gq-page #main .mobile-next-copy p{color:#f5efe3;opacity:1}
+.gq-page #main .mobile-next-label,.gq-page #main .mobile-next-cta{color:#17120b}
+.gq-page #main .mobile-next-cover{align-self:center}
+@media(max-width:360px){.gq-page #main .mobile-next-issue{grid-template-columns:minmax(0,1fr) 82px}.gq-page #main .mobile-next-copy h3{font-size:17px}}
+}
+@media(max-width:760px) and (prefers-reduced-motion:no-preference){
+@keyframes mobile-next-reveal{from{opacity:.25;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.gq-page #main .mobile-next-issue.mobile-enter{animation:mobile-next-reveal .65s cubic-bezier(.2,.7,.3,1) both}
+}
