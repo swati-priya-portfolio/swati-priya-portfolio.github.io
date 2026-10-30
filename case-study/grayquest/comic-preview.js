@@ -166,6 +166,10 @@ responseGrid.querySelectorAll('article').forEach((card,i)=>{card.querySelectorAl
 outro.querySelector('.issue-back').remove();outro.querySelector('.issue-annotation').remove();outro.querySelector('.issue-copy>p').textContent='Explore the next chapter in family protection.';
 const cover=outro.querySelector('.issue-front');const coverArt=document.createElement('div');coverArt.className='issue-front issue-custom-cover';coverArt.innerHTML='<span>NEXT ISSUE / PRODUCT DESIGN</span><strong>GUARDIAN<br>ONE.</strong><span class="issue-shield" aria-hidden="true">✦</span><em>A clearer picture of family protection.</em>';cover.replaceWith(coverArt);
 const planNav=document.querySelector('.desktop-nav a[href="#d-choose"]');if(planNav)planNav.textContent='Choose';
+// Desktop polish: keep each evidence disclosure in sync.
+const notes=[...root.querySelectorAll('#d-section-2 .design-note')];let syncingNotes=false;notes.forEach(note=>note.addEventListener('toggle',()=>{if(syncingNotes)return;syncingNotes=true;notes.forEach(other=>{if(other!==note&&other.open!==note.open)other.open=note.open});queueMicrotask(()=>{syncingNotes=false})}));
+const replacementCover=outro.querySelector('.issue-custom-cover');replacementCover.outerHTML='<img class="issue-front" src="../../images/case-guardian-one.png" alt="Guardian One case study cover" width="600" height="800" loading="lazy">';
+const torn=document.createElement('div');torn.className='hero-torn-edge';torn.setAttribute('aria-hidden','true');opening.prepend(torn);
 const revealIssue=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){outro.classList.add('issue-visible');revealIssue.disconnect()}},{threshold:.15});observers.push(revealIssue);revealIssue.observe(outro);
 
 journey.querySelector('h2').textContent='FOUR CHAPTERS. ONE APPLICATION.';

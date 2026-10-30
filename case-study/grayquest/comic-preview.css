@@ -880,3 +880,25 @@
 #desktop-main .next-issue:hover .page-back,#desktop-main .next-issue:focus-within .page-back{transform:translate(-6px,10px)}
 @media(prefers-reduced-motion:reduce){#desktop-main .next-issue:hover .issue-book,#desktop-main .next-issue:focus-within .issue-book{transform:none}}
 }
+@media(min-width:761px){
+#desktop-main .chapter h2{font-size:clamp(30px,2.6vw,38px);line-height:1.16}
+#desktop-main .chapter .intro{font-size:16px;line-height:1.6}
+#desktop-main .paper-card,#desktop-main .challenge-panel,#desktop-main .alternative-cards article{border-radius:12px}
+#desktop-main #d-section-2 .paper-card{border-radius:12px}
+#desktop-main #d-section-2 .paper-card h3{min-height:2.6em}
+#desktop-main :focus-visible{outline:3px solid #d18b00;outline-offset:4px}
+#desktop-main .alternative-cards article{grid-template-columns:minmax(0,1fr) 110px;align-items:center}
+#desktop-main .applicant-portrait{display:block;width:110px;height:110px;margin:0;border-radius:0;background-size:contain;background-repeat:no-repeat;background-position:center}
+#desktop-main .applicant-portrait.guardian{background-image:url('assets/parent@3x.webp')}
+#desktop-main .applicant-portrait.student{background-image:url('assets/journey-checks@3x.webp')}
+#desktop-main #d-section-9 .paired-screen .caption{width:min(100%,540px);align-self:center}
+#desktop-main #d-pay .reference-screen{justify-items:start}
+#desktop-main #d-pay .reference-screen>.reference-evidence{width:min(100%,370px);height:560px}
+#desktop-main #d-pay .reference-screen .caption{width:min(100%,370px)}
+#desktop-main .next-issue{background:radial-gradient(ellipse at 20% 50%,#ffc53d0d,transparent 58%),#17120b;transition:background .35s}
+#desktop-main .next-issue:hover,#desktop-main .next-issue:focus-within{background:radial-gradient(ellipse at 20% 50%,#ffc53d30,transparent 65%),#17120b}
+#desktop-main .issue-book{perspective:1400px}
+#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:rotateY(-18deg);transform-origin:left center;transition:transform .4s,box-shadow .4s}
+#desktop-main .hero-torn-edge{position:absolute;top:-22px;left:0;right:0;height:26px;background:#f5efe3;mask:url('assets/paper-edge.svg') 0 0/100% 100%;pointer-events:none;z-index:2}
+@media(prefers-reduced-motion:reduce){#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:none}}
+}
