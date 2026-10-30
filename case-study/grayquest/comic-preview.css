@@ -855,3 +855,28 @@
 #desktop-main #d-journey>.chapter-inner>.chapter-tag{border-radius:999px}
 @media(max-width:1100px){#desktop-main #d-journey .chapter-map{grid-template-columns:repeat(2,minmax(0,1fr))}}
 }
+@media(min-width:761px){
+#desktop-main .alternative-cards article{grid-template-columns:minmax(0,1fr);padding:24px;border-radius:12px;gap:12px}
+#desktop-main .applicant-portrait{display:none}
+#desktop-main .alternative-copy h4{font-size:21px;margin:12px 0}
+#desktop-main .alternative-footer{font-size:15px;color:#f7f1e5}
+#desktop-main .response-panels article{border-radius:12px;gap:14px;background:#17120b}
+#desktop-main .response-panels article:after{display:none}
+#desktop-main .response-link{margin-top:auto;color:#ffc53d;font:600 14px Inter,sans-serif;text-decoration:underline;text-underline-offset:5px;padding-top:12px}
+#desktop-main .next-issue{background:#17120b;outline:none;border:1px solid #17120b;padding:28px 36px;border-radius:12px}
+#desktop-main .issue-primary{grid-template-columns:200px 1fr;gap:48px}
+#desktop-main .issue-book{width:200px;margin:0;perspective:none}
+#desktop-main .issue-custom-cover{height:266px;display:flex;flex-direction:column;justify-content:space-between;padding:14px;background:#ffc53d;color:#17120b;border:6px solid #f5efe3;transform:none;font:700 10px Inter,sans-serif}
+#desktop-main .issue-custom-cover strong{font:400 28px/1 Archivo Black,sans-serif}
+#desktop-main .issue-custom-cover em{font:700 20px/1.1 Caveat,cursive}
+#desktop-main .issue-shield{font-size:52px;align-self:center}
+#desktop-main .issue-copy{padding:0}
+#desktop-main .issue-copy h3{font-size:36px;margin:14px 0}
+#desktop-main .issue-copy>p{font-size:16px;margin:0 0 20px}
+#desktop-main .issue-cta{border-radius:99px;padding:13px 20px;font-size:15px}
+#desktop-main .next-issue:hover .issue-front,#desktop-main .next-issue:focus-within .issue-front{transform:none;box-shadow:5px 8px 0 #f5efe3,10px 15px 18px #0008}
+#desktop-main .next-issue:hover .issue-book,#desktop-main .next-issue:focus-within .issue-book{transform:translateY(-6px)}
+#desktop-main .next-issue:hover .page-middle,#desktop-main .next-issue:focus-within .page-middle{transform:translate(5px,7px)}
+#desktop-main .next-issue:hover .page-back,#desktop-main .next-issue:focus-within .page-back{transform:translate(-6px,10px)}
+@media(prefers-reduced-motion:reduce){#desktop-main .next-issue:hover .issue-book,#desktop-main .next-issue:focus-within .issue-book{transform:none}}
+}
