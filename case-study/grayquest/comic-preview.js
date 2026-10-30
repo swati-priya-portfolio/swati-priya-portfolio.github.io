@@ -185,6 +185,11 @@ let pointerFrame=0;
 function resetLight(){hero.style.removeProperty('--glow-x');hero.style.removeProperty('--glow-y');}
 function pointerMove(e){if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'||pointerFrame)return;pointerFrame=requestAnimationFrame(()=>{pointerFrame=0;const rect=hero.getBoundingClientRect();hero.style.setProperty('--glow-x',`${(e.clientX-rect.left)/rect.width*100}%`);hero.style.setProperty('--glow-y',`${(e.clientY-rect.top)/rect.height*100}%`);});}
 hero.addEventListener('pointermove',pointerMove,{passive:true});hero.addEventListener('pointerleave',resetLight);
+// A quiet, cursor-following pool of light ties the next issue to the hero.
+let footerFrame=0;
+outro.addEventListener('pointermove',e=>{if(!desktop.matches||reduced.matches||e.pointerType!=='mouse'||footerFrame)return;const x=e.clientX,y=e.clientY;footerFrame=requestAnimationFrame(()=>{footerFrame=0;const rect=outro.getBoundingClientRect();outro.style.setProperty('--footer-x',`${(x-rect.left)/rect.width*100}%`);outro.style.setProperty('--footer-y',`${(y-rect.top)/rect.height*100}%`);});},{passive:true});
+outro.addEventListener('pointerleave',()=>{cancelAnimationFrame(footerFrame);footerFrame=0;outro.style.removeProperty('--footer-x');outro.style.removeProperty('--footer-y')});
+
 function stopMotion(){activeAnimations.forEach(a=>a.cancel());activeAnimations=[];cancelAnimationFrame(pointerFrame);pointerFrame=0;resetLight();}
 reduced.addEventListener('change',()=>{if(reduced.matches)stopMotion()});desktop.addEventListener('change',()=>{if(!desktop.matches)stopMotion()});
 addEventListener('pagehide',()=>{stopMotion();observers.forEach(o=>o.disconnect())});

@@ -921,3 +921,21 @@
 @media(max-width:1100px){#desktop-main #d-checks .alternative-cards article{grid-template-columns:minmax(0,1fr) 85px}#desktop-main #d-checks .applicant-portrait{width:85px;height:85px}#desktop-main #d-pay .reference-screen>.reference-evidence{height:500px}}
 @media(prefers-reduced-motion:reduce){#desktop-main .next-issue .issue-copy:after{transition:none;transform:none}}
 }
+
+/* Desktop evidence frames and the supplied paper texture. */
+@media (min-width:761px){
+#desktop-main #d-checks > .chapter-inner > .grid.two .evidence{display:flex;align-items:center;justify-content:center;width:100%;max-height:none;box-sizing:border-box;padding:18px;background:#fff;border:1.5px solid #f5efe3;border-radius:12px;overflow:hidden}
+#desktop-main #d-checks > .chapter-inner > .grid.two .evidence img{display:block;width:100%;height:auto;max-height:none;border:0;box-shadow:none}
+#desktop-main #d-pay .reference-screen > button.reference-evidence{display:flex!important;align-items:center;justify-content:center;width:100%!important;max-width:none!important;height:clamp(520px,48vw,720px);padding:0!important;overflow:hidden;background:#fff!important;border:1.5px solid #17130e!important;border-radius:12px!important;box-shadow:4px 4px 0 #17130e!important}
+#desktop-main #d-pay .reference-screen > button.reference-evidence > img{display:block;width:auto!important;height:100%!important;max-width:100%;max-height:100%;object-fit:contain;border:0!important;border-radius:0!important;box-shadow:none!important}
+#desktop-main #d-pay .reference-screen .caption{width:100%;max-width:none}
+#desktop-main #d-section-1 .hero-torn-edge{top:-40px;height:70px;background:#111 url('assets/torn-paper-texture.png') center top / 100% 100% no-repeat;mask:none;-webkit-mask:none}
+#desktop-main #d-section-1 .hero-torn-edge:before,#desktop-main #d-section-1 .hero-torn-edge:after{content:none}
+#desktop-main .next-issue .issue-copy:after{content:none}
+#desktop-main .next-issue,#desktop-main .next-issue:hover,#desktop-main .next-issue:focus-within{background:radial-gradient(ellipse 45% 90% at var(--footer-x,30%) var(--footer-y,50%),rgba(255,197,61,.12),transparent 72%),#17120b}
+}
+@media (prefers-reduced-motion:reduce){#desktop-main .next-issue,#desktop-main .next-issue:hover,#desktop-main .next-issue:focus-within{background:#17120b}}
+@media (min-width:761px){
+/* Source images contain their own frame; conceal only that edge in the panel. */
+#desktop-main #d-pay .reference-screen > button.reference-evidence > img{clip-path:inset(1% 1% 1% 1%)}
+}
